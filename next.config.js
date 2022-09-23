@@ -5,7 +5,8 @@ const nextConfig = {
     domains: ["localhost"],
   },
   env: {
-    NEXT_API_URL: process.env.NEXT_API_URL
+    NEXT_API_URL: process.env.NEXT_API_URL,
+    NEXT_STRAPI_PRODUCTION: process.env.NEXT_STRAPI_PRODUCTION
   }
 };
 
