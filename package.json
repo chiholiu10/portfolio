@@ -16,7 +16,7 @@
     "graphql": "^16.3.0",
     "lodash.throttle": "^4.1.1",
     "next": "12.1.5",
-    "nodemailer": "^6.7.8",
+    "pg-connection-string": "^2.5.0",
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "react-intersection-observer": "^9.1.0",
@@ -29,8 +29,6 @@
     "uniqid": "^5.4.0"
   },
   "devDependencies": {
-    "@emailjs/browser": "^3.7.0",
-    "@sendgrid/mail": "^7.7.0",
     "@types/node": "^18.7.18",
     "babel-eslint": "^10.1.0",
     "eslint": "8.14.0",
