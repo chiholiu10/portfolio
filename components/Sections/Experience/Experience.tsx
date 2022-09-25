@@ -17,7 +17,7 @@ const Experience: FC<IntroductionProps> = ({ currentComponent }) => {
       setMobileQuery(window.innerWidth <= 767 ? true : false);
     };
     window.addEventListener('resize', handleResize);
-  }, [window.innerWidth, mobileQuery]);
+  }, [mobileQuery]);
 
   return (
     <ComponentSection>

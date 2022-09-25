@@ -1,11 +1,12 @@
 
 import { FC } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import uniqid from 'uniqid';
 import { ComponentSection } from '../../../styles/General.styles';
 import { ToolsBlock, ToolInnerBlock, ComponentRow } from "./Tools.styles";
 import { Header } from '../../../styles/General.styles';
 import { FadeUpIndividually } from '../../FramerMotions';
+import uniqid from 'uniqid';
+import Image from 'next/image';
 
 const Tools: FC<ToolsProps> = ({ currentComponent }) => {
   const component = currentComponent[0];
@@ -19,7 +20,7 @@ const Tools: FC<ToolsProps> = ({ currentComponent }) => {
             <ToolsBlock key={uniqid()}>
               <h2>{item.title}</h2>
               <ToolInnerBlock>
-                <img src={item.image} alt="test" />
+                <Image src={item.image} alt="test" />
               </ToolInnerBlock>
             </ToolsBlock>
           </FadeUpIndividually>
