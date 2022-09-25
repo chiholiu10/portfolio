@@ -39,7 +39,7 @@ export default function Components() {
       const allComponents = data?.component.data.attributes.component;
       dispatch(getData(allComponents));
     }
-  }, [data]);
+  }, [dispatch, data]);
 
   if (loading) {
     return (
