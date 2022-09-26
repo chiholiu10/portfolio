@@ -7,7 +7,8 @@ const nextConfig = {
   env: {
     NEXT_API_URL: process.env.NEXT_API_URL,
     NEXT_STRAPI_PRODUCTION: process.env.NEXT_STRAPI_PRODUCTION
-  }
+  },
+  trailingSlash: true,
 };
 
 module.exports = nextConfig;
