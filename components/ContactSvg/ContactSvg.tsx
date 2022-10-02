@@ -1,5 +1,4 @@
 import { motion, useAnimation } from 'framer-motion';
-import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { ContactSVG } from './Contact.styles';
 
@@ -7,18 +6,15 @@ export const ContactSvg = ({ index }) => {
   const controls = useAnimation();
   const [ref, inView] = useInView();
 
-  useEffect(() => {
-  }, [controls, inView]);
-
   const svg_properties = {
     initial: { pathLength: 0 },
     animate: inView && { pathLength: 1 },
     viewport: { once: true },
     fill: "transparent",
-    strokeWidth: "6",
+    strokeWidth: 13,
     whileInView: "visible",
     stroke: "rgba(255, 255, 255, 0.69)",
-    transition: { duration: 2, ease: "easeInOut", delay: index * 0.8 },
+    transition: { duration: 2, ease: "easeInOut", delay: index * 0.05 },
   };
 
   if (index === 0) {
@@ -57,11 +53,4 @@ export const ContactSvg = ({ index }) => {
       </ContactSVG>
     );
   }
-
-  return (
-    <div>
-      <input type="email" name="email" placeholder="Enter your email" />
-      <input type="text" name="message" placeholder="Enter your message" />
-    </div>
-  );
 };

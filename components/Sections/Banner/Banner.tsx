@@ -8,6 +8,7 @@ const Banner: FC<PortfolioWebsiteProps> = ({ currentComponent }) => {
   const component = currentComponent[0];
   const { scrollY } = useViewportScroll();
   const y2 = useTransform(scrollY, [0, 7000], [1, -2000]);
+
   return (
     <ComponentSection>
       <FadeUpWhenVisible>

@@ -1,8 +1,13 @@
+import { motion, useAnimation } from "framer-motion";
 import { useEffect } from "react";
-import { useAnimation, motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
-export const FadeUpIndividually = ({ time, children }) => {
+export const BoxVariants = {
+  visible: { opacity: 1, y: 150, transition: { duration: 2 } },
+  hidden: { opacity: 0, y: 50 }
+};
+
+export const FadeScrollBox = ({ children }) => {
   const controls = useAnimation();
   const [ref, inView] = useInView();
 
@@ -15,14 +20,9 @@ export const FadeUpIndividually = ({ time, children }) => {
   return (
     <motion.div
       ref={ref}
+      animate={controls}
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-      transition={{ duration: 1.1, delay: time * 0.15 }}
-      variants={{
-        visible: { opacity: 1 },
-        hidden: { opacity: 0.05 }
-      }}
+      variants={BoxVariants}
     >
       {children}
     </motion.div>

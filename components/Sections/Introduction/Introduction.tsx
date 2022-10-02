@@ -16,7 +16,7 @@ const Introduction: FC<IntroductionProps> = ({ currentComponent }) => {
     <ComponentSection>
       <div key={uniqid()}>
         <motion.div
-          style={{ y: y2, x: 50 }}
+          style={{ y: y2, x: 0 }}
         >
           <BackgroundImage src={"https://res.cloudinary.com/dh7tnzzxm/image/upload/v1651443884/circle_effect_8ce52c0de3.png"} left="60%" width="300px" height="auto" />
         </motion.div>

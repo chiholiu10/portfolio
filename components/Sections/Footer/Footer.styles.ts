@@ -16,4 +16,6 @@ export const FooterComponent = styled.footer`
   }
 `;
 
-export const FooterText = styled.div``;
+export const FooterText = styled.div`
+  font-size: 14px;
+`;

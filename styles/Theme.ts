@@ -8,6 +8,7 @@ const theme: DefaultTheme = {
     lightBlack: "#2c303a",
     grey: "#999999",
     blue: "#00b6ff;",
+    transparent: 'transparent'
 
   },
   // typography
