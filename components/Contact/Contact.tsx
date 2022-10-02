@@ -1,10 +1,11 @@
 import { FC } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import uniqid from 'uniqid';
-import { ContactBlock, ContactContainer } from "./Contact.styles";
-import { ComponentSection } from '../../styles/General.styles';
+import { ContactBlock, ContactContainer, ContactBlockAnchor } from "./Contact.styles";
+import { ComponentSection, Header } from '../../styles/General.styles';
 import { motion } from 'framer-motion';
 import { ContactSvg } from '../ContactSvg/ContactSvg';
+import { FadeUpIndividually } from './../FramerMotions';
 
 const Contact: FC<ContactProps> = ({ currentComponent }) => {
   const component = currentComponent[0];
@@ -13,17 +14,17 @@ const Contact: FC<ContactProps> = ({ currentComponent }) => {
     <ComponentSection>
       <ContactContainer as={motion.div}>
         {component?.content.map((item, index) => (
-          <ContactBlock key={uniqid()}>
-            <a href={item.anchor} target="_blank" rel="noopener noreferrer nofollow" >
-              <h2>{item.title}</h2>
-              <div>{item.subtitle}</div>
-              < ContactSvg index={index} />
-
-            </a>
-          </ContactBlock>
+          <FadeUpIndividually time={index} key={uniqid()}>
+            <ContactBlock key={uniqid()} >
+              <ContactBlockAnchor href={item.subtitle} target="_blank" rel="noopener noreferrer nofollow">
+                < ContactSvg index={index} />
+              </ContactBlockAnchor>
+            </ContactBlock>
+          </FadeUpIndividually>
         ))}
+
       </ContactContainer>
-    </ComponentSection>
+    </ComponentSection >
   );
 };
 

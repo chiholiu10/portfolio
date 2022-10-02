@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { breakpoint } from "../../../styles/Breakpoint";
+import theme from "../../../styles/Theme";
 
 export const ComponentRow = styled.div`
   display: flex;
@@ -20,17 +21,26 @@ export const ComponentRow = styled.div`
 `;
 
 export const ToolInnerBlock = styled.div`
+  flex-grow: 1;
+`;
 
+export const ToolsHeader = styled.div`
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const ToolsBlock = styled.div`
   width: 130px;
   height: 150px;
-  border: 1px solid grey;
+  border: 2px solid ${theme.colors.grey};
   text-align: center;
   font-size: 18px;
   font-weight: 600;
   line-height: 3;
+  display: flex;
+  flex-direction: column;
   ${breakpoint.md`
     width: 190px;
     height: 210px; 
@@ -52,7 +62,7 @@ export const ToolsBlock = styled.div`
   h2 {
     line-height: 1;
     font-size: 16px;
-    padding: 15px 0 2px;
+    width: 100%;
   }
 
   ${breakpoint.md`
@@ -61,7 +71,7 @@ export const ToolsBlock = styled.div`
       line-height: 2.8;
     }
     ${ToolInnerBlock} {
-      padding: 15px 0;
+      padding: 15px 0 25px;
     }
   `}
 `;

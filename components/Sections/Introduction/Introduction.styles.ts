@@ -7,19 +7,22 @@ export const DisplayFlex = styled.div`
   justify-content: center;
   flex-wrap: wrap;
   gap: 30px;
+  ${breakpoint.md`
+    gap: 35px;
+  `}
 `;
 
 export const IntroBlock = styled.div`
   width: 120px;
   height: 120px;
-  border-radius: 10px;
+  border-radius: 5px;
   justify-content: center;
   align-items: center;
   display: flex;
   background-color: ${theme.colors.lightBlack};
   ${breakpoint.sm`
-    width: 200px;
-    height: 200px;
+    width: 180px;
+    height: 180px;
   `}
 `;
 

@@ -31,8 +31,15 @@ export const ComponentSection = styled.section`
   }
   ${breakpoint.md`
     overflow-x: initial;
-    min-height: 500px;
+    min-height: 600px;
+    padding: 0 50px 50px;
   `}
+    ${breakpoint.lg`
+    min-height: 700px;
+  `}
+  &:nth-child(5) {
+    min-height: 300px;
+  }
 `;
 
 export const Header = styled.h2`
@@ -47,7 +54,15 @@ export const Header = styled.h2`
     font-weight: 600;
     text-align: center;
     margin-top: 100px;
-    margin-bottom: 45px;
+    margin-bottom: 20px;
+  `}
+  ${breakpoint.md`
+    font-size: 50px;
+    padding-bottom: 10px;
+  `}
+  ${breakpoint.xl`
+    font-size: 60px;
+    padding: 80px 0 0;
   `}
 `;
 
@@ -65,5 +80,14 @@ export const SubHeader = styled.p`
     width: 500px;
     line-height: 1.6;
     font-size: 20px;
+  `}
+  ${breakpoint.md`
+    width: 600px;
+    line-height: 1.7;
+  `}
+  ${breakpoint.xl`
+    font-size: 22px;
+    width: 800px;
+    line-height: 1.8;
   `}
 `;

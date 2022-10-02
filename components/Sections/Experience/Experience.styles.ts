@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { breakpoint } from "../../../styles/Breakpoint";
 import theme from "../../../styles/Theme";
 
@@ -7,58 +7,118 @@ export const ExperienceInnerBlock = styled.div`
   position: relative;
   margin-top: 50px;
   ${breakpoint.md`
-    height: 300px;
+    max-width: 980px;
+    margin-left: auto;
+    margin-right: auto;
   `}
+  ${breakpoint.lg`
+    margin-top: 100px;
+  `}
+`;
+
+const steam = keyframes`
+	0% {
+		background-position: 0 0;
+	}
+	50% {
+		background-position: 150% 0;
+	}
+	100% {
+		background-position: 0 0;
+	}
 `;
 
 export const ExperienceBlockLeft = styled.div`
   position: relative;
   display: flex;
-  color: lightgrey;
-  font-size: 1.0rem;
-  font-weight: 500;
   padding: 50px 20px 0;
+  background: black;
   ${breakpoint.md`
     justify-content: center;
     align-items: center;
-    padding: 5% 50px 50px 50px;
-    width: 50%;
+    align-items: center;
+    font-size: 16px;
+  `}
+  ${breakpoint.md`
+    &:before {
+      content: '';
+      position: absolute;
+      left: -2px;
+      top: -2px;
+      background: linear-gradient(25deg, 	#FFD700, #FFD700, 	#FF8C00,#D2691E, #FFD700, 	#CD853F, 
+        #FFD700, 	#CD853F,	#FF8C00, #ffff00);
+      background-size: 400%;
+      width: calc(100% + 4px);
+      height: calc(100% + 4px);
+      z-index: -1;
+      animation: ${steam} 5s linear infinite;
+    }
+    &:after {
+      content: '';
+      position: absolute;
+      left: -2px;
+      top: -2px;
+      background: linear-gradient(25deg, #DAA520, #ffff00, 	#FF8C00,#ffff00, 	#CD853F, #FFD700, 
+        #FFD700, #FFD700,#D2691E, #CD853F);
+      background-size: 400%;
+      width: calc(100% + 4px);
+      height: calc(100% + 4px);
+      z-index: -1;
+      animation: ${steam} 20s linear infinite;
+    }
   `}
 `;
 
 export const ExperienceBlockRight = styled.div`
   position: relative;
-  padding: 20px 20px 100px;
-`;
-
-export const ExperienceFigure = styled.figure`
-  transform-origin: left bottom;
-  height: 100%;
-  right: 0;
-  margin-right: 0;
-  margin-left: auto;
-  z-index: 1;
-  overflow: hidden;
-  padding: 0;
-  transform-origin: top bottom;
-  transform: skewY(-12deg);
   ${breakpoint.md`
+    position: absolute;
     width: 50%;
-    transform-origin: unset;
-    transform: skewX(-25deg);
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow: hidden;
   `}
 `;
 
-export const ExperienceImageLayer = styled.div`
-  height: 100%;
-  width: 100%;
-  position: absolute;
+export const ExperienceFigure = styled.figure`
   top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  transform: skewX(0deg);
-  background: rgba(50, 70, 80, 0.3);
+  ${breakpoint.md`
+    height: 100%;
+    position: absolute;
+  `}
+  &:before,
+	&:after {
+		transform: skewY(-3.5deg);
+    content: "";
+    display: block;
+    width: 100%;
+    height: 120px;
+    left: 0;
+    background-color: ${theme.colors.black};
+	}
+	
+	&:before {
+		top: -80px;
+    transform-origin: right bottom;
+    ${breakpoint.md`
+      display: none;
+    `}
+	}
+	
+	&:after {
+		bottom: -110px;
+    transform-origin: left top;
+    ${breakpoint.md`
+      height: 100%;
+		  transform: skew(-20deg);
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 215px;
+      position: absolute;
+    `}
+	}
 `;
 
 export const ExperienceImage = styled.img`
@@ -66,26 +126,30 @@ export const ExperienceImage = styled.img`
   height: 100%;
   object-fit: cover;
   width: 100%;
-  transform: skewY(10deg);
   transform-origin: left bottom;
   ${breakpoint.md`
-    transform-origin: left bottom;
-    transform: skewX(25deg);
+    transform: unset;
+    object-position: center;
   `}
 `;
 
 export const ExperienceContent = styled.div`
   font-size: 18px;
-  color: #999999;
+  color: ${theme.colors.grey};
   font-weight: 500;
-  font-size: 18px;
   width: 100%;
   margin-left: auto;
   margin-right: auto;
   text-align: center;
   margin-bottom: 50px;
   padding: 20px;
+  line-height: 1.6;
+  color: white;
   ${breakpoint.md`
     text-align: left;
+    line-height: 1.8;
+    width: 50%;
+    margin-left: 10px; 
+    margin-right: auto;
   `}
 `;
