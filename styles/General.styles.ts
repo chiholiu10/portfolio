@@ -82,12 +82,12 @@ export const SubHeader = styled.p`
     font-size: 20px;
   `}
   ${breakpoint.md`
-    width: 600px;
+    width: 700px;
     line-height: 1.7;
   `}
   ${breakpoint.xl`
     font-size: 22px;
-    width: 800px;
+    width: 700px;
     line-height: 1.8;
   `}
 `;
