@@ -2,11 +2,11 @@ import { ComponentSection, Header, SubHeader, BackgroundImage } from '../../../s
 import { FC } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { FadeUpWhenVisible } from "../../FramerMotions";
-import { motion, useTransform, useViewportScroll } from 'framer-motion';
+import { motion, useTransform, useScroll } from 'framer-motion';
 
 const Banner: FC<PortfolioWebsiteProps> = ({ currentComponent }) => {
   const component = currentComponent[0];
-  const { scrollY } = useViewportScroll();
+  const { scrollY } = useScroll();
   const y2 = useTransform(scrollY, [0, 7000], [1, -2000]);
 
   return (
