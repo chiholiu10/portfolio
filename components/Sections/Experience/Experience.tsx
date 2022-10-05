@@ -1,6 +1,6 @@
 import { ComponentSection } from '../../../styles/General.styles';
 import { ExperienceInnerBlock, ExperienceBlockLeft, ExperienceBlockRight, ExperienceImage, ExperienceFigure, ExperienceContent } from './Experience.styles';
-import { motion, useTransform, useViewportScroll } from 'framer-motion';
+import { motion, useTransform, useScroll } from 'framer-motion';
 import { FC, useEffect, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { FadeUpWhenVisible } from "../../FramerMotions";
@@ -8,7 +8,7 @@ import { FadeUpWhenVisible } from "../../FramerMotions";
 const Experience: FC<IntroductionProps> = ({ currentComponent }) => {
   const [mobileQuery, setMobileQuery] = useState(false);
   const component = currentComponent[0];
-  const { scrollY } = useViewportScroll();
+  const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 7000], [1, 400]);
 
   useEffect(() => {

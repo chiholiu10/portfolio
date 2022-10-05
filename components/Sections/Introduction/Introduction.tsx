@@ -1,4 +1,4 @@
-import { motion, useTransform, useViewportScroll } from 'framer-motion';
+import { motion, useTransform, useScroll } from 'framer-motion';
 import { FC } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import uniqid from 'uniqid';
@@ -8,7 +8,7 @@ import { DisplayFlex, IntroBlock, IntroTitle, IntroBlockCenter, IntroSubTitle } 
 
 const Introduction: FC<IntroductionProps> = ({ currentComponent }) => {
   const component = currentComponent[0];
-  const { scrollY } = useViewportScroll();
+  const { scrollY } = useScroll();
 
   const y2 = useTransform(scrollY, [0, 7000], [1, -1000]);
 
