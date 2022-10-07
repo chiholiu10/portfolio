@@ -17,9 +17,9 @@ export const FadeUpWhenVisible = ({ specificTransition, hiddenOpacity, children 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: hiddenOpacity || 0.1, y: "50px" }}
+      initial={{ opacity: hiddenOpacity || 0, y: "10px" }}
       animate={inView && { opacity: 1, y: "-20px" }}
-      transition={{ duration: specificTransition || 1.25 }}
+      transition={{ duration: specificTransition || 1.05 }}
     >
       {children}
     </motion.div>
