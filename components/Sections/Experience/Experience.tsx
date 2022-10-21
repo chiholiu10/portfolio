@@ -16,29 +16,24 @@ const Experience: FC<IntroductionProps> = ({ currentComponent }) => {
       setMobileQuery(window.innerWidth <= 767 ? true : false);
     };
     window.addEventListener('resize', handleResize);
+    console.log(mobileQuery);
   }, [mobileQuery]);
-
 
   return (
     <ComponentSection>
       <FadeUpWhenVisible>
         <motion.div
-          style={mobileQuery ? { y: 0, x: 0 } : { y: y, x: 0 }}
+          style={{ y: y, x: 0 }}
         >
           <ExperienceInnerBlock>
-
             <ExperienceBlockLeft>
               <ExperienceContent>{component?.context}</ExperienceContent>
             </ExperienceBlockLeft>
             <ExperienceBlockRight>
-
-
               <ExperienceFigure>
                 <ExperienceImage src={component?.content[0].image} alt="test" />
               </ExperienceFigure>
-
             </ExperienceBlockRight>
-
           </ExperienceInnerBlock>
         </motion.div>
       </FadeUpWhenVisible>
