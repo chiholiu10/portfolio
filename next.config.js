@@ -4,6 +4,9 @@ const nextConfig = {
   images: {
     domains: ["localhost"],
   },
+  experimental: {
+    forceSwcTransforms: true,
+  },
   env: {
     NEXT_NODE_ENV: process.env.NEXT_NODE_ENV,
     NEXT_API_URL: process.env.NEXT_API_URL,
