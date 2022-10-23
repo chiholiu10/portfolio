@@ -19,7 +19,7 @@ const httpLink = new HttpLink({
 });
 
 const client = new ApolloClient({
-  link: from([errorLink, httpLink]),
+  link: from([httpLink, errorLink]),
   cache: new InMemoryCache(),
 });
 
