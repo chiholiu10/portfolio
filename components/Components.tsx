@@ -48,9 +48,8 @@ export default function Components() {
   }
 
   if (error) {
-    return (
-      <div>Error</div>
-    );
+    console.error(error);
+    return null;
   }
 
   return (
