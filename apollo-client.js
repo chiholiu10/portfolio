@@ -1,4 +1,5 @@
-import { ApolloClient, InMemoryCache, onError } from "@apollo/client";
+import { ApolloClient, InMemoryCache, HttpLink, from } from "@apollo/client";
+import { onError } from "@apollo/client/link/error";
 
 const API_URL = (process && process.env.NODE_ENV === 'production') ? "https://portfolioserverside.herokuapp.com" : "http://localhost:1337";
 
@@ -18,7 +19,7 @@ const httpLink = new HttpLink({
 });
 
 const client = new ApolloClient({
-  link: from([httpLink, errorLink]),
+  link: from([errorLink, httpLink]),
   cache: new InMemoryCache(),
 });
 
