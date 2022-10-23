@@ -6,24 +6,26 @@ import { connect, ConnectedProps } from 'react-redux';
 import { FadeUpWhenVisible } from "../../FramerMotions";
 
 const Experience: FC<IntroductionProps> = ({ currentComponent }) => {
-  const [mobileQuery, setMobileQuery] = useState(false);
+  const [mobileQuery, setMobileQuery] = useState(true);
   const component = currentComponent[0];
   const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 7000], [1, 400]);
+  const yMobile = useTransform(scrollY, [1, 700], [1, 200]);
+  const yDesktop = useTransform(scrollY, [1, 7000], [1, 400]);
+
+  const handleResize = () => {
+    setMobileQuery(window.innerWidth < 768 ? true : false);
+  };
 
   useEffect(() => {
-    const handleResize = () => {
-      setMobileQuery(window.innerWidth <= 767 ? true : false);
-    };
     window.addEventListener('resize', handleResize);
   }, [mobileQuery]);
-
+  console.log(mobileQuery);
 
   return (
     <ComponentSection>
       <FadeUpWhenVisible>
         <motion.div
-          style={mobileQuery ? { y: 0, x: 0 } : { y: y, x: 0 }}
+          style={{ y: 0, x: 0 }}
         >
           <ExperienceInnerBlock>
 
