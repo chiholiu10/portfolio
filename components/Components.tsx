@@ -49,7 +49,7 @@ export default function Components() {
 
   if (error) {
     console.error(error);
-    return `Error ${error.message}`;
+    return null;
   }
 
   return (
