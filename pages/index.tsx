@@ -1,4 +1,4 @@
-import { Components } from "../components/Components";
+import Components from "../components/Components";
 
 export default function ClientSide() {
   return (
