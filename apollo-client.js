@@ -1,9 +1,23 @@
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 
-const API_URL = process.env.NODE_ENV === 'development' ? "http://localhost:1337" : process.env.NEXT_API_URL;
-console.log(API_URL);
+const contentToken = 'Efc8fVC1vz-dSug8XJUneKcS-LXCpE_pNtr0a6_JfFA';
+
+const httpLink = createHttpLink({
+  uri: `https://graphql.contentful.com/content/v1/spaces/z1tccslo5ojo/environments/master`,
+});
+
+const authLink = setContext((_, { headers }) => {
+  return {
+    headers: {
+      ...headers,
+      authorization: `Bearer ${contentToken}`,
+    },
+  };
+});
+
 const client = new ApolloClient({
-  uri: 'https://portfolioserverside.herokuapp.com/graphql',
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 

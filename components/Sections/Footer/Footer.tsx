@@ -1,11 +1,21 @@
+import { useQuery } from '@apollo/client';
 import { FooterComponent, FooterText } from './Footer.styles';
+import { QUERY } from './FooterQuery';
 
-const Footer = () => {
+export const Footer = () => {
+  const { data, loading, error } = useQuery(QUERY);
+
+  if (loading) {
+    return <></>;
+  }
+
+  if (error) {
+    console.error(error);
+    return null;
+  }
   return (
     <FooterComponent>
-      <FooterText>© Chiho Portfolio</FooterText>
+      <FooterText>{data.section.subtitle}</FooterText>
     </FooterComponent>
   );
 };
-
-export default Footer;

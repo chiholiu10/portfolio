@@ -1,22 +1,33 @@
 import { ComponentSection } from '../../../styles/General.styles';
 import { ExperienceInnerBlock, ExperienceBlockLeft, ExperienceBlockRight, ExperienceImage, ExperienceFigure, ExperienceContent } from './Experience.styles';
 import { motion, useTransform, useScroll } from 'framer-motion';
-import { FC, useEffect, useState } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import { useEffect, useState } from 'react';
 import { FadeUpWhenVisible } from "../../FramerMotions";
+import { useQuery } from '@apollo/client';
+import { QUERY } from './ExperienceQuery';
 
-const Experience: FC<IntroductionProps> = ({ currentComponent }) => {
+export const Experience = () => {
+  const { data, loading, error } = useQuery(QUERY);
   const [mobileQuery, setMobileQuery] = useState(false);
-  const component = currentComponent[0];
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 7000], [1, 400]);
-
+  console.log(data);
   useEffect(() => {
     const handleResize = () => {
       setMobileQuery(window.innerWidth <= 767 ? true : false);
     };
     window.addEventListener('resize', handleResize);
   }, [mobileQuery]);
+
+
+  if (loading) {
+    return <></>;
+  }
+
+  if (error) {
+    console.error(error);
+    return null;
+  }
 
   return (
     <ComponentSection>
@@ -26,11 +37,11 @@ const Experience: FC<IntroductionProps> = ({ currentComponent }) => {
         >
           <ExperienceInnerBlock>
             <ExperienceBlockLeft>
-              <ExperienceContent>{component?.context}</ExperienceContent>
+              <ExperienceContent>{data.section.subtitle}</ExperienceContent>
             </ExperienceBlockLeft>
             <ExperienceBlockRight>
               <ExperienceFigure>
-                <ExperienceImage src={component?.content[0].image} alt="test" />
+                <ExperienceImage src={data.section.image.url} alt="test" />
               </ExperienceFigure>
             </ExperienceBlockRight>
           </ExperienceInnerBlock>
@@ -39,11 +50,3 @@ const Experience: FC<IntroductionProps> = ({ currentComponent }) => {
     </ComponentSection >
   );
 };
-
-const mapStateToProps = (state: any) => ({
-  currentComponent: state.data.filter((item) => item.title.toLowerCase() === "experience")
-});
-
-const connector = connect(mapStateToProps);
-type IntroductionProps = ConnectedProps<typeof connector>;
-export default connector(Experience);
