@@ -1,31 +1,38 @@
-
-import { FC } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
 import { ComponentSection } from '../../../styles/General.styles';
 import { ToolsBlock, ToolInnerBlock, ComponentRow, ToolsHeader } from "./Tools.styles";
 import { Header, SubHeader } from '../../../styles/General.styles';
 import { FadeUpIndividually, FadeUpWhenVisible } from '../../FramerMotions';
 import uniqid from 'uniqid';
+import { useQuery } from '@apollo/client';
+import { QUERY } from './ToolsQuery';
 
-const Tools: FC<ToolsProps> = ({ currentComponent }) => {
-  const component = currentComponent[0];
+export const Tools = () => {
+  const { data, loading, error } = useQuery(QUERY);
+
+  if (loading) {
+    return <></>;
+  }
+
+  if (error) {
+    console.error(error);
+    return null;
+  }
 
   return (
     <ComponentSection>
       <FadeUpWhenVisible>
-        <Header>{component?.title}</Header>
-        <SubHeader>{component?.subtitle}</SubHeader>
+        <Header>{data.section?.title}</Header>
+        <SubHeader>{data.section?.subtitle}</SubHeader>
       </FadeUpWhenVisible>
       <ComponentRow>
-        {component?.content.map((item, index) => (
+        {data.section?.array.map((item, index) => (
           <FadeUpIndividually time={index} key={uniqid()}>
             <ToolsBlock key={uniqid()}>
               <ToolsHeader>
                 <h2>{item.title}</h2>
-                <p>{item?.subtitle}</p>
               </ToolsHeader>
               <ToolInnerBlock>
-                <img src={item.image} alt="test" />
+                <img src={item.imageUrl} alt="test" />
               </ToolInnerBlock>
             </ToolsBlock>
           </FadeUpIndividually>
@@ -34,12 +41,3 @@ const Tools: FC<ToolsProps> = ({ currentComponent }) => {
     </ComponentSection>
   );
 };
-
-
-const mapStateToProps = (state: any) => ({
-  currentComponent: state.data.filter((item) => item.title.toLowerCase() === "tools")
-});
-
-const connector = connect(mapStateToProps);
-type ToolsProps = ConnectedProps<typeof connector>;
-export default connector(Tools);

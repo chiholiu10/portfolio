@@ -14,8 +14,6 @@ export const FadeUpWhenVisible = ({ specificTransition, hiddenOpacity, children 
     threshold: .8
   });
 
-  console.log(specificTransition, hiddenOpacity, children);
-
   return (
     <motion.div
       ref={ref}

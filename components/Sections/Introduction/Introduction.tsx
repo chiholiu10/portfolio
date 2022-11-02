@@ -1,16 +1,24 @@
+import { useQuery } from '@apollo/client';
 import { motion, useTransform, useScroll } from 'framer-motion';
-import { FC } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import uniqid from 'uniqid';
 import { ComponentSection, Header, SubHeader, BackgroundImage } from '../../../styles/General.styles';
 import { FadeUpWhenVisible, FadeUpIndividually } from '../../FramerMotions';
 import { DisplayFlex, IntroBlock, IntroTitle, IntroBlockCenter, IntroSubTitle } from "./Introduction.styles";
+import { QUERY } from './IntroductionQuery';
+import uniqid from 'uniqid';
 
-const Introduction: FC<IntroductionProps> = ({ currentComponent }) => {
-  const component = currentComponent[0];
+export const Introduction = () => {
+  const { data, loading, error } = useQuery(QUERY);
   const { scrollY } = useScroll();
-
   const y2 = useTransform(scrollY, [0, 7000], [1, -1000]);
+
+  if (loading) {
+    return <></>;
+  }
+
+  if (error) {
+    console.error(error);
+    return null;
+  }
 
   return (
     <ComponentSection>
@@ -21,17 +29,16 @@ const Introduction: FC<IntroductionProps> = ({ currentComponent }) => {
           <BackgroundImage src={"https://res.cloudinary.com/dh7tnzzxm/image/upload/v1651443884/circle_effect_8ce52c0de3.png"} left="60%" width="300px" height="auto" />
         </motion.div>
         <FadeUpWhenVisible>
-          <Header>{component?.title}</Header>
-          <SubHeader>{component?.subtitle}</SubHeader>
-          <div>{component?.context}</div>
+          <Header>{data.section.title}</Header>
+          <SubHeader>{data.section.subtitle}</SubHeader>
         </FadeUpWhenVisible>
         <DisplayFlex>
-          {component?.content.map((item, index) => (
+          {data.section.array.map((item, index) => (
             <FadeUpIndividually time={index} key={uniqid()}>
               <IntroBlock>
                 <IntroBlockCenter>
                   <IntroTitle>{item.title}</IntroTitle>
-                  <IntroSubTitle>{item.subtitle}</IntroSubTitle>
+                  <IntroSubTitle>{item.description}</IntroSubTitle>
                 </IntroBlockCenter>
               </IntroBlock>
             </FadeUpIndividually>
@@ -41,11 +48,3 @@ const Introduction: FC<IntroductionProps> = ({ currentComponent }) => {
     </ComponentSection>
   );
 };
-
-const mapStateToProps = (state: any) => ({
-  currentComponent: state.data.filter((item) => item.title.toLowerCase() === "introduction")
-});
-
-const connector = connect(mapStateToProps);
-type IntroductionProps = ConnectedProps<typeof connector>;
-export default connector(Introduction);
