@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "npx kill-port 3000 && next dev",
+    "dev": "next dev",
+    "port": "npx kill-port 3000 && next start",
     "build": "rm -rf .next && next build",
     "reinstall": "rm -rf node_modules yarn.lock package-lock.json",
     "start": "npx kill-port 3000 && next start",
