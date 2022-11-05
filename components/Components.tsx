@@ -4,7 +4,6 @@ import { CSSreset } from "../styles/CssReset";
 import theme from "../styles/Theme";
 
 export default function Components() {
-
   return (
     <ThemeProvider theme={theme}>
       <CSSreset />
