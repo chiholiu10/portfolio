@@ -56,11 +56,11 @@ export const Header = styled.h2`
     margin-top: 100px;
   `}
   ${breakpoint.md`
-    font-size: 50px;
+    font-size: 48px;
     // padding-bottom: 10px;
   `}
   ${breakpoint.xl`
-    font-size: 60px;
+    font-size: 54px;
     padding: 80px 0 0;
   `}
 `;
@@ -84,7 +84,6 @@ export const SubHeader = styled.p`
     line-height: 1.7;
   `}
   ${breakpoint.xl`
-    font-size: 22px;
     width: 700px;
     line-height: 1.8;
   `}
