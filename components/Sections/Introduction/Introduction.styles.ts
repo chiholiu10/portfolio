@@ -8,7 +8,7 @@ export const DisplayFlex = styled.div`
   flex-wrap: wrap;
   gap: 30px;
   ${breakpoint.md`
-    gap: 35px;
+    gap: 50px;
   `}
 `;
 

@@ -10,13 +10,12 @@ export const ComponentRow = styled.div`
   margin-left: auto;
   margin-right: auto;
   justify-content: center;
-  gap: 20px;
-  padding: 50px;
+  gap: 10px;
+  padding: 10px;
   ${breakpoint.md`
-    width: 650px;
-    gap: 30px;
-    justify-content: unset;
-    padding: 0;
+    max-width: 750px;
+    gap: 60px;
+    align-content: space-around;
   `}
 `;
 
@@ -55,6 +54,7 @@ export const ToolsBlock = styled.div`
   }
   img {
     width: 60px;
+
     ${breakpoint.md`
       max-width: 150px;
       width: 100px;
