@@ -1,6 +1,5 @@
 import { ComponentSection } from '../../../styles/General.styles';
 import { ExperienceInnerBlock, ExperienceBlockLeft, ExperienceBlockRight, ExperienceImage, ExperienceFigure, ExperienceContent } from './Experience.styles';
-import { motion, useTransform, useScroll } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { FadeUpWhenVisible } from "../../FramerMotions";
 import { useQuery } from '@apollo/client';
@@ -12,7 +11,7 @@ export const Experience = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setMobileQuery(window.innerWidth <= 767 ? true : false);
+      setMobileQuery(window.innerWidth > 767 ? true : false);
     };
     window.addEventListener('resize', handleResize);
     console.log(mobileQuery);
@@ -30,37 +29,27 @@ export const Experience = () => {
 
   return (
     <ComponentSection>
-      {mobileQuery && (
-        <ExperienceInnerBlock>
-          <ExperienceBlockLeft>
-            < FadeUpWhenVisible >
-              <ExperienceContent>{data.section.subtitle}</ExperienceContent>
-            </FadeUpWhenVisible>
-          </ExperienceBlockLeft>
-          <ExperienceBlockRight>
+      <ExperienceInnerBlock>
+        <ExperienceBlockLeft>
+          < FadeUpWhenVisible >
+            <ExperienceContent>{data.section.subtitle}</ExperienceContent>
+          </FadeUpWhenVisible>
+        </ExperienceBlockLeft>
+        <ExperienceBlockRight>
+          {!mobileQuery && (
             <FadeUpWhenVisible >
               <ExperienceFigure>
                 <ExperienceImage src={data.section.image.url} alt="test" />
               </ExperienceFigure>
             </FadeUpWhenVisible>
-          </ExperienceBlockRight>
-        </ExperienceInnerBlock>
-      )}
-
-      {!mobileQuery && (
-        < FadeUpWhenVisible>
-          <ExperienceInnerBlock>
-            <ExperienceBlockLeft>
-              <ExperienceContent>{data.section.subtitle}</ExperienceContent>
-            </ExperienceBlockLeft>
-            <ExperienceBlockRight>
-              <ExperienceFigure>
-                <ExperienceImage src={data.section.image.url} alt="test" />
-              </ExperienceFigure>
-            </ExperienceBlockRight>
-          </ExperienceInnerBlock>
-        </FadeUpWhenVisible>
-      )}
+          )}
+          {mobileQuery && (
+            <ExperienceFigure>
+              <ExperienceImage src={data.section.image.url} alt="test" />
+            </ExperienceFigure>
+          )}
+        </ExperienceBlockRight>
+      </ExperienceInnerBlock>
     </ComponentSection >
   );
 };

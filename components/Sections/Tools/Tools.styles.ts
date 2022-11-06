@@ -41,6 +41,7 @@ export const ToolsBlock = styled.div`
   line-height: 3;
   display: flex;
   flex-direction: column;
+  border-radius: 15px;
   ${breakpoint.md`
     width: 190px;
     height: 210px; 
