@@ -1,14 +1,12 @@
 import { motion } from "framer-motion";
+import React, { Children, FC } from "react";
 import { useInView } from 'react-intersection-observer';
 
 interface FramerMotionProps {
-  specificTransition?: number;
-  hiddenOpacity?: number;
-  children?:
-  React.ReactNode;
+  children?: React.ReactNode;
 }
 
-export const FadeUpWhenVisible = ({ specificTransition, hiddenOpacity, children }: FramerMotionProps) => {
+export const FadeUpWhenVisible = ({ children }: FramerMotionProps) => {
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: .8
@@ -17,7 +15,7 @@ export const FadeUpWhenVisible = ({ specificTransition, hiddenOpacity, children 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: hiddenOpacity || 0, y: "10px" }}
+      initial={{ opacity: 0, y: "10px" }}
       animate={inView && { opacity: 1, y: "-20px" }}
       transition={{ duration: 1.05 }}
     >

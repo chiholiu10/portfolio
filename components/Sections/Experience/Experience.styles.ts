@@ -93,7 +93,7 @@ export const ExperienceFigure = styled.figure`
     content: "";
     display: block;
     width: 100%;
-    height: 120px;
+    height: 80px;
     left: 0;
     background-color: ${theme.colors.black};
 	}
@@ -144,7 +144,6 @@ export const ExperienceContent = styled.div`
   margin-bottom: 50px;
   padding: 20px;
   line-height: 1.6;
-  color: white;
   ${breakpoint.md`
     text-align: left;
     line-height: 1.8;
