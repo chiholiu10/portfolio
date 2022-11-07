@@ -22,7 +22,7 @@ export const Contact = () => {
 
   return (
     <ComponentSection>
-      <Header>{data.section.title}</Header>
+      {/* <Header>{data.section.title}</Header> */}
       <ContactContainer as={motion.div}>
         {data.section.arrays?.map((item, index) => (
           <FadeUpIndividually time={index} key={uniqid()}>
