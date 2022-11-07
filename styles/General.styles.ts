@@ -56,8 +56,7 @@ export const Header = styled.h2`
     margin-top: 100px;
   `}
   ${breakpoint.md`
-    font-size: 48px;
-    // padding-bottom: 10px;
+    font-size: 46px;
   `}
   ${breakpoint.xl`
     font-size: 54px;
