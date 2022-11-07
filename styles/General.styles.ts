@@ -82,6 +82,7 @@ export const SubHeader = styled.p`
   ${breakpoint.md`
     width: 700px;
     line-height: 1.7;
+    font-size: 18px;
   `}
   ${breakpoint.xl`
     width: 700px;
