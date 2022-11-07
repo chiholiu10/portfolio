@@ -12,9 +12,15 @@ interface Breakpoints extends Array<number> {
   xl?: string;
 }
 
+type RGB = `rgb(${number}, ${number}, ${number})`;
+type RGBA = `rgba(${number}, ${number}, ${number}, ${number})`;
+type HEX = `#${string}`;
+
+type Color = RGB | RGBA | HEX;
+
 declare module 'styled-components' {
   export interface DefaultTheme {
-    colors: ObjectOfStrings;
+    colors: ObjectOfStrings | Color;
     fontWeights: {
       regular?: string | number;
       normal?: string | number;

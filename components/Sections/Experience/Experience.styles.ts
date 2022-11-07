@@ -32,40 +32,13 @@ export const ExperienceBlockLeft = styled.div`
   position: relative;
   display: flex;
   padding: 50px 20px 0;
-  background: black;
+
   ${breakpoint.md`
+    background: ${theme.colors.black};
     justify-content: center;
     align-items: center;
     align-items: center;
     font-size: 16px;
-  `}
-  ${breakpoint.md`
-    &:before {
-      content: '';
-      position: absolute;
-      left: -2px;
-      top: -2px;
-      background: linear-gradient(25deg, 	#FFD700, #FFD700, 	#FF8C00,#D2691E, #FFD700, 	#CD853F, 
-        #FFD700, 	#CD853F,	#FF8C00, #ffff00);
-      background-size: 400%;
-      width: calc(100% + 4px);
-      height: calc(100% + 4px);
-      z-index: -1;
-      animation: ${steam} 5s linear infinite;
-    }
-    &:after {
-      content: '';
-      position: absolute;
-      left: -2px;
-      top: -2px;
-      background: linear-gradient(25deg, #DAA520, #ffff00, 	#FF8C00,#ffff00, 	#CD853F, #FFD700, 
-        #FFD700, #FFD700,#D2691E, #CD853F);
-      background-size: 400%;
-      width: calc(100% + 4px);
-      height: calc(100% + 4px);
-      z-index: -1;
-      animation: ${steam} 20s linear infinite;
-    }
   `}
 `;
 
@@ -96,6 +69,11 @@ export const ExperienceFigure = styled.figure`
     height: 80px;
     left: 0;
     background-color: ${theme.colors.black};
+    ${breakpoint.md`
+      background-color: ${theme.colors.darkBlack};
+    `}
+
+
 	}
 	
 	&:before {
@@ -123,7 +101,7 @@ export const ExperienceFigure = styled.figure`
 
 export const ExperienceImage = styled.img`
   width: 100%;
-  height: 100%;
+  height: calc(100% - 1%);
   object-fit: cover;
   width: 100%;
   transform-origin: left bottom;
@@ -144,11 +122,16 @@ export const ExperienceContent = styled.div`
   margin-bottom: 50px;
   padding: 20px;
   line-height: 1.6;
-  ${breakpoint.md`
+  ${breakpoint.md`  
+    padding-top: 50px;
     text-align: left;
     line-height: 1.8;
-    width: 50%;
-    margin-left: 10px; 
+    font-size: 16px;
+    width: calc(50% - 40px);
+    margin-left: 40px; 
     margin-right: auto;
+  `}
+    ${breakpoint.xl` 
+    font-size: 18px;
   `}
 `;

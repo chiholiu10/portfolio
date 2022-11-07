@@ -10,7 +10,7 @@ export const ComponentRow = styled.div`
   margin-left: auto;
   margin-right: auto;
   justify-content: center;
-  gap: 10px;
+  gap: 30px;
   padding: 10px;
   ${breakpoint.md`
     max-width: 750px;
@@ -20,56 +20,54 @@ export const ComponentRow = styled.div`
 `;
 
 export const ToolInnerBlock = styled.div`
-  flex-grow: 1;
+  background-color: ${theme.colors.black};
 `;
 
 export const ToolsHeader = styled.div`
-  height: 150px;
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 40px;
+  background-color: ${theme.colors.lightBlack};
 `;
 
 export const ToolsBlock = styled.div`
   width: 130px;
-  height: 150px;
-  border: 2px solid ${theme.colors.grey};
+  height: 160px;
   text-align: center;
   font-size: 18px;
   font-weight: 600;
-  line-height: 3;
   display: flex;
   flex-direction: column;
-  border-radius: 15px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
   ${breakpoint.md`
     width: 190px;
-    height: 210px; 
+    height: 200px;
   `}
   ${ToolInnerBlock} {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px 0;
-
+    flex-grow: 1
   }
   img {
     width: 60px;
-
     ${breakpoint.md`
-      max-width: 150px;
-      width: 100px;
+      max-width: 100px;
+      width: 80px;
     `}
   }
   h2 {
     line-height: 1;
-    font-size: 16px;
+    font-size: 13px;
     width: 100%;
   }
 
   ${breakpoint.md`
     h2 {
-      font-size: 18px;
+      text-transform: uppercase;
       line-height: 2.8;
+      margin: 5px 0;
     }
     ${ToolInnerBlock} {
       padding: 15px 0 25px;
