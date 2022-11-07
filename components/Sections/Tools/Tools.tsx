@@ -28,12 +28,12 @@ export const Tools = () => {
         {data.section?.array.map((item, index) => (
           <FadeUpIndividually time={index} key={uniqid()}>
             <ToolsBlock key={uniqid()}>
-              <ToolsHeader>
-                <h2>{item.title}</h2>
-              </ToolsHeader>
               <ToolInnerBlock>
                 <img src={item.imageUrl} alt="test" />
               </ToolInnerBlock>
+              <ToolsHeader>
+                <h2>{item.title}</h2>
+              </ToolsHeader>
             </ToolsBlock>
           </FadeUpIndividually>
         ))}

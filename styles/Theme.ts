@@ -4,8 +4,10 @@ const theme: DefaultTheme = {
   // colors
   colors: {
     white: "#FFFFFF",
-    black: "black",
-    lightBlack: "#2c303a",
+    darkBlack: "#000000",
+    black: "#000000eb",
+    lightBlack: "#2c2c2c",
+    ultraLightBlack: "#2c2c2cf2",
     grey: "#999999",
     blue: "#00b6ff;",
     transparent: 'transparent'
