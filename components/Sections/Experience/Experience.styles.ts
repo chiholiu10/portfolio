@@ -112,7 +112,7 @@ export const ExperienceImage = styled.img`
 `;
 
 export const ExperienceContent = styled.div`
-  font-size: 14px;
+  font-size: 16px;
   color: ${theme.colors.grey};
   font-weight: 500;
   width: 100%;
@@ -126,7 +126,6 @@ export const ExperienceContent = styled.div`
     padding-top: 50px;
     text-align: left;
     line-height: 1.8;
-    font-size: 16px;
     width: calc(50% - 40px);
     margin-left: 40px; 
     margin-right: auto;
