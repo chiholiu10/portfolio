@@ -67,7 +67,6 @@ export const Header = styled.h2`
 export const SubHeader = styled.p`
   color: ${theme.colors.grey};
   font-weight: 500;
-  font-size: 18px;
   width: 100%;
   margin-left: auto;
   margin-right: auto;
