@@ -30,7 +30,7 @@ export const IntroBlock = styled.div`
 export const IntroTitle = styled.h3`
   color: ${theme.colors.blue};
   font-weight: 600;
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.8;
   ${breakpoint.sm`
     font-weight: 600;
@@ -43,7 +43,7 @@ export const IntroTitle = styled.h3`
 `;
 
 export const IntroSubTitle = styled.p`
-  font-size: 12px;
+  font-size: 16px;
   text-transform: capitalize;
   font-weight: 600;
   ${breakpoint.md`
