@@ -75,7 +75,7 @@ export const SubHeader = styled.p`
   margin-bottom: 50px;
   padding: 20px;
   font-size: 16px;
-  line-height: 1.2;
+  line-height: 1.6;
   ${breakpoint.sm`
     width: 90%;
   `}
