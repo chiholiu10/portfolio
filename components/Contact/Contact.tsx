@@ -26,7 +26,7 @@ export const Contact = () => {
         {data.section.arrays?.map((item, index) => (
           <FadeUpIndividually time={index} key={uniqid()}>
             <ContactBlock key={uniqid()} >
-              <ContactBlockAnchor href={item.subtitle} target="_blank" rel="noopener noreferrer nofollow">
+              <ContactBlockAnchor href={item.anchor} target="_blank" rel="noopener noreferrer nofollow">
                 < ContactSvg index={index} />
               </ContactBlockAnchor>
             </ContactBlock>
