@@ -1,4 +1,7 @@
 name: Node.js CI
+definitions:
+  caches:
+    nextcache: .next/cache
 
 on:
     push:
@@ -24,6 +27,9 @@ jobs:
 
             - name: Run CI command
               run: npm ci
+              caches:
+              - node
+              - nextcache
 
             - name: Check linting
               run: npm run lint
