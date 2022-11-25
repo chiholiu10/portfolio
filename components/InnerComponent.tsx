@@ -1,4 +1,11 @@
-import { Banner, Introduction, Experience, Tools, Contact, Footer } from "./Sections";
+import {
+  Banner,
+  Introduction,
+  Experience,
+  Tools,
+  Contact,
+  Footer,
+} from "./Sections";
 
 export const InnerComponent = () => (
   <>

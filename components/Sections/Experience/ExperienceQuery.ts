@@ -6,7 +6,7 @@ export const QUERY = gql`
       sys {
         id
       }
-      subtitle,
+      subtitle
       image {
         url
       }

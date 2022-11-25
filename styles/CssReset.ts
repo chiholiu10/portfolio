@@ -1,7 +1,7 @@
 import { createGlobalStyle, css, DefaultTheme } from "styled-components";
 
 export const CSSreset = createGlobalStyle(
-  ({ theme }: { theme: DefaultTheme; }) => css`
+  ({ theme }: { theme: DefaultTheme }) => css`
     html {
       line-height: 1.15;
       -webkit-text-size-adjust: 100%;
@@ -13,7 +13,7 @@ export const CSSreset = createGlobalStyle(
       font-family: ${theme.fonts.body};
       color: ${theme.colors.white};
     }
-    html, 
+    html,
     body {
       width: 100%;
       height: 100%;

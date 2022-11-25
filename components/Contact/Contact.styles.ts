@@ -1,19 +1,19 @@
-import styled from 'styled-components';
-import { breakpoint } from '../../styles/Breakpoint';
-import theme from '../../styles/Theme';
-import { ContactSVG } from '../ContactSvg/Contact.styles';
+import styled from "styled-components";
+import { breakpoint } from "../../styles/Breakpoint";
+import theme from "../../styles/Theme";
+import { ContactSVG } from "../ContactSvg/Contact.styles";
 
 export const ContactBlock = styled.div`
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   a {
     &:hover {
       @media (hover: hover) and (pointer: fine) {
         cursor: pointer;
       }
     }
-  } 
+  }
 `;
 
 export const ContactBlockAnchor = styled.a`
@@ -25,8 +25,8 @@ export const ContactBlockAnchor = styled.a`
   height: 50px;
   border-radius: 50%;
   position: relative;
-  border: 1px solid  ${theme.colors.white};
-  color:  ${theme.colors.white};
+  border: 1px solid ${theme.colors.white};
+  color: ${theme.colors.white};
   transition: 1s;
   align-items: center;
   justify-content: center;
@@ -40,9 +40,9 @@ export const ContactBlockAnchor = styled.a`
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    content: '';
+    content: "";
     box-sizing: content-box;
-    box-shadow: 0 0 0 1px  ${theme.colors.white};
+    box-shadow: 0 0 0 1px ${theme.colors.white};
     top: 0;
     left: 0;
     opacity: 0;

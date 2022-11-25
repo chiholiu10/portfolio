@@ -4,7 +4,7 @@ import { useInView } from "react-intersection-observer";
 
 export const BoxVariants = {
   visible: { opacity: 1, y: 150, transition: { duration: 2 } },
-  hidden: { opacity: 0, y: 50 }
+  hidden: { opacity: 0, y: 50 },
 };
 
 export const FadeScrollBox = ({ children }) => {

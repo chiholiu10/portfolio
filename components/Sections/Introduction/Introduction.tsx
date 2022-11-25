@@ -1,10 +1,21 @@
-import { useQuery } from '@apollo/client';
-import { motion, useTransform, useScroll } from 'framer-motion';
-import { ComponentSection, Header, SubHeader, BackgroundImage } from '../../../styles/General.styles';
-import { FadeUpWhenVisible, FadeUpIndividually } from '../../FramerMotions';
-import { DisplayFlex, IntroBlock, IntroTitle, IntroBlockCenter, IntroSubTitle } from "./Introduction.styles";
-import { QUERY } from './IntroductionQuery';
-import uniqid from 'uniqid';
+import { useQuery } from "@apollo/client";
+import { motion, useTransform, useScroll } from "framer-motion";
+import {
+  ComponentSection,
+  Header,
+  SubHeader,
+  BackgroundImage,
+} from "../../../styles/General.styles";
+import { FadeUpWhenVisible, FadeUpIndividually } from "../../FramerMotions";
+import {
+  DisplayFlex,
+  IntroBlock,
+  IntroTitle,
+  IntroBlockCenter,
+  IntroSubTitle,
+} from "./Introduction.styles";
+import { QUERY } from "./IntroductionQuery";
+import uniqid from "uniqid";
 
 export const Introduction = () => {
   const { data, loading, error } = useQuery(QUERY);
@@ -23,10 +34,15 @@ export const Introduction = () => {
   return (
     <ComponentSection>
       <div key={uniqid()}>
-        <motion.div
-          style={{ y: y2, x: 0 }}
-        >
-          <BackgroundImage src={"https://res.cloudinary.com/dh7tnzzxm/image/upload/v1651443884/circle_effect_8ce52c0de3.png"} left="60%" width="300px" height="auto" />
+        <motion.div style={{ y: y2, x: 0 }}>
+          <BackgroundImage
+            src={
+              "https://res.cloudinary.com/dh7tnzzxm/image/upload/v1651443884/circle_effect_8ce52c0de3.png"
+            }
+            left="60%"
+            width="300px"
+            height="auto"
+          />
         </motion.div>
         <FadeUpWhenVisible>
           <Header>{data.section.title}</Header>

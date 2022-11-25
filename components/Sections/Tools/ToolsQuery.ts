@@ -6,8 +6,8 @@ export const QUERY = gql`
       sys {
         id
       }
-      title,
-      subtitle,
+      title
+      subtitle
       array
     }
   }

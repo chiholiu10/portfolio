@@ -1,8 +1,13 @@
-import { ComponentSection, Header, SubHeader, BackgroundImage } from '../../../styles/General.styles';
+import {
+  ComponentSection,
+  Header,
+  SubHeader,
+  BackgroundImage,
+} from "../../../styles/General.styles";
 import { useQuery } from "@apollo/client";
 import { FadeUpWhenVisible } from "../../FramerMotions";
-import { motion, useTransform, useScroll } from 'framer-motion';
-import { QUERY } from './BannerQuery';
+import { motion, useTransform, useScroll } from "framer-motion";
+import { QUERY } from "./BannerQuery";
 
 export const Banner = () => {
   const { data, loading, error } = useQuery(QUERY);
@@ -21,14 +26,18 @@ export const Banner = () => {
   return (
     <ComponentSection>
       <FadeUpWhenVisible>
-        <motion.div
-          style={{ y: y2, x: 50 }}
-        >
-          <BackgroundImage src={"https://res.cloudinary.com/dh7tnzzxm/image/upload/v1651443884/circle_effect_8ce52c0de3.png"} left="-60%" width="100%" />
+        <motion.div style={{ y: y2, x: 50 }}>
+          <BackgroundImage
+            src={
+              "https://res.cloudinary.com/dh7tnzzxm/image/upload/v1651443884/circle_effect_8ce52c0de3.png"
+            }
+            left="-60%"
+            width="100%"
+          />
         </motion.div>
         <Header>{data.section.title}</Header>
         <SubHeader>{data.section.subtitle}</SubHeader>
       </FadeUpWhenVisible>
-    </ComponentSection >
+    </ComponentSection>
   );
 };

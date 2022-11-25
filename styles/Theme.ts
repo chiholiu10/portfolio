@@ -1,4 +1,4 @@
-import { DefaultTheme } from 'styled-components';
+import { DefaultTheme } from "styled-components";
 
 const theme: DefaultTheme = {
   // colors
@@ -10,8 +10,7 @@ const theme: DefaultTheme = {
     ultraLightBlack: "#2c2c2cf2",
     grey: "#999999",
     blue: "#00b6ff;",
-    transparent: 'transparent'
-
+    transparent: "transparent",
   },
   // typography
   fontWeights: {
@@ -20,13 +19,13 @@ const theme: DefaultTheme = {
     semiBold: 600,
     bold: 700,
     extraBold: 800,
-    black: 900
+    black: 900,
   },
   fonts: {
     heading: '"TWKEverett", sans-serif',
-    body: '"TWKEverett", sans-serif'
+    body: '"TWKEverett", sans-serif',
   },
-  breakpoints: [200, 640, 768, 1024, 1440]
+  breakpoints: [200, 640, 768, 1024, 1440],
 };
 
 // alias for breakpoints
