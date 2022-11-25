@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import React, { Children, FC } from "react";
-import { useInView } from 'react-intersection-observer';
+import { useInView } from "react-intersection-observer";
 
 interface FramerMotionProps {
   children?: React.ReactNode;
@@ -9,7 +9,7 @@ interface FramerMotionProps {
 export const FadeUpWhenVisible = ({ children }: FramerMotionProps) => {
   const { ref, inView } = useInView({
     triggerOnce: true,
-    threshold: .8
+    threshold: 0.8,
   });
 
   return (
@@ -23,4 +23,3 @@ export const FadeUpWhenVisible = ({ children }: FramerMotionProps) => {
     </motion.div>
   );
 };
-

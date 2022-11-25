@@ -62,7 +62,7 @@ export const ExperienceFigure = styled.figure`
   `}
   &:before,
 	&:after {
-		transform: skewY(-3.5deg);
+    transform: skewY(-3.5deg);
     content: "";
     display: block;
     width: 100%;
@@ -72,20 +72,18 @@ export const ExperienceFigure = styled.figure`
     ${breakpoint.md`
       background-color: ${theme.colors.darkBlack};
     `}
+  }
 
-
-	}
-	
-	&:before {
-		top: -80px;
+  &:before {
+    top: -80px;
     transform-origin: right bottom;
     ${breakpoint.md`
       display: none;
     `}
-	}
-	
-	&:after {
-		bottom: -110px;
+  }
+
+  &:after {
+    bottom: -110px;
     transform-origin: left top;
     ${breakpoint.md`
       height: 100%;
@@ -96,7 +94,7 @@ export const ExperienceFigure = styled.figure`
       width: 215px;
       position: absolute;
     `}
-	}
+  }
 `;
 
 export const ExperienceImage = styled.img`
@@ -130,7 +128,7 @@ export const ExperienceContent = styled.div`
     margin-left: 40px; 
     margin-right: auto;
   `}
-    ${breakpoint.xl` 
+  ${breakpoint.xl` 
     font-size: 18px;
   `}
 `;

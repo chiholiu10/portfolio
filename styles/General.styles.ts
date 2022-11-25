@@ -1,11 +1,14 @@
-import styled from 'styled-components';
-import { breakpoint } from './Breakpoint';
-import theme from './Theme';
+import styled from "styled-components";
+import { breakpoint } from "./Breakpoint";
+import theme from "./Theme";
 
-export const InnerBody = styled.div`
-`;
+export const InnerBody = styled.div``;
 
-export const BackgroundImage = styled.img < { left: number; width: number; height: number; }>`
+export const BackgroundImage = styled.img<{
+  left: number;
+  width: number;
+  height: number;
+}>`
   opacity: 0;
   width: 100%;
   background-repeat: no-repeat;
@@ -34,7 +37,7 @@ export const ComponentSection = styled.section`
     min-height: 600px;
     padding: 0 50px 50px;
   `}
-    ${breakpoint.lg`
+  ${breakpoint.lg`
     min-height: 700px;
   `}
   &:nth-child(5) {

@@ -1,6 +1,6 @@
-import 'styled-components';
+import "styled-components";
 
-export type ThemeMode = 'light' | 'dark';
+export type ThemeMode = "light" | "dark";
 
 type ObjectOfStrings = Record<string | number, any>;
 
@@ -18,7 +18,7 @@ type HEX = `#${string}`;
 
 type Color = RGB | RGBA | HEX;
 
-declare module 'styled-components' {
+declare module "styled-components" {
   export interface DefaultTheme {
     colors: ObjectOfStrings | Color;
     fontWeights: {
