@@ -1,7 +1,7 @@
 
 import uniqid from 'uniqid';
 import { ContactBlock, ContactContainer, ContactBlockAnchor } from "./Contact.styles";
-import { ComponentSection, Header } from '../../styles/General.styles';
+import { ComponentSection } from '../../styles/General.styles';
 import { motion } from 'framer-motion';
 import { ContactSvg } from '../ContactSvg/ContactSvg';
 import { FadeUpIndividually } from './../FramerMotions';
