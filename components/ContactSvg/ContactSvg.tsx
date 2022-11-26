@@ -3,7 +3,6 @@ import { useInView } from "react-intersection-observer";
 import { ContactSVG } from "./Contact.styles";
 
 export const ContactSvg = ({ index }) => {
-  const controls = useAnimation();
   const [ref, inView] = useInView();
 
   const svg_properties = {
