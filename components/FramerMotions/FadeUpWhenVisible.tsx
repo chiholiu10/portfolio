@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import React, { Children, FC } from "react";
+import React from "react";
 import { useInView } from "react-intersection-observer";
 
 interface FramerMotionProps {
