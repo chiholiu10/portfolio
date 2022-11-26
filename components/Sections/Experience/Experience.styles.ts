@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { breakpoint } from "../../../styles/Breakpoint";
 import theme from "../../../styles/Theme";
 
@@ -14,18 +14,6 @@ export const ExperienceInnerBlock = styled.div`
   ${breakpoint.lg`
     margin-top: 100px;
   `}
-`;
-
-const steam = keyframes`
-	0% {
-		background-position: 0 0;
-	}
-	50% {
-		background-position: 150% 0;
-	}
-	100% {
-		background-position: 0 0;
-	}
 `;
 
 export const ExperienceBlockLeft = styled.div`
