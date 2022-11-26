@@ -9,6 +9,7 @@ import { Header, SubHeader } from "../../../styles/General.styles";
 import { FadeUpIndividually, FadeUpWhenVisible } from "../../FramerMotions";
 import { useQuery } from "@apollo/client";
 import { QUERY } from "./ToolsQuery";
+import Image from "next/image";
 import uniqid from "uniqid";
 
 export const Tools = () => {
@@ -34,7 +35,12 @@ export const Tools = () => {
           <FadeUpIndividually time={index} key={uniqid()}>
             <ToolsBlock key={uniqid()}>
               <ToolInnerBlock>
-                <img src={item.imageUrl} alt="test" />
+                <Image
+                  src={item.imageUrl}
+                  alt="test"
+                  layout="fill"
+                  objectFit="contain"
+                />
               </ToolInnerBlock>
               <ToolsHeader>
                 <h2>{item.title}</h2>
