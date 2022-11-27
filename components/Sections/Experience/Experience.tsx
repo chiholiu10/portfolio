@@ -33,7 +33,7 @@ export const Experience = () => {
   }
 
   return (
-    <ComponentSection>
+    <ComponentSection id="experience">
       <ExperienceInnerBlock>
         <ExperienceBlockLeft>
           <FadeUpWhenVisible>

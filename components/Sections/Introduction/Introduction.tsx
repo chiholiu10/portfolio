@@ -32,7 +32,7 @@ export const Introduction = () => {
   }
 
   return (
-    <ComponentSection>
+    <ComponentSection id="introduction">
       <div key={uniqid()}>
         <motion.div style={{ y: y2, x: 0 }}>
           <BackgroundImage
