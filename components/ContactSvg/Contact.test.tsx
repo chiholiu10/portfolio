@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { ContactSvg } from "./ContactSvg";
-import "@testing-library/jest-dom/extend-expect";
 import { mockAllIsIntersecting } from "react-intersection-observer/test-utils";
+import "@testing-library/jest-dom";
 
 test("The Contact component test when no probs is available", () => {
   render(<ContactSvg index={undefined} />);

@@ -24,7 +24,7 @@ export const Contact = () => {
   }
 
   return (
-    <ComponentSection>
+    <ComponentSection id="contact">
       <ContactContainer as={motion.div}>
         {data.section.arrays?.map((item, index) => (
           <FadeUpIndividually time={index} key={uniqid()}>

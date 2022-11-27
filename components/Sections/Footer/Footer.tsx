@@ -14,7 +14,7 @@ export const Footer = () => {
     return null;
   }
   return (
-    <FooterComponent>
+    <FooterComponent id="footer">
       <FooterText>{data.section.subtitle}</FooterText>
     </FooterComponent>
   );

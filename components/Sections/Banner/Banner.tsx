@@ -24,7 +24,7 @@ export const Banner = () => {
   }
 
   return (
-    <ComponentSection>
+    <ComponentSection id="banner">
       <FadeUpWhenVisible>
         <motion.div style={{ y: y2, x: 50 }}>
           <BackgroundImage
