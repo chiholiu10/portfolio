@@ -1,34 +1,65 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+### Built with
 
-## Getting Started
+- [React](https://reactjs.org/docs/getting-started.html)
+- [Eslint](https://eslint.org/)
+- [Styled-Component](https://styled-components.com)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Husky](https://typicode.github.io/husky/#/)
+- [React-Testing-Library](https://testing-library.com/docs/react-testing-library)
+- [NextJS](https://nextjs.org)
+- [Contentful](https://www.contentful.com)
+- [GraphQL](https://graphql.org)
+- Github CI CD Pipeline
 
-First, run the development server:
+## Available Scripts
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+In the project directory, you can run:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### How to run the app
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+- npm install
+- npm run start
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+### Check on linting error
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+- npm run lint
 
-## Learn More
+### Deploy website
 
-To learn more about Next.js, take a look at the following resources:
+- npm run build
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Which packages (version) do I need to run this
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+#### Dependencies
 
-## Deploy on Vercel
+- @apollo/client: ^3.7.0,
+- @reduxjs/toolkit: ^1.8.1,
+- apollo-link: ^1.2.14,
+- apollo-link-http: ^1.5.17,
+- contentful: ^9.2.5,
+- framer-motion: ^6.3.3,
+- graphql: ^15.8.0,
+- next: ^12.3.1,
+- polished: ^4.2.2,
+- react: 18.0.0,
+- react-dom: 18.0.0,
+- react-intersection-observer: ^9.4.1,
+- react-scripts: ^5.0.1,
+- styled-components: ^5.3.5,
+- ts-node-dev: ^2.0.0,
+- typescript: ^4.6.3,
+- uniqid: ^5.4.0
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+#### devDependencies
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- @testing-library/jest-dom: ^5.16.5
+- @testing-library/react: ^13.4.0
+- @testing-library/user-event: ^14.4.3
+- @types/node: ^18.7.18
+- babel-eslint: ^10.1.0
+- eslint: 8.14.0
+- eslint-config-next: 12.1.5
+- husky: ^8.0.2
+- jest: ^27.5.1
+
+If you have any question then send me an email to chiholiu10@gmail.com
