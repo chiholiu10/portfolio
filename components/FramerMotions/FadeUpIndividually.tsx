@@ -18,7 +18,7 @@ export const FadeUpIndividually = ({ time, children }) => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
-      transition={{ duration: 1.1, delay: time * 0.15 }}
+      transition={{ duration: 1.3, delay: time * 0.25 }}
       variants={{
         visible: { opacity: 1 },
         hidden: { opacity: 0.05 },

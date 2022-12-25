@@ -6,10 +6,13 @@ export const ExperienceInnerBlock = styled.div`
   flex-direction: row;
   position: relative;
   margin-top: 50px;
+  width: calc(100% + 40px);
+  margin-left: -20px;
   ${breakpoint.md`
     max-width: 980px;
     margin-left: auto;
     margin-right: auto;
+    width: unset;
   `}
   ${breakpoint.lg`
     margin-top: 100px;
@@ -20,11 +23,10 @@ export const ExperienceBlockLeft = styled.div`
   position: relative;
   display: flex;
   padding: 50px 20px 0;
-
+  text-align: left;
   ${breakpoint.md`
     background: ${theme.colors.black};
     justify-content: center;
-    align-items: center;
     align-items: center;
     font-size: 16px;
   `}
@@ -104,17 +106,17 @@ export const ExperienceContent = styled.div`
   width: 100%;
   margin-left: auto;
   margin-right: auto;
-  text-align: center;
   margin-bottom: 50px;
   padding: 20px;
   line-height: 1.6;
+  text-align: center;
   ${breakpoint.md`  
     padding-top: 50px;
-    text-align: left;
     line-height: 1.8;
     width: calc(50% - 40px);
     margin-left: 40px; 
     margin-right: auto;
+    text-align: unset;
   `}
   ${breakpoint.xl` 
     font-size: 18px;

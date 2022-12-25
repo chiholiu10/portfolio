@@ -1,11 +1,10 @@
 import { ComponentSection } from "../../../styles/General.styles";
+import { ToolsBlock, ToolInnerBlock, ToolsHeader } from "./Tools.styles";
 import {
-  ToolsBlock,
-  ToolInnerBlock,
+  Header,
+  SubHeader,
   ComponentRow,
-  ToolsHeader,
-} from "./Tools.styles";
-import { Header, SubHeader } from "../../../styles/General.styles";
+} from "../../../styles/General.styles";
 import { FadeUpIndividually, FadeUpWhenVisible } from "../../FramerMotions";
 import { useQuery } from "@apollo/client";
 import { QUERY } from "./ToolsQuery";

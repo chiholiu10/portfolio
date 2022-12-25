@@ -4,7 +4,7 @@ import { ContactSVG } from "./Contact.styles";
 
 export const ContactSvg = ({ index }) => {
   const [ref, inView] = useInView();
-  console.log(process);
+
   const svg_properties = {
     initial: { pathLength: 0 },
     animate: inView && { pathLength: 1 },

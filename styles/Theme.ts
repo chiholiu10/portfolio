@@ -25,7 +25,7 @@ const theme: DefaultTheme = {
     heading: '"TWKEverett", sans-serif',
     body: '"TWKEverett", sans-serif',
   },
-  breakpoints: [200, 640, 768, 1024, 1440],
+  breakpoints: [360, 640, 768, 1024, 1440],
 };
 
 // alias for breakpoints
