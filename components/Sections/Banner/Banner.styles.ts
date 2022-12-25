@@ -13,10 +13,18 @@ export const BannerBlocks = styled.div(
     line-height: 1.5;
     text-align: center;
     color: ${theme.colors.grey};
+    ${breakpoint.xs`
+      padding: 20px;
+      font-size: 15px;
+    `}
+    ${breakpoint.sm`
+
+    `}
     ${breakpoint.md`
         padding: 30px;
-        line-height: 1.6;
+        line-height: 1.8;
         text-align: unset;
+        border: 1px solid ${theme.colors.white};
         ${TilesProps};
         color: ${theme.colors.white};
       `}
@@ -63,7 +71,7 @@ export const ComponentGridContainer = styled.div`
   padding-bottom: 100px;
   ${breakpoint.md`
     padding: 20px;
-    max-width: 900px;
+    max-width: 1000px;
     margin-top: 100px;
   `}
 `;

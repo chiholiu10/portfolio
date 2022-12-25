@@ -17,6 +17,7 @@
     "@reduxjs/toolkit": "^1.8.1",
     "apollo-link": "^1.2.14",
     "apollo-link-http": "^1.5.17",
+    "axios": "^1.2.1",
     "contentful": "^9.2.5",
     "framer-motion": "^6.3.3",
     "graphql": "^15.8.0",

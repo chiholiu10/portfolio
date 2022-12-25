@@ -44,17 +44,17 @@ export const Banner = () => {
         <HeaderH1>{data.section.title}</HeaderH1>
         <SubHeader>{data.section.subtitle}</SubHeader>
       </FadeUpWhenVisible>
-      <FadeUpWhenVisible>
-        <ComponentGridContainer>
-          {data.section?.array.map((item, index) => (
-            <BannerBlocks bannerProps={"banner-block-" + index} key={uniqid()}>
+      <ComponentGridContainer>
+        {data.section?.array.map((item, index) => (
+          <FadeUpWhenVisible key={uniqid()}>
+            <BannerBlocks bannerProps={"banner-block-" + index}>
               <BannerBlocksHeader>{item.header}</BannerBlocksHeader>
               <br />
               <p>{item.description}</p>
             </BannerBlocks>
-          ))}
-        </ComponentGridContainer>
-      </FadeUpWhenVisible>
+          </FadeUpWhenVisible>
+        ))}
+      </ComponentGridContainer>
     </ComponentSection>
   );
 };

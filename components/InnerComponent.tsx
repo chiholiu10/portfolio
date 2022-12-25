@@ -5,6 +5,7 @@ import {
   Tools,
   Contact,
   Footer,
+  // ContactForm,
 } from "./Sections";
 
 export const InnerComponent = () => (
@@ -14,6 +15,7 @@ export const InnerComponent = () => (
     <Experience />
     <Tools />
     <Contact />
+    {/* <ContactForm /> */}
     <Footer />
   </>
 );
