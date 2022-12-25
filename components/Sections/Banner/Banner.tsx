@@ -1,13 +1,19 @@
 import {
   ComponentSection,
-  Header,
   SubHeader,
   BackgroundImage,
 } from "../../../styles/General.styles";
+import {
+  HeaderH1,
+  BannerBlocks,
+  BannerBlocksHeader,
+  ComponentGridContainer,
+} from "./Banner.styles";
 import { useQuery } from "@apollo/client";
 import { FadeUpWhenVisible } from "../../FramerMotions";
 import { motion, useTransform, useScroll } from "framer-motion";
 import { QUERY } from "./BannerQuery";
+import uniqid from "uniqid";
 
 export const Banner = () => {
   const { data, loading, error } = useQuery(QUERY);
@@ -35,8 +41,19 @@ export const Banner = () => {
             width="100%"
           />
         </motion.div>
-        <Header>{data.section.title}</Header>
+        <HeaderH1>{data.section.title}</HeaderH1>
         <SubHeader>{data.section.subtitle}</SubHeader>
+      </FadeUpWhenVisible>
+      <FadeUpWhenVisible>
+        <ComponentGridContainer>
+          {data.section?.array.map((item, index) => (
+            <BannerBlocks bannerProps={"banner-block-" + index} key={uniqid()}>
+              <BannerBlocksHeader>{item.header}</BannerBlocksHeader>
+              <br />
+              <p>{item.description}</p>
+            </BannerBlocks>
+          ))}
+        </ComponentGridContainer>
       </FadeUpWhenVisible>
     </ComponentSection>
   );

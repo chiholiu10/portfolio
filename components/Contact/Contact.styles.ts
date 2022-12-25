@@ -17,7 +17,6 @@ export const ContactBlock = styled.div`
 `;
 
 export const ContactBlockAnchor = styled.a`
-  border: 1px solid red;
   font-size: 36px;
   display: flex;
   cursor: pointer;

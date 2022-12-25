@@ -5,10 +5,10 @@ import {
   Header,
   SubHeader,
   BackgroundImage,
+  DisplayFlex,
 } from "../../../styles/General.styles";
 import { FadeUpWhenVisible, FadeUpIndividually } from "../../FramerMotions";
 import {
-  DisplayFlex,
   IntroBlock,
   IntroTitle,
   IntroBlockCenter,
@@ -53,8 +53,8 @@ export const Introduction = () => {
             <FadeUpIndividually time={index} key={uniqid()}>
               <IntroBlock>
                 <IntroBlockCenter>
-                  <IntroTitle>{item.title}</IntroTitle>
-                  <IntroSubTitle>{item.description}</IntroSubTitle>
+                  <IntroTitle>{item.description} </IntroTitle>
+                  <IntroSubTitle>{item.title}</IntroSubTitle>
                 </IntroBlockCenter>
               </IntroBlock>
             </FadeUpIndividually>
