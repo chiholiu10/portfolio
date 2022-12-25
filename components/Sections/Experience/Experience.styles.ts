@@ -8,11 +8,13 @@ export const ExperienceInnerBlock = styled.div`
   margin-top: 50px;
   width: calc(100% + 40px);
   margin-left: -20px;
+
   ${breakpoint.md`
     max-width: 980px;
     margin-left: auto;
     margin-right: auto;
     width: unset;
+    border: 1px solid ${theme.colors.white};
   `}
   ${breakpoint.lg`
     margin-top: 100px;
