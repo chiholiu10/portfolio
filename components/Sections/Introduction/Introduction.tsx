@@ -42,6 +42,7 @@ export const Introduction = () => {
             left="60%"
             width="300px"
             height="auto"
+            alt="background-image-effect"
           />
         </motion.div>
         <FadeUpWhenVisible>

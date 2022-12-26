@@ -33,6 +33,7 @@ export const Banner = () => {
             }
             left="-60%"
             width="100%"
+            alt="background-image-effect"
           />
         </motion.div>
         <HeaderH1>{data.section.title}</HeaderH1>
