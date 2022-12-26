@@ -21,7 +21,9 @@ export const ContactForm = () => {
   };
 
   const handleFormSubmit = async (e: React.MouseEvent<HTMLInputElement>) => {
+    console.log("sent");
     e.preventDefault();
+    console.log(contactInfo);
     axios({
       method: "post",
       url: `http://localhost:3001/react-contact-form/api/contact/index.php`,
