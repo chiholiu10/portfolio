@@ -1,14 +1,17 @@
 const HeadBlock = () => (
   <>
+    <meta charSet="UTF-8" />
     <title>Portfolio Chi Ho Liu | Front End Developer</title>
     <link rel="icon" href="/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <meta name="title" content="Chiho Liu Front End Developer"></meta>
     <meta
       name="description"
       content="Front End Developer in the Netherlands experienced Developer with stacks like ReactJS, VueJS, NextJS, Nuxt, Typescript, Styled-Components. Focuses on good UX, reusable and testable codes."
     />
-    <meta charSet="UTF-8" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="5 days" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, maximum-scale=1"
