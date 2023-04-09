@@ -15,6 +15,8 @@ export const ExperienceInnerBlock = styled.div`
     margin-right: auto;
     width: unset;
     border: 1px solid ${theme.colors.white};
+    border-left: none;
+    border-right: none;
   `}
   ${breakpoint.lg`
     margin-top: 100px;
