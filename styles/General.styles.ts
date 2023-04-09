@@ -104,9 +104,6 @@ export const DisplayFlex = styled.div`
   flex-wrap: wrap;
   gap: 30px;
   margin: 20px auto;
-  /* padding: 50px; */
-  /* width: 50%;
-  height: 50%; */
   ${breakpoint.md`
     gap: 30px;
   `}

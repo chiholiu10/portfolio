@@ -8,7 +8,7 @@ export const ExperienceInnerBlock = styled.div`
   margin-top: 50px;
   width: calc(100% + 40px);
   margin-left: -20px;
-
+  z-index: 99;
   ${breakpoint.md`
     max-width: 980px;
     margin-left: auto;
@@ -119,8 +119,5 @@ export const ExperienceContent = styled.div`
     margin-left: 40px; 
     margin-right: auto;
     text-align: unset;
-  `}
-  ${breakpoint.xl` 
-    font-size: 18px;
   `}
 `;
