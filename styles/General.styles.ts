@@ -30,6 +30,7 @@ export const ComponentSection = styled.section`
   width: 100%;
   padding: 0 20px;
   overflow-x: hidden;
+  padding-bottom: 150px;
   &.bannerComponent {
     padding-top: 80px;
     svg {
@@ -38,6 +39,9 @@ export const ComponentSection = styled.section`
       margin-left: auto;
       margin-right: auto;
       margin-bottom: 50px;
+    }
+    img {
+      display: flex;
     }
     ${breakpoint.md`
       padding-top: 180px;
@@ -123,9 +127,9 @@ export const DisplayFlex = styled.div`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 30px;
+  gap: 10px;
   margin: 20px auto;
-  ${breakpoint.md`
+  ${breakpoint.sm`
     gap: 30px;
   `}
 `;
@@ -138,7 +142,7 @@ export const TilesProps = `
 `;
 
 export const TitleBlockProps = `
-  color: gold;
+  color: ${theme.colors.white};
   font-weight: 600;
   line-height: 1.8;
   text-transform: capitalize;

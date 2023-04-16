@@ -56,9 +56,10 @@ export const ToolsBlock = styled.div`
 
   ${breakpoint.md`
     h2 {
-      text-transform: uppercase;
+      text-transform: capitalize;
       line-height: 2.8;
       margin: 5px 0;
+      font-size: 14px;
     }
     ${ToolInnerBlock} {
       padding: 10px 0;

@@ -63,10 +63,11 @@ export const ExperienceFigure = styled.figure`
     content: "";
     display: block;
     width: 100%;
-    height: 80px;
+    height: 50px;
     left: 0;
     background-color: ${theme.colors.lightBlack};
     ${breakpoint.md`
+        height: 80px;
       background-color: ${theme.colors.lightBlack};
     `}
   }
