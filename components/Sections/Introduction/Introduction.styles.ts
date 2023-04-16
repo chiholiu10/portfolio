@@ -8,6 +8,7 @@ export const IntroBlock = styled.div`
   justify-content: center;
   align-items: center;
   display: flex;
+  overflow-x: hidden;
   ${TilesProps}
   ${breakpoint.sm`
     width: 150px;
@@ -23,6 +24,7 @@ export const IntroSubTitle = styled.p`
 
 export const IntroBlockCenter = styled.div`
   text-align: center;
+  z-index: 10;
 `;
 
 export const IntroTitle = styled.h3`

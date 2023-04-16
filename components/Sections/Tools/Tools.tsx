@@ -5,6 +5,7 @@ import {
   SubHeader,
   ComponentRow,
 } from "../../../styles/General.styles";
+import { BackgroundImage } from "../../../styles/General.styles";
 import { FadeUpIndividually, FadeUpWhenVisible } from "../../FramerMotions";
 import { useQuery } from "@apollo/client";
 import { QUERY } from "./ToolsQuery";
@@ -27,6 +28,16 @@ export const Tools = () => {
       <FadeUpWhenVisible>
         <Header>{data.section?.title}</Header>
         <SubHeader>{data.section?.subtitle}</SubHeader>
+        <BackgroundImage
+          className="effect"
+          src={
+            "https://res.cloudinary.com/dh7tnzzxm/image/upload/v1681639041/Gradient_4_ce8kjq.png"
+          }
+          left="60%"
+          width="300px"
+          height="auto"
+          alt="background-image-effect"
+        />
       </FadeUpWhenVisible>
       <ComponentRow>
         {data.section?.array.map((item, index) => (

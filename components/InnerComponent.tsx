@@ -1,4 +1,5 @@
 import {
+  Navbar,
   Banner,
   Introduction,
   Experience,
@@ -10,6 +11,7 @@ import {
 
 export const InnerComponent = () => (
   <>
+    <Navbar />
     <Banner />
     <Introduction />
     <Experience />
