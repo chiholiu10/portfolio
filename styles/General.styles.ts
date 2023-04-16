@@ -30,8 +30,27 @@ export const ComponentSection = styled.section`
   width: 100%;
   padding: 0 20px;
   overflow-x: hidden;
-  &:first-child {
-    margin-top: 50px;
+  &.bannerComponent {
+    padding-top: 80px;
+    svg {
+      width: 150px;
+      display: flex;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 50px;
+    }
+    ${breakpoint.md`
+      padding-top: 180px;
+    `}
+    }
+  }
+  &.experienceComponent {
+    img {
+      left: -52px;
+      z-index: 999;
+      width: 500px;
+      top: -180px;
+    }
   }
   ${breakpoint.md`
     overflow-x: initial;
@@ -78,15 +97,17 @@ export const Header = styled.h2`
 `;
 
 export const SubHeader = styled.p`
-  color: ${theme.colors.grey};
+  color: ${theme.colors.white};
   font-weight: 500;
   width: 100%;
   margin: 0 auto;
   padding: 20px;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.6;
   text-align: center;
+
   ${breakpoint.md`
+    color: ${theme.colors.grey};
     width: 700px;
     line-height: 1.7;
     font-size: 18px;
@@ -117,7 +138,7 @@ export const TilesProps = `
 `;
 
 export const TitleBlockProps = `
-  color: ${theme.colors.blue};
+  color: gold;
   font-weight: 600;
   line-height: 1.8;
   text-transform: capitalize;

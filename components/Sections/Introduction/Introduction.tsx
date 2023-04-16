@@ -36,8 +36,9 @@ export const Introduction = () => {
       <div key={uniqid()}>
         <motion.div style={{ y: y2, x: 0 }}>
           <BackgroundImage
+            className="effect"
             src={
-              "https://res.cloudinary.com/dh7tnzzxm/image/upload/v1651443884/circle_effect_8ce52c0de3.png"
+              "https://res.cloudinary.com/dh7tnzzxm/image/upload/v1681639041/Gradient_4_ce8kjq.png"
             }
             left="60%"
             width="300px"
@@ -50,7 +51,7 @@ export const Introduction = () => {
           <SubHeader>{data.section.subtitle}</SubHeader>
         </FadeUpWhenVisible>
         <DisplayFlex>
-          {data.section.array.map((item, index) => (
+          {data.section.arrays.map((item, index) => (
             <FadeUpIndividually time={index} key={uniqid()}>
               <IntroBlock>
                 <IntroBlockCenter>

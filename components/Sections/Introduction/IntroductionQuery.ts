@@ -9,7 +9,7 @@ export const QUERY = gql`
       # add the fields you want to query
       title
       subtitle
-      array
+      arrays
     }
   }
 `;

@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { motion, useTransform, useScroll } from "framer-motion";
-import { PortfolioImage } from "./Portfolio.styles";
+import { PortfolioImage, PortfolioBlock } from "./Portfolio.styles";
 import {
   ComponentSection,
   Header,
@@ -27,7 +27,7 @@ export const Portfolio = () => {
   }
 
   return (
-    <ComponentSection>
+    <ComponentSection className="portfolioComponent">
       <div key={uniqid()}>
         <motion.div style={{ y: y2, x: 0 }}>
           <BackgroundImage
@@ -46,9 +46,11 @@ export const Portfolio = () => {
         </FadeUpWhenVisible>
         <DisplayFlex>
           {data.section.array.map((item, index) => (
-            <FadeUpIndividually time={index} key={uniqid()}>
-              <PortfolioImage src={item.url} alt="portfolio-website/" />
-            </FadeUpIndividually>
+            <PortfolioBlock key={index}>
+              <FadeUpIndividually time={index} key={uniqid()}>
+                <PortfolioImage src={item.url} alt="portfolio-website/" />
+              </FadeUpIndividually>
+            </PortfolioBlock>
           ))}
         </DisplayFlex>
       </div>

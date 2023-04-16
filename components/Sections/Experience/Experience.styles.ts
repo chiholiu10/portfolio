@@ -9,12 +9,13 @@ export const ExperienceInnerBlock = styled.div`
   width: calc(100% + 40px);
   margin-left: -20px;
   z-index: 99;
+  overflow: hidden;
   ${breakpoint.md`
     max-width: 980px;
     margin-left: auto;
     margin-right: auto;
     width: unset;
-    border: 1px solid ${theme.colors.white};
+    border-bottom: 1px solid ${theme.colors.white};
     border-left: none;
     border-right: none;
   `}
@@ -29,10 +30,12 @@ export const ExperienceBlockLeft = styled.div`
   padding: 50px 20px 0;
   text-align: left;
   ${breakpoint.md`
-    background: ${theme.colors.black};
+    // background: ${theme.colors.black};
+    background: #2c2c2c;
     justify-content: center;
     align-items: center;
     font-size: 16px;
+    color: white;
   `}
 `;
 
@@ -62,9 +65,9 @@ export const ExperienceFigure = styled.figure`
     width: 100%;
     height: 80px;
     left: 0;
-    background-color: ${theme.colors.black};
+    background-color: ${theme.colors.lightBlack};
     ${breakpoint.md`
-      background-color: ${theme.colors.darkBlack};
+      background-color: ${theme.colors.lightBlack};
     `}
   }
 
@@ -105,7 +108,7 @@ export const ExperienceImage = styled.img`
 
 export const ExperienceContent = styled.div`
   font-size: 16px;
-  color: ${theme.colors.grey};
+  color: ${theme.colors.white};
   font-weight: 500;
   width: 100%;
   margin-left: auto;
