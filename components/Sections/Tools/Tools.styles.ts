@@ -60,11 +60,11 @@ export const ToolsBlock = styled.div`
     h2 {
       text-transform: capitalize;
       line-height: 2.8;
-      margin: 5px 0;
-      font-size: 14px;
+      margin: 5px 0 15px;
+      font-size: 16px;
     }
     ${ToolInnerBlock} {
-      padding: 10px 0;
+      margin: 30px 0
     }
   `}
 `;
