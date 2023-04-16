@@ -31,7 +31,7 @@ export const Tools = () => {
         <BackgroundImage
           className="effect"
           src={
-            "https://res.cloudinary.com/dh7tnzzxm/image/upload/v1681639041/Gradient_4_ce8kjq.png"
+            "https://res.cloudinary.com/dh7tnzzxm/image/upload/v1681643719/Gradient_4_w267pd.png"
           }
           left="60%"
           width="300px"
