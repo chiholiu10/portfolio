@@ -91,6 +91,11 @@ export const HeaderGeneral = `
   text-align: center;
   padding: 20px 20px 0;
   color: ${theme.colors.white};
+ 
+`;
+
+export const Header = styled.h2`
+  ${HeaderGeneral};
   ${breakpoint.sm`
     font-size: 40px;
     font-weight: 600;
@@ -104,10 +109,6 @@ export const HeaderGeneral = `
     font-size: 54px;
     padding: 80px 0 0;
   `}
-`;
-
-export const Header = styled.h2`
-  ${HeaderGeneral}
 `;
 
 export const SubHeader = styled.p`

@@ -9,9 +9,9 @@ export interface NavType {
 export const NavbarComponent = styled.nav<NavType>`
   position: fixed;
   width: 100%;
-  color: black;
-  background-color: black;
+  background-color: ${theme.colors.black};
   color: ${theme.colors.white};
+  filter: blur(0.4);
   z-index: 999;
   height: 50px;
   display: flex;
@@ -21,6 +21,7 @@ export const NavbarComponent = styled.nav<NavType>`
   justify-content: center;
   border-bottom: 1px solid ${theme.colors.white};
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+
   ${breakpoint.md`
     font-size: 22px;
     height: 70px;

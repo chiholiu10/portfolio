@@ -70,7 +70,7 @@ export const ExperienceFigure = styled.figure`
     left: 0;
     background-color: ${theme.colors.lightBlack};
     ${breakpoint.md`
-        height: 80px;
+      height: 80px;
       background-color: ${theme.colors.lightBlack};
     `}
   }

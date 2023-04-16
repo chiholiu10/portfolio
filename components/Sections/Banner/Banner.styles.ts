@@ -1,8 +1,22 @@
 import styled from "styled-components";
+import { breakpoint } from "styles/Breakpoint";
 import { HeaderGeneral } from "styles/General.styles";
 
 export const HeaderH1 = styled.h1`
-  ${HeaderGeneral}
+  ${HeaderGeneral};
+  ${breakpoint.sm`
+    font-size: 40px;
+    font-weight: 600;
+    margin-top: 100px;
+    padding: 20px;
+  `}
+  ${breakpoint.md`
+    font-size: 46px;
+  `}
+  ${breakpoint.xl`
+    font-size: 54px;
+    padding: 80px 0 0;
+  `}
 `;
 
 export const ProfileCartoon = styled.div`

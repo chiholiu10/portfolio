@@ -7,7 +7,6 @@ import {
   ExperienceFigure,
   ExperienceContent,
 } from "./Experience.styles";
-import { BackgroundImage } from "../../../styles/General.styles";
 import { useEffect, useState } from "react";
 import { FadeUpWhenVisible } from "../../FramerMotions";
 import { useQuery } from "@apollo/client";
