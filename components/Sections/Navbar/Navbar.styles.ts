@@ -58,22 +58,18 @@ export const NavbarInnerComponent = styled.div`
 `;
 
 export const Logo = styled.div`
-  .logo {
+  img {
     width: 40px;
     height: 40px;
     position: absolute;
-    background-color: white;
+    background-color: black;
     z-index: 99;
     right: 0;
-    border: 1px solid white;
     border-radius: 50px;
     ${breakpoint.md`
       margin-top: 20px;
       width: 55px;
       height: 55px;
     `}
-  }
-  path {
-    fill: white;
   }
 `;

@@ -15,9 +15,10 @@ export const ExperienceInnerBlock = styled.div`
     margin-left: auto;
     margin-right: auto;
     width: unset;
-    border-bottom: 1px solid ${theme.colors.white};
+
     border-left: none;
     border-right: none;
+    border-radius: 15px;
   `}
   ${breakpoint.lg`
     margin-top: 100px;
@@ -41,9 +42,11 @@ export const ExperienceBlockLeft = styled.div`
 
 export const ExperienceBlockRight = styled.div`
   position: relative;
+  margin: 0;
   ${breakpoint.md`
     position: absolute;
     width: 50%;
+    margin: 20px 0;
     right: 0;
     top: 0;
     bottom: 0;

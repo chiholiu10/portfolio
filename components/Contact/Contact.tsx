@@ -4,7 +4,7 @@ import {
   ContactContainer,
   ContactBlockAnchor,
 } from "./Contact.styles";
-import { ComponentSection } from "../../styles/General.styles";
+import { BackgroundImage, ComponentSection } from "../../styles/General.styles";
 import { motion } from "framer-motion";
 import { ContactSvg } from "../ContactSvg/ContactSvg";
 import { FadeUpIndividually } from "./../FramerMotions";
@@ -24,7 +24,15 @@ export const Contact = () => {
   }
 
   return (
-    <ComponentSection id="contact">
+    <ComponentSection id="contact" className="contactComponent">
+      <BackgroundImage
+        src={
+          "https://res.cloudinary.com/dh7tnzzxm/image/upload/v1681666434/Vector_1_vgunka.png"
+        }
+        left="-60%"
+        width="100%"
+        alt="background-image-effect"
+      />
       <ContactContainer as={motion.div}>
         {data.section.arrays?.map((item, index) => (
           <FadeUpIndividually time={index} key={uniqid()}>
