@@ -31,6 +31,7 @@ export const ComponentSection = styled.section`
   padding: 0 20px;
   overflow-x: hidden;
   padding-bottom: 150px;
+  position: relative;
   &.bannerComponent {
     padding-top: 80px;
     svg {
@@ -42,6 +43,7 @@ export const ComponentSection = styled.section`
     }
     img {
       display: flex;
+      
     }
     ${breakpoint.md`
       padding-top: 180px;
@@ -55,6 +57,14 @@ export const ComponentSection = styled.section`
       width: 500px;
       top: -180px;
     }
+  }
+  &.contactComponent {
+    img {
+      right: 0;
+      left: auto;
+      bottom: 0;
+    }
+    overflow: hidden;
   }
   ${breakpoint.md`
     overflow-x: initial;
@@ -138,7 +148,8 @@ export const TilesProps = `
   box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
   rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
   rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-  background-color: ${theme.colors.lightBlack};
+  background-color: #212121;
+  border-radius: 15px;
 `;
 
 export const TitleBlockProps = `
