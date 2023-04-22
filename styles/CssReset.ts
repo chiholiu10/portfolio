@@ -9,7 +9,7 @@ export const CSSreset = createGlobalStyle(
     body {
       margin: 0;
       overflow-x: hidden;
-      background-color: ${theme.colors.black};
+      background-color: black;
       font-family: ${theme.fonts.body};
       color: ${theme.colors.white};
     }
