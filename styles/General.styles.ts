@@ -54,7 +54,7 @@ export const ComponentSection = styled.section`
     img {
       left: -52px;
       z-index: 999;
-      width: 500px;
+      width: 100%;
       top: -180px;
     }
   }
