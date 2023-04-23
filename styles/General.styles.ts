@@ -138,13 +138,10 @@ export const DisplayFlex = styled.div`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 60px;
-  /* margin: 20px auto; */
+  gap: 10px;
+  margin: 20px auto;
   ${breakpoint.sm`
-    gap: 40px;
-  `}
-  ${breakpoint.md`
-    gap: 50px;
+    gap: 30px;
   `}
 `;
 
