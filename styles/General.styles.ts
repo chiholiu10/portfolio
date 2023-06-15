@@ -183,4 +183,8 @@ export const ComponentRow = styled.div`
     gap: 60px;
     align-content: space-around;
   `}
+  ${breakpoint.lg`
+    max-width: 1200px;
+    gap: 40px;
+  `}
 `;
