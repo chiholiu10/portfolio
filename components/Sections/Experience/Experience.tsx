@@ -24,7 +24,7 @@ export const Experience = () => {
   }, [mobileQuery]);
 
   if (loading) {
-    return <></>;
+    return <ComponentSection></ComponentSection>;
   }
 
   if (error) {

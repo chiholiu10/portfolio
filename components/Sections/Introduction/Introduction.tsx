@@ -23,7 +23,7 @@ export const Introduction = () => {
   const y2 = useTransform(scrollY, [0, 7000], [1, -1000]);
 
   if (loading) {
-    return <></>;
+    return <ComponentSection></ComponentSection>;
   }
 
   if (error) {

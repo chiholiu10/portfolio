@@ -14,7 +14,7 @@ export const Banner = () => {
   const y2 = useTransform(scrollY, [0, 7000], [1, -2000]);
 
   if (loading) {
-    return <></>;
+    return <ComponentSection></ComponentSection>;
   }
 
   if (error) {

@@ -6,7 +6,7 @@ export const Footer = () => {
   const { data, loading, error } = useQuery(QUERY);
 
   if (loading) {
-    return <></>;
+    return <FooterComponent></FooterComponent>;
   }
 
   if (error) {
