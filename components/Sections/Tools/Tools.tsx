@@ -15,7 +15,7 @@ export const Tools = () => {
   const { data, loading, error } = useQuery(QUERY);
 
   if (loading) {
-    return <></>;
+    return <ComponentSection></ComponentSection>;
   }
 
   if (error) {
@@ -40,11 +40,11 @@ export const Tools = () => {
         />
       </FadeUpWhenVisible>
       <ComponentRow>
-        {data.section?.array.map((item, index) => (
+        {data.section?.arrayBlockCollection?.items.map((item, index) => (
           <FadeUpIndividually time={index} key={uniqid()}>
-            <ToolsBlock key={uniqid()}>
+            <ToolsBlock>
               <ToolInnerBlock>
-                <img src={item.imageUrl} alt="test" />
+                <img src={item.url} alt={"image of " + item.title} />
               </ToolInnerBlock>
               <ToolsHeader>
                 <h2>{item.title}</h2>

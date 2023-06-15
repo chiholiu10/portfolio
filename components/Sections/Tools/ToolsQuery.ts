@@ -8,7 +8,12 @@ export const QUERY = gql`
       }
       title
       subtitle
-      array
+      arrayBlockCollection {
+        items {
+          title
+          url
+        }
+      }
     }
   }
 `;
