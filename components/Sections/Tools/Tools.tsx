@@ -44,7 +44,11 @@ export const Tools = () => {
           <FadeUpIndividually time={index} key={uniqid()}>
             <ToolsBlock>
               <ToolInnerBlock>
-                <img src={item.url} alt={"image of " + item.title} />
+                <img
+                  src={item.url}
+                  alt={"image of " + item.title}
+                  loading="lazy"
+                />
               </ToolInnerBlock>
               <ToolsHeader>
                 <h2>{item.title}</h2>
