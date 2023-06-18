@@ -28,7 +28,6 @@ export const Experience = () => {
   }
 
   if (error) {
-    console.error(error);
     return null;
   }
 
