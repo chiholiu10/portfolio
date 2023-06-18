@@ -45,6 +45,6 @@ export const Navbar = () => {
       </NavbarComponent>
     );
   } else {
-    return <></>;
+    return <NavbarComponent></NavbarComponent>;
   }
 };
