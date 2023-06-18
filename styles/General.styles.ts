@@ -35,7 +35,8 @@ export const ComponentSection = styled.section`
   &.bannerComponent {
     padding-top: 80px;
     svg {
-      width: 150px;
+      width: 165px;
+      height: 224px;
       display: flex;
       margin-left: auto;
       margin-right: auto;
