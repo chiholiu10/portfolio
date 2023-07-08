@@ -9,6 +9,7 @@ import { BackgroundImage } from "../../../styles/General.styles";
 import { FadeUpIndividually, FadeUpWhenVisible } from "../../FramerMotions";
 import { useQuery } from "@apollo/client";
 import { QUERY } from "./ToolsQuery";
+import Image from "next/image";
 import uniqid from "uniqid";
 
 export const Tools = () => {

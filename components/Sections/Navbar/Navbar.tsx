@@ -38,7 +38,7 @@ export const Navbar = () => {
           <Logo>
             <img
               src="https://res.cloudinary.com/dh7tnzzxm/image/upload/v1681677951/Frame_1_1_mh4oma.png"
-              alt=""
+              alt="chiho-website-icon"
             />
           </Logo>
         </NavbarInnerComponent>

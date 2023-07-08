@@ -42,14 +42,7 @@ export const Banner = () => {
           height="auto"
           alt="background-image-effect"
         />
-        <svg
-          width="165"
-          height="224"
-          viewBox="0 0 165 224"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          xmlnsXlink="http://www.w3.org/1999/xlink"
-        >
+        <svg width="165" height="224" viewBox="0 0 165 224" fill="none">
           <rect y="0.680176" width="165" height="223" fill="url(#pattern0)" />
           <path
             d="M75.7927 117.5C75.7927 126.828 67.1271 134.5 56.2927 134.5C45.4584 134.5 36.7927 126.828 36.7927 117.5C36.7927 108.172 45.4584 100.5 56.2927 100.5C67.1271 100.5 75.7927 108.172 75.7927 117.5ZM129 117.5C129 126.828 120.334 134.5 109.5 134.5C98.6656 134.5 90 126.828 90 117.5C90 108.172 98.6656 100.5 109.5 100.5C120.334 100.5 129 108.172 129 117.5Z"
