@@ -20,7 +20,7 @@ type Color = RGB | RGBA | HEX;
 
 declare module "styled-components" {
   export interface DefaultTheme {
-    colors: ObjectOfStrings | Color;
+    colors?: ObjectOfStrings | Color | any;
     fontWeights: {
       regular?: string | number;
       normal?: string | number;

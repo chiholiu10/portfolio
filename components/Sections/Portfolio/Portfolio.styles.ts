@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { breakpoint } from "styles/Breakpoint";
+import { breakpoint } from "../../../styles/Breakpoint";
 
 export const PortfolioImage = styled.img`
   max-width: 300px;

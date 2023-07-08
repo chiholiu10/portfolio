@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { TilesProps, TitleBlockProps } from "styles/General.styles";
+import { TilesProps, TitleBlockProps } from "../../../styles/General.styles";
 import { breakpoint } from "../../../styles/Breakpoint";
 
 export const IntroBlock = styled.div`
