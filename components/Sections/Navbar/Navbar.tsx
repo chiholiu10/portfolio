@@ -7,7 +7,7 @@ import {
 } from "./Navbar.styles";
 
 export const Navbar = () => {
-  const [naveffect, setNavEffect] = useState(false);
+  const [navEffect, setNavEffect] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   const handleLoading = () => {
@@ -30,7 +30,7 @@ export const Navbar = () => {
 
   if (isLoading) {
     return (
-      <NavbarComponent naveffect={naveffect}>
+      <NavbarComponent navEffect={navEffect}>
         <NavbarInnerComponent>
           <NavbarInnerBlock>
             <span>Chiho Liu</span>
@@ -45,6 +45,6 @@ export const Navbar = () => {
       </NavbarComponent>
     );
   } else {
-    return <NavbarComponent naveffect={naveffect}></NavbarComponent>;
+    return <NavbarComponent navEffect={navEffect}></NavbarComponent>;
   }
 };

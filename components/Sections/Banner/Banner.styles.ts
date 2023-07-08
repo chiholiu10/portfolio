@@ -43,5 +43,7 @@ export const ProfileCartoon = styled.div`
     z-index: 100;
     margin-left: auto;
     margin-right: auto;
+    width: 165px;
+    height: 224px;
   }
 `;
