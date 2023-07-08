@@ -1,7 +1,7 @@
 import { createGlobalStyle, css, DefaultTheme } from "styled-components";
+import theme from "./Theme";
 
-export const CSSreset = createGlobalStyle(
-  ({ theme }: { theme: DefaultTheme }) => css`
+export const CSSreset = createGlobalStyle`
     html {
       line-height: 1.15;
       -webkit-text-size-adjust: 100%;
@@ -283,5 +283,4 @@ export const CSSreset = createGlobalStyle(
     input[type="color"] {
       font-size: 16px;
     }
-  `
-);
+  `;

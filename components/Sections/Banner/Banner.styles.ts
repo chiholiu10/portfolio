@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { breakpoint } from "styles/Breakpoint";
-import { HeaderGeneral } from "styles/General.styles";
+import { breakpoint } from "../../../styles/Breakpoint";
+import { HeaderGeneral } from "../../../styles/General.styles";
 
 export const HeaderH1 = styled.h1`
   ${HeaderGeneral};

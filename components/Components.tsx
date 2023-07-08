@@ -6,7 +6,7 @@ import theme from "../styles/Theme";
 export default function Components() {
   return (
     <ThemeProvider theme={theme}>
-      <CSSreset />
+      <CSSreset theme={theme} />
       <InnerComponent />
     </ThemeProvider>
   );

@@ -1,13 +1,12 @@
-import styled from "styled-components";
 import { breakpoint } from "./Breakpoint";
+import styled from "styled-components";
 import theme from "./Theme";
 
 export const InnerBody = styled.div``;
 
 export const BackgroundImage = styled.img<{
-  left: number;
-  width: number;
-  height: number;
+  left: string;
+  width: string;
 }>`
   opacity: 0;
   width: 100%;
@@ -44,12 +43,10 @@ export const ComponentSection = styled.section`
     }
     img {
       display: flex;
-      
     }
     ${breakpoint.md`
       padding-top: 180px;
     `}
-    }
   }
   &.experienceComponent {
     img {
