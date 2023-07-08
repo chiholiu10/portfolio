@@ -10,8 +10,6 @@ export const FadeUpWhenVisible = ({ children }: FramerMotionProps) => {
   const { ref, inView } = useInView({
     threshold: 0.8,
   });
-  const { scrollYProgress } = useScroll();
-  console.log(scrollYProgress);
 
   return (
     <motion.div
