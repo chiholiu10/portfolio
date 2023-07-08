@@ -49,7 +49,7 @@ export const ContactForm = () => {
     //   console.log(error);
     // }
   };
-  console.log(contactInfo);
+
   return (
     <ComponentSection>
       <form action="#">
