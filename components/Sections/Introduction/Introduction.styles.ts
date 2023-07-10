@@ -24,7 +24,14 @@ export const IntroSubTitle = styled.p`
 `;
 
 export const IntroTitle = styled.h3`
-  ${TitleBlockProps}
+  ${TitleBlockProps};
+  font-size: 12px;
+  ${breakpoint.xs`
+    font-size: 16px;
+  `}
+  ${breakpoint.md`
+    font-size: 18px;
+  `}
 `;
 
 export const IntroBlockCenter = styled.div`
