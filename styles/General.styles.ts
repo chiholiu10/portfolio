@@ -158,11 +158,9 @@ export const TitleBlockProps = `
   text-transform: capitalize;
   ${breakpoint.sm`
     font-weight: 600;
-    font-size: 24px;
   `}
   ${breakpoint.md`
     font-weight: 600;
-    font-size: 28px;
   `}
 `;
 
