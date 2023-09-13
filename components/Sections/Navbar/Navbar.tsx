@@ -7,7 +7,7 @@ import {
 } from "./Navbar.styles";
 
 export const Navbar = () => {
-  const [navEffect, setNavEffect] = useState(false);
+  const [navEffect, setNavEffect] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
 
   const handleLoading = () => {
@@ -21,7 +21,8 @@ export const Navbar = () => {
     };
     window.addEventListener("load", handleLoading);
     document.addEventListener("scroll", handleScroll, false);
-
+    handleScroll();
+    
     return () => {
       document.removeEventListener("scroll", handleScroll, false);
       window.removeEventListener("load", handleLoading);
