@@ -7,7 +7,7 @@ interface FramerMotionProps {
 }
 
 export const FadeRightToLeft = ({ children }: FramerMotionProps) => {
-  const { ref, inView } = useInView({
+  const { ref } = useInView({
     threshold: 0.8,
   });
 
