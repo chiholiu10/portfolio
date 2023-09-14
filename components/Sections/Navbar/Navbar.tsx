@@ -5,6 +5,7 @@ import {
   NavbarInnerComponent,
   Logo,
 } from "./Navbar.styles";
+import { FadeRightToLeft } from "../../FramerMotions/FadeRightToLeft";
 
 export const Navbar = () => {
   const [navEffect, setNavEffect] = useState(true);
@@ -34,7 +35,9 @@ export const Navbar = () => {
       <NavbarComponent navEffect={navEffect}>
         <NavbarInnerComponent>
           <NavbarInnerBlock>
+            <FadeRightToLeft>
             <span>Chiho Liu</span>
+            </FadeRightToLeft>
           </NavbarInnerBlock>
           <Logo>
             <img

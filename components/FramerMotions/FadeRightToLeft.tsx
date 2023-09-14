@@ -6,19 +6,17 @@ interface FramerMotionProps {
   children?: React.ReactNode;
 }
 
-export const FadeUpWhenVisible = ({ children }: FramerMotionProps) => {
+export const FadeRightToLeft = ({ children }: FramerMotionProps) => {
   const { ref, inView } = useInView({
     threshold: 0.8,
   });
 
   return (
     <motion.div
-      ref={ref}
-      whileInView="visible"
-      viewport={{ once: true }}
-      initial={{ opacity: 0, filter: "blur(2px)", y: "10px" }}
-      animate={inView && { opacity: 1, filter: "blur(0)", y: "-20px" }}
-      transition={{ duration: 0.8 }}
+        ref={ref}
+        viewport={{ once: true }}
+        animate={{ opacity: [0, 0.5, 0.9, 1], x: ["200px", "70px",  "30px", "0px"], color: ["#000000", "#000000", "#808080", "#FFFFFF"] }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
     >
       {children}
     </motion.div>
