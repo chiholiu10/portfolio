@@ -1,5 +1,5 @@
-import styled from "styled-components";
 import { breakpoint } from "../../../styles/Breakpoint";
+import styled from "styled-components";
 import theme from "../../../styles/Theme";
 
 export const ExperienceInnerBlock = styled.div`
@@ -111,7 +111,7 @@ export const ExperienceImage = styled.img`
 `;
 
 export const ExperienceContent = styled.div`
-  font-size: 16px;
+  font-size: 14px;
   color: ${theme.colors.white};
   font-weight: 500;
   width: 100%;
@@ -122,11 +122,17 @@ export const ExperienceContent = styled.div`
   line-height: 1.6;
   text-align: center;
   ${breakpoint.md`  
-    padding-top: 50px;
     line-height: 1.8;
-    width: calc(50% - 40px);
-    margin-left: 40px; 
-    margin-right: auto;
     text-align: unset;
+    width: calc(50% - 20px);
+    margin-left: 40px; 
+    padding: 10px;
+    margin-right: auto;
   `}
+  ${breakpoint.lg`
+    font-size: 16px;
+    padding: 40px 20px 10px;
+    padding-top: 40px;
+    width: calc(50% - 40px);
+  `}  
 `;

@@ -9,9 +9,12 @@ import {
   Footer,
 } from "./Sections";
 
-export const InnerComponent = () => (
-  <>
-    <Navbar />
+export const InnerComponent = () => {
+  const generalClassName = "triggerAnimation";
+
+  return (
+    <>
+    <Navbar/>
     <Banner />
     <Introduction />
     <Experience />
@@ -20,4 +23,5 @@ export const InnerComponent = () => (
     <Contact />
     <Footer />
   </>
-);
+  )
+};

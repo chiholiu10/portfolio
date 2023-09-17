@@ -1,5 +1,5 @@
 import { breakpoint } from "./Breakpoint";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import theme from "./Theme";
 
 export const InnerBody = styled.div``;
@@ -32,7 +32,7 @@ export const ComponentSection = styled.section`
   padding-bottom: 150px;
   position: relative;
   &.bannerComponent {
-    padding-top: 80px;
+    // padding-top: 80px;
     svg {
       width: 165px;
       height: 224px;
@@ -184,3 +184,83 @@ export const ComponentRow = styled.div`
     gap: 40px;
   `}
 `;
+
+const blink = keyframes`
+  100% {
+    box-shadow: 0 0 3px #fff, 0 0 10px #fff, 0 0 20px #fff, 0 0 40px #0ba9ca,
+      0 0 70px #0ba9ca, 0 0 80px #0ba9ca;
+  }
+`;
+
+const rotate = keyframes`
+  1% {
+    width: 0px;
+    height: 0px;
+    transform: translateY(0);
+    border-radius: 25px;
+    color: #fff;
+    box-shadow: 0 0 2px #fff, 0 0 10px #fff, 0 0 20px #0ba9ca, 0 0 30px #0ba9ca,
+      0 0 40px #0ba9ca, 0 0 50px #0ba9ca;
+    animation: blink 0.7s infinite alternate;
+  }
+ 30% {
+    transform: translateY(-10px);
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    border: 1px solid red;
+  }
+  15% {
+    transform: translateY(-10px);
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    border: 1px solid red;
+  }
+  100%{
+      transform: translateY(-10px);
+      width: 300px;
+      height: 50px;
+      border-radius: 50px;
+      // border: 1px solid red;
+  }
+`;
+
+export const SectionPopUpText = styled.div`
+  animation: ${rotate} 2s linear forwards;
+  bottom: 50px;
+  background-color: grey;
+  z-index: 99;
+  transition: 1s;
+`;
+
+export const SectionPopUp = styled.div<{isInView: boolean; bottomElement: boolean }>`
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  height: 100%;
+  left: 0;
+  right: 0;
+  top: 0;
+  transform: transition;
+  overflow: hidden;
+  padding: 5px 10px;
+  ${SectionPopUpText} {
+    bottom: 50px;
+    background: rgb(66 66 69/70%);
+    ${props => {
+      if (props.bottomElement) {
+        return `
+          position: absolute
+        `
+      } if (props.isInView) {
+        return `
+          position: fixed
+        `;
+      }
+    }}
+  }
+`;
+
+
+
