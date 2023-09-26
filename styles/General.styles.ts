@@ -1,5 +1,5 @@
 import { breakpoint } from "./Breakpoint";
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes, css } from "styled-components";
 import theme from "./Theme";
 
 export const InnerBody = styled.div``;
@@ -192,25 +192,32 @@ const blink = keyframes`
   }
 `;
 
-const rotate = keyframes`
+export const SectionPopUpText = styled.div`
+  bottom: 50px;
+  background-color: grey;
+  z-index: 99;
+  transition: 1s;
+`;
+
+const openPill = keyframes`
   1% {
     width: 0px;
     height: 0px;
-    transform: translateY(0);
+    transform: translateY(20px);
     border-radius: 25px;
     color: #fff;
     box-shadow: 0 0 2px #fff, 0 0 10px #fff, 0 0 20px #0ba9ca, 0 0 30px #0ba9ca,
       0 0 40px #0ba9ca, 0 0 50px #0ba9ca;
-    animation: blink 0.7s infinite alternate;
+    animation: blink 0.1s forwards;
   }
- 30% {
+ 15% {
     transform: translateY(-10px);
-    width: 50px;
-    height: 50px;
+    width: 2px;
+    height: 2px;
     border-radius: 50px;
     border: 1px solid red;
   }
-  15% {
+  45% {
     transform: translateY(-10px);
     width: 50px;
     height: 50px;
@@ -218,20 +225,21 @@ const rotate = keyframes`
     border: 1px solid red;
   }
   100%{
-      transform: translateY(-10px);
-      width: 300px;
-      height: 50px;
-      border-radius: 50px;
-      // border: 1px solid red;
+    transform: translateY(-10px);
+    width: 300px;
+    height: 50px;
+    border-radius: 50px;
+    ${SectionPopUpText} {
+      border: 10px solid red;
+      span {
+        display: block;
+      }
+    }
   }
 `;
 
-export const SectionPopUpText = styled.div`
-  animation: ${rotate} 2s linear forwards;
-  bottom: 50px;
-  background-color: grey;
-  z-index: 99;
-  transition: 1s;
+const animatePills = css`
+  ${openPill} 1.5s linear forwards
 `;
 
 export const SectionPopUp = styled.div<{isInView: boolean; bottomElement: boolean }>`
@@ -245,17 +253,24 @@ export const SectionPopUp = styled.div<{isInView: boolean; bottomElement: boolea
   transform: transition;
   overflow: hidden;
   padding: 5px 10px;
-  ${SectionPopUpText} {
-    bottom: 50px;
-    background: rgb(66 66 69/70%);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ ${SectionPopUpText} {
+  display: flex;
+  align-items: center;
+  justify-content: center;
     ${props => {
       if (props.bottomElement) {
-        return `
-          position: absolute
+        return css`
+          position: absolute;
+          animation: ${animatePills};
         `
       } if (props.isInView) {
-        return `
-          position: fixed
+        return css`
+          position: fixed;
+          animation: ${animatePills};
         `;
       }
     }}

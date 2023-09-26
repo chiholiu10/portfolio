@@ -11,7 +11,6 @@ import { useEffect, useState } from "react";
 import { FadeUpWhenVisible } from "../../FramerMotions";
 import { useQuery } from "@apollo/client";
 import { QUERY } from "./ExperienceQuery";
-import { FadePopup } from "../../FramerMotions/FadePopup";
 
 export const Experience = () => {
   const { data, loading, error } = useQuery(QUERY);
@@ -55,9 +54,6 @@ export const Experience = () => {
           )}
         </ExperienceBlockRight>
       </ExperienceInnerBlock>
-      <FadePopup>
-        Hello world
-      </FadePopup>
     </ComponentSection>
   );
 };

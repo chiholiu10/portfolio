@@ -7,7 +7,6 @@ import { HeaderH1, ProfileCartoon } from "./Banner.styles";
 import { useQuery } from "@apollo/client";
 import { motion, useTransform, useScroll } from "framer-motion";
 import { QUERY } from "./BannerQuery";
-import { FadePopup } from "../../FramerMotions/FadePopup";
 import { BannerLogo } from "./BannerLogo";
 
 export const Banner = () => {
@@ -51,9 +50,6 @@ export const Banner = () => {
         <HeaderH1>{data.section.title}</HeaderH1>
         <SubHeader>{data.section.subtitle}</SubHeader>
       </motion.div>
-      <FadePopup>
-        
-      </FadePopup>
     </ComponentSection>
   );
 };
