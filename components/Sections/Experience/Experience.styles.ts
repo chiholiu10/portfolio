@@ -31,7 +31,6 @@ export const ExperienceBlockLeft = styled.div`
   padding: 50px 20px 0;
   text-align: left;
   ${breakpoint.md`
-    // background: ${theme.colors.black};
     background: #2c2c2c;
     justify-content: center;
     align-items: center;

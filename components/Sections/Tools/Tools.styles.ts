@@ -21,8 +21,8 @@ export const ToolsHeader = styled.div`
 `;
 
 export const ToolsBlock = styled.div`
-  width: 160px;
-  height: 160px;
+  width: 140px;
+  height: 140px;
   text-align: center;
   font-size: 18px;
   font-weight: 600;
@@ -33,6 +33,10 @@ export const ToolsBlock = styled.div`
   box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
     rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
     rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  ${breakpoint.sm`
+    width: 160px;
+    height: 160px;
+  `}
   ${breakpoint.md`
     width: 200px;
     height: 190px;
