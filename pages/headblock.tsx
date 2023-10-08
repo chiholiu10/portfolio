@@ -1,6 +1,6 @@
 const HeadBlock = () => (
   <>
-    <meta charSet="UTF-8" />
+    <meta httpEquiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Portfolio Chi Ho Liu | Front End Developer</title>
     <link rel="icon" href="/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -20,15 +20,14 @@ const HeadBlock = () => (
 
     <meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="canonical" href="https://www.chiholiu.com" />
+    <meta name="language" content="English"/>
+    <meta name="revisit-after" content="1 days"/>
     <meta
       name="keywords"
       content="ReactJS, React, TypeScript, Styled-Components, CSS, JavaScript, Front end, Frontend, Developer, Amsterdam, Nederland, Hong Kong, China, Germany, Europe"
     />
     <meta name="author" content="Chiho Liu" />
-    <meta
-      name="robots"
-      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
-    />
+    <meta name="robots" content="index, follow"/>
   </>
 );
 
