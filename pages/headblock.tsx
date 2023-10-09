@@ -8,7 +8,7 @@ const HeadBlock = () => (
     <meta name="title" content="Chiho Liu Front End Developer"></meta>
     <meta
       name="description"
-      content="Front End Developer in the Netherlands experienced Developer with stacks like ReactJS, VueJS, NextJS, Nuxt, Typescript, Styled-Components. Focuses on good UX, reusable and testable codes."
+      content="Front End Developer in the Netherlands experienced Developer with stacks like ReactJS, VueJS, NextJS, Nuxt, Typescript, Styled-Components. Focuses on good UX."
     />
     <meta name="language" content="English" />
     <meta name="revisit-after" content="5 days" />
