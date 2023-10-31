@@ -3,7 +3,7 @@ import { breakpoint } from "../../../styles/Breakpoint";
 import theme from "../../../styles/Theme";
 
 export interface NavType {
-  navEffect: boolean;
+  naveffect: boolean;
 }
 
 export const NavbarComponent = styled.nav<NavType>`
@@ -32,10 +32,10 @@ export const NavbarComponent = styled.nav<NavType>`
         position: absolute;
         left: 0;
         bottom: 0;
-        background: ${(props) => (props.navEffect ? "white" : "silver")};
+        background: ${(props) => (props.naveffect ? "white" : "silver")};
         width: 100%;
         height: 1px;
-        transform: ${(props) => (props.navEffect ? "scale(0)" : "scale(1)")};
+        transform: ${(props) => (props.naveffect ? "scale(0)" : "scale(1)")};
         transition: transform 0.4s ease-in;
     }
   `}
