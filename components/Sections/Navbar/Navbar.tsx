@@ -8,7 +8,7 @@ import {
 import { FadeRightToLeft } from "../../FramerMotions/FadeRightToLeft";
 
 export const Navbar = () => {
-  const [navEffect, setNavEffect] = useState(true);
+  const [navEffect, setNavEffect] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState(true);
 
   const handleLoading = () => {
@@ -32,7 +32,7 @@ export const Navbar = () => {
 
   if (isLoading) {
     return (
-      <NavbarComponent navEffect={navEffect}>
+      <NavbarComponent naveffect={navEffect}>
         <NavbarInnerComponent>
           <NavbarInnerBlock>
             <FadeRightToLeft>
