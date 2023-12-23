@@ -56,6 +56,7 @@ export const Contact = () => {
                 href={item.anchor}
                 target="_blank"
                 rel="noopener noreferrer nofollow"
+                aria-label={item.name}
               >
                 <ContactSvg index={index} icon={icon} />
               </ContactBlockAnchor>
