@@ -5,6 +5,7 @@ import {
   NavbarInnerComponent,
   Logo,
 } from "./Navbar.styles";
+import Image from "next/image";
 import { FadeRightToLeft } from "../../FramerMotions/FadeRightToLeft";
 
 export const Navbar = () => {
@@ -40,9 +41,11 @@ export const Navbar = () => {
             </FadeRightToLeft>
           </NavbarInnerBlock>
           <Logo>
-            <img
+            <Image
               src="https://res.cloudinary.com/dh7tnzzxm/image/upload/v1681677951/Frame_1_1_mh4oma.png"
               alt="chiho-website-icon"
+              width={100}
+              height={100}
             />
           </Logo>
         </NavbarInnerComponent>
