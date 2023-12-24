@@ -1,7 +1,7 @@
 const HeadBlock = () => (
   <>
     <meta httpEquiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta http-equiv="Content-Security-Policy" content="script-src 'none'"/>
+    <meta httpEquiv="Content-Security-Policy" content="script-src 'none'"/>
     <title>Portfolio Chi Ho Liu | Front End Developer</title>
     <link rel="icon" href="/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
