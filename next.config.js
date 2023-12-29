@@ -1,7 +1,3 @@
- const hostnames = [
-          ,
-          ];
-
 const nextConfig = {
   reactStrictMode: true,
   env: {
