@@ -47,8 +47,12 @@ export const Banner = () => {
       </ProfileCartoon>
 
       <motion.div style={{ y: y2 }}>
-        <HeaderH1>{data.section.title}</HeaderH1>
-        <SubHeader>{data.section.subtitle}</SubHeader>
+        {data ? (
+          <>
+          <HeaderH1>{data?.section.title}</HeaderH1>
+          <SubHeader>{data?.section.subtitle}</SubHeader>
+        </>
+        ) : ("loading...")}
       </motion.div>
     </ComponentSection>
   );

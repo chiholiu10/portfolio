@@ -4,6 +4,20 @@ import theme from "./Theme";
 
 export const InnerBody = styled.div``;
 
+export const BackgroundWrapper = styled.div`
+  opacity: 0;
+  width: 100%;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 0;
+  z-index: -99;
+  display: none;
+  ${breakpoint.md`
+    opacity: 0.16;
+    display:flex;
+  `}
+`;
+
 export const BackgroundImage = styled.img<{
   left: string;
   width: string;

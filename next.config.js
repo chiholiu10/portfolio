@@ -1,3 +1,7 @@
+ const hostnames = [
+          ,
+          ];
+
 const nextConfig = {
   reactStrictMode: true,
   env: {
@@ -10,10 +14,15 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-          hostname: "res.cloudinary.com" 
+        protocol: "http",
+        hostname: "res.cloudinary.com",
+      },
+      {
+        protocol: "https",
+        hostname: "images.ctfassets.net",
       }
     ]
   }
-};
+}
 
 module.exports = nextConfig;
