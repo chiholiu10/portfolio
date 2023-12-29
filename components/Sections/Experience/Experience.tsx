@@ -36,20 +36,20 @@ export const Experience = () => {
       <ExperienceInnerBlock>
         <ExperienceBlockLeft>
           <FadeUpWhenVisible>
-            <ExperienceContent>{data.section.subtitle}</ExperienceContent>
+              <ExperienceContent>{data.section.subtitle}</ExperienceContent>
           </FadeUpWhenVisible>
         </ExperienceBlockLeft>
         <ExperienceBlockRight>
           {!mobileQuery && (
             <FadeUpWhenVisible>
               <ExperienceFigure>
-                <ExperienceImage src={data.section.image.url} alt="test" />
+                <ExperienceImage src={data.section.image.url} alt="alibaba-picture" />
               </ExperienceFigure>
             </FadeUpWhenVisible>
           )}
           {mobileQuery && (
             <ExperienceFigure>
-              <ExperienceImage src={data.section.image.url} alt="test" />
+              <ExperienceImage src={data.section.image.url} alt="alibaba-picture" />
             </ExperienceFigure>
           )}
         </ExperienceBlockRight>

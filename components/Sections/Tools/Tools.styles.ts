@@ -49,10 +49,9 @@ export const ToolsBlock = styled.div`
   }
   img {
     width: 60px;
-    height: 60px;
+    height: auto;
     ${breakpoint.md`
       width: 80px;
-      height: 80px;
     `}
   }
   h2 {

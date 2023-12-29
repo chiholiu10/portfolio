@@ -26,7 +26,7 @@ export const NavbarComponent = styled.nav<NavType>`
     font-size: 22px;
     height: 70px;
     border-bottom: unset;
-    &:after {
+    &::after {
         content: "";
         display: block;
         position: absolute;
@@ -61,7 +61,7 @@ export const NavbarInnerComponent = styled.div`
 export const Logo = styled.div`
   img {
     width: 40px;
-    height: 40px;
+    height: auto;
     position: absolute;
     background-color: black;
     z-index: 99;
@@ -70,7 +70,6 @@ export const Logo = styled.div`
     ${breakpoint.md`
       margin-top: 20px;
       width: 55px;
-      height: 55px;
     `}
   }
 `;
