@@ -7,6 +7,13 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
+  images: {
+    remotePatterns: [
+      {
+          hostname: "res.cloudinary.com" 
+      }
+    ]
+  }
 };
 
 module.exports = nextConfig;
