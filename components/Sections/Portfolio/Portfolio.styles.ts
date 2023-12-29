@@ -3,7 +3,7 @@ import { breakpoint } from "../../../styles/Breakpoint";
 
 export const PortfolioImage = styled.img`
   width: 300px;
-  height: 184.5px;
+  height: auto;
   display: flex;
   flex-direction: row;
   margin: 10px;
@@ -12,11 +12,9 @@ export const PortfolioImage = styled.img`
     rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
   ${breakpoint.md`
     width: 350px;
-    height: 216.5px;
   `}
   ${breakpoint.lg`
     width: 390px;
-    height: 240.6px;
   `}
 `;
 
