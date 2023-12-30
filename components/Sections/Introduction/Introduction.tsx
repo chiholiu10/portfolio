@@ -41,8 +41,6 @@ export const Introduction = () => {
               "https://res.cloudinary.com/dh7tnzzxm/image/upload/v1681643719/Gradient_4_w267pd.png"
             }
             left="60%"
-            width="300px"
-            height="auto"
             alt="background-image-effect"
           />
         </motion.div>
