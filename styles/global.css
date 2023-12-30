@@ -254,7 +254,6 @@ video {
   max-width: 100%;
   height: auto;
 }
-// Disable Auto Zoom in form tags - Safari on iPhone
 select,
 textarea,
 input[type="text"],

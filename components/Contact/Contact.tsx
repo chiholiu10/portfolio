@@ -45,7 +45,6 @@ export const Contact = () => {
           "https://res.cloudinary.com/dh7tnzzxm/image/upload/v1681666434/Vector_1_vgunka.png"
         }
         left="-60%"
-        width="100%"
         alt="background-image-effect"
       />
       <ContactContainer as={motion.div}>

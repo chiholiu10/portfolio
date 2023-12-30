@@ -8,7 +8,6 @@ import { useAnimation } from "framer-motion";
 export const FadePopup = ({children}) =>{
   const elementRef = useRef(null);
   const { isOnScreen, checkBottomElement} = useOnScreen(elementRef);
-  console.log(isOnScreen);
 
   return (
     <SectionPopUp isInView={isOnScreen} bottomElement={checkBottomElement} ref={elementRef}>
