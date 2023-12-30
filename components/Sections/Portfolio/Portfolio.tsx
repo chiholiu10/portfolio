@@ -35,8 +35,6 @@ export const Portfolio = () => {
               "https://res.cloudinary.com/dh7tnzzxm/image/upload/v1651443884/circle_effect_8ce52c0de3.png"
             }
             left="60%"
-            width="300px"
-            height="auto"
             alt="background-image-effect"
           />
         </motion.div>
@@ -48,7 +46,7 @@ export const Portfolio = () => {
           {data.section.array.map((item, index) => (
             <PortfolioBlock key={index}>
               <FadeUpIndividually time={index} key={uniqid()}>
-                <PortfolioImage src={item.url} alt="portfolio-website/" />
+                <PortfolioImage src={item.secure_url} alt="portfolio-website/" />
               </FadeUpIndividually>
             </PortfolioBlock>
           ))}

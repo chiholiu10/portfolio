@@ -30,7 +30,6 @@ export const Banner = () => {
           "https://res.cloudinary.com/dh7tnzzxm/image/upload/v1651443884/circle_effect_8ce52c0de3.png"
         }
         left="-60%"
-        width="100%"
         alt="background-image-effect"
       />
       <ProfileCartoon>
@@ -39,8 +38,6 @@ export const Banner = () => {
             "https://res.cloudinary.com/dh7tnzzxm/image/upload/v1681643719/Gradient_4_w267pd.png"
           }
           left="60%"
-          width="300px"
-          height="auto"
           alt="background-image-effect"
         />
         <BannerLogo/>

@@ -6,6 +6,7 @@ export const ToolInnerBlock = styled.div`
   background-color: ${theme.colors.lightBlack};
   position: relative;
   margin: 25px;
+  border-radius: 15px;
   ${breakpoint.md`
     margin: 30px;
   `}
@@ -50,6 +51,7 @@ export const ToolsBlock = styled.div`
   img {
     width: 60px;
     height: auto;
+    aspect-ratio: auto;
     ${breakpoint.md`
       width: 80px;
     `}
