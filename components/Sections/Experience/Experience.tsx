@@ -40,14 +40,13 @@ export const Experience = () => {
           </FadeUpWhenVisible>
         </ExperienceBlockLeft>
         <ExperienceBlockRight>
-          {!mobileQuery && (
+          {!mobileQuery ? (
             <FadeUpWhenVisible>
               <ExperienceFigure>
                 <ExperienceImage src={data.section.image.url} alt="alibaba-picture" />
               </ExperienceFigure>
             </FadeUpWhenVisible>
-          )}
-          {mobileQuery && (
+          ) : (
             <ExperienceFigure>
               <ExperienceImage src={data.section.image.url} alt="alibaba-picture" />
             </ExperienceFigure>

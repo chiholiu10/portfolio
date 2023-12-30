@@ -21,7 +21,7 @@ export const FadeUpIndividually = ({ time, children }) => {
       transition={{ duration: 1.4, delay: time * 0.25 }}
       variants={{
         visible: { opacity: 1 },
-        hidden: { opacity: 0.01 },
+        hidden: { opacity: 0.1 },
       }}
     >
       {children}

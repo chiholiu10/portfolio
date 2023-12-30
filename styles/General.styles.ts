@@ -22,19 +22,18 @@ export const BackgroundImage = styled.img<{
   left: string;
   width: string;
 }>`
-  opacity: 0;
   width: 100%;
+  height: auto;
   background-repeat: no-repeat;
   position: absolute;
   top: 0;
   z-index: -99;
   display: none;
+  aspect-ratio: auto;
   left: ${(props) => (props.left ? props.left : 0)};
-  width: ${(props) => (props.width ? props.width : "100%")};
-  height: ${(props) => (props.width ? props.height : "1000px")};
   ${breakpoint.md`
-    opacity: 0.16;
-    display:flex;
+    opacity: 0.2;
+    display: flex;
   `}
 `;
 
@@ -49,7 +48,7 @@ export const ComponentSection = styled.section`
     // padding-top: 80px;
     svg {
       width: 165px;
-      height: 224px;
+      height: auto;
       display: flex;
       margin-left: auto;
       margin-right: auto;
@@ -67,6 +66,7 @@ export const ComponentSection = styled.section`
       left: -52px;
       z-index: 999;
       width: 100%;
+      aspect-ratio: auto;
       top: -180px;
     }
   }
@@ -75,6 +75,7 @@ export const ComponentSection = styled.section`
       right: 0;
       left: auto;
       bottom: 0;
+      aspect-ratio: auto;
     }
     overflow: hidden;
   }

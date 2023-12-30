@@ -31,8 +31,7 @@ export const Navbar = () => {
     };
   }, []);
 
-  if (isLoading) {
-    return (
+    return (isLoading ? (
       <NavbarComponent naveffect={navEffect}>
         <NavbarInnerComponent>
           <NavbarInnerBlock>
@@ -50,8 +49,6 @@ export const Navbar = () => {
           </Logo>
         </NavbarInnerComponent>
       </NavbarComponent>
-    );
-  } else {
-    return <NavbarComponent navEffect={navEffect}></NavbarComponent>;
-  }
+    ) : ( <NavbarComponent navEffect={navEffect}></NavbarComponent>)
+  )
 };

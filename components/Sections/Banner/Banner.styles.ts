@@ -35,7 +35,8 @@ export const ProfileCartoon = styled.div`
     transform: translate(-50%, -50%);
     top: 0;
     width: 900px;
-    height: 400px;
+    height: auto;
+    aspect-ratio: auto;
   }
   svg {
     position: relative;
@@ -44,6 +45,7 @@ export const ProfileCartoon = styled.div`
     margin-left: auto;
     margin-right: auto;
     width: 165px;
-    height: 224px;
+    height: auto;
+    aspect-ratio: auto;
   }
 `;
