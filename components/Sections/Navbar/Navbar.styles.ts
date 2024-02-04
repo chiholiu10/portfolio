@@ -61,7 +61,7 @@ export const NavbarInnerComponent = styled.div`
 export const Logo = styled.div`
   img {
     width: 40px;
-    height: auto;
+    height: 40px;
     position: absolute;
     background-color: black;
     z-index: 99;
@@ -70,6 +70,7 @@ export const Logo = styled.div`
     ${breakpoint.md`
       margin-top: 20px;
       width: 55px;
+      height: 55px;
     `}
   }
 `;
