@@ -15,7 +15,6 @@ import {
   IntroSubTitle,
 } from "./Introduction.styles";
 import { QUERY } from "./IntroductionQuery";
-import uniqid from "uniqid";
 
 export const Introduction = () => {
   const { data, loading, error } = useQuery(QUERY);
@@ -33,34 +32,32 @@ export const Introduction = () => {
 
   return (
     <ComponentSection id="introduction">
-      <div key={uniqid()}>
-        <motion.div style={{ y: y2, x: 0 }}>
-          <BackgroundImage
-            className="effect"
-            src={
-              "https://res.cloudinary.com/dh7tnzzxm/image/upload/v1681643719/Gradient_4_w267pd.png"
-            }
-            left="60%"
-            alt="background-image-effect"
-          />
-        </motion.div>
-        <FadeUpWhenVisible>
-          <Header>{data.section.title}</Header>
-          <SubHeader>{data.section.subtitle}</SubHeader>
-        </FadeUpWhenVisible>
-        <DisplayFlex>
-          {data.section.arrays.map((item, index) => (
-            <FadeUpIndividually time={index} key={uniqid()}>
-              <IntroBlock>
-                <IntroBlockCenter>
-                  <IntroTitle>{item.description} </IntroTitle>
-                  <IntroSubTitle>{item.title}</IntroSubTitle>
-                </IntroBlockCenter>
-              </IntroBlock>
-            </FadeUpIndividually>
-          ))}
-        </DisplayFlex>
-      </div>
+      <motion.div initial={false} style={{ y: y2, x: 0 }}>
+        <BackgroundImage
+          className="effect"
+          src={
+            "https://res.cloudinary.com/dh7tnzzxm/image/upload/v1681643719/Gradient_4_w267pd.png"
+          }
+          left="60%"
+          alt="background-image-effect"
+        />
+      </motion.div>
+      <FadeUpWhenVisible>
+        <Header>{data.section.title}</Header>
+        <SubHeader>{data.section.subtitle}</SubHeader>
+      </FadeUpWhenVisible>
+      <DisplayFlex>
+        {data.section.arrays.map((item, index) => (
+          <FadeUpIndividually time={index} key={index}>
+            <IntroBlock>
+              <IntroBlockCenter>
+                <IntroTitle>{item.description} </IntroTitle>
+                <IntroSubTitle>{item.title}</IntroSubTitle>
+              </IntroBlockCenter>
+            </IntroBlock>
+          </FadeUpIndividually>
+        ))}
+      </DisplayFlex>
     </ComponentSection>
   );
 };
