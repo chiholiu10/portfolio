@@ -10,7 +10,8 @@
     "start": "npx kill-port 3000 && next start",
     "lint": "next lint",
     "test": "jest",
-    "prepare": "husky install"
+    "prepare": "husky",
+    "commitlint": "commitlint --edit"
   },
   "dependencies": {
     "@apollo/client": "^3.7.0",
@@ -21,6 +22,7 @@
     "contentful": "^9.2.5",
     "framer-motion": "^6.3.3",
     "graphql": "^15.8.0",
+    "husky": "^9.1.4",
     "next": "^14.0.4",
     "polished": "^4.2.2",
     "react": "^18.2.0",
@@ -33,15 +35,16 @@
     "uniqid": "^5.4.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.4.0",
+    "@commitlint/config-conventional": "^19.2.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
     "@types/node": "^18.7.18",
     "babel-eslint": "^10.1.0",
-    "cypress": "^11.2.0",
+    "cypress": "^13.13.3",
     "eslint": "8.14.0",
     "eslint-config-next": "^14.0.4",
-    "husky": "^8.0.2",
     "jest": "^27.5.1"
   },
   "jest": {
