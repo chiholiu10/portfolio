@@ -11,7 +11,8 @@
     "lint": "next lint",
     "test": "jest",
     "prepare": "husky",
-    "commitlint": "commitlint --edit"
+    "commitlint": "commitlint --edit",
+    "commit": "cz"
   },
   "dependencies": {
     "@apollo/client": "^3.7.0",
@@ -37,11 +38,13 @@
   "devDependencies": {
     "@commitlint/cli": "^19.4.0",
     "@commitlint/config-conventional": "^19.2.2",
+    "@commitlint/cz-commitlint": "^19.4.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
     "@types/node": "^18.7.18",
     "babel-eslint": "^10.1.0",
+    "commitlint": "^19.4.0",
     "cypress": "^13.13.3",
     "eslint": "8.14.0",
     "eslint-config-next": "^14.0.4",
@@ -49,5 +52,10 @@
   },
   "jest": {
     "testEnvironment": "jsdom"
+  },
+  "config": {
+    "commitizen": {
+      "path": "@commitlint/cz-commitlint"
+    }
   }
 }
