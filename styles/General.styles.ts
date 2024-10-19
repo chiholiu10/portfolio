@@ -230,14 +230,12 @@ const openPill = keyframes`
     width: 2px;
     height: 2px;
     border-radius: 50px;
-    border: 1px solid red;
   }
   45% {
     transform: translateY(-10px);
     width: 50px;
     height: 50px;
     border-radius: 50px;
-    border: 1px solid red;
   }
   100%{
     transform: translateY(-10px);

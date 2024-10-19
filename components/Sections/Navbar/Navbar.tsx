@@ -12,24 +12,18 @@ export const Navbar = () => {
   const [navEffect, setNavEffect] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState(true);
 
-  const handleLoading = () => {
-    setIsLoading(false);
-  };
-
   useEffect(() => {
     const handleScroll = () => {
       const yValue = global?.window.scrollY;
-      yValue < 10 ? setNavEffect(true) : setNavEffect(false);
+      yValue < 5 ? setNavEffect(true) : setNavEffect(false);
     };
-    window.addEventListener("load", handleLoading);
-    document.addEventListener("scroll", handleScroll, false);
+
     handleScroll();
     
     return () => {
       document.removeEventListener("scroll", handleScroll, false);
-      window.removeEventListener("load", handleLoading);
     };
-  }, []);
+  }, [isLoading]);
 
     return (isLoading ? (
       <NavbarComponent naveffect={navEffect}>
