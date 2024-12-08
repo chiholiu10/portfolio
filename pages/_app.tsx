@@ -5,9 +5,6 @@ import "../styles/global.css";
 
 const MyApp = ({ Component, pageProps }) => (
   <ApolloProvider client={client}>
-    <Head>
-      <title>Portfolio Chi Ho Liu | Front End Developer</title>
-    </Head>
     <Component {...pageProps} />
   </ApolloProvider>
 );
