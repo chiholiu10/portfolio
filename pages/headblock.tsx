@@ -3,8 +3,6 @@ const HeadBlock = () => (
     <meta httpEquiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Portfolio Chi Ho Liu | Front End Developer</title>
     <link rel="icon" href="/favicon.ico" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
     <meta name="title" content="Chiho Liu Front End Developer"></meta>
     <meta
       name="description"
