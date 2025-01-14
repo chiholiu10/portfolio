@@ -6,13 +6,14 @@ export const Footer = () => {
   const { data, loading, error } = useQuery(QUERY);
 
   if (loading) {
-    return <FooterComponent></FooterComponent>;
+    return <FooterComponent />;
   }
 
   if (error) {
     console.error(error);
     return null;
   }
+
   return (
     <FooterComponent id="footer">
       <FooterText>{data.section.subtitle}</FooterText>

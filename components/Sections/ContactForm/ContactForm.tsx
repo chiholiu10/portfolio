@@ -12,42 +12,28 @@ export const ContactForm = () => {
 
   const contactFormInfo = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    type
+    field: keyof typeof contactInfo
   ) => {
     setContactInfo((prevState) => ({
       ...prevState,
-      [type]: event.target.value,
+      [field]: event.target.value,
     }));
   };
 
   const handleFormSubmit = async (e: React.MouseEvent<HTMLInputElement>) => {
-    console.log("sent");
     e.preventDefault();
-    console.log(contactInfo);
-    axios({
-      method: "post",
-      url: `http://localhost:3001/react-contact-form/api/contact/index.php`,
-      headers: { "content-type": "application/json" },
-      data: contactInfo,
-    })
-      .then((result) => {
-        console.log(result);
-      })
-      .catch((error) => console.log(error.message));
-    // const postInfo = {
-    //   method: "POST",
-    //   headers: { "content-type": "application/json" },
-    //   data: contactInfo,
-    // };
-    // try {
-    //   const url = await fetch(
-    //     "http://localhost:3001/react-contact-form/api/contact/index.php",
-    //     postInfo
-    //   );
-    //   console.log(url);
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/react-contact-form/api/contact/index.php",
+        contactInfo,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      console.log("Form submitted successfully:", response);
+    } catch (error) {
+      console.error("Error submitting form:", error.message);
+    }
   };
 
   return (
