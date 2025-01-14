@@ -39,15 +39,15 @@ export default function ClientSide() {
   return (
     <>
       <ThemeProvider theme={theme}>
-      <CSSreset theme={theme} />
-      <DynamicNavbar />
-      <DynamicBanner />
-      <DynamicIntroduction />
-      <DynamicExperience />
-      <DynamicPortfolio />
-      <DynamicTools />
-      <DynamicContact />
-      <DynamicFooter />
+        <CSSreset theme={theme} />
+        <DynamicNavbar />
+        <DynamicBanner />
+        <DynamicIntroduction />
+        <DynamicExperience />
+        <DynamicPortfolio />
+        <DynamicTools />
+        <DynamicContact />
+        <DynamicFooter />
       </ThemeProvider>
     </>
   );

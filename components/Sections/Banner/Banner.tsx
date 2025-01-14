@@ -12,10 +12,9 @@ import { BannerLogo } from "./BannerLogo";
 export const Banner = () => {
   const { data, loading, error } = useQuery(QUERY);
   const { scrollY } = useScroll();
-  const y2 = useTransform(scrollY, [0, 7000], [1, -2000]);
 
   if (loading) {
-    return <ComponentSection></ComponentSection>;
+    return <ComponentSection/>;
   }
 
   if (error) {
@@ -26,24 +25,20 @@ export const Banner = () => {
   return (
     <ComponentSection id="banner" className="bannerComponent">
       <BackgroundImage
-        src={
-          "https://res.cloudinary.com/dh7tnzzxm/image/upload/v1651443884/circle_effect_8ce52c0de3.png"
-        }
+        src="https://res.cloudinary.com/dh7tnzzxm/image/upload/v1651443884/circle_effect_8ce52c0de3.png"
         left="-60%"
         alt="background-image-effect"
       />
       <ProfileCartoon>
         <BackgroundImage
-          src={
-            "https://res.cloudinary.com/dh7tnzzxm/image/upload/v1681643719/Gradient_4_w267pd.png"
-          }
+          src="https://res.cloudinary.com/dh7tnzzxm/image/upload/v1681643719/Gradient_4_w267pd.png"
           left="60%"
           alt="background-image-effect"
         />
         <BannerLogo/>
       </ProfileCartoon>
 
-      <motion.div style={{ y: y2 }}>
+      <motion.div>
         {data ? (
           <>
           <HeaderH1>{data?.section.title}</HeaderH1>

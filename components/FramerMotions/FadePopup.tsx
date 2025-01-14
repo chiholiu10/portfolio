@@ -11,11 +11,11 @@ export const FadePopup = ({children}) =>{
 
   return (
     <SectionPopUp isInView={isOnScreen} bottomElement={checkBottomElement} ref={elementRef}>
-    <SectionPopUpText>
-      <span>
-       {children}
-      </span>
-    </SectionPopUpText>
-  </SectionPopUp>
+      <SectionPopUpText>
+        <span>
+        {children}
+        </span>
+      </SectionPopUpText>
+    </SectionPopUp>
   )
 };
