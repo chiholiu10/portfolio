@@ -19,8 +19,8 @@ export const BackgroundWrapper = styled.div`
 `;
 
 export const BackgroundImage = styled.img<{
-  left: string;
-  width: string;
+  left?: string;
+  width?: string;
 }>`
   width: 100%;
   height: auto;
@@ -35,6 +35,15 @@ export const BackgroundImage = styled.img<{
     opacity: 0.2;
     display: flex;
   `}
+  &.effect {
+    height: "100vh", // You can set this to any value as required
+    width: "100%",
+    objectFit: "cover", // This ensures that the image doesn't stretch and stays proportional
+    position: "absolute", // Keep it fixed in place during scrolling
+    top: 0,
+    left: 0,
+    z-index: -1, // Make sure the background is behind the content
+  }
 `;
 
 export const ComponentSection = styled.section`
@@ -255,7 +264,10 @@ const animatePills = css`
   ${openPill} 1.5s linear forwards
 `;
 
-export const SectionPopUp = styled.div<{isInView: boolean; bottomElement: boolean }>`
+export const SectionPopUp = styled.div<{
+  isInView: boolean;
+  bottomElement: boolean;
+}>`
   position: absolute;
   margin-left: auto;
   margin-right: auto;
@@ -270,17 +282,18 @@ export const SectionPopUp = styled.div<{isInView: boolean; bottomElement: boolea
   display: flex;
   align-items: center;
   justify-content: center;
- ${SectionPopUpText} {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-    ${props => {
+  ${SectionPopUpText} {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    ${(props) => {
       if (props.bottomElement) {
         return css`
           position: absolute;
           animation: ${animatePills};
-        `
-      } if (props.isInView) {
+        `;
+      }
+      if (props.isInView) {
         return css`
           position: fixed;
           animation: ${animatePills};
@@ -289,6 +302,3 @@ export const SectionPopUp = styled.div<{isInView: boolean; bottomElement: boolea
     }}
   }
 `;
-
-
-
