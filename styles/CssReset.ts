@@ -10,7 +10,7 @@ export const CSSreset = createGlobalStyle`
       margin: 0;
       overflow-x: hidden;
       background-color: ${theme.colors.black};
-      font-family: ${theme.fonts.body};
+      font-family: ${theme.typoGraphy.fonts.body};
       color: ${theme.colors.white};
     }
     html,
@@ -199,7 +199,7 @@ export const CSSreset = createGlobalStyle`
       padding: 0;
     }
     html {
-      font-family: ${theme.fonts.body};
+      font-family: ${theme.typoGraphy.fonts.body};
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
       -webkit-text-size-adjust: 100%;
@@ -247,7 +247,7 @@ export const CSSreset = createGlobalStyle`
     code,
     kbd,
     samp {
-      font-family: ${theme.fonts.body};
+      font-family: ${theme.typoGraphy.fonts.body};
     }
     img,
     svg,
