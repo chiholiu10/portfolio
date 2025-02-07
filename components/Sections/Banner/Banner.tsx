@@ -1,13 +1,13 @@
 import { useQuery } from "@apollo/client";
 import { motion } from "framer-motion";
 import {
+  BackgroundImage,
   ComponentSection,
   SubHeader,
-  BackgroundImage,
 } from "../../../styles/General.styles";
 import { HeaderH1, ProfileCartoon } from "./Banner.styles";
-import { QUERY } from "./BannerQuery";
 import { BannerLogo } from "./BannerLogo";
+import { QUERY } from "./BannerQuery";
 
 export const Banner = () => {
   const { data, loading, error } = useQuery(QUERY);

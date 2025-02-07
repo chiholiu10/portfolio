@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { TilesProps, TitleBlockProps } from "../../../styles/General.styles";
 import { breakpoint } from "../../../styles/Breakpoint";
+import { TilesProps, TitleBlockProps } from "../../../styles/General.styles";
 
 export const IntroBlock = styled.div`
   width: 100%;

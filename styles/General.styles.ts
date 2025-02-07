@@ -1,4 +1,4 @@
-import styled, { keyframes, css } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import { breakpoint } from "./Breakpoint";
 import theme from "./Theme";
 

@@ -22,8 +22,8 @@ export default [
       "prettier",
       "airbnb-base",
       "eslint:recommended",
-      "plugin:import/typescript",
-    ),
+      "plugin:import/typescript"
+    )
   ),
   {
     plugins: {

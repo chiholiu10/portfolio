@@ -1,14 +1,14 @@
 import { useQuery } from "@apollo/client";
 import Image from "next/image";
 import {
+  BackgroundImage,
+  ComponentRow,
   ComponentSection,
   Header,
   SubHeader,
-  ComponentRow,
-  BackgroundImage,
 } from "../../../styles/General.styles";
-import { ToolsBlock, ToolInnerBlock, ToolsHeader } from "./Tools.styles";
 import { FadeUpIndividually, FadeUpWhenVisible } from "../../FramerMotions";
+import { ToolInnerBlock, ToolsBlock, ToolsHeader } from "./Tools.styles";
 import { QUERY } from "./ToolsQuery";
 
 export const Tools = () => {

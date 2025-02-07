@@ -1,6 +1,6 @@
 import { useRef } from "react";
-import { SectionPopUp, SectionPopUpText } from "../../styles/General.styles";
 import { useOnScreen } from "../../hooks/useIntersectionObserver";
+import { SectionPopUp, SectionPopUpText } from "../../styles/General.styles";
 
 export const FadePopup = ({ children }) => {
   const elementRef = useRef(null);

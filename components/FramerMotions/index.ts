@@ -1,5 +1,5 @@
-import { FadeUpWhenVisible } from "./FadeUpWhenVisible";
-import { FadeUpIndividually } from "./FadeUpIndividually";
 import { FadeScrollBox } from "./FadeScrollBox";
+import { FadeUpIndividually } from "./FadeUpIndividually";
+import { FadeUpWhenVisible } from "./FadeUpWhenVisible";
 
-export { FadeScrollBox, FadeUpWhenVisible, FadeUpIndividually };
+export { FadeScrollBox, FadeUpIndividually, FadeUpWhenVisible };

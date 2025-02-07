@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import { ContactSVG } from "./Contact.styles";
 import { IconPath } from "../Contact/Contact";
+import { ContactSVG } from "./Contact.styles";
 
 type ContactSvgProps = {
   index: number;

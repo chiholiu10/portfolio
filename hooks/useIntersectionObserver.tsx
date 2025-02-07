@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function useOnScreen(ref) {
   const [isOnScreen, setIsOnScreen] = useState(false);

@@ -1,14 +1,14 @@
 import { useQuery } from "@apollo/client";
-import { motion, useTransform, useScroll } from "framer-motion";
-import { PortfolioImage, PortfolioBlock } from "./Portfolio.styles";
+import { motion, useScroll, useTransform } from "framer-motion";
 import {
+  BackgroundImage,
   ComponentSection,
+  DisplayFlex,
   Header,
   SubHeader,
-  BackgroundImage,
-  DisplayFlex,
 } from "../../../styles/General.styles";
-import { FadeUpWhenVisible, FadeUpIndividually } from "../../FramerMotions";
+import { FadeUpIndividually, FadeUpWhenVisible } from "../../FramerMotions";
+import { PortfolioBlock, PortfolioImage } from "./Portfolio.styles";
 import { QUERY } from "./PortfolioQuery";
 
 export const Portfolio = () => {

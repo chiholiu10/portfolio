@@ -1,9 +1,9 @@
 "use client";
 
-import { Html, Head, Main, NextScript } from "next/document";
-import HeadBlock from "./headblock";
-import StyledComponentRegistry from "../app/registry";
+import { Head, Html, Main, NextScript } from "next/document";
 import { Providers } from "../app/providers";
+import StyledComponentRegistry from "../app/registry";
+import HeadBlock from "./headblock";
 
 export default function Document() {
   return (

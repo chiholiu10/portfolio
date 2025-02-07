@@ -1,5 +1,5 @@
+import { motion, useAnimation } from "framer-motion";
 import { useEffect } from "react";
-import { useAnimation, motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
 export const FadeUpIndividually = ({ time, children }) => {

@@ -1,21 +1,21 @@
-import { Navbar } from "./Navbar/Navbar";
-import { Banner } from "./Banner/Banner";
-import { Introduction } from "./Introduction/Introduction";
-import { Experience } from "./Experience/Experience";
-import { Tools } from "./Tools/Tools";
 import { Contact } from "../Contact/Contact";
-import { Portfolio } from "./Portfolio/Portfolio";
+import { Banner } from "./Banner/Banner";
 import { ContactForm } from "./ContactForm/ContactForm";
+import { Experience } from "./Experience/Experience";
 import { Footer } from "./Footer/Footer";
+import { Introduction } from "./Introduction/Introduction";
+import { Navbar } from "./Navbar/Navbar";
+import { Portfolio } from "./Portfolio/Portfolio";
+import { Tools } from "./Tools/Tools";
 
 export {
-  Navbar,
   Banner,
-  Introduction,
-  Experience,
-  Portfolio,
-  Tools,
   Contact,
   ContactForm,
+  Experience,
   Footer,
+  Introduction,
+  Navbar,
+  Portfolio,
+  Tools,
 };

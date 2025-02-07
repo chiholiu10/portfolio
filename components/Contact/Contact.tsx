@@ -1,13 +1,13 @@
-import { motion } from "framer-motion";
 import { useQuery } from "@apollo/client";
-import {
-  ContactBlock,
-  ContactContainer,
-  ContactBlockAnchor,
-} from "./Contact.styles";
+import { motion } from "framer-motion";
 import { BackgroundImage, ComponentSection } from "../../styles/General.styles";
 import { ContactSvg } from "../ContactSvg/ContactSvg";
 import { FadeUpIndividually } from "../FramerMotions";
+import {
+  ContactBlock,
+  ContactBlockAnchor,
+  ContactContainer,
+} from "./Contact.styles";
 import { QUERY } from "./ContactQuery";
 
 export type IconPath = {

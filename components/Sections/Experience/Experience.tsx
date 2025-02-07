@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
+import { useEffect, useState } from "react";
 import { ComponentSection } from "../../../styles/General.styles";
+import { FadeUpWhenVisible } from "../../FramerMotions";
 import {
-  ExperienceInnerBlock,
   ExperienceBlockLeft,
   ExperienceBlockRight,
-  ExperienceImage,
-  ExperienceFigure,
   ExperienceContent,
+  ExperienceFigure,
+  ExperienceImage,
+  ExperienceInnerBlock,
 } from "./Experience.styles";
-import { FadeUpWhenVisible } from "../../FramerMotions";
 import { QUERY } from "./ExperienceQuery";
 
 export const Experience = () => {

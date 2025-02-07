@@ -27,6 +27,7 @@
     "axios": "^1.4.0",
     "contentful": "^9.2.5",
     "cypress": "^13.13.3",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
     "framer-motion": "^6.3.3",
     "globals": "^15.14.0",
     "graphql": "^15.8.0",

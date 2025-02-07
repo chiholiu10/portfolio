@@ -1,18 +1,18 @@
 import { useQuery } from "@apollo/client";
-import { motion, useTransform, useScroll } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import {
+  BackgroundImage,
   ComponentSection,
+  DisplayFlex,
   Header,
   SubHeader,
-  BackgroundImage,
-  DisplayFlex,
 } from "../../../styles/General.styles";
-import { FadeUpWhenVisible, FadeUpIndividually } from "../../FramerMotions";
+import { FadeUpIndividually, FadeUpWhenVisible } from "../../FramerMotions";
 import {
   IntroBlock,
-  IntroTitle,
   IntroBlockCenter,
   IntroSubTitle,
+  IntroTitle,
 } from "./Introduction.styles";
 import { QUERY } from "./IntroductionQuery";
 
