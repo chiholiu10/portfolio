@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { ComponentSection } from "../../../styles/General.styles";
 import axios from "axios";
+import { ComponentSection } from "../../../styles/General.styles";
 
 export const ContactForm = () => {
   const [contactInfo, setContactInfo] = useState({
@@ -12,7 +12,7 @@ export const ContactForm = () => {
 
   const contactFormInfo = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    field: keyof typeof contactInfo
+    field: keyof typeof contactInfo,
   ) => {
     setContactInfo((prevState) => ({
       ...prevState,
@@ -23,14 +23,13 @@ export const ContactForm = () => {
   const handleFormSubmit = async (e: React.MouseEvent<HTMLInputElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
+      await axios.post(
         "http://localhost:3001/react-contact-form/api/contact/index.php",
         contactInfo,
         {
           headers: { "Content-Type": "application/json" },
-        }
+        },
       );
-      console.log("Form submitted successfully:", response);
     } catch (error) {
       console.error("Error submitting form:", error.message);
     }

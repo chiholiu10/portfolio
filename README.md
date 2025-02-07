@@ -48,7 +48,6 @@ In the project directory, you can run:
 - styled-components: ^5.3.5,
 - ts-node-dev: ^2.0.0,
 - typescript: ^4.6.3,
-- uniqid: ^5.4.0
 
 #### devDependencies
 

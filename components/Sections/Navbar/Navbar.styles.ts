@@ -2,11 +2,7 @@ import styled from "styled-components";
 import { breakpoint } from "../../../styles/Breakpoint";
 import theme from "../../../styles/Theme";
 
-export interface NavType {
-  naveffect: boolean;
-}
-
-export const NavbarComponent = styled.nav<NavType>`
+export const NavbarComponent = styled.nav`
   position: fixed;
   width: 100%;
   background-color: ${theme.colors.black};
@@ -27,16 +23,15 @@ export const NavbarComponent = styled.nav<NavType>`
     height: 70px;
     border-bottom: unset;
     &::after {
-        content: "";
-        display: block;
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        background: ${(props) => (props.naveffect ? "white" : "silver")};
-        width: 100%;
-        height: 1px;
-        transform: ${(props) => (props.naveffect ? "scale(0)" : "scale(1)")};
-        transition: transform 0.4s ease-in;
+      content: "";
+      display: block;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      background: white;
+      width: 100%;
+      height: 1px;
+      transition: transform 0.4s ease-in;
     }
   `}
 `;

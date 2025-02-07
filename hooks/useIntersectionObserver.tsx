@@ -1,18 +1,15 @@
-//@ts-nocheck
-import { useEffect, useState, useRef } from 'react';
+// @ts-nocheck
+import { useEffect, useState, useRef } from "react";
 
 export function useOnScreen(ref) {
   const [isOnScreen, setIsOnScreen] = useState(false);
   const [checkBottomElement, setCheckBottomELement] = useState(false);
   const observerRef = useRef(null);
-  
+
   useEffect(() => {
     observerRef.current = new IntersectionObserver(([entry]) => {
-      setIsOnScreen(entry.isIntersecting)
-      console.log(entry.isVisible)
-    }
-
-    );
+      setIsOnScreen(entry.isIntersecting);
+    });
   }, []);
 
   useEffect(() => {
@@ -21,16 +18,13 @@ export function useOnScreen(ref) {
     return () => {
       observerRef.current.disconnect();
     };
-  }, [ref.current]);
+  }, []);
 
   const windowsHeight = window.innerHeight + window.scrollY;
 
-  console.log(window.innerHeight)
-  
   const scrollHandler = () => {
     const bottom = ref.current?.getBoundingClientRect().bottom;
-    console.log(bottom < window.innerHeight, 'bottom ' + bottom + " " + "document.documentElement.clientHeight " +  window.scrollY)
-    if(bottom <= windowsHeight) {
+    if (bottom <= windowsHeight) {
       setCheckBottomELement(true);
     } else {
       setCheckBottomELement(false);
@@ -44,6 +38,6 @@ export function useOnScreen(ref) {
 
   return {
     isOnScreen,
-    checkBottomElement
-  }
+    checkBottomElement,
+  };
 }

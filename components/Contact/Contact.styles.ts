@@ -3,15 +3,19 @@ import { breakpoint } from "../../styles/Breakpoint";
 import theme from "../../styles/Theme";
 import { ContactSVG } from "../ContactSvg/Contact.styles";
 
+const hoverStyles = `
+  @media (hover: hover) and (pointer: fine) {
+    cursor: pointer;
+  }
+`;
+
 export const ContactBlock = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   a {
     &:hover {
-      @media (hover: hover) and (pointer: fine) {
-        cursor: pointer;
-      }
+      ${hoverStyles}
     }
   }
 `;
@@ -33,7 +37,7 @@ export const ContactBlockAnchor = styled.a`
     width: 80px;
     height: 80px;
   `}
-  &:after {
+  &::after {
     pointer-events: none;
     position: absolute;
     width: 100%;
@@ -67,7 +71,7 @@ export const ContactBlockAnchor = styled.a`
           stroke: ${theme.colors.black};
         }
       }
-      &:after {
+      &::after {
         opacity: 1;
         transform: scale(1.15);
       }

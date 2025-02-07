@@ -1,11 +1,17 @@
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { ContactSVG } from "./Contact.styles";
+import { IconPath } from "../Contact/Contact";
 
-export const ContactSvg = ({ index, icon }) => {
+type ContactSvgProps = {
+  index: number;
+  icon: IconPath[];
+};
+
+export const ContactSvg = ({ index, icon }: ContactSvgProps) => {
   const [ref, inView] = useInView();
 
-  const svg_properties = {
+  const svgProperties = {
     initial: { pathLength: 0 },
     animate: inView && { pathLength: 1 },
     viewport: { once: true },
@@ -18,13 +24,12 @@ export const ContactSvg = ({ index, icon }) => {
 
   if (index !== undefined && icon !== undefined) {
     return (
-      <ContactSVG data-testid={"contactTest" + index}>
+      <ContactSVG data-testid={`contactTest${index}`}>
         <motion.svg ref={ref} viewBox="0 0 512 512">
-          <motion.path {...svg_properties} d={icon[index][index]} />
+          <motion.path {...svgProperties} d={icon[index][index]} />
         </motion.svg>
       </ContactSVG>
     );
-  } else {
-    return <div data-testid="noContactSvg"></div>;
   }
+  return <div data-testid="noContactSvg"></div>;
 };

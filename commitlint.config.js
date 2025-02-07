@@ -1,88 +1,88 @@
 module.exports = {
-  parserPreset: 'conventional-changelog-conventionalcommits',
-  extends: ['@commitlint/config-conventional'],
+  parserPreset: "conventional-changelog-conventionalcommits",
+  extends: ["@commitlint/config-conventional"],
   rules: {
-    'subject-case': [
+    "subject-case": [
       2,
-      'never',
+      "never",
       [
-        'upper-case',
-        'pascal-case',
-        'start-case',
-      ]
-    ]
+        "upper-case",
+        "pascal-case",
+        "start-case",
+      ],
+    ],
   },
   prompt: {
     settings: {},
     messages: {
-      skip: ':skip',
-      max: 'upper %d chars',
-      min: '%d chars at least',
-      emptyWarning: 'can not be empty',
-      upperLimitWarning: 'over limit',
-      lowerLimitWarning: 'below limit'
+      skip: ":skip",
+      max: "upper %d chars",
+      min: "%d chars at least",
+      emptyWarning: "can not be empty",
+      upperLimitWarning: "over limit",
+      lowerLimitWarning: "below limit",
     },
     questions: {
       type: {
         description: "Select the type of change that you're committing:",
         enum: {
           feat: {
-            description: 'A new feature',
-            title: 'Features',
-            emoji: '✨',
+            description: "A new feature",
+            title: "Features",
+            emoji: "✨",
           },
           fix: {
-            description: 'A bug fix',
-            title: 'Bug Fixes',
-            emoji: '🐛',
+            description: "A bug fix",
+            title: "Bug Fixes",
+            emoji: "🐛",
           },
           docs: {
-            description: 'Documentation only changes',
-            title: 'Documentation',
-            emoji: '📚',
+            description: "Documentation only changes",
+            title: "Documentation",
+            emoji: "📚",
           },
           style: {
-            description: 'Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)',
-            title: 'Styles',
-            emoji: '💎',
+            description: "Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)",
+            title: "Styles",
+            emoji: "💎",
           },
           refactor: {
-            description: 'A code change that neither fixes a bug nor adds a feature',
-            title: 'Code Refactoring',
-            emoji: '📦',
+            description: "A code change that neither fixes a bug nor adds a feature",
+            title: "Code Refactoring",
+            emoji: "📦",
           },
           perf: {
-            description: 'A code change that improves performance',
-            title: 'Performance Improvements',
-            emoji: '🚀',
+            description: "A code change that improves performance",
+            title: "Performance Improvements",
+            emoji: "🚀",
           },
           test: {
-            description: 'Adding missing tests or correcting existing tests',
-            title: 'Tests',
-            emoji: '🚨',
+            description: "Adding missing tests or correcting existing tests",
+            title: "Tests",
+            emoji: "🚨",
           },
           build: {
-            description: 'Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)',
-            title: 'Builds',
-            emoji: '🛠',
+            description: "Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)",
+            title: "Builds",
+            emoji: "🛠",
           },
           ci: {
-            description: 'Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)',
-            title: 'Continuous Integrations',
-            emoji: '⚙️',
+            description: "Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)",
+            title: "Continuous Integrations",
+            emoji: "⚙️",
           },
           chore: {
             description: "Other changes that don't modify src or test files",
-            title: 'Chores',
-            emoji: '♻️',
+            title: "Chores",
+            emoji: "♻️",
           },
           revert: {
-            description: 'Reverts a previous commit',
-            title: 'Reverts',
-            emoji: '🗑',
+            description: "Reverts a previous commit",
+            title: "Reverts",
+            emoji: "🗑",
           },
         },
       },
-    }
-  }
+    },
+  },
 };

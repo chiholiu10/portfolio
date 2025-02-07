@@ -22,8 +22,8 @@ const token: DefaultTheme = {
       black: 900,
     },
     fonts: {
-      heading: '"TWKEverett", sans-serif',
-      body: '"TWKEverett", sans-serif',
+      heading: "\"TWKEverett\", sans-serif",
+      body: "\"TWKEverett\", sans-serif",
     },
   },
   breakpoints: {

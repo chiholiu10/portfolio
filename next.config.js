@@ -13,8 +13,8 @@ const nextConfig = {
         protocol: "https",
         hostname: "**",
       },
-    ]
-  }
-}
+    ],
+  },
+};
 
 module.exports = nextConfig;

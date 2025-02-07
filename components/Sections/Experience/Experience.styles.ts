@@ -1,5 +1,5 @@
-import { breakpoint } from "../../../styles/Breakpoint";
 import styled from "styled-components";
+import { breakpoint } from "../../../styles/Breakpoint";
 import theme from "../../../styles/Theme";
 
 export const ExperienceInnerBlock = styled.div`
@@ -59,8 +59,8 @@ export const ExperienceFigure = styled.figure`
     height: 100%;
     position: absolute;
   `}
-  &:before,
-	&:after {
+  &::before,
+	&::after {
     transform: skewY(-3.5deg);
     content: "";
     display: block;
@@ -74,7 +74,7 @@ export const ExperienceFigure = styled.figure`
     `}
   }
 
-  &:before {
+  &::before {
     top: -80px;
     transform-origin: right bottom;
     ${breakpoint.md`
@@ -82,7 +82,7 @@ export const ExperienceFigure = styled.figure`
     `}
   }
 
-  &:after {
+  &::after {
     bottom: -110px;
     transform-origin: left top;
     ${breakpoint.md`
@@ -133,5 +133,5 @@ export const ExperienceContent = styled.div`
     padding: 40px 20px 10px;
     padding-top: 40px;
     width: calc(50% - 40px);
-  `}  
+  `}
 `;
