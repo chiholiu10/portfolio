@@ -1,33 +1,15 @@
-version: "3.9"
-
-services: 
-  server: 
-    build:
-      network: host
-      context: ./backend
-      dockerfile: Dockerfile
-    image: backend
-    container_name: myapp-node-server
-    restart: always
-    volumes: 
-      - ./backend/:/usr/src/App
-      - /usr/src/App/node_modules
-    ports:
-        - "8080:8080"
-    environment:
-      - NODE_ENV=development
-  client:
-    build:
-      network: host
-      context: ./frontend
-      dockerfile: Dockerfile
-    image: frontend
-    container_name: myapp-react-client
-    restart: always
-    volumes:
-      - ./frontend/:/usr/src/App
-      - /usr/src/App/node_modules
-    depends_on:
-      - server
+version: "3.8"
+services:
+  app:
+    build: .
     ports:
       - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    working_dir: /app
+
+volumes:
+  node_modules:
