@@ -15,6 +15,10 @@ export const FadeScrollBox = ({ children }) => {
     if (inView) {
       controls.start("visible");
     }
+
+    return () => {
+      controls.stop();
+    };
   }, [controls, inView]);
 
   return (

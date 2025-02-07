@@ -33,7 +33,9 @@ export function useOnScreen(ref) {
 
   useEffect(() => {
     window.addEventListener("scroll", scrollHandler, true);
-    return () => window.addEventListener("scroll", scrollHandler, true);
+    return () => {
+      window.addEventListener("scroll", scrollHandler, true);
+    };
   }, []);
 
   return {

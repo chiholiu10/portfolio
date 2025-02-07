@@ -21,6 +21,10 @@ export const Experience = () => {
       setMobileQuery(window.innerWidth > 767);
     };
     window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, [mobileQuery]);
 
   if (loading) {

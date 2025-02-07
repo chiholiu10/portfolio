@@ -10,6 +10,10 @@ export const FadeUpIndividually = ({ time, children }) => {
     if (inView) {
       controls.start("visible");
     }
+
+    return () => {
+      controls.stop();
+    };
   }, [controls, inView]);
 
   return (
