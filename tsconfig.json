@@ -15,12 +15,13 @@
     "jsx": "preserve",
     "target": "es5",
     "strictNullChecks": true,
+    "removeComments": false,
+    "types": ["node", "jest", "@testing-library/jest-dom"],
     "plugins": [
       {
         "name": "next"
       }
-    ],
-    "types": ["node", "jest", "@testing-library/jest-dom"]
+    ]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]

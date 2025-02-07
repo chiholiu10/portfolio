@@ -1,5 +1,4 @@
-export const BannerLogo = () => {
-    return (
+export const BannerLogo = () => (
         <svg width="165" height="224" viewBox="0 0 165 224" fill="none">
         <rect y="0.680176" width="165" height="223" fill="url(#pattern0)" />
         <path
@@ -28,5 +27,4 @@ export const BannerLogo = () => {
           />
         </defs>
       </svg>
-    )
-};
+);

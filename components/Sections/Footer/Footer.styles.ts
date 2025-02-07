@@ -6,7 +6,7 @@ export const FooterComponent = styled.footer`
   justify-content: center;
   padding: 15px 0 10px;
   position: relative;
-  &:after {
+  &::after {
     content: "";
     position: absolute;
     top: 0;

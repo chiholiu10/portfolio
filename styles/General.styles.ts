@@ -1,5 +1,5 @@
-import { breakpoint } from "./Breakpoint";
 import styled, { keyframes, css } from "styled-components";
+import { breakpoint } from "./Breakpoint";
 import theme from "./Theme";
 
 export const InnerBody = styled.div``;
@@ -209,13 +209,6 @@ export const ComponentRow = styled.div`
   `}
 `;
 
-const blink = keyframes`
-  100% {
-    box-shadow: 0 0 3px #fff, 0 0 10px #fff, 0 0 20px #fff, 0 0 40px #0ba9ca,
-      0 0 70px #0ba9ca, 0 0 80px #0ba9ca;
-  }
-`;
-
 export const SectionPopUpText = styled.div`
   bottom: 50px;
   background-color: grey;
@@ -287,18 +280,20 @@ export const SectionPopUp = styled.div<{
     align-items: center;
     justify-content: center;
     ${(props) => {
-      if (props.bottomElement) {
-        return css`
+    if (props.bottomElement) {
+      return css`
           position: absolute;
           animation: ${animatePills};
         `;
-      }
-      if (props.isInView) {
-        return css`
+    }
+    if (props.isInView) {
+      return css`
           position: fixed;
           animation: ${animatePills};
         `;
-      }
-    }}
+    }
+
+    return css``;
+  }}
   }
 `;

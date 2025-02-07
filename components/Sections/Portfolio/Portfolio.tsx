@@ -10,7 +10,6 @@ import {
 } from "../../../styles/General.styles";
 import { FadeUpWhenVisible, FadeUpIndividually } from "../../FramerMotions";
 import { QUERY } from "./PortfolioQuery";
-import uniqid from "uniqid";
 
 export const Portfolio = () => {
   const { data, loading, error } = useQuery(QUERY);
@@ -28,30 +27,28 @@ export const Portfolio = () => {
 
   return (
     <ComponentSection className="portfolioComponent">
-      <div key={uniqid()}>
-        <motion.div style={{ y: y2, x: 0 }}>
-          <BackgroundImage
-            src={
-              "https://res.cloudinary.com/dh7tnzzxm/image/upload/v1651443884/circle_effect_8ce52c0de3.png"
-            }
-            left="60%"
-            alt="background-image-effect"
-          />
-        </motion.div>
-        <FadeUpWhenVisible>
-          <Header>{data.section.title}</Header>
-          <SubHeader>{data.section.subtitle}</SubHeader>
-        </FadeUpWhenVisible>
-        <DisplayFlex>
-          {data.section.array.map((item, index) => (
-            <PortfolioBlock key={index}>
-              <FadeUpIndividually time={index} key={uniqid()}>
-                <PortfolioImage src={item.secure_url} alt="portfolio-website/" />
-              </FadeUpIndividually>
-            </PortfolioBlock>
-          ))}
-        </DisplayFlex>
-      </div>
+      <motion.div style={{ y: y2, x: 0 }}>
+        <BackgroundImage
+          src={
+            "https://res.cloudinary.com/dh7tnzzxm/image/upload/v1651443884/circle_effect_8ce52c0de3.png"
+          }
+          left="60%"
+          alt="background-image-effect"
+        />
+      </motion.div>
+      <FadeUpWhenVisible>
+        <Header>{data.section.title}</Header>
+        <SubHeader>{data.section.subtitle}</SubHeader>
+      </FadeUpWhenVisible>
+      <DisplayFlex>
+        {data.section.array.map((item, index) => (
+          <PortfolioBlock key={index}>
+            <FadeUpIndividually time={index} key={index}>
+              <PortfolioImage src={item.secure_url} alt="portfolio-website/" />
+            </FadeUpIndividually>
+          </PortfolioBlock>
+        ))}
+      </DisplayFlex>
     </ComponentSection>
   );
 };

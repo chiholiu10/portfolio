@@ -1,20 +1,19 @@
+import { useQuery } from "@apollo/client";
+import { motion } from "framer-motion";
 import {
   ComponentSection,
   SubHeader,
   BackgroundImage,
 } from "../../../styles/General.styles";
 import { HeaderH1, ProfileCartoon } from "./Banner.styles";
-import { useQuery } from "@apollo/client";
-import { motion, useTransform, useScroll } from "framer-motion";
 import { QUERY } from "./BannerQuery";
 import { BannerLogo } from "./BannerLogo";
 
 export const Banner = () => {
   const { data, loading, error } = useQuery(QUERY);
-  const { scrollY } = useScroll();
 
   if (loading) {
-    return <ComponentSection/>;
+    return <ComponentSection />;
   }
 
   if (error) {
@@ -35,16 +34,18 @@ export const Banner = () => {
           left="60%"
           alt="background-image-effect"
         />
-        <BannerLogo/>
+        <BannerLogo />
       </ProfileCartoon>
 
       <motion.div>
         {data ? (
           <>
-          <HeaderH1>{data?.section.title}</HeaderH1>
-          <SubHeader>{data?.section.subtitle}</SubHeader>
-        </>
-        ) : ("loading...")}
+            <HeaderH1>{data?.section.title}</HeaderH1>
+            <SubHeader>{data?.section.subtitle}</SubHeader>
+          </>
+        ) : (
+          "loading..."
+        )}
       </motion.div>
     </ComponentSection>
   );
