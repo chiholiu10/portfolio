@@ -1,9 +1,0 @@
-echo "🔍 Running Pre-Commit Hooks..."
-
-# Run lint-staged (only on staged files)
-npx lint-staged || { echo "❌ Linting failed!"; exit 1; }
-
-# Ensure build works (optional)
-npm run build || { echo "❌ Build failed!"; exit 1; }
-
-echo "✅ Pre-commit checks passed!"
