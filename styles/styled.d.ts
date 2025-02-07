@@ -2,7 +2,10 @@ import "styled-components";
 
 export type ThemeMode = "light" | "dark";
 
-type ObjectOfStrings = Record<string | number, any>;
+type ObjectOfStrings = Record<
+  string | number,
+  string | number | boolean | null | undefined
+>;
 
 type Typography = {
   fontWeights: {
