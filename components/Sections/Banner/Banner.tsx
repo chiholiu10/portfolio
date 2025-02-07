@@ -13,12 +13,12 @@ export const Banner = () => {
   const { data, loading, error } = useQuery(QUERY);
 
   if (loading) {
-    return <ComponentSection />;
+    return <ComponentSection>Loading...</ComponentSection>;
   }
 
   if (error) {
     console.error(error);
-    return null;
+    return <ComponentSection>Error loading data</ComponentSection>;
   }
 
   return (
@@ -38,7 +38,7 @@ export const Banner = () => {
       </ProfileCartoon>
 
       <motion.div>
-        {data ? (
+        {data && data.section ? (
           <>
             <HeaderH1>{data?.section.title}</HeaderH1>
             <SubHeader>{data?.section.subtitle}</SubHeader>

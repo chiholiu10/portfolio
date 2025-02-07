@@ -54,7 +54,6 @@ export const ComponentSection = styled.section`
   padding-bottom: 150px;
   position: relative;
   &.bannerComponent {
-    // padding-top: 80px;
     svg {
       width: 165px;
       height: auto;
