@@ -10,6 +10,8 @@
 - [Contentful](https://www.contentful.com)
 - [GraphQL](https://graphql.org)
 - Github CI CD Pipeline
+- Docker
+- CI/CD Pipeline (GitHub actions)
 
 ## Available Scripts
 
