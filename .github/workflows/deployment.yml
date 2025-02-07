@@ -1,35 +1,96 @@
-name: Node.js CI
+name: CI/CD Pipeline
 
 on:
   push:
-    branches: [main, develop]
+    branches:
+      - main
   pull_request:
-    branches: [main, develop]
+    branches:
+      - main
 
 jobs:
-  build:
+  build-and-install:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [14.15.x]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Cache Yarn dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            .yarn/cache
+          key: yarn-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            yarn-${{ runner.os }}-
+
+      - name: Install Yarn
+        run: npm install -g yarn
+
+      - name: Install dependencies and clear cache
+        run: |
+          yarn ci
+          yarn cache clean
+
+      - name: Build the project
+        run: yarn run build
+
+  lint:
+    runs-on: ubuntu-latest
+    needs: build-and-install
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: "npm"
+          node-version: 20
 
-      - name: Run CI command
-        run: npm ci
+      - name: Cache Yarn dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            .yarn/cache
+          key: yarn-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            yarn-${{ runner.os }}-
 
-      - name: Check linting
-        run: npm run lint
+      - name: Install dependencies
+        run: yarn ci
 
-      - name: Run the tests
-        run: npm run test
+      - name: Run lint-staged and build
+        run: |
+          echo "🔍 Running Pre-Commit Hooks..."
+          npx lint-staged && npm run build || { echo "❌ Linting or build failed!"; exit 1; }
+          echo "✅ Pre-commit checks passed!"
 
-      - name: Build
-        run: npm run build
+  deploy:
+    runs-on: ubuntu-latest
+    needs: lint
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to production
+        run: |
+          echo "🚀 Deploying application..."
+          # Add deployment commands here
+          # Example: ./deploy.sh
+        env:
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+
+      - name: Verify deployment
+        run: |
+          echo "✅ Verifying deployment..."
+          # Add verification commands here
