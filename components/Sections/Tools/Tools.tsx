@@ -12,7 +12,10 @@ import { ToolInnerBlock, ToolsBlock, ToolsHeader } from "./Tools.styles";
 import { QUERY } from "./ToolsQuery";
 
 export const Tools = () => {
-  const { data, loading, error } = useQuery(QUERY);
+  const { data, loading, error } = useQuery(QUERY, {
+    variables: { id: "2FzwztBT4JTZm5icaV1tlb" },
+    fetchPolicy: "cache-and-network",
+  });
 
   if (loading) {
     return <ComponentSection></ComponentSection>;

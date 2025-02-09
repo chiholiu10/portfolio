@@ -17,7 +17,10 @@ import {
 import { QUERY } from "./IntroductionQuery";
 
 export const Introduction = () => {
-  const { data, loading, error } = useQuery(QUERY);
+  const { data, loading, error } = useQuery(QUERY, {
+    variables: { id: "4DIoyNagIFWzKfhGrtKUXB" },
+    fetchPolicy: "cache-and-network",
+  });
   const { scrollY } = useScroll();
   const y2 = useTransform(scrollY, [0, 7000], [1, -1000]);
 

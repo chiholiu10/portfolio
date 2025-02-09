@@ -12,7 +12,11 @@ import { PortfolioBlock, PortfolioImage } from "./Portfolio.styles";
 import { QUERY } from "./PortfolioQuery";
 
 export const Portfolio = () => {
-  const { data, loading, error } = useQuery(QUERY);
+  const { data, loading, error } = useQuery(QUERY, {
+    variables: { id: "2qFy05XNAe3Ho1CmJiAgbO" },
+    fetchPolicy: "cache-and-network",
+  });
+
   const { scrollY } = useScroll();
   const y2 = useTransform(scrollY, [0, 7000], [1, -1000]);
 

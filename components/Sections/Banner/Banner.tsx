@@ -10,7 +10,10 @@ import { BannerLogo } from "./BannerLogo";
 import { QUERY } from "./BannerQuery";
 
 export const Banner = () => {
-  const { data, loading, error } = useQuery(QUERY);
+  const { data, loading, error } = useQuery(QUERY, {
+    variables: { id: "7wNcHAAqxL2cunkRCCxW4o" },
+    fetchPolicy: "cache-and-network",
+  });
 
   if (loading) {
     return <ComponentSection>Loading...</ComponentSection>;
