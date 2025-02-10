@@ -36,8 +36,6 @@ const introspectionBlockLink = new ApolloLink((operation, forward) => {
   return forward(operation);
 });
 
-console.log(introspectionBlockLink);
-
 const client = new ApolloClient({
   link: ApolloLink.from([authLink, introspectionBlockLink, httpLink]),
   cache: new InMemoryCache(),
