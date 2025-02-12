@@ -15,7 +15,10 @@ export type IconPath = {
 };
 
 export const Contact = () => {
-  const { data, loading, error } = useQuery(QUERY);
+  const { data, loading, error } = useQuery(QUERY, {
+    variables: { id: "6pPYUtgRlvgICxNf4Dhei" },
+    fetchPolicy: "cache-and-network",
+  });
 
   const icon: IconPath[] = [
     {

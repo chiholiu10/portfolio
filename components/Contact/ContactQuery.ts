@@ -1,13 +1,11 @@
 import { gql } from "@apollo/client";
+import { SECTION_FIELDS } from "../../graphql/fragments";
 
 export const QUERY = gql`
-  query sectionEntryQuery {
-    section(id: "6pPYUtgRlvgICxNf4Dhei") {
-      sys {
-        id
-      }
-      title
-      arrays
+  query sectionEntryQuery($id: String!) {
+    section(id: $id) {
+      ...SectionFields
     }
   }
+  ${SECTION_FIELDS}
 `;
