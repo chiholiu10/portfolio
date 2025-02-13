@@ -1,9 +1,13 @@
 echo "🔍 Running Pre-Commit Hooks..."
 
+# Run ESLint before lint-staged to catch broader linting issues
+
+yarn lint || { echo "❌ ESLint failed!"; exit 1; }
+
 # Run lint-staged (only on staged files)
 npx lint-staged || { echo "❌ Linting failed!"; exit 1; }
 
 # Ensure build works (optional)
-npm run build || { echo "❌ Build failed!"; exit 1; }
+yarn run build || { echo "❌ Build failed!"; exit 1; }
 
 echo "✅ Pre-commit checks passed!"
