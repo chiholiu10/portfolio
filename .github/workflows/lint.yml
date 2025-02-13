@@ -7,6 +7,15 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Debug Directory Structure
+        run: ls -R # Check where package.json is located
+
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile # Ensure all dependencies are installed
+
       - name: Run Lint Checks
         run: |
           echo "🔍 Running lint checks..."
