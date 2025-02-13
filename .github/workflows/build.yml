@@ -7,8 +7,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3 # Ensures the repo files are available
+
+      - name: Debug Directory Structure
+        run: ls -R # Lists files to verify package.json location
+
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile # Ensures all dependencies are installed
+
       - name: Build the Project
         run: |
           echo "🛠️ Building project..."
-          yarn run build
+          yarn build
           echo "✅ Build completed!"
