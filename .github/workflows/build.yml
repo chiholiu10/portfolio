@@ -1,0 +1,14 @@
+name: Build
+
+on:
+  workflow_call:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build the Project
+        run: |
+          echo "🛠️ Building project..."
+          yarn run build
+          echo "✅ Build completed!"

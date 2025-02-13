@@ -1,0 +1,25 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  install:
+    uses: ./.github/workflows/install.yml
+
+  lint:
+    uses: ./.github/workflows/lint.yml
+    needs: install
+
+  build:
+    uses: ./.github/workflows/build.yml
+    needs: [install, lint]
+
+  deploy:
+    uses: ./.github/workflows/deploy.yml
+    needs: build
