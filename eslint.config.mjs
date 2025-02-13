@@ -29,6 +29,7 @@ export default [
     plugins: {
       "@typescript-eslint": typescriptEslint,
     },
+    files: ["**/*.{ts,tsx,js}"],
     languageOptions: {
       globals: {
         ...globals.commonjs,
@@ -53,7 +54,6 @@ export default [
           caseSensitive: false,
         },
       ],
-      quotes: ["error", "double"],
       "import/extensions": [
         "off",
         "ignorePackages",
@@ -65,14 +65,18 @@ export default [
           tsx: "never",
         },
       ],
+      "no-console": ["error", { allow: ["error"] }],
       "import/prefer-default-export": "off",
       camelcase: ["error", { allow: ["Aaa_Abb"] }],
+      quotes: ["error", "double"],
       "max-len": "off",
       "import/no-cycle": "off",
       "no-tabs": "off",
       "trailing-comma": "off",
       "comma-dangle": ["error", "always-multiline"],
       "no-trailing-spaces": "off",
+      "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/explicit-module-boundary-types": "off",
     },
   },
 ];

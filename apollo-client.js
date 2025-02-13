@@ -30,7 +30,6 @@ const introspectionBlockLink = new ApolloLink((operation, forward) => {
         ),
     )
   ) {
-    console.warn("Introspection is disabled in production.");
     return null; // Block the request
   }
   return forward(operation);
