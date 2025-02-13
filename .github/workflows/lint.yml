@@ -1,14 +1,14 @@
-name: Lint Code
+name: Lint
 
-on: 
+on:
   workflow_call:
 
-jobs: 
+jobs:
   lint:
     runs-on: ubuntu-latest
-      steps:
-        - name: Run Lint Checks
-          run: |
-            echo "🔍 Running lint checks..."
-            yarn lint
-            echo "✅ Linting passed!"
+    steps:
+      - name: Run Lint Checks
+        run: |
+          echo "🔍 Running lint checks..."
+          yarn lint
+          echo "✅ Linting passed!"
