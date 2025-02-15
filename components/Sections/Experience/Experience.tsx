@@ -13,10 +13,11 @@ import {
 import { QUERY } from "./ExperienceQuery";
 
 export const Experience = () => {
-  const { loading, error, data } = useQuery(QUERY, {
+  const { data, loading, error } = useQuery(QUERY, {
     variables: { id: "2c3zCPqbJcXzcaM2bYTp52" },
     fetchPolicy: "cache-and-network",
   });
+
   const [mobileQuery, setMobileQuery] = useState(true);
 
   useEffect(() => {
