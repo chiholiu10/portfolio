@@ -1,4 +1,5 @@
 import "../styles/global.css";
+import Head from "next/head";
 import { ApolloProvider } from "@apollo/client";
 import client from "../apollo-client";
 
@@ -10,6 +11,9 @@ if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
 
 const MyApp = ({ Component, pageProps }) => (
   <ApolloProvider client={client}>
+    <Head>
+      <title>Portfolio Chi Ho Liu | Front End Developer</title>
+    </Head>
     <Component {...pageProps} />
   </ApolloProvider>
 );

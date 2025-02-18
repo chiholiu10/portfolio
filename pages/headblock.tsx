@@ -64,6 +64,7 @@ const HeadBlock = () => (
         "@type": "WebSite",
         name: "Chi Ho Liu | Front End Developer Portfolio",
         url: "https://www.chiholiu.com",
+        title: "Portfolio Chi Ho Liu | Front End Developer",
         description:
           "Professional portfolio of Chi Ho Liu, showcasing expertise in ReactJS, VueJS, NextJS, Nuxt, TypeScript, and modern web solutions.",
         author: {
