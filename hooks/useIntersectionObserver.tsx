@@ -1,24 +1,34 @@
 // @ts-nocheck
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 export function useOnScreen(ref) {
   const [isOnScreen, setIsOnScreen] = useState(false);
   const [checkBottomElement, setCheckBottomELement] = useState(false);
-  const observerRef = useRef(null);
 
   useEffect(() => {
-    observerRef.current = new IntersectionObserver(([entry]) => {
-      setIsOnScreen(entry.isIntersecting);
-    });
-  }, []);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsOnScreen(entry.isIntersecting);
+      },
+      {
+        threshold: 0.5, // Trigger when 50% of the element is visible
+        rootMargin: "0px", // Adjust the root margin if needed
+      },
+    );
 
-  useEffect(() => {
-    observerRef.current.observe(ref.current);
+    const currentRef = ref.current;
+
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
 
     return () => {
-      observerRef.current.disconnect();
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+      observer.disconnect();
     };
-  }, []);
+  }, [ref]);
 
   const windowsHeight = window.innerHeight + window.scrollY;
 
@@ -34,9 +44,9 @@ export function useOnScreen(ref) {
   useEffect(() => {
     window.addEventListener("scroll", scrollHandler, true);
     return () => {
-      window.removeEventListener("scroll", scrollHandler, true);
+      window.EventListener("scroll", scrollHandler, true);
     };
-  }, []);
+  });
 
   return {
     isOnScreen,

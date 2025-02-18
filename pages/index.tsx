@@ -2,9 +2,17 @@ import dynamic from "next/dynamic";
 import { ThemeProvider } from "styled-components";
 import { CSSreset } from "../styles/CssReset";
 import theme from "../styles/Theme";
+import { dynamicImport } from "../utils/dynamicImport";
 
-const DynamicNavbar = dynamic(() => import("../components/Sections/Navbar/Navbar").then((mod) => mod.Navbar));
-const DynamicBanner = dynamic(() => import("../components/Sections/Banner/Banner").then((mod) => mod.Banner));
+const DynamicNavbar = dynamicImport("Sections/Navbar/Navbar", "Navbar");
+const DynamicBanner = dynamicImport("Sections/Banner/Banner", "Banner");
+
+// const DynamicNavbar = dynamic(() =>
+//   import("../components/Sections/Navbar/Navbar").then((mod) => mod.Navbar)
+// );
+// const DynamicBanner = dynamic(() =>
+//   import("../components/Sections/Banner/Banner").then((mod) => mod.Banner)
+// );
 const DynamicIntroduction = dynamic(() => import("../components/Sections/Introduction/Introduction").then(
   (mod) => mod.Introduction,
 ));

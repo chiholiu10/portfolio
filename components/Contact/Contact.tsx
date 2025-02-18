@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { motion } from "framer-motion";
-import { BackgroundImage, ComponentSection } from "../../styles/General.styles";
+import { ComponentSection } from "../../styles/General.styles";
 import { ContactSvg } from "../ContactSvg/ContactSvg";
 import { FadeUpIndividually } from "../FramerMotions";
 import {
@@ -36,7 +36,7 @@ export const Contact = () => {
   ];
 
   if (loading) {
-    return <></>;
+    return <ComponentSection />;
   }
 
   if (error) {
@@ -46,13 +46,6 @@ export const Contact = () => {
 
   return (
     <ComponentSection id="contact" className="contactComponent">
-      <BackgroundImage
-        src={
-          "https://res.cloudinary.com/dh7tnzzxm/image/upload/v1681666434/Vector_1_vgunka.png"
-        }
-        left="-60%"
-        alt="background-image-effect"
-      />
       <ContactContainer as={motion.div}>
         {data.section.arrays?.map(
           (item: { anchor: string; name: string }, index: number) => (

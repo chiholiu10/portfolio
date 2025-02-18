@@ -32,7 +32,7 @@ export const Experience = () => {
   }, [mobileQuery]);
 
   if (loading) {
-    return <ComponentSection></ComponentSection>;
+    return <ComponentSection />;
   }
 
   if (error) {

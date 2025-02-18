@@ -1,5 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import {
   BackgroundImage,
   ComponentSection,
@@ -16,7 +17,7 @@ export const Banner = () => {
   });
 
   if (loading) {
-    return <ComponentSection>Loading...</ComponentSection>;
+    return <ComponentSection />;
   }
 
   if (error) {
@@ -26,17 +27,27 @@ export const Banner = () => {
 
   return (
     <ComponentSection id="banner" className="bannerComponent">
-      <BackgroundImage
-        src="https://res.cloudinary.com/dh7tnzzxm/image/upload/v1651443884/circle_effect_8ce52c0de3.png"
-        left="-60%"
-        alt="background-image-effect"
-      />
-      <ProfileCartoon>
-        <BackgroundImage
-          src="https://res.cloudinary.com/dh7tnzzxm/image/upload/v1681643719/Gradient_4_w267pd.png"
-          left="60%"
+      <BackgroundImage left="-60%">
+        <Image
+          src="https://res.cloudinary.com/dh7tnzzxm/image/upload/v1651443884/circle_effect_8ce52c0de3.png"
+          width={734}
+          height={733}
+          layout="responsive"
+          priority
           alt="background-image-effect"
         />
+      </BackgroundImage>
+      <ProfileCartoon>
+        <BackgroundImage left="60%">
+          <Image
+            src="https://res.cloudinary.com/dh7tnzzxm/image/upload/v1681643719/Gradient_4_w267pd.png"
+            width={934}
+            height={1092}
+            layout="responsive"
+            priority
+            alt="background-image-effect"
+          />
+        </BackgroundImage>
         <BannerLogo />
       </ProfileCartoon>
 

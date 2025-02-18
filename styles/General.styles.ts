@@ -2,8 +2,6 @@ import styled, { css, keyframes } from "styled-components";
 import { breakpoint } from "./Breakpoint";
 import theme from "./Theme";
 
-export const InnerBody = styled.div``;
-
 export const BackgroundWrapper = styled.div`
   opacity: 0;
   width: 100%;
@@ -18,12 +16,10 @@ export const BackgroundWrapper = styled.div`
   `}
 `;
 
-export const BackgroundImage = styled.img<{
+export const BackgroundImage = styled.div<{
   left?: string;
   width?: string;
 }>`
-  width: 100%;
-  height: auto;
   background-repeat: no-repeat;
   position: absolute;
   top: 0;

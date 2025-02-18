@@ -1,5 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { motion, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
 import {
   BackgroundImage,
   ComponentSection,
@@ -25,7 +26,7 @@ export const Introduction = () => {
   const y2 = useTransform(scrollY, [0, 7000], [1, -1000]);
 
   if (loading) {
-    return <ComponentSection></ComponentSection>;
+    return <ComponentSection />;
   }
 
   if (error) {
@@ -36,14 +37,19 @@ export const Introduction = () => {
   return (
     <ComponentSection id="introduction">
       <motion.div initial={false} style={{ y: y2, x: 0 }}>
-        <BackgroundImage
-          className="effect"
-          src={
-            "https://res.cloudinary.com/dh7tnzzxm/image/upload/v1681643719/Gradient_4_w267pd.png"
-          }
-          left="60%"
-          alt="background-image-effect"
-        />
+        <BackgroundImage left="60%">
+          <Image
+            className="effect"
+            src={
+              "https://res.cloudinary.com/dh7tnzzxm/image/upload/v1681643719/Gradient_4_w267pd.png"
+            }
+            width={625}
+            height={700}
+            layout="responsive"
+            priority
+            alt="background-image-effect chihooho"
+          />
+        </BackgroundImage>
       </motion.div>
       <FadeUpWhenVisible>
         <Header>{data.section.title}</Header>
