@@ -3,6 +3,9 @@ const nextConfig = {
   env: {
     NEXT_SPACE: process.env.NEXT_SPACE,
   },
+  experimental: {
+    esmExternals: true, // Enable tree shaking for external dependencies
+  },
   swcMinify: true,
   compiler: {
     styledComponents: true,

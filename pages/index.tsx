@@ -1,39 +1,45 @@
+import dynamic from "next/dynamic";
 import { ThemeProvider } from "styled-components";
 import { CSSreset } from "../styles/CssReset";
 import theme from "../styles/Theme";
-import { dynamicImport } from "../utils/dynamicImport";
 
-// Dynamically import components using the utility function
-const DynamicNavbar = dynamicImport("Sections/Navbar/Navbar", "Navbar");
-const DynamicBanner = dynamicImport("Sections/Banner/Banner", "Banner");
-const DynamicIntroduction = dynamicImport(
-  "Sections/Introduction/Introduction",
-  "Introduction",
-);
-const DynamicExperience = dynamicImport(
-  "Sections/Experience/Experience",
-  "Experience",
-);
-const DynamicPortfolio = dynamicImport(
-  "Sections/Portfolio/Portfolio",
-  "Portfolio",
-);
-const DynamicTools = dynamicImport("Sections/Tools/Tools", "Tools");
-const DynamicContact = dynamicImport("Sections/Contact/Contact", "Contact");
-const DynamicFooter = dynamicImport("Sections/Footer/Footer", "Footer");
+const DynamicNavbar = dynamic(() =>
+  import("../components/Sections/Navbar/Navbar").then((mod) => mod.Navbar));
+const DynamicBanner = dynamic(() =>
+  import("../components/Sections/Banner/Banner").then((mod) => mod.Banner));
+const DynamicIntroduction = dynamic(() =>
+  import("../components/Sections/Introduction/Introduction").then(
+    (mod) => mod.Introduction,
+  ));
+const DynamicExperience = dynamic(() =>
+  import("../components/Sections/Experience/Experience").then(
+    (mod) => mod.Experience,
+  ));
+const DynamicPortfolio = dynamic(() =>
+  import("../components/Sections/Portfolio/Portfolio").then(
+    (mod) => mod.Portfolio,
+  ));
+const DynamicContact = dynamic(() =>
+  import("../components/Contact/Contact").then((mod) => mod.Contact));
+const DynamicTools = dynamic(() =>
+  import("../components/Sections/Tools/Tools").then((mod) => mod.Tools));
+const DynamicFooter = dynamic(() =>
+  import("../components/Sections/Footer/Footer").then((mod) => mod.Footer));
 
 export default function ClientSide() {
   return (
-    <ThemeProvider theme={theme}>
-      <CSSreset theme={theme} />
-      <DynamicNavbar />
-      <DynamicBanner />
-      <DynamicIntroduction />
-      <DynamicExperience />
-      <DynamicPortfolio />
-      <DynamicTools />
-      <DynamicContact />
-      <DynamicFooter />
-    </ThemeProvider>
+    <>
+      <ThemeProvider theme={theme}>
+        <CSSreset theme={theme} />
+        <DynamicNavbar />
+        <DynamicBanner />
+        <DynamicIntroduction />
+        <DynamicExperience />
+        <DynamicPortfolio />
+        <DynamicTools />
+        <DynamicContact />
+        <DynamicFooter />
+      </ThemeProvider>
+    </>
   );
 }

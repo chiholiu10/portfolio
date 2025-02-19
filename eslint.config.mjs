@@ -22,8 +22,8 @@ export default [
       "prettier",
       "airbnb-base",
       "eslint:recommended",
-      "plugin:import/typescript"
-    )
+      "plugin:import/typescript",
+    ),
   ),
   {
     plugins: {
@@ -77,6 +77,8 @@ export default [
       "no-trailing-spaces": "off",
       "@typescript-eslint/no-unused-vars": "warn",
       "@typescript-eslint/explicit-module-boundary-types": "off",
+      "implicit-arrow-linebreak": "off",
+      "function-paren-newline": ["error", "consistent"],
     },
   },
 ];
