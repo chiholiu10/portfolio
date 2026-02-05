@@ -1,7 +1,6 @@
 import { useQuery } from "@apollo/client";
 import Image from "next/image";
 import {
-  BackgroundImage,
   ComponentRow,
   ComponentSection,
   Header,
@@ -31,19 +30,6 @@ export const Tools = () => {
       <FadeUpWhenVisible>
         <Header>{data.section?.title}</Header>
         <SubHeader>{data.section?.subtitle}</SubHeader>
-        <BackgroundImage left="60%">
-          <Image
-            className="effect"
-            src={
-              "https://res.cloudinary.com/dh7tnzzxm/image/upload/v1681643719/Gradient_4_w267pd.png"
-            }
-            width={625}
-            height={700}
-            layout="responsive"
-            priority
-            alt="background-image-effect"
-          />
-        </BackgroundImage>
       </FadeUpWhenVisible>
       <ComponentRow>
         {data.section?.arrayBlockCollection?.items.map((item, index) => (
