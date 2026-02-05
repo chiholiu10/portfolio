@@ -1,8 +1,6 @@
 import { useQuery } from "@apollo/client";
-import { motion, useScroll, useTransform } from "framer-motion";
-import Image from "next/image";
+import { useScroll, useTransform } from "framer-motion";
 import {
-  BackgroundImage,
   ComponentSection,
   DisplayFlex,
   Header,
@@ -36,21 +34,6 @@ export const Introduction = () => {
 
   return (
     <ComponentSection id="introduction">
-      <motion.div initial={false} style={{ y: y2, x: 0 }}>
-        <BackgroundImage left="60%">
-          <Image
-            className="effect"
-            src={
-              "https://res.cloudinary.com/dh7tnzzxm/image/upload/v1681643719/Gradient_4_w267pd.png"
-            }
-            width={625}
-            height={700}
-            layout="responsive"
-            priority
-            alt="background-image-effect"
-          />
-        </BackgroundImage>
-      </motion.div>
       <FadeUpWhenVisible>
         <Header>{data.section.title}</Header>
         <SubHeader>{data.section.subtitle}</SubHeader>
