@@ -47,7 +47,7 @@ export const Introduction = () => {
             height={700}
             layout="responsive"
             priority
-            alt="background-image-effect chihooho"
+            alt="background-image-effect"
           />
         </BackgroundImage>
       </motion.div>
