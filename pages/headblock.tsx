@@ -66,7 +66,6 @@ const HeadBlock = () => (
           name: "Chi Ho Liu",
           jobTitle: "Front-End & Full-Stack Developer",
           url: "https://chiholiu.com",
-          image: "https://chiholiu.com/jouw-profielfoto.jpg",
           description:
             "Ervaren Front-End & Full-Stack Developer op zoek naar een uitdaging in loondienst in regio Amsterdam, Utrecht, Hoofddorp of Amstelveen. Specialist in React, Vue, NextJS en Python.",
           jobBenefits: "Beschikbaar voor loondienst / Fulltime / Parttime",
