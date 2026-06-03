@@ -60,15 +60,35 @@ const HeadBlock = () => (
     <script type="application/ld+json">
       {JSON.stringify({
         "@context": "https://schema.org",
-        "@type": "WebSite",
-        name: "Chi Ho Liu | Front End Developer Portfolio",
-        url: "https://www.chiholiu.com",
-        title: "Portfolio Chi Ho Liu | Front End Developer",
-        description:
-          "Professional portfolio of Chi Ho Liu, showcasing expertise in ReactJS, VueJS, NextJS, Nuxt, TypeScript, and modern web solutions.",
-        author: {
+        "@type": "ProfilePage",
+        mainEntity: {
           "@type": "Person",
           name: "Chi Ho Liu",
+          jobTitle: "Front-End & Full-Stack Developer",
+          url: "https://chiholiu.com",
+          image: "https://chiholiu.com/jouw-profielfoto.jpg",
+          description:
+            "Ervaren Front-End & Full-Stack Developer op zoek naar een uitdaging in loondienst in regio Amsterdam, Utrecht, Hoofddorp of Amstelveen. Specialist in React, Vue, NextJS en Python.",
+          jobBenefits: "Beschikbaar voor loondienst / Fulltime / Parttime",
+          workLocation: [
+            { "@type": "Place", name: "Amsterdam" },
+            { "@type": "Place", name: "Utrecht" },
+            { "@type": "Place", name: "Hoofddorp" },
+            { "@type": "Place", name: "Amstelveen" },
+          ],
+          knowsAbout: [
+            "Front-End Development",
+            "Full-Stack Development",
+            "React",
+            "Vue",
+            "NextJS",
+            "Nuxt",
+            "TypeScript",
+            "Python",
+            "Angular",
+            "Web Development",
+          ],
+          inLanguage: "nl-NL",
         },
       })}
     </script>
