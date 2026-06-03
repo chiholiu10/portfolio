@@ -1,5 +1,6 @@
 import { useQuery } from "@apollo/client";
-import { useScroll, useTransform } from "framer-motion";
+import { z } from "zod";
+import { memo } from "react";
 import {
   ComponentSection,
   DisplayFlex,
@@ -15,31 +16,66 @@ import {
 } from "./Introduction.styles";
 import { QUERY } from "./IntroductionQuery";
 
+const IntroItemSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+});
+
+const SectionSchema = z.object({
+  title: z.string(),
+  subtitle: z.string(),
+  arrays: z.array(IntroItemSchema),
+});
+
+type IntroItem = z.infer<typeof IntroItemSchema>;
+
+const IntroItem = memo(
+  ({ item, index }: { item: IntroItem; index: number }) => (
+    <FadeUpIndividually time={index * 0.1}>
+      <IntroBlock>
+        <IntroBlockCenter>
+          <IntroTitle>{item.description}</IntroTitle>
+          <IntroSubTitle>{item.title}</IntroSubTitle>
+        </IntroBlockCenter>
+      </IntroBlock>
+    </FadeUpIndividually>
+  ),
+);
+
 export const Introduction = () => {
-  const { data, loading, error } = useQuery(QUERY, {
+  const { data, loading } = useQuery(QUERY, {
     variables: { id: "4DIoyNagIFWzKfhGrtKUXB" },
     fetchPolicy: "cache-and-network",
   });
-  const { scrollY } = useScroll();
-  const y2 = useTransform(scrollY, [0, 7000], [1, -1000]);
 
   if (loading) {
     return <ComponentSection />;
   }
 
-  if (error) {
-    console.error(error);
-    return null;
+  const { section } = data || {};
+  if (!section) return null;
+
+  const validationResult = SectionSchema.safeParse(section);
+
+  if (!validationResult.success) {
+    console.error("Invalid section data:", validationResult.error);
+    return (
+      <ComponentSection>
+        <div>Error: Invalid data structure</div>
+      </ComponentSection>
+    );
   }
+
+  const { title, subtitle, arrays } = validationResult.data;
 
   return (
     <ComponentSection id="introduction">
       <FadeUpWhenVisible>
-        <Header>{data.section.title}</Header>
-        <SubHeader>{data.section.subtitle}</SubHeader>
+        <Header>{title}</Header>
+        <SubHeader>{subtitle}</SubHeader>
       </FadeUpWhenVisible>
       <DisplayFlex>
-        {data.section.arrays.map((item, index) => (
+        {arrays?.map((item, index) => (
           <FadeUpIndividually time={index} key={index}>
             <IntroBlock>
               <IntroBlockCenter>
@@ -53,3 +89,5 @@ export const Introduction = () => {
     </ComponentSection>
   );
 };
+
+IntroItem.displayName = "IntroItem";

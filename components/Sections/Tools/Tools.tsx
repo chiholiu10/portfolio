@@ -32,24 +32,27 @@ export const Tools = () => {
         <SubHeader>{data.section?.subtitle}</SubHeader>
       </FadeUpWhenVisible>
       <ComponentRow>
-        {data.section?.arrayBlockCollection?.items.map((item, index) => (
-          <FadeUpIndividually time={index} key={index}>
-            <ToolsBlock>
-              <ToolInnerBlock>
-                <Image
-                  src={item.url}
-                  alt={`image of ${item.title}`}
-                  width={100}
-                  height={100}
-                  loading="lazy"
-                />
-              </ToolInnerBlock>
-              <ToolsHeader>
-                <h2>{item.title}</h2>
-              </ToolsHeader>
-            </ToolsBlock>
-          </FadeUpIndividually>
-        ))}
+        {data?.section?.arrayBlockCollection?.items?.length > 0
+          && data.section.arrayBlockCollection.items.map((item, index) => (
+            <FadeUpIndividually time={index} key={index}>
+              <ToolsBlock>
+                <ToolInnerBlock>
+                  <Image
+                    src={item.url}
+                    alt={
+                      item.title ? `${item.title}` : `tool image ${index + 1}`
+                    }
+                    width={100}
+                    height={100}
+                    loading="lazy"
+                  />
+                </ToolInnerBlock>
+                <ToolsHeader>
+                  <h2>{item.title}</h2>
+                </ToolsHeader>
+              </ToolsBlock>
+            </FadeUpIndividually>
+          ))}
       </ComponentRow>
     </ComponentSection>
   );

@@ -53,7 +53,7 @@ export const ToolsBlock = styled.div`
     height: auto;
     aspect-ratio: auto;
     ${breakpoint.md`
-      width: 80px;
+      width: 70px;
     `}
   }
   h2 {

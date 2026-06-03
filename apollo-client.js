@@ -6,7 +6,7 @@ import {
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 
-const contentToken = "Efc8fVC1vz-dSug8XJUneKcS-LXCpE_pNtr0a6_JfFA";
+const contentToken = "gfeeYIbSBOGqpbHI_nLebjUylA3vOJaaPY23jNL6avA";
 
 const httpLink = createHttpLink({
   uri: "https://graphql.contentful.com/content/v1/spaces/z1tccslo5ojo/environments/master",
@@ -23,9 +23,11 @@ const introspectionBlockLink = new ApolloLink((operation, forward) => {
   if (
     process.env.NODE_ENV === "production"
     && operation.query.definitions.some(
-      (def) => def.kind === "OperationDefinition"
+      (def) =>
+        def.kind === "OperationDefinition"
         && def.selectionSet.selections.some(
-          (selection) => selection.name?.value === "__schema"
+          (selection) =>
+            selection.name?.value === "__schema"
             || selection.name?.value === "__type",
         ),
     )

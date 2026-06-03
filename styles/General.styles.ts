@@ -104,11 +104,13 @@ export const HeaderGeneral = `
   font-kerning: normal;
   font-size: 26px;
   font-weight: 600;
-  line-height: 3;
+  line-height: 1.4;
   text-align: center;
   padding: 20px 20px 0;
   color: ${theme.colors.white};
- 
+  ${breakpoint.md`
+    line-height: 3;
+  `}
 `;
 
 export const Header = styled.h2`
@@ -162,12 +164,14 @@ export const DisplayFlex = styled.div`
   `}
 `;
 
-export const TilesProps = `
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
-  rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
-  rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-  background-color: #212121;
-  border-radius: 15px;
+export const TilesProps = ` 
+  border: 1px solid red;
+  background-image: linear-gradient(
+    to bottom right,
+    var(--gradient-from),
+    var(--gradient-to)
+  );
+  border-color: #fff3;
 `;
 
 export const TitleBlockProps = `

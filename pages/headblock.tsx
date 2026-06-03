@@ -7,7 +7,6 @@ const HeadBlock = () => (
     />
     <meta name="format-detection" content="telephone=no" />
 
-    <title>Portfolio Chi Ho Liu | Front End Developer</title>
     <meta
       name="description"
       content="Explore the portfolio of Chi Ho Liu, a Front End Developer in the Netherlands with expertise in ReactJS, VueJS, NextJS, Nuxt, TypeScript, and Styled-Components. Delivering exceptional user experiences and modern web solutions."

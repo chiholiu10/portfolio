@@ -8,6 +8,7 @@ export const IntroBlock = styled.div`
   padding: 20px;
   display: flex;
   overflow-x: hidden;
+  backdrop-filter: blur(4px);
   ${TilesProps}
   ${breakpoint.sm`
     justify-content: center;
