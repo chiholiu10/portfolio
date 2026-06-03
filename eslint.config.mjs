@@ -73,7 +73,7 @@ export default [
       "import/no-cycle": "off",
       "no-tabs": "off",
       "trailing-comma": "off",
-      "comma-dangle": ["error", "always-multiline"],
+      "comma-dangle": ["error", "only-multiline"],
       "no-trailing-spaces": "off",
       "@typescript-eslint/no-unused-vars": "warn",
       "@typescript-eslint/explicit-module-boundary-types": "off",
