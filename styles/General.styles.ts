@@ -43,12 +43,16 @@ export const BackgroundImage = styled.div<{
 `;
 
 export const ComponentSection = styled.section`
-  min-height: 400px;
+  min-height: 650px;
   width: 100%;
   padding: 0 20px;
   overflow-x: hidden;
   padding-bottom: 150px;
   position: relative;
+
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(12px);
+
   &.bannerComponent {
     svg {
       width: 165px;
@@ -66,6 +70,8 @@ export const ComponentSection = styled.section`
     `}
   }
   &.experienceComponent {
+    position: relative;
+
     img {
       left: -52px;
       z-index: 999;
@@ -85,15 +91,8 @@ export const ComponentSection = styled.section`
   }
   ${breakpoint.md`
     overflow-x: initial;
-    min-height: 600px;
     padding: 100px 50px;
   `}
-  ${breakpoint.lg`
-    min-height: 700px;
-  `}
-  &:nth-child(5) {
-    min-height: 300px;
-  }
   input,
   textarea {
     color: ${theme.colors.black};
@@ -279,20 +278,20 @@ export const SectionPopUp = styled.div<{
     align-items: center;
     justify-content: center;
     ${(props) => {
-    if (props.bottomElement) {
-      return css`
+      if (props.bottomElement) {
+        return css`
           position: absolute;
           animation: ${animatePills};
         `;
-    }
-    if (props.isInView) {
-      return css`
+      }
+      if (props.isInView) {
+        return css`
           position: fixed;
           animation: ${animatePills};
         `;
-    }
+      }
 
-    return css``;
-  }}
+      return css``;
+    }}
   }
 `;

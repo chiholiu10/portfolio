@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import {
@@ -8,9 +8,24 @@ import {
   Header,
   SubHeader,
 } from "../../../styles/General.styles";
-import { FadeUpIndividually, FadeUpWhenVisible } from "../../FramerMotions";
+import { FadeUp, WordReveal } from "../../FramerMotions";
 import { PortfolioBlock, PortfolioImage } from "./Portfolio.styles";
 import { QUERY } from "./PortfolioQuery";
+import { z } from "zod";
+
+const PortfolioSchema = z.object({
+  section: z
+    .object({
+      title: z.string(),
+      subtitle: z.string(),
+      array: z.array(
+        z.object({
+          secure_url: z.string(),
+        }),
+      ),
+    })
+    .nullable(),
+});
 
 export const Portfolio = () => {
   const { data, loading, error } = useQuery(QUERY, {
@@ -25,10 +40,20 @@ export const Portfolio = () => {
     return <ComponentSection />;
   }
 
-  if (error) {
-    console.error(error);
-    return null;
+  const result = PortfolioSchema.safeParse(data);
+
+  if (!result.success) {
+    console.error("Validation error:", result.error);
+    return <ComponentSection>Error loading data</ComponentSection>;
   }
+
+  const { section } = result.data;
+
+  if (!section) {
+    return <ComponentSection>No data available</ComponentSection>;
+  }
+
+  const { title, subtitle, array } = section;
 
   return (
     <ComponentSection className="portfolioComponent">
@@ -46,17 +71,19 @@ export const Portfolio = () => {
           />
         </BackgroundImage>
       </motion.div>
-      <FadeUpWhenVisible>
-        <Header>{data.section.title}</Header>
-        <SubHeader>{data.section.subtitle}</SubHeader>
-      </FadeUpWhenVisible>
+      <FadeUp id="portfolio-section">
+        <Header>{title}</Header>
+        <SubHeader>
+          <WordReveal text={subtitle} />
+        </SubHeader>
+      </FadeUp>
       <DisplayFlex>
-        {data.section.array.map((item, index) => (
-          <PortfolioBlock key={index}>
-            <FadeUpIndividually time={index} key={index}>
+        {array.map((item, index) => (
+          <FadeUp key={index} id={`portfolio-item-${index}`}>
+            <PortfolioBlock>
               <PortfolioImage src={item.secure_url} alt="portfolio-website/" />
-            </FadeUpIndividually>
-          </PortfolioBlock>
+            </PortfolioBlock>
+          </FadeUp>
         ))}
       </DisplayFlex>
     </ComponentSection>

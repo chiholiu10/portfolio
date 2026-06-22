@@ -31,9 +31,12 @@ export const ToolsBlock = styled.div`
   flex-direction: column;
   border-radius: 15px;
   background-color: ${theme.colors.lightBlack};
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
-    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
-    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  box-shadow:
+    rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px,
+    rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px,
+    rgba(0, 0, 0, 0.09) 0px -3px 5px;
   ${breakpoint.sm`
     width: 160px;
     height: 160px;
@@ -66,7 +69,7 @@ export const ToolsBlock = styled.div`
     h2 {
       text-transform: capitalize;
       line-height: 2.8;
-      margin: 5px 0 15px;
+      margin: 0 0 15px;
       font-size: 16px;
     }
     ${ToolInnerBlock} {

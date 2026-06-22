@@ -1,7 +1,6 @@
-import { useQuery } from "@apollo/client";
-import { useEffect, useState } from "react";
+import { useQuery } from "@apollo/client/react";
 import { ComponentSection } from "../../../styles/General.styles";
-import { FadeUpWhenVisible } from "../../FramerMotions";
+import { FadeUp, WordReveal } from "../../FramerMotions";
 import {
   ExperienceBlockLeft,
   ExperienceBlockRight,
@@ -11,60 +10,63 @@ import {
   ExperienceInnerBlock,
 } from "./Experience.styles";
 import { QUERY } from "./ExperienceQuery";
+import { z } from "zod";
+
+const ExperienceSchema = z.object({
+  section: z
+    .object({
+      subtitle: z.string(),
+      image: z.object({
+        url: z.string(),
+      }),
+    })
+    .nullable(),
+});
 
 export const Experience = () => {
   const { data, loading, error } = useQuery(QUERY, {
-    variables: { id: "2c3zCPqbJcXzcaM2bYTp52" },
+    variables: {
+      id: "2c3zCPqbJcXzcaM2bYTp52",
+    },
     fetchPolicy: "cache-and-network",
   });
-
-  const [mobileQuery, setMobileQuery] = useState(true);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setMobileQuery(window.innerWidth > 767);
-    };
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [mobileQuery]);
 
   if (loading) {
     return <ComponentSection />;
   }
 
-  if (error) {
-    return null;
+  const result = ExperienceSchema.safeParse(data);
+
+  if (!result.success) {
+    console.error("Validation error:", result.error);
+    return <ComponentSection>Error loading data</ComponentSection>;
   }
+
+  const { section } = result.data;
+
+  if (!section) {
+    return <ComponentSection>No data available</ComponentSection>;
+  }
+
+  const { subtitle, image } = section;
 
   return (
     <ComponentSection id="experience" className="experienceComponent">
       <ExperienceInnerBlock>
         <ExperienceBlockLeft>
-          <FadeUpWhenVisible>
-            <ExperienceContent>{data.section.subtitle}</ExperienceContent>
-          </FadeUpWhenVisible>
+          <FadeUp id="experience-section">
+            <ExperienceContent>
+              <WordReveal text={subtitle} />
+            </ExperienceContent>
+          </FadeUp>
         </ExperienceBlockLeft>
+
         <ExperienceBlockRight>
-          {!mobileQuery ? (
-            <FadeUpWhenVisible>
-              <ExperienceFigure>
-                <ExperienceImage
-                  src={data.section.image.url}
-                  alt="alibaba-picture"
-                />
-              </ExperienceFigure>
-            </FadeUpWhenVisible>
-          ) : (
+          <FadeUp id="experience-image">
             <ExperienceFigure>
-              <ExperienceImage
-                src={data.section.image.url}
-                alt="alibaba-picture"
-              />
+              <ExperienceImage src={image.url} alt="experience-picture" />
             </ExperienceFigure>
-          )}
+          </FadeUp>
         </ExperienceBlockRight>
       </ExperienceInnerBlock>
     </ComponentSection>

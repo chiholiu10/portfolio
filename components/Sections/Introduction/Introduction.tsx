@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 import { z } from "zod";
 import { memo } from "react";
 import {
@@ -7,7 +7,12 @@ import {
   Header,
   SubHeader,
 } from "../../../styles/General.styles";
-import { FadeUpIndividually, FadeUpWhenVisible } from "../../FramerMotions";
+import {
+  StaggerGroup,
+  FadeUp,
+  WordReveal,
+  StaggerItem,
+} from "../../FramerMotions";
 import {
   IntroBlock,
   IntroBlockCenter,
@@ -21,24 +26,28 @@ const IntroItemSchema = z.object({
   description: z.string(),
 });
 
-const SectionSchema = z.object({
-  title: z.string(),
-  subtitle: z.string(),
-  arrays: z.array(IntroItemSchema),
+const IntroductionSchema = z.object({
+  section: z
+    .object({
+      title: z.string(),
+      subtitle: z.string(),
+      arrays: z.array(IntroItemSchema),
+    })
+    .nullable(),
 });
 
 type IntroItem = z.infer<typeof IntroItemSchema>;
 
 const IntroItem = memo(
   ({ item, index }: { item: IntroItem; index: number }) => (
-    <FadeUpIndividually time={index * 0.1}>
+    <StaggerGroup>
       <IntroBlock>
         <IntroBlockCenter>
           <IntroTitle>{item.description}</IntroTitle>
           <IntroSubTitle>{item.title}</IntroSubTitle>
         </IntroBlockCenter>
       </IntroBlock>
-    </FadeUpIndividually>
+    </StaggerGroup>
   ),
 );
 
@@ -52,40 +61,51 @@ export const Introduction = () => {
     return <ComponentSection />;
   }
 
-  const { section } = data || {};
-  if (!section) return null;
+  const result = IntroductionSchema.safeParse(data);
 
-  const validationResult = SectionSchema.safeParse(section);
-
-  if (!validationResult.success) {
-    console.error("Invalid section data:", validationResult.error);
+  if (!result.success) {
+    console.error("Validation error:", result.error);
     return (
       <ComponentSection>
-        <div>Error: Invalid data structure</div>
+        <div>Error loading data</div>
       </ComponentSection>
     );
   }
 
-  const { title, subtitle, arrays } = validationResult.data;
+  const { section } = result.data;
+
+  if (!section) {
+    return (
+      <ComponentSection>
+        <div>No data available</div>
+      </ComponentSection>
+    );
+  }
+
+  const { title, subtitle, arrays } = section;
 
   return (
     <ComponentSection id="introduction">
-      <FadeUpWhenVisible>
+      <FadeUp id="introduction-section">
         <Header>{title}</Header>
-        <SubHeader>{subtitle}</SubHeader>
-      </FadeUpWhenVisible>
-      <DisplayFlex>
-        {arrays?.map((item, index) => (
-          <FadeUpIndividually time={index} key={index}>
-            <IntroBlock>
-              <IntroBlockCenter>
-                <IntroTitle>{item.description} </IntroTitle>
-                <IntroSubTitle>{item.title}</IntroSubTitle>
-              </IntroBlockCenter>
-            </IntroBlock>
-          </FadeUpIndividually>
-        ))}
-      </DisplayFlex>
+        <SubHeader>
+          <WordReveal text={subtitle} />
+        </SubHeader>
+      </FadeUp>
+      <StaggerGroup>
+        <DisplayFlex>
+          {arrays?.map((item, index) => (
+            <StaggerItem key={index}>
+              <IntroBlock>
+                <IntroBlockCenter>
+                  <IntroTitle>{item.description} </IntroTitle>
+                  <IntroSubTitle>{item.title}</IntroSubTitle>
+                </IntroBlockCenter>
+              </IntroBlock>
+            </StaggerItem>
+          ))}
+        </DisplayFlex>
+      </StaggerGroup>
     </ComponentSection>
   );
 };

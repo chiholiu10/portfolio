@@ -1,6 +1,15 @@
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 import { FooterComponent, FooterText } from "./Footer.styles";
 import { QUERY } from "./FooterQuery";
+import { z } from "zod";
+
+const FooterSchema = z.object({
+  section: z
+    .object({
+      subtitle: z.string(),
+    })
+    .nullable(),
+});
 
 export const Footer = () => {
   const { data, loading, error } = useQuery(QUERY, {
@@ -12,14 +21,24 @@ export const Footer = () => {
     return <FooterComponent />;
   }
 
-  if (error) {
-    console.error(error);
+  const result = FooterSchema.safeParse(data);
+
+  if (!result.success) {
+    console.error("Validation error:", result.error);
     return null;
   }
 
+  const { section } = result.data;
+
+  if (!section) {
+    return <FooterComponent>No data available</FooterComponent>;
+  }
+
+  const { subtitle } = section;
+
   return (
     <FooterComponent id="footer">
-      <FooterText>{data.section.subtitle}</FooterText>
+      <FooterText>{subtitle}</FooterText>
     </FooterComponent>
   );
 };

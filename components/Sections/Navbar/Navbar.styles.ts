@@ -41,6 +41,16 @@ export const NavbarInnerBlock = styled.div`
   ${breakpoint.md`
     display: flex;
   `}
+
+  .brand {
+    position: relative;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+  }
+
+  .brand:hover {
+    opacity: 0.7;
+  }
 `;
 
 export const NavbarInnerComponent = styled.div`

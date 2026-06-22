@@ -1,5 +1,3 @@
-"use client";
-
 import { Head, Html, Main, NextScript } from "next/document";
 import { Providers } from "../app/providers";
 import StyledComponentRegistry from "../app/registry";

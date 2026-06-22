@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import {
@@ -9,6 +9,17 @@ import {
 import { HeaderH1, ProfileCartoon } from "./Banner.styles";
 import { BannerLogo } from "./BannerLogo";
 import { QUERY } from "./BannerQuery";
+import { WordReveal } from "../../FramerMotions";
+import { z } from "zod";
+
+const BannerSchema = z.object({
+  section: z
+    .object({
+      title: z.string(),
+      subtitle: z.string().nullable().optional(),
+    })
+    .nullable(),
+});
 
 export const Banner = () => {
   const { data, loading, error } = useQuery(QUERY, {
@@ -20,10 +31,14 @@ export const Banner = () => {
     return <ComponentSection />;
   }
 
-  if (error) {
+  const result = BannerSchema.safeParse(data);
+
+  if (!result.success) {
     console.error(error);
     return <ComponentSection>Error loading data</ComponentSection>;
   }
+
+  const { section } = result.data;
 
   return (
     <ComponentSection id="banner" className="bannerComponent">
@@ -52,10 +67,12 @@ export const Banner = () => {
       </ProfileCartoon>
 
       <motion.div>
-        {data && data.section ? (
+        {section ? (
           <>
-            <HeaderH1>{data?.section.title}</HeaderH1>
-            <SubHeader>{data?.section.subtitle}</SubHeader>
+            <HeaderH1>{section.title}</HeaderH1>
+            <SubHeader>
+              <WordReveal text={section.subtitle} />
+            </SubHeader>
           </>
         ) : (
           "loading..."

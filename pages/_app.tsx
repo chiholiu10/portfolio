@@ -1,6 +1,5 @@
-import "../styles/global.css";
 import Head from "next/head";
-import { ApolloProvider } from "@apollo/client";
+import { ApolloProvider } from "@apollo/client/react";
 import client from "../apollo-client";
 
 if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {

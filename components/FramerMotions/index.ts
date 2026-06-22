@@ -1,5 +1,7 @@
-import { FadeScrollBox } from "./FadeScrollBox";
-import { FadeUpIndividually } from "./FadeUpIndividually";
-import { FadeUpWhenVisible } from "./FadeUpWhenVisible";
+import { StaggerGroup } from "./StaggerGroup";
+import { StaggerItem } from "./StaggerItem";
+import { FadeUp } from "./FadeUp";
+import { NavbarLogoAnimation } from "./NavbarLogoAnimation";
+import { WordReveal } from "./WordReveal";
 
-export { FadeScrollBox, FadeUpIndividually, FadeUpWhenVisible };
+export { StaggerGroup, StaggerItem, FadeUp, NavbarLogoAnimation, WordReveal };

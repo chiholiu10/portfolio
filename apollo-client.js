@@ -1,18 +1,14 @@
-import {
-  ApolloClient,
-  createHttpLink,
-  ApolloLink,
-  InMemoryCache,
-} from "@apollo/client";
-import { setContext } from "@apollo/client/link/context";
+import { ApolloClient, ApolloLink, InMemoryCache } from "@apollo/client/core";
+import { HttpLink } from "@apollo/client/link/http";
+import { SetContextLink } from "@apollo/client/link/context";
 
 const contentToken = "gfeeYIbSBOGqpbHI_nLebjUylA3vOJaaPY23jNL6avA";
 
-const httpLink = createHttpLink({
+const httpLink = new HttpLink({
   uri: "https://graphql.contentful.com/content/v1/spaces/z1tccslo5ojo/environments/master",
 });
 
-const authLink = setContext((_, { headers }) => ({
+const authLink = new SetContextLink((_, { headers }) => ({
   headers: {
     ...headers,
     authorization: `Bearer ${contentToken}`,
@@ -21,18 +17,18 @@ const authLink = setContext((_, { headers }) => ({
 
 const introspectionBlockLink = new ApolloLink((operation, forward) => {
   if (
-    process.env.NODE_ENV === "production"
-    && operation.query.definitions.some(
+    process.env.NODE_ENV === "production" &&
+    operation.query.definitions.some(
       (def) =>
-        def.kind === "OperationDefinition"
-        && def.selectionSet.selections.some(
+        def.kind === "OperationDefinition" &&
+        def.selectionSet.selections.some(
           (selection) =>
-            selection.name?.value === "__schema"
-            || selection.name?.value === "__type",
+            selection.name?.value === "__schema" ||
+            selection.name?.value === "__type",
         ),
     )
   ) {
-    return null; // Block the request
+    return null;
   }
   return forward(operation);
 });

@@ -1,14 +1,28 @@
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 import { motion } from "framer-motion";
 import { ComponentSection } from "../../styles/General.styles";
 import { ContactSvg } from "../ContactSvg/ContactSvg";
-import { FadeUpIndividually } from "../FramerMotions";
+import { StaggerGroup, StaggerItem } from "../FramerMotions";
 import {
   ContactBlock,
   ContactBlockAnchor,
   ContactContainer,
 } from "./Contact.styles";
 import { QUERY } from "./ContactQuery";
+import { z } from "zod";
+
+const ContactSchema = z.object({
+  section: z
+    .object({
+      arrays: z.array(
+        z.object({
+          anchor: z.string(),
+          name: z.string(),
+        }),
+      ),
+    })
+    .nullable(),
+});
 
 export type IconPath = {
   [key: number]: string;
@@ -39,18 +53,27 @@ export const Contact = () => {
     return <ComponentSection />;
   }
 
-  if (error) {
-    console.error(error);
-    return null;
+  const result = ContactSchema.safeParse(data);
+  if (!result.success) {
+    console.error("Validation error:", result.error);
+    return <ComponentSection>Error loading data</ComponentSection>;
   }
+
+  const { section } = result.data;
+
+  if (!section) {
+    return <ComponentSection>No data available</ComponentSection>;
+  }
+
+  const { arrays } = section;
 
   return (
     <ComponentSection id="contact" className="contactComponent">
-      <ContactContainer as={motion.div}>
-        {data.section.arrays?.map(
-          (item: { anchor: string; name: string }, index: number) => (
-            <FadeUpIndividually time={index} key={index}>
-              <ContactBlock key={index}>
+      <StaggerGroup>
+        <ContactContainer as={motion.div}>
+          {arrays.map((item, index) => (
+            <StaggerItem key={index}>
+              <ContactBlock>
                 <ContactBlockAnchor
                   href={item.anchor}
                   target="_blank"
@@ -60,10 +83,10 @@ export const Contact = () => {
                   <ContactSvg index={index} icon={icon} />
                 </ContactBlockAnchor>
               </ContactBlock>
-            </FadeUpIndividually>
-          ),
-        )}
-      </ContactContainer>
+            </StaggerItem>
+          ))}
+        </ContactContainer>
+      </StaggerGroup>
     </ComponentSection>
   );
 };

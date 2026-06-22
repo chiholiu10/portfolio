@@ -1,26 +1,27 @@
 import Image from "next/image";
-import { FadeRightToLeft } from "../../FramerMotions/FadeRightToLeft";
 import {
   Logo,
   NavbarComponent,
   NavbarInnerBlock,
   NavbarInnerComponent,
 } from "./Navbar.styles";
+import { NavbarLogoAnimation } from "../../FramerMotions";
 
 export const Navbar = () => (
   <NavbarComponent>
     <NavbarInnerComponent>
       <NavbarInnerBlock>
-        <FadeRightToLeft>
-          <span>Chiho Liu</span>
-        </FadeRightToLeft>
+        <NavbarLogoAnimation>
+          <span className="brand">Chiho Liu</span>
+        </NavbarLogoAnimation>
       </NavbarInnerBlock>
       <Logo>
         <Image
           src="https://res.cloudinary.com/dh7tnzzxm/image/upload/v1681677951/Frame_1_1_mh4oma.png"
           alt="chiho-website-icon"
-          width={100}
-          height={100}
+          width={44}
+          height={44}
+          priority
         />
       </Logo>
     </NavbarInnerComponent>
