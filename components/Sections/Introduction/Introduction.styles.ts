@@ -14,7 +14,7 @@ export const IntroBlock = styled.div`
   ${breakpoint.sm`
     justify-content: center;
     align-items: center;
-    width: 280px;
+    width: 250px;
     display: flex;
     height: 140px;
   `}

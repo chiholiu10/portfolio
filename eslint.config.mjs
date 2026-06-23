@@ -41,7 +41,7 @@ export default [
       ecmaVersion: 2018,
       sourceType: "module",
     },
-    ignores: [".next/**", "eslint.config.mjs"],
+    ignores: [".next/**", "next-env.d.ts"],
     rules: {
       // ALLES UITGEZET - voor snelle fix
       "function-paren-newline": "off",
