@@ -19,12 +19,9 @@ export const useOneWayReveal = (threshold = 0.25) => {
 
         const elTop = entry.boundingClientRect.top + window.scrollY;
 
-        // 🔥 KEY RULE:
-        // alleen animeren als section onder initiële scrollpositie ligt
         if (elTop >= initialY) {
           setActive(true);
         } else {
-          // boven viewport bij refresh → meteen “done”
           setActive(true);
         }
 
