@@ -16,7 +16,7 @@ const LineColor = css`
 export const FooterComponent = styled.footer`
   display: flex;
   justify-content: center;
-  padding: 5px 0;
+  padding: 2px 0;
   position: relative;
   &::after,
   &::before {
@@ -25,6 +25,6 @@ export const FooterComponent = styled.footer`
 `;
 
 export const FooterText = styled.p`
-  font-size: 16px;
-  line-height: 1.4;
+  font-size: 14px;
+  line-height: 1.2;
 `;

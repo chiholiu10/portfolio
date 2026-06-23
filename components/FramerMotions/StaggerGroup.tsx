@@ -7,7 +7,8 @@ export const StaggerGroup = ({ children, stagger = 0.3 }) => {
       whileInView="visible"
       viewport={{
         once: true,
-        amount: 0.2,
+        amount: 0.1,
+        margin: "-50px 0px -50px 0px",
       }}
       variants={{
         hidden: {},
