@@ -9,14 +9,14 @@ import {
 export const IntroBlock = styled.div`
   text-align: left;
   padding: 20px;
-  border: 1px solid red;
 
   ${TilesProps}
   ${breakpoint.sm`
     justify-content: center;
     align-items: center;
-    width: 250px;
-    height: 150px;
+    width: 280px;
+    display: flex;
+    height: 140px;
   `}
 
   ${AIGlassMorph}

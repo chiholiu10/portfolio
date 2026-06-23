@@ -205,14 +205,8 @@ export const TilesProps = `
 export const TitleBlockProps = `
   color: ${theme.colors.white};
   font-weight: 600;
-  line-height: 1.8;
+  line-height: 1.2;
   text-transform: capitalize;
-  ${breakpoint.sm`
-    font-weight: 600;
-  `}
-  ${breakpoint.md`
-    font-weight: 600;
-  `}
 `;
 
 export const ComponentRow = styled.div`
