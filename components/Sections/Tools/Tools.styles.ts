@@ -7,7 +7,6 @@ export const ToolInnerBlock = styled.div`
   position: relative;
   margin: 25px;
   border-radius: 15px;
-  height: 40px;
   ${breakpoint.md`
     margin: 30px;
 
@@ -50,11 +49,12 @@ export const ToolsBlock = styled.div`
     flex-grow: 1;
   }
   img {
-    width: 60px;
-    height: auto;
+    width: auto;
+    height: 60px;
     aspect-ratio: auto;
     ${breakpoint.md`
       width: 70px;
+      height: auto;
     `}
   }
   h2 {

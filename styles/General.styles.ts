@@ -146,7 +146,6 @@ export const Header = styled.h2`
     font-size: 40px;
     font-weight: 600;
     margin-top: 100px;
-    padding: 20px;
   `}
   ${breakpoint.md`
     font-size: 46px;
@@ -162,14 +161,14 @@ export const SubHeader = styled.p`
   font-weight: 500;
   margin: 0 auto;
   padding: 20px 20px 80px;
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: 16px;
+  line-height: 1.8;
   text-align: center;
 
   ${breakpoint.md`
     color: ${theme.colors.grey};
     width: 700px;
-    line-height: 1.7;
+    line-height: 1.8;
     font-size: 18px;
     margin-bottom: 50px;
   `}

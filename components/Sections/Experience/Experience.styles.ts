@@ -50,14 +50,13 @@ export const ExperienceImage = styled.img`
 
 export const ExperienceContent = styled.div`
   font-size: 16px;
-  color: ${theme.colors.white};
-  line-height: 1.6;
+  line-height: 1.8;
   text-align: center;
   padding: 20px;
-  ${breakpoint.lg`
+  ${breakpoint.md`
+    color: ${theme.colors.grey};
     text-align: left;
-    line-height: 1.8;
-    font-weight: 600;
+      font-size: 18px;
     padding: 40px 20px 10px;
   `}
 `;
