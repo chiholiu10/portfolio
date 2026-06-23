@@ -8,7 +8,12 @@ import {
   Header,
   SubHeader,
 } from "../../../styles/General.styles";
-import { FadeUp, WordReveal } from "../../FramerMotions";
+import {
+  FadeUp,
+  StaggerItem,
+  StaggerGroup,
+  WordReveal,
+} from "../../FramerMotions";
 import { PortfolioBlock, PortfolioImage } from "./Portfolio.styles";
 import { QUERY } from "./PortfolioQuery";
 import { z } from "zod";
@@ -77,15 +82,20 @@ export const Portfolio = () => {
           <WordReveal text={subtitle} />
         </SubHeader>
       </FadeUp>
-      <DisplayFlex>
-        {array.map((item, index) => (
-          <FadeUp key={index} id={`portfolio-item-${index}`}>
-            <PortfolioBlock>
-              <PortfolioImage src={item.secure_url} alt="portfolio-website/" />
-            </PortfolioBlock>
-          </FadeUp>
-        ))}
-      </DisplayFlex>
+      <StaggerGroup>
+        <DisplayFlex>
+          {array.map((item, index) => (
+            <StaggerItem key={index}>
+              <PortfolioBlock>
+                <PortfolioImage
+                  src={item.secure_url}
+                  alt="portfolio-website/"
+                />
+              </PortfolioBlock>
+            </StaggerItem>
+          ))}
+        </DisplayFlex>
+      </StaggerGroup>
     </ComponentSection>
   );
 };

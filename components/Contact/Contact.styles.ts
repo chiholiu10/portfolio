@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { breakpoint } from "../../styles/Breakpoint";
 import theme from "../../styles/Theme";
 import { ContactSVG } from "../ContactSvg/Contact.styles";
+import { AIGlassMorph } from "../../styles/General.styles";
 
 const hoverStyles = `
   @media (hover: hover) and (pointer: fine) {
@@ -28,11 +29,9 @@ export const ContactBlockAnchor = styled.a`
   height: 50px;
   border-radius: 50%;
   position: relative;
-  border: 1px solid ${theme.colors.white};
-  color: ${theme.colors.white};
-  transition: 1s;
   align-items: center;
   justify-content: center;
+  ${AIGlassMorph}
   ${breakpoint.md`
     width: 80px;
     height: 80px;
@@ -64,17 +63,16 @@ export const ContactBlockAnchor = styled.a`
   }
   &:hover {
     @media (hover: hover) and (pointer: fine) {
-      background-color: ${theme.colors.white};
-      color: ${theme.colors.black};
+      ${AIGlassMorph}
       ${ContactSVG} {
         path {
-          stroke: ${theme.colors.black};
+          // stroke: ${theme.colors.black};
         }
       }
-      &::after {
-        opacity: 1;
-        transform: scale(1.15);
-      }
+      // &::after {
+      //   opacity: 1;
+      //   transform: scale(1.15);
+      // }
     }
   }
 `;

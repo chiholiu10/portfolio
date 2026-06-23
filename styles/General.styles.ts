@@ -2,6 +2,34 @@ import styled, { css, keyframes } from "styled-components";
 import { breakpoint } from "./Breakpoint";
 import theme from "./Theme";
 
+export const AIGlassMorph = css`
+  background: rgba(10, 25, 50, 0.4);
+  backdrop-filter: blur(24px);
+  border-radius: 12px;
+  box-shadow:
+    0 20px 40px -15px rgba(0, 0, 0, 0.9),
+    0 0 30px -5px rgba(14, 165, 233, 0.2);
+  background: rgba(15, 37, 75, 0.55);
+  /* Rand licht feller op bij hover (Cyaan/Blauw) */
+  border: 1px solid rgba(56, 189, 248, 0.5);
+  /* De blauwe AI-glow wordt intenser */
+  box-shadow:
+    0 20px 40px -5px rgba(0, 0, 0, 0.9),
+    0 0 35px 2px rgba(14, 165, 233, 0.25);
+  /* Optioneel: lift het blokje een heel klein beetje omhoog */
+  transform: translateY(-2px);
+`;
+
+export const AIGlassMorphStatic = css`
+  background: rgba(10, 25, 50, 0.4);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: 12px;
+  box-shadow:
+    0 20px 40px -15px rgba(0, 0, 0, 0.9),
+    0 0 30px -5px rgba(14, 165, 233, 0.2);
+`;
+
 export const BackgroundWrapper = styled.div`
   opacity: 0;
   width: 100%;
@@ -42,16 +70,17 @@ export const BackgroundImage = styled.div<{
   }
 `;
 
-export const ComponentSection = styled.section`
+interface ComponentSectionProps {
+  paddingLarge?: boolean;
+}
+
+export const ComponentSection = styled.section<ComponentSectionProps>`
   min-height: 650px;
   width: 100%;
-  padding: 0 20px;
   overflow-x: hidden;
   padding-bottom: 150px;
   position: relative;
-
-  background: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(4px);
 
   &.bannerComponent {
     svg {
@@ -91,7 +120,6 @@ export const ComponentSection = styled.section`
   }
   ${breakpoint.md`
     overflow-x: initial;
-    padding: 100px 50px;
   `}
   input,
   textarea {
@@ -132,9 +160,8 @@ export const Header = styled.h2`
 export const SubHeader = styled.p`
   color: ${theme.colors.white};
   font-weight: 500;
-  width: 100%;
   margin: 0 auto;
-  padding: 20px;
+  padding: 20px 20px 80px;
   font-size: 15px;
   line-height: 1.6;
   text-align: center;
@@ -154,17 +181,19 @@ export const SubHeader = styled.p`
 
 export const DisplayFlex = styled.div`
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
-  gap: 10px;
-  margin: 20px auto;
-  ${breakpoint.sm`
-    gap: 30px;
+  padding-bottom: 180px;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+  gap: 30px;
+  ${breakpoint.md`
+    max-width: 1800px;
+    gap: 50px;
   `}
 `;
 
 export const TilesProps = ` 
-  border: 1px solid red;
   background-image: linear-gradient(
     to bottom right,
     var(--gradient-from),
@@ -189,8 +218,6 @@ export const TitleBlockProps = `
 export const ComponentRow = styled.div`
   display: flex;
   flex-wrap: wrap;
-  width: 100%;
-  padding-bottom: 180px;
   margin-left: auto;
   margin-right: auto;
   justify-content: center;
@@ -225,7 +252,7 @@ const openPill = keyframes`
       0 0 40px #0ba9ca, 0 0 50px #0ba9ca;
     animation: blink 0.1s forwards;
   }
- 15% {
+  15% {
     transform: translateY(-10px);
     width: 2px;
     height: 2px;
@@ -237,13 +264,12 @@ const openPill = keyframes`
     height: 50px;
     border-radius: 50px;
   }
-  100%{
+  100% {
     transform: translateY(-10px);
     width: 300px;
     height: 50px;
     border-radius: 50px;
     ${SectionPopUpText} {
-      border: 10px solid red;
       span {
         display: block;
       }

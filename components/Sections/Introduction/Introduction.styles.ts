@@ -1,14 +1,16 @@
 import styled from "styled-components";
 import { breakpoint } from "../../../styles/Breakpoint";
-import { TilesProps, TitleBlockProps } from "../../../styles/General.styles";
+import {
+  AIGlassMorph,
+  TilesProps,
+  TitleBlockProps,
+} from "../../../styles/General.styles";
 
 export const IntroBlock = styled.div`
-  width: 100%;
   text-align: left;
   padding: 20px;
-  display: flex;
-  overflow-x: hidden;
-  backdrop-filter: blur(4px);
+  border: 1px solid red;
+
   ${TilesProps}
   ${breakpoint.sm`
     justify-content: center;
@@ -16,10 +18,12 @@ export const IntroBlock = styled.div`
     width: 250px;
     height: 150px;
   `}
+
+  ${AIGlassMorph}
 `;
 
 export const IntroSubTitle = styled.p`
-  font-size: 16px;
+  font-size: 18px;
   text-transform: capitalize;
   font-weight: 600;
 `;

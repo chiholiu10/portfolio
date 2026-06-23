@@ -70,7 +70,7 @@ export const Contact = () => {
   return (
     <ComponentSection id="contact" className="contactComponent">
       <StaggerGroup>
-        <ContactContainer as={motion.div}>
+        <ContactContainer>
           {arrays.map((item, index) => (
             <StaggerItem key={index}>
               <ContactBlock>

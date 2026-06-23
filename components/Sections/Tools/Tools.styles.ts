@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { breakpoint } from "../../../styles/Breakpoint";
 import theme from "../../../styles/Theme";
+import { AIGlassMorph } from "../../../styles/General.styles";
 
 export const ToolInnerBlock = styled.div`
-  background-color: ${theme.colors.lightBlack};
   position: relative;
   margin: 25px;
   border-radius: 15px;
@@ -29,14 +29,10 @@ export const ToolsBlock = styled.div`
   font-weight: 600;
   display: flex;
   flex-direction: column;
-  border-radius: 15px;
-  background-color: ${theme.colors.lightBlack};
-  box-shadow:
-    rgba(0, 0, 0, 0.25) 0px 54px 55px,
-    rgba(0, 0, 0, 0.12) 0px -12px 30px,
-    rgba(0, 0, 0, 0.12) 0px 4px 6px,
-    rgba(0, 0, 0, 0.17) 0px 12px 13px,
-    rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  border-radius: 12px;
+
+  ${AIGlassMorph}
+
   ${breakpoint.sm`
     width: 160px;
     height: 160px;
@@ -63,6 +59,7 @@ export const ToolsBlock = styled.div`
     line-height: 1;
     font-size: 13px;
     width: 100%;
+    color: #ffffff; /* Zorg voor goed contrast op donker glas */
   }
 
   ${breakpoint.md`

@@ -1,17 +1,217 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle, keyframes } from "styled-components";
 import theme from "./Theme";
+
+const wave1 = keyframes`
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.8);
+    opacity: 0.1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.3;
+  }
+`;
+
+const wave2 = keyframes`
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(2.2);
+    opacity: 0.05;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.4;
+  }
+`;
+
+const wave3 = keyframes`
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.25;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0.08;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.25;
+  }
+`;
+
+const wavePulse = keyframes`
+  0%, 100% {
+    opacity: 0.2;
+    box-shadow: 0 0 40px rgba(14, 165, 233, 0.1);
+  }
+  50% {
+    opacity: 0.6;
+    box-shadow: 0 0 80px rgba(14, 165, 233, 0.3);
+  }
+`;
+
+const floatWave = keyframes`
+  0%, 100% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  25% {
+    transform: translate(-45%, -55%) rotate(3deg);
+  }
+  75% {
+    transform: translate(-55%, -45%) rotate(-3deg);
+  }
+`;
 
 export const CSSreset = createGlobalStyle`
     html {
       line-height: 1.15;
       -webkit-text-size-adjust: 100%;
+      overflow-x: hidden;
+      width: 100%;
+      max-width: 100vw;
     }
     body {
       margin: 0;
       overflow-x: hidden;
-      background-color: ${theme.colors.black};
       font-family: ${theme.typoGraphy.fonts.body};
       color: ${theme.colors.white};
+      max-width: 100vw;
+      background: 
+        radial-gradient(
+          ellipse at 30% 40%, 
+          rgba(14, 165, 233, 0.05) 0%, 
+          transparent 60%
+        ),
+        radial-gradient(
+          ellipse at 70% 60%, 
+          rgba(56, 189, 248, 0.03) 0%, 
+          transparent 50%
+        ),
+        ${theme.colors.black || "#0a1929"};
+      
+      background-attachment: fixed;
+      
+      &::before {
+        content: '';
+        position: fixed;
+        top: 30%;
+        left: 20%;
+        width: 600px;
+        height: 600px;
+        z-index: -1;
+        pointer-events: none;
+        border-radius: 50%;
+        
+        background: radial-gradient(
+          circle at center,
+          rgba(14, 165, 233, 0.15) 0%,
+          rgba(14, 165, 233, 0.05) 30%,
+          rgba(14, 165, 233, 0.02) 60%,
+          transparent 80%
+        );
+        
+        border: 1px solid rgba(56, 189, 248, 0.08);
+        box-shadow: 
+          0 0 60px rgba(14, 165, 233, 0.1),
+          inset 0 0 60px rgba(14, 165, 233, 0.05);
+        
+        animation: 
+          ${wave1} 8s ease-in-out infinite,
+          ${floatWave} 12s ease-in-out infinite;
+      }
+      
+      &::after {
+        content: '';
+        position: fixed;
+        top: 60%;
+        left: 70%;
+        width: 450px;
+        height: 450px;
+        z-index: -1;
+        pointer-events: none;
+        border-radius: 50%;
+        
+        background: radial-gradient(
+          circle at center,
+          rgba(56, 189, 248, 0.12) 0%,
+          rgba(56, 189, 248, 0.04) 30%,
+          rgba(56, 189, 248, 0.01) 60%,
+          transparent 80%
+        );
+        
+        border: 1px solid rgba(56, 189, 248, 0.06);
+        box-shadow: 
+          0 0 40px rgba(56, 189, 248, 0.08),
+          inset 0 0 40px rgba(56, 189, 248, 0.03);
+        
+        animation: 
+          ${wave2} 6s ease-in-out infinite 1s,
+          ${floatWave} 15s ease-in-out infinite 2s;
+      }
+    }
+
+    #root {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      
+      &::before {
+        content: '';
+        position: fixed;
+        top: 45%;
+        left: 45%;
+        width: 250px;
+        height: 250px;
+        z-index: -1;
+        pointer-events: none;
+        border-radius: 50%;
+        
+        background: radial-gradient(
+          circle at center,
+          rgba(99, 102, 241, 0.2) 0%,
+          rgba(99, 102, 241, 0.08) 30%,
+          rgba(99, 102, 241, 0.02) 60%,
+          transparent 80%
+        );
+        
+        border: 2px solid rgba(99, 102, 241, 0.1);
+        box-shadow: 
+          0 0 50px rgba(99, 102, 241, 0.1),
+          inset 0 0 50px rgba(99, 102, 241, 0.04);
+        
+        animation: 
+          ${wave3} 3s ease-in-out infinite 0.5s,
+          ${floatWave} 8s ease-in-out infinite 1s;
+      }
+    
+    &::after {
+      content: '';
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 120px;
+      height: 120px;
+      z-index: -1;
+      pointer-events: none;
+      border-radius: 50%;
+      
+      background: radial-gradient(
+        circle at center,
+        rgba(14, 165, 233, 0.25) 0%,
+        rgba(14, 165, 233, 0.08) 40%,
+        transparent 70%
+      );
+      
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      
+      animation: ${wavePulse} 3s ease-in-out infinite;
     }
     html,
     body {
@@ -168,6 +368,8 @@ export const CSSreset = createGlobalStyle`
     *,
     *::before,
     *::after {
+      margin: 0;
+      padding: 0;
       box-sizing: border-box;
     }
     blockquote,

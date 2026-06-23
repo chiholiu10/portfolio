@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-export const StaggerGroup = ({ children, stagger = 0.08 }) => {
+export const StaggerGroup = ({ children, stagger = 0.3 }) => {
   return (
     <motion.div
       initial="hidden"
@@ -14,7 +14,7 @@ export const StaggerGroup = ({ children, stagger = 0.08 }) => {
         visible: {
           transition: {
             staggerChildren: stagger,
-            delayChildren: 0.05,
+            delayChildren: 0.1,
           },
         },
       }}

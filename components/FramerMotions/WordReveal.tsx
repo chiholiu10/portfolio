@@ -24,12 +24,17 @@ export const WordReveal = ({ text = "", id = "" }: WordRevealProps) => {
   };
 
   return (
-    <>
+    <span>
       {words.map((word, i) => (
         <motion.span
           key={i}
           initial={{ opacity: 0, y: 0 }}
-          animate={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{
+            once: true,
+            amount: 0.2,
+            margin: "-80px 0px -80px 0px",
+          }}
           transition={{
             duration: 0.8,
             delay: i * 0.03,
@@ -45,6 +50,6 @@ export const WordReveal = ({ text = "", id = "" }: WordRevealProps) => {
           {word}
         </motion.span>
       ))}
-    </>
+    </span>
   );
 };

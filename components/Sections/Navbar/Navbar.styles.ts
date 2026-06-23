@@ -9,19 +9,15 @@ export const NavbarComponent = styled.nav`
   color: ${theme.colors.white};
   filter: blur(0.4);
   z-index: 999;
-  height: 50px;
+  height: 60px;
   display: flex;
   align-items: center;
   font-weight: bold;
-  font-size: 22px;
   justify-content: center;
-  border-bottom: 1px solid ${theme.colors.white};
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
 
   ${breakpoint.md`
     font-size: 22px;
-    height: 70px;
-    border-bottom: unset;
+
     &::after {
       content: "";
       display: block;
@@ -37,10 +33,7 @@ export const NavbarComponent = styled.nav`
 `;
 
 export const NavbarInnerBlock = styled.div`
-  display: none;
-  ${breakpoint.md`
-    display: flex;
-  `}
+  display: flex;
 
   .brand {
     position: relative;
@@ -71,6 +64,7 @@ export const Logo = styled.div`
     background-color: black;
     z-index: 99;
     right: 0;
+    top: 10px;
     border-radius: 50px;
     ${breakpoint.md`
       margin-top: 20px;

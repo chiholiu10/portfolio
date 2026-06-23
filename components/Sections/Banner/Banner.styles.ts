@@ -25,6 +25,11 @@ export const ProfileCartoon = styled.div`
   align-items: center;
   margin: 0 auto;
   position: relative;
+  padding-top: 100px;
+
+  ${breakpoint.md`
+    padding-top: 50px;
+  `}
   img {
     z-index: -1;
     opacity: 0.3;
