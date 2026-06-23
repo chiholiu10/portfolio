@@ -78,8 +78,8 @@ export const Tools = () => {
                       alt={
                         item.title ? `${item.title}` : `tool image ${index + 1}`
                       }
-                      width={100}
-                      height={100}
+                      width={40}
+                      height={40}
                       loading="lazy"
                     />
                   </ToolInnerBlock>

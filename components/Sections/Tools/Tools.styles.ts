@@ -7,8 +7,10 @@ export const ToolInnerBlock = styled.div`
   position: relative;
   margin: 25px;
   border-radius: 15px;
+  height: 40px;
   ${breakpoint.md`
     margin: 30px;
+
   `}
 `;
 
