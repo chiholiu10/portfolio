@@ -1,5 +1,3 @@
-import { useQuery } from "@apollo/client/react";
-import { z } from "zod";
 import { memo } from "react";
 import {
   ComponentSection,
@@ -19,24 +17,21 @@ import {
   IntroSubTitle,
   IntroTitle,
 } from "./Introduction.styles";
-import { QUERY } from "./IntroductionQuery";
 
-const IntroItemSchema = z.object({
-  title: z.string(),
-  description: z.string(),
-});
+type IntroItem = {
+  title: string;
+  description: string;
+};
 
-const IntroductionSchema = z.object({
-  section: z
-    .object({
-      title: z.string(),
-      subtitle: z.string(),
-      arrays: z.array(IntroItemSchema),
-    })
-    .nullable(),
-});
-
-type IntroItem = z.infer<typeof IntroItemSchema>;
+type IntroductionProps = {
+  data: {
+    section: {
+      title: string;
+      subtitle: string;
+      arrays: IntroItem[];
+    } | null;
+  };
+};
 
 const IntroItem = memo(
   ({ item, index }: { item: IntroItem; index: number }) => (
@@ -51,28 +46,8 @@ const IntroItem = memo(
   ),
 );
 
-export const Introduction = () => {
-  const { data, loading } = useQuery(QUERY, {
-    variables: { id: "4DIoyNagIFWzKfhGrtKUXB" },
-    fetchPolicy: "cache-and-network",
-  });
-
-  if (loading) {
-    return <ComponentSection />;
-  }
-
-  const result = IntroductionSchema.safeParse(data);
-
-  if (!result.success) {
-    console.error("Validation error:", result.error);
-    return (
-      <ComponentSection>
-        <div>Error loading data</div>
-      </ComponentSection>
-    );
-  }
-
-  const { section } = result.data;
+export const Introduction = ({ data }: IntroductionProps) => {
+  const { section } = data;
 
   if (!section) {
     return (

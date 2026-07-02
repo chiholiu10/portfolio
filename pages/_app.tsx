@@ -1,19 +1,27 @@
 import Head from "next/head";
-import { ApolloProvider } from "@apollo/client/react";
-import client from "../apollo-client";
 
-if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
-  import("react-devtools-core").then((ReactDevTools) => {
-    ReactDevTools.connectToDevTools();
-  });
-}
-
-const MyApp = ({ Component, pageProps }) => (
-  <ApolloProvider client={client}>
-    <Head>
-      <title>Portfolio Chi Ho Liu | Front End Developer</title>
-    </Head>
-    <Component {...pageProps} />
-  </ApolloProvider>
-);
+const MyApp = ({ Component, pageProps }) => {
+  return (
+    <>
+      <Head>
+        <title>Chi Ho Liu | Front-End Developer in the Netherlands</title>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: "Chi Ho Liu",
+              url: "https://www.chiholiu.com/",
+              jobTitle: "Front-End Developer",
+              address: { "@type": "PostalAddress", addressCountry: "NL" },
+              knowsAbout: ["React", "Next.js", "TypeScript", "Vue.js", "UX/UI"],
+            }).replace(/</g, "\\u003c"),
+          }}
+        />
+      </Head>
+      <Component {...pageProps} />
+    </>
+  );
+};
 export default MyApp;

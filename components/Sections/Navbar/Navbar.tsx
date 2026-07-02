@@ -22,6 +22,7 @@ export const Navbar = () => (
           width={44}
           height={44}
           priority
+          sizes="44px"
         />
       </Logo>
     </NavbarInnerComponent>

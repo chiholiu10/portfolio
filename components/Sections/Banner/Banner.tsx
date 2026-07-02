@@ -1,4 +1,3 @@
-import { useQuery } from "@apollo/client/react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import {
@@ -8,57 +7,36 @@ import {
 } from "../../../styles/General.styles";
 import { HeaderH1, ProfileCartoon } from "./Banner.styles";
 import { BannerLogo } from "./BannerLogo";
-import { QUERY } from "./BannerQuery";
 import { WordReveal } from "../../FramerMotions";
-import { z } from "zod";
 
-const BannerSchema = z.object({
-  section: z
-    .object({
-      title: z.string(),
-      subtitle: z.string().nullable().optional(),
-    })
-    .nullable(),
-});
+type BannerProps = {
+  data: { section: { title: string; subtitle?: string | null } | null };
+};
 
-export const Banner = () => {
-  const { data, loading, error } = useQuery(QUERY, {
-    variables: { id: "7wNcHAAqxL2cunkRCCxW4o" },
-    fetchPolicy: "cache-and-network",
-  });
-
-  if (loading) {
-    return <ComponentSection />;
-  }
-
-  const result = BannerSchema.safeParse(data);
-
-  if (!result.success) {
-    console.error(error);
-    return <ComponentSection>Error loading data</ComponentSection>;
-  }
-
-  const { section } = result.data;
+export const Banner = ({ data }: BannerProps) => {
+  const { section } = data;
 
   return (
     <ComponentSection id="banner" className="bannerComponent">
-      <BackgroundImage left="-60%">
+      <BackgroundImage $left="-60%">
         <Image
           src="https://res.cloudinary.com/dh7tnzzxm/image/upload/v1651443884/circle_effect_8ce52c0de3.png"
           width={734}
           height={733}
-          layout="responsive"
-          priority
+          sizes="(min-width: 768px) 50vw, 1px"
+          style={{ width: "100%", height: "auto" }}
+          loading="lazy"
           alt="background-image-effect"
         />
       </BackgroundImage>
       <ProfileCartoon>
-        <BackgroundImage left="60%">
+        <BackgroundImage $left="60%">
           <Image
             src="https://res.cloudinary.com/dh7tnzzxm/image/upload/v1681643719/Gradient_4_w267pd.png"
             width={934}
             height={1092}
-            layout="responsive"
+            sizes="(min-width: 768px) 50vw, 1px"
+            style={{ width: "100%", height: "auto" }}
             priority
             alt="background-image-effect"
           />

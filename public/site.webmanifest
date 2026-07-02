@@ -1,0 +1,9 @@
+{
+  "name": "Chi Ho Liu Portfolio",
+  "short_name": "Chi Ho Liu",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#071327",
+  "theme_color": "#071327",
+  "icons": [{ "src": "/favicon.ico", "sizes": "48x48", "type": "image/x-icon" }]
+}

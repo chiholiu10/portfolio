@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Image from "next/image";
 import { breakpoint } from "../../../styles/Breakpoint";
 import theme from "../../../styles/Theme";
 import { AIGlassMorph } from "../../../styles/General.styles";
@@ -42,7 +43,7 @@ export const ExperienceFigure = styled.figure`
   `}
 `;
 
-export const ExperienceImage = styled.img`
+export const ExperienceImage = styled(Image)`
   width: 100%;
   height: auto;
   ${AIGlassMorph}

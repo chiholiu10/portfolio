@@ -1,18 +1,14 @@
 import styled from "styled-components";
+import Image from "next/image";
 import { breakpoint } from "../../../styles/Breakpoint";
 
-export const PortfolioImage = styled.img`
+export const PortfolioImage = styled(Image)`
   max-width: 350px;
   width: 100%;
   height: auto;
   display: flex;
   flex-direction: row;
-  margin: 10px;
-  filter: drop-shadow(0px 54px 55px rgba(0, 0, 0, 0.25))
-    drop-shadow(0px -12px 30px rgba(0, 0, 0, 0.12))
-    drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.12))
-    drop-shadow(0px 12px 13px rgba(0, 0, 0, 0.17))
-    drop-shadow(0px -3px 5px rgba(0, 0, 0, 0.09));
+  aspect-ratio: 16 / 9;
   ${breakpoint.md`
     width: 350px;
   `}
@@ -22,5 +18,18 @@ export const PortfolioImage = styled.img`
 `;
 
 export const PortfolioBlock = styled.div`
-  padding: 20px 0;
+  max-width: 350px;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  margin: 10px;
+  filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.3));
+  aspect-ratio: 16 / 9;
+  ${breakpoint.md`
+    width: 350px;
+  `}
+  ${breakpoint.lg`
+    width: 390px;
+  `}
 `;

@@ -33,9 +33,18 @@ const introspectionBlockLink = new ApolloLink((operation, forward) => {
   return forward(operation);
 });
 
-const client = new ApolloClient({
-  link: ApolloLink.from([authLink, introspectionBlockLink, httpLink]),
-  cache: new InMemoryCache(),
-});
+export const createApolloClient = (initialState) => {
+  const cache = new InMemoryCache();
+
+  if (initialState) cache.restore(initialState);
+
+  return new ApolloClient({
+    link: ApolloLink.from([authLink, introspectionBlockLink, httpLink]),
+    cache,
+    ssrMode: typeof window === "undefined",
+  });
+};
+
+const client = createApolloClient();
 
 export default client;

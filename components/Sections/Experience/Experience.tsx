@@ -1,4 +1,3 @@
-import { useQuery } from "@apollo/client/react";
 import { ComponentSection } from "../../../styles/General.styles";
 import { FadeUp, WordReveal } from "../../FramerMotions";
 import {
@@ -9,40 +8,13 @@ import {
   ExperienceImage,
   ExperienceInnerBlock,
 } from "./Experience.styles";
-import { QUERY } from "./ExperienceQuery";
-import { z } from "zod";
 
-const ExperienceSchema = z.object({
-  section: z
-    .object({
-      subtitle: z.string(),
-      image: z.object({
-        url: z.string(),
-      }),
-    })
-    .nullable(),
-});
+type ExperienceProps = {
+  data: { section: { subtitle: string; image: { url: string } } | null };
+};
 
-export const Experience = () => {
-  const { data, loading, error } = useQuery(QUERY, {
-    variables: {
-      id: "2c3zCPqbJcXzcaM2bYTp52",
-    },
-    fetchPolicy: "cache-and-network",
-  });
-
-  if (loading) {
-    return <ComponentSection />;
-  }
-
-  const result = ExperienceSchema.safeParse(data);
-
-  if (!result.success) {
-    console.error("Validation error:", result.error);
-    return <ComponentSection>Error loading data</ComponentSection>;
-  }
-
-  const { section } = result.data;
+export const Experience = ({ data }: ExperienceProps) => {
+  const { section } = data;
 
   if (!section) {
     return <ComponentSection>No data available</ComponentSection>;
@@ -64,7 +36,15 @@ export const Experience = () => {
         <ExperienceBlockRight>
           <FadeUp id="experience-image">
             <ExperienceFigure>
-              <ExperienceImage src={image.url} alt="experience-picture" />
+              <ExperienceImage
+                src={image.url}
+                alt="Chi Ho Liu working as a front-end developer"
+                width={810}
+                height={540}
+                sizes="(max-width: 767px) 100vw, 664px"
+                quality={70}
+                loading="lazy"
+              />
             </ExperienceFigure>
           </FadeUp>
         </ExperienceBlockRight>

@@ -3,18 +3,30 @@ const nextConfig = {
   env: {
     NEXT_SPACE: process.env.NEXT_SPACE,
   },
-  swcMinify: true,
+  turbopack: {
+    root: __dirname,
+  },
   compiler: {
     styledComponents: true,
   },
   images: {
-    domains: ["res.cloudinary.com"],
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {
         protocol: "https",
         hostname: "**",
       },
     ],
+  },
+  async headers() {
+    return [
+      {
+        source: "/:all*(svg|jpg|jpeg|png|webp|avif|ico)",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
+    ];
   },
 };
 

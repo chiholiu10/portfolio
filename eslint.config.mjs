@@ -16,6 +16,7 @@ const compat = new FlatCompat({
 });
 
 export default [
+  { ignores: [".next/**", "next-env.d.ts"] },
   ...fixupConfigRules(
     compat.extends(
       "next",

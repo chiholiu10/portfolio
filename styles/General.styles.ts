@@ -45,7 +45,7 @@ export const BackgroundWrapper = styled.div`
 `;
 
 export const BackgroundImage = styled.div<{
-  left?: string;
+  $left?: string;
   width?: string;
 }>`
   background-repeat: no-repeat;
@@ -54,7 +54,7 @@ export const BackgroundImage = styled.div<{
   z-index: -99;
   display: none;
   aspect-ratio: auto;
-  left: ${(props) => (props.left ? props.left : 0)};
+  left: ${(props) => (props.$left ? props.$left : 0)};
   ${breakpoint.md`
     opacity: 0.2;
     display: flex;
@@ -80,7 +80,11 @@ export const ComponentSection = styled.section<ComponentSectionProps>`
   overflow-x: hidden;
   padding-bottom: 150px;
   position: relative;
-  backdrop-filter: blur(4px);
+
+  &:not(.bannerComponent) {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 850px;
+  }
 
   &.bannerComponent {
     svg {

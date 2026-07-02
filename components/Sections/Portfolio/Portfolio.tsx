@@ -1,4 +1,3 @@
-import { useQuery } from "@apollo/client/react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import {
@@ -15,44 +14,22 @@ import {
   WordReveal,
 } from "../../FramerMotions";
 import { PortfolioBlock, PortfolioImage } from "./Portfolio.styles";
-import { QUERY } from "./PortfolioQuery";
-import { z } from "zod";
 
-const PortfolioSchema = z.object({
-  section: z
-    .object({
-      title: z.string(),
-      subtitle: z.string(),
-      array: z.array(
-        z.object({
-          secure_url: z.string(),
-        }),
-      ),
-    })
-    .nullable(),
-});
+type PortfolioProps = {
+  data: {
+    section: {
+      title: string;
+      subtitle: string;
+      array: { secure_url: string }[];
+    } | null;
+  };
+};
 
-export const Portfolio = () => {
-  const { data, loading, error } = useQuery(QUERY, {
-    variables: { id: "2qFy05XNAe3Ho1CmJiAgbO" },
-    fetchPolicy: "cache-and-network",
-  });
-
+export const Portfolio = ({ data }: PortfolioProps) => {
   const { scrollY } = useScroll();
   const y2 = useTransform(scrollY, [0, 7000], [1, -1000]);
 
-  if (loading) {
-    return <ComponentSection />;
-  }
-
-  const result = PortfolioSchema.safeParse(data);
-
-  if (!result.success) {
-    console.error("Validation error:", result.error);
-    return <ComponentSection>Error loading data</ComponentSection>;
-  }
-
-  const { section } = result.data;
+  const { section } = data;
 
   if (!section) {
     return <ComponentSection>No data available</ComponentSection>;
@@ -63,14 +40,15 @@ export const Portfolio = () => {
   return (
     <ComponentSection className="portfolioComponent">
       <motion.div style={{ y: y2, x: 0 }}>
-        <BackgroundImage left="60%">
+        <BackgroundImage $left="60%">
           <Image
             src={
               "https://res.cloudinary.com/dh7tnzzxm/image/upload/v1651443884/circle_effect_8ce52c0de3.png"
             }
             width={612}
             height={612}
-            layout="responsive"
+            sizes="(min-width: 768px) 40vw, 1px"
+            style={{ width: "100%", height: "auto" }}
             priority
             alt="background-image-effect"
           />
@@ -89,7 +67,12 @@ export const Portfolio = () => {
               <PortfolioBlock>
                 <PortfolioImage
                   src={item.secure_url}
-                  alt="portfolio-website/"
+                  alt={`Portfolio project ${index + 1}`}
+                  width={700}
+                  height={394}
+                  sizes="(max-width: 767px) calc(100vw - 40px), 390px"
+                  quality={65}
+                  loading="lazy"
                 />
               </PortfolioBlock>
             </StaggerItem>

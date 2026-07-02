@@ -1,4 +1,3 @@
-import { useQuery } from "@apollo/client/react";
 import Image from "next/image";
 import {
   ComponentRow,
@@ -8,48 +7,22 @@ import {
 } from "../../../styles/General.styles";
 import { FadeUp, StaggerItem, WordReveal } from "../../FramerMotions";
 import { ToolInnerBlock, ToolsBlock, ToolsHeader } from "./Tools.styles";
-import { QUERY } from "./ToolsQuery";
 import { StaggerGroup } from "../../FramerMotions/StaggerGroup";
-import { z } from "zod";
 
-const ToolsSchema = z.object({
-  section: z
-    .object({
-      title: z.string().optional().nullable(),
-      subtitle: z.string().optional().nullable(),
-      arrayBlockCollection: z
-        .object({
-          items: z.array(
-            z.object({
-              url: z.string(),
-              title: z.string().optional().nullable(),
-            }),
-          ),
-        })
-        .optional()
-        .nullable(),
-    })
-    .nullable(),
-});
+type ToolsProps = {
+  data: {
+    section: {
+      title?: string | null;
+      subtitle?: string | null;
+      arrayBlockCollection?: {
+        items: { url: string; title?: string | null }[];
+      } | null;
+    } | null;
+  };
+};
 
-export const Tools = () => {
-  const { data, loading, error } = useQuery(QUERY, {
-    variables: { id: "2FzwztBT4JTZm5icaV1tlb" },
-    fetchPolicy: "cache-and-network",
-  });
-
-  if (loading) {
-    return <ComponentSection />;
-  }
-
-  const result = ToolsSchema.safeParse(data);
-
-  if (!result.success) {
-    console.error("Validation error:", result.error);
-    return <ComponentSection>Error loading data</ComponentSection>;
-  }
-
-  const { section } = result.data;
+export const Tools = ({ data }: ToolsProps) => {
+  const { section } = data;
 
   if (!section) {
     return <ComponentSection>No data available</ComponentSection>;
