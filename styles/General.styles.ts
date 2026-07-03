@@ -134,14 +134,14 @@ export const ComponentSection = styled.section<ComponentSectionProps>`
 export const HeaderGeneral = `
   font-kerning: normal;
   font-size: 26px;
-  font-weight: 600;
-  line-height: 1.4;
+  font-weight: 650;
+  line-height: 1.08;
+  letter-spacing: -0.045em;
   text-align: center;
   padding: 20px 20px 0;
-  color: ${theme.colors.white};
-  ${breakpoint.md`
-    line-height: 3;
-  `}
+  color: #eaf7ff;
+  text-wrap: balance;
+  text-shadow: 0 0 36px rgba(56, 189, 248, 0.07);
 `;
 
 export const Header = styled.h2`
@@ -161,24 +161,23 @@ export const Header = styled.h2`
 `;
 
 export const SubHeader = styled.p`
-  color: ${theme.colors.white};
-  font-weight: 500;
+  color: #91a4b7;
+  font-weight: 400;
   margin: 0 auto;
   padding: 20px 20px 80px;
   font-size: 16px;
-  line-height: 1.8;
+  line-height: 1.75;
+  letter-spacing: 0.008em;
   text-align: center;
+  text-wrap: pretty;
 
   ${breakpoint.md`
-    color: ${theme.colors.grey};
     width: 700px;
-    line-height: 1.8;
     font-size: 18px;
     margin-bottom: 50px;
   `}
   ${breakpoint.xl`
     width: 700px;
-    line-height: 1.8;
   `}
 `;
 

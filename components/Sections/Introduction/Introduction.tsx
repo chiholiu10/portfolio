@@ -1,4 +1,3 @@
-import { memo } from "react";
 import {
   ComponentSection,
   DisplayFlex,
@@ -12,10 +11,14 @@ import {
   StaggerItem,
 } from "../../FramerMotions";
 import {
+  CardFoot,
+  CardNumber,
   IntroBlock,
   IntroBlockCenter,
   IntroSubTitle,
   IntroTitle,
+  OrbitPlanet,
+  OrbitVisual,
 } from "./Introduction.styles";
 
 type IntroItem = {
@@ -32,19 +35,6 @@ type IntroductionProps = {
     } | null;
   };
 };
-
-const IntroItem = memo(
-  ({ item, index }: { item: IntroItem; index: number }) => (
-    <StaggerGroup>
-      <IntroBlock>
-        <IntroBlockCenter>
-          <IntroTitle>{item.description}</IntroTitle>
-          <IntroSubTitle>{item.title}</IntroSubTitle>
-        </IntroBlockCenter>
-      </IntroBlock>
-    </StaggerGroup>
-  ),
-);
 
 export const Introduction = ({ data }: IntroductionProps) => {
   const { section } = data;
@@ -71,11 +61,16 @@ export const Introduction = ({ data }: IntroductionProps) => {
         <DisplayFlex>
           {arrays?.map((item, index) => (
             <StaggerItem key={index}>
-              <IntroBlock>
+              <IntroBlock $index={index}>
+                <CardNumber>{String(index + 1).padStart(2, "0")}</CardNumber>
+                <OrbitVisual $index={index} aria-hidden="true">
+                  <OrbitPlanet $index={index} />
+                </OrbitVisual>
                 <IntroBlockCenter>
-                  <IntroTitle>{item.description} </IntroTitle>
-                  <IntroSubTitle>{item.title}</IntroSubTitle>
+                  <IntroSubTitle>{item.description}</IntroSubTitle>
+                  <IntroTitle>{item.title}</IntroTitle>
                 </IntroBlockCenter>
+                <CardFoot aria-hidden="true" />
               </IntroBlock>
             </StaggerItem>
           ))}
@@ -84,5 +79,3 @@ export const Introduction = ({ data }: IntroductionProps) => {
     </ComponentSection>
   );
 };
-
-IntroItem.displayName = "IntroItem";

@@ -1,47 +1,60 @@
 import styled from "styled-components";
 import Image from "next/image";
 import { breakpoint } from "../../../styles/Breakpoint";
-import theme from "../../../styles/Theme";
 import { AIGlassMorph } from "../../../styles/General.styles";
 
 export const ExperienceInnerBlock = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
+  margin-inline: auto;
+
   ${breakpoint.lg`
     flex-direction: row;
-    max-width: 1400px;
-    margin-left: auto;
-    margin-right: auto;
+    align-items: center;
+    width: calc(100% - 40px);
+    max-width: 1200px;
     margin-top: 150px;
+    gap: clamp(40px, 6vw, 80px);
   `}
 `;
 
 export const ExperienceBlockLeft = styled.div`
   position: relative;
   display: flex;
+  min-width: 0;
   text-align: left;
+
   ${breakpoint.md`
     justify-content: center;
     align-items: center;
     font-size: 16px;
     padding: 50px;
   `}
+
+  ${breakpoint.lg`
+    flex: 1 1 0;
+    justify-content: flex-start;
+    padding: 0;
+  `}
 `;
 
 export const ExperienceBlockRight = styled.div`
   position: relative;
   margin: 0;
+  min-width: 0;
+
   ${breakpoint.md`
     display: flex;
     justify-content: center;
   `}
-`;
 
-export const ExperienceFigure = styled.figure`
-  ${breakpoint.md`  
-    min-width: 500px;
+  ${breakpoint.lg`
+    flex: 1 1 0;
   `}
 `;
+
+export const ExperienceFigure = styled.figure``;
 
 export const ExperienceImage = styled(Image)`
   width: 100%;
@@ -50,14 +63,22 @@ export const ExperienceImage = styled(Image)`
 `;
 
 export const ExperienceContent = styled.div`
+  max-width: 680px;
+  margin: 0 auto;
+  color: #91a4b7;
   font-size: 16px;
-  line-height: 1.8;
+  font-weight: 400;
+  line-height: 1.75;
+  letter-spacing: 0.008em;
   text-align: center;
+  text-wrap: pretty;
   padding: 20px;
   ${breakpoint.md`
-    color: ${theme.colors.grey};
+    margin: 0;
+    font-size: 18px;
+  `}
+  ${breakpoint.md`
     text-align: left;
-      font-size: 18px;
-    padding: 40px 20px 10px;
+    padding-left: 50px;
   `}
 `;

@@ -6,7 +6,15 @@ import {
   SubHeader,
 } from "../../../styles/General.styles";
 import { FadeUp, StaggerItem, WordReveal } from "../../FramerMotions";
-import { ToolInnerBlock, ToolsBlock, ToolsHeader } from "./Tools.styles";
+import {
+  ToolAccent,
+  ToolInnerBlock,
+  ToolNumber,
+  ToolOrbit,
+  ToolPlanet,
+  ToolsBlock,
+  ToolsHeader,
+} from "./Tools.styles";
 import { StaggerGroup } from "../../FramerMotions/StaggerGroup";
 
 type ToolsProps = {
@@ -14,6 +22,7 @@ type ToolsProps = {
     section: {
       title?: string | null;
       subtitle?: string | null;
+      extraText?: string | null;
       arrayBlockCollection?: {
         items: { url: string; title?: string | null }[];
       } | null;
@@ -28,7 +37,7 @@ export const Tools = ({ data }: ToolsProps) => {
     return <ComponentSection>No data available</ComponentSection>;
   }
 
-  const { title, subtitle, arrayBlockCollection } = section;
+  const { title, subtitle, arrayBlockCollection, extraText } = section;
   const items = arrayBlockCollection?.items || [];
 
   return (
@@ -44,7 +53,11 @@ export const Tools = ({ data }: ToolsProps) => {
           {items?.length > 0 &&
             items.map((item, index) => (
               <StaggerItem key={index}>
-                <ToolsBlock>
+                <ToolsBlock $index={index}>
+                  <ToolNumber>{String(index + 1).padStart(2, "0")}</ToolNumber>
+                  <ToolOrbit $index={index} aria-hidden="true">
+                    <ToolPlanet $index={index} />
+                  </ToolOrbit>
                   <ToolInnerBlock>
                     <Image
                       src={item.url}
@@ -57,8 +70,10 @@ export const Tools = ({ data }: ToolsProps) => {
                     />
                   </ToolInnerBlock>
                   <ToolsHeader>
-                    <h2>{item.title}</h2>
+                    <p>{extraText}</p>
+                    <h3>{item.title}</h3>
                   </ToolsHeader>
+                  <ToolAccent aria-hidden="true" />
                 </ToolsBlock>
               </StaggerItem>
             ))}

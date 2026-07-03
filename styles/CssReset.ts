@@ -93,7 +93,12 @@ export const CSSreset = createGlobalStyle`
       font-family: ${theme.typoGraphy.fonts.body};
       color: ${theme.colors.white};
       max-width: 100vw;
-      background: 
+      background:
+        radial-gradient(
+          ellipse at 50% -15%,
+          rgba(56, 189, 248, 0.11) 0%,
+          transparent 48%
+        ),
         radial-gradient(
           ellipse at 30% 40%, 
           rgba(14, 165, 233, 0.05) 0%, 
@@ -104,8 +109,25 @@ export const CSSreset = createGlobalStyle`
           rgba(56, 189, 248, 0.03) 0%, 
           transparent 50%
         ),
+        radial-gradient(
+          circle,
+          rgba(186, 230, 253, 0.22) 0 0.7px,
+          transparent 1.2px
+        ),
         ${theme.colors.black || "#0a1929"};
-      
+
+      background-size:
+        auto,
+        auto,
+        auto,
+        170px 170px,
+        auto;
+      background-position:
+        center,
+        center,
+        center,
+        23px 41px,
+        center;
       background-attachment: fixed;
       
       &::before {
@@ -189,6 +211,25 @@ export const CSSreset = createGlobalStyle`
       position: relative;
       z-index: 1;
       min-height: 100vh;
+
+      &::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background:
+          radial-gradient(circle at 12% 24%, rgba(56, 189, 248, 0.55) 0 2px, transparent 3px),
+          radial-gradient(circle at 82% 18%, rgba(255, 255, 255, 0.32) 0 1px, transparent 2px),
+          radial-gradient(circle at 68% 72%, rgba(56, 189, 248, 0.35) 0 1.5px, transparent 2.5px),
+          radial-gradient(circle at 21% 81%, rgba(255, 255, 255, 0.22) 0 1px, transparent 2px),
+          radial-gradient(circle at 92% 55%, rgba(56, 189, 248, 0.3) 0 1px, transparent 2px);
+        filter: drop-shadow(0 0 7px rgba(56, 189, 248, 0.45));
+      }
+
+      @media (max-width: 639px) {
+        &::after { opacity: 0.55; }
+      }
     }
 
     #root {

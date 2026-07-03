@@ -3,6 +3,7 @@ import { ThemeProvider } from "styled-components";
 import { CSSreset } from "../styles/CssReset";
 import theme from "../styles/Theme";
 import { createApolloClient } from "../apollo-client";
+import { QUERY as NAVBAR_QUERY } from "../components/Sections/Navbar/NavbarQuery";
 import { QUERY as BANNER_QUERY } from "../components/Sections/Banner/BannerQuery";
 import { QUERY as INTRODUCTION_QUERY } from "../components/Sections/Introduction/IntroductionQuery";
 import { QUERY as EXPERIENCE_QUERY } from "../components/Sections/Experience/ExperienceQuery";
@@ -47,7 +48,7 @@ export default function ClientSide({ sections }) {
     <>
       <ThemeProvider theme={theme}>
         <CSSreset theme={theme} />
-        <DynamicNavbar />
+        <DynamicNavbar data={sections.navbar} />
         <DynamicBanner data={sections.banner} />
         <DynamicIntroduction data={sections.introduction} />
         <DynamicExperience data={sections.experience} />
@@ -61,6 +62,7 @@ export default function ClientSide({ sections }) {
 }
 
 const contentQueries = [
+  [NAVBAR_QUERY, "1fU09M2HwR6lvRsgaT26YK"],
   [BANNER_QUERY, "7wNcHAAqxL2cunkRCCxW4o"],
   [INTRODUCTION_QUERY, "4DIoyNagIFWzKfhGrtKUXB"],
   [EXPERIENCE_QUERY, "2c3zCPqbJcXzcaM2bYTp52"],
@@ -79,12 +81,21 @@ export async function getStaticProps() {
     ),
   );
 
-  const [banner, introduction, experience, portfolio, tools, contact, footer] =
-    results.map(({ data }) => data);
+  const [
+    navbar,
+    banner,
+    introduction,
+    experience,
+    portfolio,
+    tools,
+    contact,
+    footer,
+  ] = results.map(({ data }) => data);
 
   return {
     props: {
       sections: {
+        navbar,
         banner,
         introduction,
         experience,
