@@ -5,5 +5,6 @@ export const SECTION_FIELDS = gql`
     title
     subtitle
     arrays
+    extraText
   }
 `;

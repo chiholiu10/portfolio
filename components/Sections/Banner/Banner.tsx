@@ -5,12 +5,42 @@ import {
   ComponentSection,
   SubHeader,
 } from "../../../styles/General.styles";
-import { HeaderH1, ProfileCartoon } from "./Banner.styles";
+import {
+  CodeCard,
+  HeaderH1,
+  OrbitNode,
+  OrbitRing,
+  ProfileCartoon,
+  VisualLabel,
+} from "./Banner.styles";
 import { BannerLogo } from "./BannerLogo";
 import { WordReveal } from "../../FramerMotions";
 
 type BannerProps = {
-  data: { section: { title: string; subtitle?: string | null } | null };
+  data: {
+    section: {
+      title: string;
+      subtitle?: string | null;
+      arrays?: Array<{
+        position: "top" | "middle" | "bottom";
+        text: string;
+      }>;
+      image?: {
+        url: string;
+        title?: string;
+        description?: string;
+        width?: number;
+        height?: number;
+      };
+      extraText?: string;
+      tool?: string;
+      arrayBlock?: Array<{
+        url: string;
+        title?: string;
+        description?: string;
+      }>;
+    } | null;
+  };
 };
 
 export const Banner = ({ data }: BannerProps) => {
@@ -41,7 +71,22 @@ export const Banner = ({ data }: BannerProps) => {
             alt="background-image-effect"
           />
         </BackgroundImage>
+
+        <OrbitRing $level={1} aria-hidden="true" />
+        <OrbitRing $level={2} aria-hidden="true" />
+        <OrbitRing $level={3} aria-hidden="true" />
+        {section?.arrays?.map((node, index) => (
+          <OrbitNode key={index} $position={node.position}>
+            {node.text}
+          </OrbitNode>
+        ))}
+        <CodeCard aria-hidden="true">
+          <i />
+          <i />
+          <i />
+        </CodeCard>
         <BannerLogo />
+        <VisualLabel>{section?.extraText}</VisualLabel>
       </ProfileCartoon>
 
       <motion.div>

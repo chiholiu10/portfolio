@@ -69,6 +69,14 @@ const floatWave = keyframes`
   }
 `;
 
+const orbitSpin = keyframes`
+  to { transform: rotate(360deg); }
+`;
+
+const orbitSpinReverse = keyframes`
+  to { transform: rotate(-360deg); }
+`;
+
 export const CSSreset = createGlobalStyle`
     html {
       line-height: 1.15;
@@ -78,6 +86,8 @@ export const CSSreset = createGlobalStyle`
       max-width: 100vw;
     }
     body {
+      position: relative;
+      isolation: isolate;
       margin: 0;
       overflow-x: hidden;
       font-family: ${theme.typoGraphy.fonts.body};
@@ -101,60 +111,84 @@ export const CSSreset = createGlobalStyle`
       &::before {
         content: '';
         position: fixed;
-        top: 30%;
-        left: 20%;
-        width: 600px;
-        height: 600px;
-        z-index: -1;
+        top: -360px;
+        left: -300px;
+        width: 980px;
+        height: 980px;
+        z-index: 0;
         pointer-events: none;
         border-radius: 50%;
-        
-        background: radial-gradient(
-          circle at center,
-          rgba(14, 165, 233, 0.15) 0%,
-          rgba(14, 165, 233, 0.05) 30%,
-          rgba(14, 165, 233, 0.02) 60%,
-          transparent 80%
+        opacity: 0.65;
+        background:
+          radial-gradient(circle, transparent 44%, rgba(56, 189, 248, 0.08) 44.15%, transparent 44.4%),
+          radial-gradient(circle, transparent 63%, rgba(255, 255, 255, 0.045) 63.1%, transparent 63.35%),
+          conic-gradient(
+            from 25deg,
+            transparent 0 13%,
+            rgba(56, 189, 248, 0.16) 13.2% 13.45%,
+            transparent 13.7% 61%,
+            rgba(56, 189, 248, 0.08) 61.2% 61.35%,
+            transparent 61.6%
+          );
+        -webkit-mask: radial-gradient(
+          circle,
+          transparent 0 72%,
+          #000 72.2% 72.5%,
+          transparent 72.7%
         );
-        
-        border: 1px solid rgba(56, 189, 248, 0.08);
-        box-shadow: 
-          0 0 60px rgba(14, 165, 233, 0.1),
-          inset 0 0 60px rgba(14, 165, 233, 0.05);
-        
-        animation: 
-          ${wave1} 8s ease-in-out infinite,
-          ${floatWave} 12s ease-in-out infinite;
+        mask: radial-gradient(circle, transparent 0 72%, #000 72.2% 72.5%, transparent 72.7%);
+        animation: ${orbitSpin} 90s linear infinite;
       }
       
       &::after {
         content: '';
         position: fixed;
-        top: 60%;
-        left: 70%;
-        width: 450px;
-        height: 450px;
-        z-index: -1;
+        right: -330px;
+        bottom: -280px;
+        width: 860px;
+        height: 860px;
+        z-index: 0;
         pointer-events: none;
         border-radius: 50%;
-        
-        background: radial-gradient(
-          circle at center,
-          rgba(56, 189, 248, 0.12) 0%,
-          rgba(56, 189, 248, 0.04) 30%,
-          rgba(56, 189, 248, 0.01) 60%,
-          transparent 80%
-        );
-        
-        border: 1px solid rgba(56, 189, 248, 0.06);
-        box-shadow: 
-          0 0 40px rgba(56, 189, 248, 0.08),
-          inset 0 0 40px rgba(56, 189, 248, 0.03);
-        
-        animation: 
-          ${wave2} 6s ease-in-out infinite 1s,
-          ${floatWave} 15s ease-in-out infinite 2s;
+        opacity: 0.55;
+        border: 1px dashed rgba(56, 189, 248, 0.11);
+        background:
+          radial-gradient(circle, transparent 53%, rgba(56, 189, 248, 0.06) 53.15%, transparent 53.4%),
+          radial-gradient(circle at 16% 50%, #38bdf8 0 4px, transparent 5px),
+          radial-gradient(circle at 84% 50%, rgba(255, 255, 255, 0.6) 0 3px, transparent 4px);
+        box-shadow:
+          inset 0 0 100px rgba(56, 189, 248, 0.025),
+          0 0 80px rgba(14, 165, 233, 0.025);
+        animation: ${orbitSpinReverse} 110s linear infinite;
       }
+
+      @media (max-width: 639px) {
+        &::before {
+          width: 650px;
+          height: 650px;
+          top: -260px;
+          left: -330px;
+          opacity: 0.42;
+        }
+        &::after {
+          width: 580px;
+          height: 580px;
+          right: -360px;
+          bottom: -180px;
+          opacity: 0.38;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        &::before,
+        &::after { animation: none; }
+      }
+    }
+
+    #__next {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
     }
 
     #root {

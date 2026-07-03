@@ -3,20 +3,21 @@ import { breakpoint } from "../../../styles/Breakpoint";
 import theme from "../../../styles/Theme";
 
 export const NavbarComponent = styled.nav`
-  position: fixed;
-  width: 100%;
-  background-color: ${theme.colors.black};
-  color: ${theme.colors.white};
-  filter: blur(0.4);
-  z-index: 999;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  font-weight: bold;
-  justify-content: center;
+  display: none;
 
   ${breakpoint.md`
     font-size: 22px;
+    position: fixed;
+    width: 100%;
+    background-color: ${theme.colors.black};
+    color: ${theme.colors.white};
+    filter: blur(0.4);
+    z-index: 999;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    justify-content: center;
 
     &::after {
       content: "";
