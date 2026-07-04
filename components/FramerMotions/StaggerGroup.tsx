@@ -1,8 +1,8 @@
-import { motion } from "framer-motion";
+import { m } from "motion/react";
 
-export const StaggerGroup = ({ children, stagger = 0.3 }) => {
+export const StaggerGroup = ({ children, stagger = 0.08 }) => {
   return (
-    <motion.div
+    <m.div
       initial="hidden"
       whileInView="visible"
       viewport={{
@@ -15,12 +15,12 @@ export const StaggerGroup = ({ children, stagger = 0.3 }) => {
         visible: {
           transition: {
             staggerChildren: stagger,
-            delayChildren: 0.1,
+            delayChildren: 0.04,
           },
         },
       }}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 };

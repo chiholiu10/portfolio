@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { m } from "motion/react";
+import { premiumEase } from "./motion.config";
 
 const seenWords = new Set<string>();
 
@@ -26,9 +27,9 @@ export const WordReveal = ({ text = "", id = "" }: WordRevealProps) => {
   return (
     <span>
       {words.map((word, i) => (
-        <motion.span
+        <m.span
           key={i}
-          initial={{ opacity: 0, y: 0 }}
+          initial={{ opacity: 0, y: 9 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{
             once: true,
@@ -36,9 +37,9 @@ export const WordReveal = ({ text = "", id = "" }: WordRevealProps) => {
             margin: "-80px 0px -80px 0px",
           }}
           transition={{
-            duration: 0.8,
-            delay: i * 0.03,
-            ease: [0.16, 1, 0.3, 1],
+            duration: 0.56,
+            delay: Math.min(i * 0.018, 0.38),
+            ease: premiumEase,
           }}
           onAnimationComplete={() => handleComplete(i === words.length - 1)}
           style={{
@@ -48,7 +49,7 @@ export const WordReveal = ({ text = "", id = "" }: WordRevealProps) => {
           }}
         >
           {word}
-        </motion.span>
+        </m.span>
       ))}
     </span>
   );

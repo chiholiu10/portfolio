@@ -1,4 +1,8 @@
+import { LazyMotion, MotionConfig } from "motion/react";
 import Head from "next/head";
+
+const loadMotionFeatures = () =>
+  import("../lib/motion-features").then((module) => module.default);
 
 const MyApp = ({ Component, pageProps }) => {
   return (
@@ -20,7 +24,11 @@ const MyApp = ({ Component, pageProps }) => {
           }}
         />
       </Head>
-      <Component {...pageProps} />
+      <MotionConfig reducedMotion="user">
+        <LazyMotion features={loadMotionFeatures} strict>
+          <Component {...pageProps} />
+        </LazyMotion>
+      </MotionConfig>
     </>
   );
 };

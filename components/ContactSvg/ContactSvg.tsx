@@ -1,7 +1,8 @@
-import { motion } from "framer-motion";
+import { m } from "motion/react";
 import { useInView } from "react-intersection-observer";
 import { IconPath } from "../Contact/Contact";
 import { ContactSVG } from "./Contact.styles";
+import { premiumEase } from "../FramerMotions/motion.config";
 
 type ContactSvgProps = {
   index: number;
@@ -22,9 +23,9 @@ export const ContactSvg = ({ index, icon }: ContactSvgProps) => {
     whileInView: "visible",
     stroke: "rgba(255, 255, 255, 0.69)",
     transition: {
-      duration: 2,
-      ease: [0.16, 1, 0.3, 1] as const,
-      delay: index * 0.05,
+      duration: 1.05,
+      ease: premiumEase,
+      delay: index * 0.035,
     },
   };
 
@@ -34,13 +35,13 @@ export const ContactSvg = ({ index, icon }: ContactSvgProps) => {
 
   return (
     <ContactSVG data-testid={`contactTest${index}`}>
-      <motion.svg
+      <m.svg
         ref={ref}
         viewBox="0 0 512 512"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <motion.path {...svgProperties} d={iconPath} />
-      </motion.svg>
+        <m.path {...svgProperties} d={iconPath} />
+      </m.svg>
     </ContactSVG>
   );
 };

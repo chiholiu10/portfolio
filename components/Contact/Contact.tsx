@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { ComponentSection } from "../../styles/General.styles";
 import { ContactSvg } from "../ContactSvg/ContactSvg";
 import { StaggerGroup, StaggerItem } from "../FramerMotions";

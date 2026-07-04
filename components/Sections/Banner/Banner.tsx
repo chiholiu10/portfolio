@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m } from "motion/react";
 import Image from "next/image";
 import {
   BackgroundImage,
@@ -25,13 +25,6 @@ type BannerProps = {
         position: "top" | "middle" | "bottom";
         text: string;
       }>;
-      image?: {
-        url: string;
-        title?: string;
-        description?: string;
-        width?: number;
-        height?: number;
-      };
       extraText?: string;
       tool?: string;
       arrayBlock?: Array<{
@@ -67,7 +60,7 @@ export const Banner = ({ data }: BannerProps) => {
             height={1092}
             sizes="(min-width: 768px) 50vw, 1px"
             style={{ width: "100%", height: "auto" }}
-            priority
+            loading="lazy"
             alt="background-image-effect"
           />
         </BackgroundImage>
@@ -89,7 +82,7 @@ export const Banner = ({ data }: BannerProps) => {
         <VisualLabel>{section?.extraText}</VisualLabel>
       </ProfileCartoon>
 
-      <motion.div>
+      <m.div>
         {section ? (
           <>
             <HeaderH1>{section.title}</HeaderH1>
@@ -100,7 +93,7 @@ export const Banner = ({ data }: BannerProps) => {
         ) : (
           "loading..."
         )}
-      </motion.div>
+      </m.div>
     </ComponentSection>
   );
 };

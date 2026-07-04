@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { m, useScroll, useTransform } from "motion/react";
 import Image from "next/image";
 import {
   BackgroundImage,
@@ -39,7 +39,7 @@ export const Portfolio = ({ data }: PortfolioProps) => {
 
   return (
     <ComponentSection className="portfolioComponent">
-      <motion.div style={{ y: y2, x: 0 }}>
+      <m.div style={{ y: y2, x: 0 }}>
         <BackgroundImage $left="60%">
           <Image
             src={
@@ -49,11 +49,11 @@ export const Portfolio = ({ data }: PortfolioProps) => {
             height={612}
             sizes="(min-width: 768px) 40vw, 1px"
             style={{ width: "100%", height: "auto" }}
-            priority
+            loading="lazy"
             alt="background-image-effect"
           />
         </BackgroundImage>
-      </motion.div>
+      </m.div>
       <FadeUp id="portfolio-section">
         <Header>{title}</Header>
         <SubHeader>

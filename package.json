@@ -26,7 +26,6 @@
     "@typescript-eslint/parser": "^8.24.0",
     "cypress": "^13.13.3",
     "eslint-plugin-simple-import-sort": "^12.1.1",
-    "framer-motion": "^12.40.0",
     "globals": "^15.14.0",
     "graphql": "16.9.0",
     "motion": "^12.40.0",
