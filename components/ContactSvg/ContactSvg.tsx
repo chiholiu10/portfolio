@@ -21,7 +21,7 @@ export const ContactSvg = ({ index, icon }: ContactSvgProps) => {
     fill: "transparent",
     strokeWidth: 13,
     whileInView: "visible",
-    stroke: "rgba(255, 255, 255, 0.69)",
+    stroke: "rgb(56, 189, 248)",
     transition: {
       duration: 1.05,
       ease: premiumEase,
@@ -35,11 +35,7 @@ export const ContactSvg = ({ index, icon }: ContactSvgProps) => {
 
   return (
     <ContactSVG data-testid={`contactTest${index}`}>
-      <m.svg
-        ref={ref}
-        viewBox="0 0 512 512"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+      <m.svg ref={ref} viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
         <m.path {...svgProperties} d={iconPath} />
       </m.svg>
     </ContactSVG>

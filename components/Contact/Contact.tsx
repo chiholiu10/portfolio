@@ -47,7 +47,7 @@ export const Contact = ({ data }: ContactProps) => {
         <ContactContainer>
           {arrays.map((item, index) => (
             <StaggerItem key={index}>
-              <ContactBlock>
+              <ContactBlock $index={index}>
                 <ContactBlockAnchor
                   href={item.anchor}
                   target="_blank"
