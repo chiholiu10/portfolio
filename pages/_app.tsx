@@ -8,18 +8,53 @@ const MyApp = ({ Component, pageProps }) => {
   return (
     <>
       <Head>
-        <title>Chi Ho Liu | Front-End Developer in the Netherlands</title>
+        <title>Frontend Developer Amsterdam | Chi Ho Liu</title>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "Person",
-              name: "Chi Ho Liu",
-              url: "https://www.chiholiu.com/",
-              jobTitle: "Front-End Developer",
-              address: { "@type": "PostalAddress", addressCountry: "NL" },
-              knowsAbout: ["React", "Next.js", "TypeScript", "Vue.js", "UX/UI"],
+              "@graph": [
+                {
+                  "@type": "Person",
+                  "@id": "https://www.chiholiu.com/#person",
+                  name: "Chi Ho Liu",
+                  url: "https://www.chiholiu.com/",
+                  jobTitle: "Frontend Developer",
+                  homeLocation: {
+                    "@type": "City",
+                    name: "Amsterdam",
+                  },
+                  knowsAbout: [
+                    "React",
+                    "Next.js",
+                    "TypeScript",
+                    "Vue.js",
+                    "Frontend performance",
+                    "Web accessibility",
+                    "UX/UI",
+                  ],
+                },
+                {
+                  "@type": "Service",
+                  "@id": "https://www.chiholiu.com/#frontend-development",
+                  name: "Freelance frontend development",
+                  serviceType: "Frontend web development",
+                  provider: { "@id": "https://www.chiholiu.com/#person" },
+                  areaServed: {
+                    "@type": "City",
+                    name: "Amsterdam",
+                  },
+                  url: "https://www.chiholiu.com/",
+                },
+                {
+                  "@type": "WebSite",
+                  "@id": "https://www.chiholiu.com/#website",
+                  url: "https://www.chiholiu.com/",
+                  name: "Chi Ho Liu — Freelance Frontend Developer Amsterdam",
+                  inLanguage: "en-NL",
+                },
+              ],
             }).replace(/</g, "\\u003c"),
           }}
         />

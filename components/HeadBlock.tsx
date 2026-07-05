@@ -1,18 +1,30 @@
 const HeadBlock = () => (
   <>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=5"
+    />
     <meta name="format-detection" content="telephone=no" />
     <meta
       name="description"
-      content="Explore the portfolio of Chi Ho Liu, a front-end developer in the Netherlands specializing in React, Vue, Next.js, TypeScript, and accessible user experiences."
+      content="Frontend developer in Amsterdam for fast, accessible React and Next.js websites. View the work and technical expertise of Chi Ho Liu."
     />
     <link rel="canonical" href="https://www.chiholiu.com/" />
+    <link rel="alternate" hrefLang="en-NL" href="https://www.chiholiu.com/" />
+    <link
+      rel="alternate"
+      hrefLang="x-default"
+      href="https://www.chiholiu.com/"
+    />
     <meta name="author" content="Chi Ho Liu" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
-    <meta property="og:title" content="Chi Ho Liu | Front-End Developer Portfolio" />
+    <meta
+      property="og:title"
+      content="Frontend Developer Amsterdam | Chi Ho Liu"
+    />
     <meta
       property="og:description"
-      content="Portfolio of Chi Ho Liu, a front-end developer in the Netherlands building modern, accessible web experiences."
+      content="Amsterdam-based  frontend developer creating fast, accessible React and Next.js experiences for ambitious teams."
     />
     <meta property="og:url" content="https://www.chiholiu.com/" />
     <meta
@@ -21,13 +33,16 @@ const HeadBlock = () => (
     />
     <meta property="og:image:alt" content="Chi Ho Liu portfolio logo" />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Chi Ho Liu Portfolio" />
-    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content="Chi Ho Liu —  Frontend Developer" />
+    <meta property="og:locale" content="en_NL" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Chi Ho Liu | Front-End Developer Portfolio" />
+    <meta
+      name="twitter:title"
+      content="Frontend Developer Amsterdam | Chi Ho Liu"
+    />
     <meta
       name="twitter:description"
-      content="Modern front-end development projects built with React, Vue, Next.js, and TypeScript."
+      content="React and Next.js development in Amsterdam, focused on performance, accessibility and refined UX."
     />
     <meta
       name="twitter:image"
