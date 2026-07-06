@@ -173,7 +173,6 @@ export const CSSreset = createGlobalStyle`
         pointer-events: none;
         border-radius: 50%;
         opacity: 0.55;
-        border: 1px dashed rgba(56, 189, 248, 0.11);
         background:
           radial-gradient(circle, transparent 53%, rgba(56, 189, 248, 0.06) 53.15%, transparent 53.4%),
           radial-gradient(circle at 16% 50%, #38bdf8 0 4px, transparent 5px),
