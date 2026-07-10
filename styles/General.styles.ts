@@ -88,7 +88,8 @@ export const ComponentSection = styled.section<ComponentSectionProps>`
 
   &.bannerComponent {
     svg {
-      width: 165px;
+      width: 100%;
+      max-width: 850px;
       height: auto;
       display: flex;
       margin-left: auto;

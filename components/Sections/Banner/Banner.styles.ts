@@ -46,11 +46,9 @@ export const ProfileCartoon = styled.div`
     radial-gradient(circle, rgba(56, 189, 248, 0.16), transparent 45%),
     rgba(255, 255, 255, 0.02);
   box-shadow: 0 0 90px rgba(14, 165, 233, 0.08);
-  svg {
+  .profile-avatar {
     z-index: 2;
-    width: 50%;
-    height: auto;
-    filter: drop-shadow(0 28px 50px rgba(0, 0, 0, 0.55));
+    filter: drop-shadow(0 28px 48px rgba(0, 0, 0, 0.48));
   }
   @media (max-width: 639px) {
     width: min(300px, 62vw);
