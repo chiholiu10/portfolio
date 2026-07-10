@@ -70,7 +70,7 @@ export const Portfolio = ({ data }: PortfolioProps) => {
                   alt={`Portfolio project ${index + 1}`}
                   width={700}
                   height={394}
-                  sizes="(max-width: 767px) calc(100vw - 40px), 390px"
+                  sizes="(max-width: 767px) calc(100vw - 40px), 350px"
                   quality={65}
                   loading="lazy"
                 />

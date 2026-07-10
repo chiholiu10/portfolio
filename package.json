@@ -74,5 +74,18 @@
     "fs": false,
     "path": false,
     "os": false
+  },
+  "browserslist": {
+    "production": [
+      "Chrome >= 111",
+      "Edge >= 111",
+      "Firefox >= 115",
+      "Safari >= 16.4"
+    ],
+    "development": [
+      "last 1 Chrome version",
+      "last 1 Firefox version",
+      "last 1 Safari version"
+    ]
   }
 }

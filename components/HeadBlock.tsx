@@ -49,7 +49,6 @@ const HeadBlock = () => (
       content="https://res.cloudinary.com/dh7tnzzxm/image/upload/v1681677951/Frame_1_1_mh4oma.png"
     />
     <link rel="icon" href="/favicon.ico" />
-    <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#071327" />
   </>
 );

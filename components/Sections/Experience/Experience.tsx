@@ -41,7 +41,7 @@ export const Experience = ({ data }: ExperienceProps) => {
                 alt="Chi Ho Liu working as a front-end developer"
                 width={810}
                 height={540}
-                sizes="(max-width: 767px) 100vw, 664px"
+                sizes="(max-width: 767px) calc(100vw - 40px), 500px"
                 quality={70}
                 loading="lazy"
               />

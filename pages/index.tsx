@@ -1,7 +1,6 @@
 import { ThemeProvider } from "styled-components";
 import { CSSreset } from "../styles/CssReset";
 import theme from "../styles/Theme";
-import { createApolloClient } from "../apollo-client";
 import { Contact } from "../components/Contact/Contact";
 import { Banner } from "../components/Sections/Banner/Banner";
 import { Experience } from "../components/Sections/Experience/Experience";
@@ -10,14 +9,6 @@ import { Introduction } from "../components/Sections/Introduction/Introduction";
 import { Navbar } from "../components/Sections/Navbar/Navbar";
 import { Portfolio } from "../components/Sections/Portfolio/Portfolio";
 import { Tools } from "../components/Sections/Tools/Tools";
-import { QUERY as NAVBAR_QUERY } from "../components/Sections/Navbar/NavbarQuery";
-import { QUERY as BANNER_QUERY } from "../components/Sections/Banner/BannerQuery";
-import { QUERY as INTRODUCTION_QUERY } from "../components/Sections/Introduction/IntroductionQuery";
-import { QUERY as EXPERIENCE_QUERY } from "../components/Sections/Experience/ExperienceQuery";
-import { QUERY as PORTFOLIO_QUERY } from "../components/Sections/Portfolio/PortfolioQuery";
-import { QUERY as TOOLS_QUERY } from "../components/Sections/Tools/ToolsQuery";
-import { QUERY as CONTACT_QUERY } from "../components/Contact/ContactQuery";
-import { QUERY as FOOTER_QUERY } from "../components/Sections/Footer/FooterQuery";
 
 export default function ClientSide({ sections }) {
   return (
@@ -37,18 +28,44 @@ export default function ClientSide({ sections }) {
   );
 }
 
-const contentQueries = [
-  [NAVBAR_QUERY, "1fU09M2HwR6lvRsgaT26YK"],
-  [BANNER_QUERY, "7wNcHAAqxL2cunkRCCxW4o"],
-  [INTRODUCTION_QUERY, "4DIoyNagIFWzKfhGrtKUXB"],
-  [EXPERIENCE_QUERY, "2c3zCPqbJcXzcaM2bYTp52"],
-  [PORTFOLIO_QUERY, "2qFy05XNAe3Ho1CmJiAgbO"],
-  [TOOLS_QUERY, "2FzwztBT4JTZm5icaV1tlb"],
-  [CONTACT_QUERY, "6pPYUtgRlvgICxNf4Dhei"],
-  [FOOTER_QUERY, "Veijh9SFm3OqyuVxBBy17"],
-] as const;
-
 export async function getStaticProps() {
+  const { createApolloClient } = await import("../apollo-client");
+  const { QUERY: NAVBAR_QUERY } = await import(
+    "../components/Sections/Navbar/NavbarQuery"
+  );
+  const { QUERY: BANNER_QUERY } = await import(
+    "../components/Sections/Banner/BannerQuery"
+  );
+  const { QUERY: INTRODUCTION_QUERY } = await import(
+    "../components/Sections/Introduction/IntroductionQuery"
+  );
+  const { QUERY: EXPERIENCE_QUERY } = await import(
+    "../components/Sections/Experience/ExperienceQuery"
+  );
+  const { QUERY: PORTFOLIO_QUERY } = await import(
+    "../components/Sections/Portfolio/PortfolioQuery"
+  );
+  const { QUERY: TOOLS_QUERY } = await import(
+    "../components/Sections/Tools/ToolsQuery"
+  );
+  const { QUERY: CONTACT_QUERY } = await import(
+    "../components/Contact/ContactQuery"
+  );
+  const { QUERY: FOOTER_QUERY } = await import(
+    "../components/Sections/Footer/FooterQuery"
+  );
+
+  const contentQueries = [
+    [NAVBAR_QUERY, "1fU09M2HwR6lvRsgaT26YK"],
+    [BANNER_QUERY, "7wNcHAAqxL2cunkRCCxW4o"],
+    [INTRODUCTION_QUERY, "4DIoyNagIFWzKfhGrtKUXB"],
+    [EXPERIENCE_QUERY, "2c3zCPqbJcXzcaM2bYTp52"],
+    [PORTFOLIO_QUERY, "2qFy05XNAe3Ho1CmJiAgbO"],
+    [TOOLS_QUERY, "2FzwztBT4JTZm5icaV1tlb"],
+    [CONTACT_QUERY, "6pPYUtgRlvgICxNf4Dhei"],
+    [FOOTER_QUERY, "Veijh9SFm3OqyuVxBBy17"],
+  ] as const;
+
   const client = createApolloClient();
 
   const results = await Promise.all(
