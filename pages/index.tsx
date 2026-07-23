@@ -1,4 +1,5 @@
 import { ThemeProvider } from "styled-components";
+import { CareerAgent } from "../components/CareerAgent/CareerAgent";
 import { CSSreset } from "../styles/CssReset";
 import theme from "../styles/Theme";
 import { Contact } from "../components/Contact/Contact";
@@ -10,7 +11,12 @@ import { Navbar } from "../components/Sections/Navbar/Navbar";
 import { Portfolio } from "../components/Sections/Portfolio/Portfolio";
 import { Tools } from "../components/Sections/Tools/Tools";
 
-export default function ClientSide({ sections }) {
+export default function ClientSide({ sections, isProduction }) {
+  const contactSection = sections.contact?.section;
+  const showCareerAgent = isProduction
+    ? contactSection?.showCareerAgentInProduction === true
+    : contactSection?.showCareerAgentInLocalhost === true;
+
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -23,6 +29,7 @@ export default function ClientSide({ sections }) {
         <Tools data={sections.tools} />
         <Contact data={sections.contact} />
         <Footer data={sections.footer} />
+        {showCareerAgent && <CareerAgent />}
       </ThemeProvider>
     </>
   );
@@ -87,6 +94,7 @@ export async function getStaticProps() {
 
   return {
     props: {
+      isProduction: process.env.NODE_ENV === "production",
       sections: {
         navbar,
         banner,

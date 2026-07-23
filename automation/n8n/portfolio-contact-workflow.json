@@ -1,0 +1,73 @@
+{
+  "name": "Portfolio career enquiry",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "portfolio-career-contact",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "d21d7a2f-543e-42fb-a1f7-278469e762a8",
+      "name": "Career enquiry webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [260, 300],
+      "webhookId": "portfolio-career-contact"
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $json.body ?? $json;\nconst fields = ['name', 'email', 'company', 'message'];\nfor (const field of fields) {\n  if (typeof body[field] !== 'string' || !body[field].trim()) {\n    throw new Error(`Missing required field: ${field}`);\n  }\n}\nconst email = body.email.trim();\nif (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) {\n  throw new Error('Invalid email address');\n}\nconst escapeHtml = (value) => value\n  .trim()\n  .replaceAll('&', '&amp;')\n  .replaceAll('<', '&lt;')\n  .replaceAll('>', '&gt;')\n  .replaceAll('\\\"', '&quot;')\n  .replaceAll(\"'\", '&#039;');\nconst name = escapeHtml(body.name.slice(0, 120));\nconst company = escapeHtml(body.company.slice(0, 160));\nconst message = escapeHtml(body.message.slice(0, 3000)).replaceAll('\\n', '<br>');\nreturn [{ json: {\n  name,\n  email,\n  company,\n  message,\n  html: `<h1>New portfolio career enquiry</h1><p><strong>Name:</strong> ${name}</p><p><strong>Email:</strong> ${escapeHtml(email)}</p><p><strong>Company:</strong> ${company}</p><p><strong>Message:</strong></p><p>${message}</p>`\n} }];"
+      },
+      "id": "ce36c960-854b-4fc8-84a5-eb74db068dda",
+      "name": "Validate and format",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "fromEmail": "Portfolio Agent <replace@example.com>",
+        "toEmail": "replace@example.com",
+        "subject": "=Portfolio career enquiry — {{ $json.company }}",
+        "emailFormat": "html",
+        "html": "={{ $json.html }}",
+        "options": {}
+      },
+      "id": "2dca3f3f-440b-4703-a103-e1897a81e388",
+      "name": "Send email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [740, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\"success\":true,\"message\":\"The enquiry was delivered successfully.\"}",
+        "options": {}
+      },
+      "id": "58f94eb6-a9c5-4385-88a4-aab9726ec72c",
+      "name": "Confirm delivery",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [980, 300]
+    }
+  ],
+  "connections": {
+    "Career enquiry webhook": {
+      "main": [[{ "node": "Validate and format", "type": "main", "index": 0 }]]
+    },
+    "Validate and format": {
+      "main": [[{ "node": "Send email", "type": "main", "index": 0 }]]
+    },
+    "Send email": {
+      "main": [[{ "node": "Confirm delivery", "type": "main", "index": 0 }]]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "active": false,
+  "versionId": "2c74111f-53db-45a6-8890-b0f9271953fd"
+}

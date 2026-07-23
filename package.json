@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "npx kill-port 3001 && next dev -p 3001",
+    "docker": "docker compose up --build",
+    "docker:prune": "docker system prune -a -f",
     "build": "next build",
     "reinstall": "rm -rf node_modules yarn.lock package-lock.json && yarn install",
     "start": "npx kill-port 3000 && next start",
