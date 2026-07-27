@@ -32,3 +32,7 @@ yarn-error.log*
 # vercel
 .vercel
 .vscode
+
+knowledge/*.md
+!knowledge/README.md
+!knowledge/*.example.md

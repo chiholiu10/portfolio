@@ -1,5 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
+import {
+  answerWithGemini,
+  isGeminiQuotaError,
+} from "../../lib/career-agent/gemini";
+import { logCareerAgentMessage } from "../../lib/career-agent/history";
 
 const stripUnsafeControlCharacters = (message: string) =>
   Array.from(message)
@@ -26,7 +31,13 @@ const requestSchema = z.object({
 });
 
 type ApiResponse =
-  | { answer: string; sessionId: string }
+  | {
+      answer: string;
+      sessionId: string;
+      chatId?: string;
+      messageId?: string;
+      contactOptions?: Array<"email" | "whatsapp">;
+    }
   | { error: string; code: string };
 
 type RateLimitEntry = { count: number; resetAt: number };
@@ -84,24 +95,26 @@ const isAllowedOrigin = (request: NextApiRequest) => {
   }
 };
 
-const extractAnswer = (payload: unknown) => {
-  if (!payload || typeof payload !== "object") return null;
+const extractContactOptions = (answer: string) => {
+  const markerPattern = /\[\[contact_actions:([a-z,\s]+)\]\]/i;
+  const match = answer.match(markerPattern);
 
-  const result = payload as { text?: unknown; json?: unknown };
-
-  if (typeof result.text === "string" && result.text.trim()) {
-    return result.text.trim().slice(0, 6000);
+  if (!match) {
+    return { cleanAnswer: answer };
   }
 
-  if (typeof result.json === "string" && result.json.trim()) {
-    return result.json.trim().slice(0, 6000);
-  }
+  const contactOptions = match[1]
+    .split(",")
+    .map((value) => value.trim().toLowerCase())
+    .filter(
+      (value): value is "email" | "whatsapp" =>
+        value === "email" || value === "whatsapp",
+    );
 
-  if (result.json && typeof result.json === "object") {
-    return JSON.stringify(result.json).slice(0, 6000);
-  }
-
-  return null;
+  return {
+    cleanAnswer: answer.replace(markerPattern, "").trim(),
+    contactOptions: [...new Set(contactOptions)],
+  };
 };
 
 export default async function handler(
@@ -152,11 +165,11 @@ export default async function handler(
     });
   }
 
-  const apiUrl = process.env.FLOWISE_API_URL?.replace(/\/$/, "");
-  const flowId = process.env.FLOWISE_FLOW_ID;
-  const apiKey = process.env.FLOWISE_API_KEY;
-
-  if (!apiUrl || !flowId || !apiKey) {
+  if (
+    !process.env.GEMINI_API_KEY ||
+    !process.env.SUPABASE_URL ||
+    !process.env.SUPABASE_SERVICE_ROLE_KEY
+  ) {
     return response.status(503).json({
       error: "The career assistant has not been configured yet.",
       code: "NOT_CONFIGURED",
@@ -167,54 +180,52 @@ export default async function handler(
   const timeout = setTimeout(() => controller.abort(), 30_000);
 
   try {
-    const flowiseResponse = await fetch(
-      `${apiUrl}/api/v1/prediction/${encodeURIComponent(flowId)}`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          question: parsed.data.message,
-          streaming: false,
-          overrideConfig: {
-            sessionId: parsed.data.sessionId,
-          },
-        }),
-        signal: controller.signal,
-      },
-    );
+    await logCareerAgentMessage({
+      sessionId: parsed.data.sessionId,
+      role: "user",
+      content: parsed.data.message,
+      clientAddress,
+    });
 
-    if (!flowiseResponse.ok) {
-      return response.status(502).json({
-        error: "The career assistant could not answer right now.",
-        code: "UPSTREAM_ERROR",
-      });
-    }
+    const answer = await answerWithGemini(parsed.data.message, controller.signal);
 
-    const payload: unknown = await flowiseResponse.json();
-    const answer = extractAnswer(payload);
+    const { cleanAnswer, contactOptions } = extractContactOptions(answer);
+    const chatId = parsed.data.sessionId;
+    const messageId = crypto.randomUUID();
 
-    if (!answer) {
-      return response.status(502).json({
-        error: "The career assistant returned an empty answer.",
-        code: "EMPTY_RESPONSE",
-      });
-    }
+    await logCareerAgentMessage({
+      sessionId: parsed.data.sessionId,
+      role: "assistant",
+      content: cleanAnswer,
+      flowiseChatId: chatId,
+      flowiseMessageId: messageId,
+      contactOptions,
+    });
 
     return response.status(200).json({
-      answer,
+      answer: cleanAnswer,
       sessionId: parsed.data.sessionId,
+      ...(chatId ? { chatId } : {}),
+      ...(messageId ? { messageId } : {}),
+      ...(contactOptions?.length ? { contactOptions } : {}),
     });
   } catch (error) {
     const timedOut = error instanceof Error && error.name === "AbortError";
+    const quotaExhausted = isGeminiQuotaError(error);
+    let errorMessage = "The career assistant is currently unavailable.";
+    let errorCode = "UNAVAILABLE";
 
-    return response.status(502).json({
-      error: timedOut
-        ? "The response took too long. Please try again."
-        : "The career assistant is currently unavailable.",
-      code: timedOut ? "TIMEOUT" : "UNAVAILABLE",
+    if (quotaExhausted) {
+      errorMessage = "The career assistant is temporarily unavailable.";
+      errorCode = "QUOTA_EXHAUSTED";
+    } else if (timedOut) {
+      errorMessage = "The response took too long. Please try again.";
+      errorCode = "TIMEOUT";
+    }
+
+    return response.status(quotaExhausted ? 503 : 502).json({
+      error: errorMessage,
+      code: errorCode,
     });
   } finally {
     clearTimeout(timeout);

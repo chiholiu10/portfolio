@@ -2,8 +2,65 @@ import styled, { keyframes } from "styled-components";
 import { breakpoint } from "../../styles/Breakpoint";
 
 const panelEnter = keyframes`
-  from { opacity: 0; transform: translateY(14px) scale(0.98); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  0% {
+    opacity: 0;
+    filter: blur(18px) saturate(1.55);
+    transform: translate3d(18px, 42px, 0) scale(0.18);
+    clip-path: inset(86% 0 0 86% round 32px);
+  }
+
+  48% {
+    opacity: 1;
+    filter: blur(4px) saturate(1.35);
+    transform: translate3d(-4px, -8px, 0) scale(1.025);
+    clip-path: inset(0 0 0 0 round 22px);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0) saturate(1);
+    transform: translate3d(0, 0, 0) scale(1);
+    clip-path: inset(0 0 0 0 round 20px);
+  }
+`;
+
+const panelSweep = keyframes`
+  0% { opacity: 0; transform: translateX(-135%) skewX(-16deg); }
+  34% { opacity: 0.75; }
+  100% { opacity: 0; transform: translateX(135%) skewX(-16deg); }
+`;
+
+const orbBreathe = keyframes`
+  0%, 100% {
+    box-shadow:
+      0 16px 48px rgba(0, 0, 0, 0.48),
+      0 0 24px rgba(14, 165, 233, 0.16),
+      0 0 0 0 rgba(104, 213, 247, 0.22);
+  }
+
+  50% {
+    box-shadow:
+      0 18px 52px rgba(0, 0, 0, 0.5),
+      0 0 38px rgba(14, 165, 233, 0.28),
+      0 0 0 9px rgba(104, 213, 247, 0);
+  }
+`;
+
+const orbOrbit = keyframes`
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+`;
+
+const sensorPing = keyframes`
+  0% {
+    opacity: 0.58;
+    transform: scale(0.86);
+  }
+
+  72%, 100% {
+    opacity: 0;
+    transform: scale(1.55);
+  }
 `;
 
 const pulse = keyframes`
@@ -24,11 +81,15 @@ export const AgentShell = styled.div`
 `;
 
 export const AgentButton = styled.button`
+  position: relative;
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   gap: 10px;
+  width: 206px;
   min-height: 54px;
-  padding: 8px 18px 8px 8px;
+  overflow: visible;
+  padding: 8px;
   color: #eaf7ff;
   font: inherit;
   font-size: 13px;
@@ -37,13 +98,38 @@ export const AgentButton = styled.button`
   cursor: pointer;
   border: 1px solid rgba(104, 213, 247, 0.34);
   border-radius: 999px;
-  background: rgba(7, 20, 38, 0.9);
+  background:
+    radial-gradient(circle at 28px 26px, rgba(141, 229, 255, 0.16), transparent 38px),
+    rgba(7, 20, 38, 0.94);
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.48), 0 0 28px rgba(14, 165, 233, 0.14);
   backdrop-filter: blur(18px);
-  transition: border-color 180ms ease, transform 180ms ease;
+  isolation: isolate;
+  animation: ${orbBreathe} 2.8s ease-in-out infinite;
+  transition:
+    width 280ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 180ms ease,
+    transform 180ms ease,
+    background 180ms ease;
+
+  > span:not(:first-child) {
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    max-width: 145px;
+    overflow: hidden;
+    opacity: 1;
+    white-space: nowrap;
+    transform: translateX(0);
+    transition:
+      max-width 280ms cubic-bezier(0.16, 1, 0.3, 1),
+      margin-left 280ms cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 160ms ease,
+      transform 220ms ease;
+  }
 
   &:hover {
     border-color: rgba(104, 213, 247, 0.68);
+    background: rgba(7, 20, 38, 0.96);
     transform: translateY(-2px);
   }
 
@@ -51,9 +137,16 @@ export const AgentButton = styled.button`
     outline: 2px solid #68d5f7;
     outline-offset: 3px;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    transition: border-color 180ms ease;
+  }
 `;
 
 export const AgentBadge = styled.span`
+  position: relative;
+  z-index: 1;
   display: grid;
   width: 38px;
   height: 38px;
@@ -68,6 +161,41 @@ export const AgentBadge = styled.span`
   border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, #173e57, #081728 68%);
   box-shadow: inset 0 0 18px rgba(56, 189, 248, 0.12), 0 0 18px rgba(56, 189, 248, 0.1);
+
+  &::before,
+  &::after {
+    position: absolute;
+    inset: -5px;
+    z-index: -1;
+    content: "";
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  &::before {
+    background:
+      conic-gradient(
+        from 130deg,
+        transparent 0deg,
+        rgba(104, 213, 247, 0.9) 34deg,
+        transparent 76deg,
+        transparent 360deg
+      );
+    opacity: 0.72;
+    animation: ${orbOrbit} 3.8s linear infinite;
+  }
+
+  &::after {
+    border: 1px solid rgba(104, 213, 247, 0.22);
+    animation: ${sensorPing} 2.2s ease-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &::before,
+    &::after {
+      animation: none;
+    }
+  }
 `;
 
 export const AgentPanel = styled.section.attrs({ id: "career-agent-panel" })`
@@ -83,14 +211,38 @@ export const AgentPanel = styled.section.attrs({ id: "career-agent-panel" })`
   border-radius: 20px;
   background:
     radial-gradient(circle at 100% 0%, rgba(56, 189, 248, 0.13), transparent 34%),
+    radial-gradient(circle at 18% 0%, rgba(129, 140, 248, 0.12), transparent 30%),
     rgba(5, 15, 29, 0.97);
   box-shadow: 0 28px 90px rgba(0, 0, 0, 0.65), 0 0 44px rgba(14, 165, 233, 0.12);
   backdrop-filter: blur(24px);
   transform-origin: bottom right;
-  animation: ${panelEnter} 220ms ease-out both;
+  animation: ${panelEnter} 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+
+  &::before {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    content: "";
+    background: linear-gradient(
+      105deg,
+      transparent 20%,
+      rgba(141, 229, 255, 0.2) 42%,
+      rgba(255, 255, 255, 0.34) 50%,
+      rgba(129, 140, 248, 0.18) 58%,
+      transparent 80%
+    );
+    mix-blend-mode: screen;
+    animation: ${panelSweep} 680ms ease-out 80ms both;
+  }
 
   @media (prefers-reduced-motion: reduce) {
     animation: none;
+
+    &::before {
+      animation: none;
+      opacity: 0;
+    }
   }
 `;
 
@@ -205,6 +357,127 @@ export const Message = styled.div<{ $role: "assistant" | "user" }>`
       (props.$role === "user"
         ? "linear-gradient(135deg, #68d5f7, #38bdf8)"
         : "rgba(13, 31, 54, 0.82)")};
+  }
+`;
+
+export const ContactActions = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+  gap: 8px;
+  margin-top: 9px;
+`;
+
+export const ContactActionCard = styled.a`
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  padding: 11px 12px;
+  color: #dff6ff;
+  text-decoration: none;
+  border: 1px solid rgba(104, 213, 247, 0.22);
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(104, 213, 247, 0.14), transparent 34%),
+    rgba(13, 31, 54, 0.72);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    transform 160ms ease;
+
+  strong {
+    color: #f3fbff;
+    font-size: 12px;
+    font-weight: 750;
+  }
+
+  small {
+    color: #7f94a8;
+    font-size: 9px;
+    line-height: 1.35;
+  }
+
+  &:hover {
+    border-color: rgba(104, 213, 247, 0.52);
+    background:
+      radial-gradient(circle at 20% 0%, rgba(104, 213, 247, 0.2), transparent 38%),
+      rgba(13, 31, 54, 0.9);
+    transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid #68d5f7;
+    outline-offset: 2px;
+  }
+`;
+
+export const FeedbackActions = styled.div`
+  display: flex;
+  gap: 6px;
+  margin: 7px 8px 0;
+`;
+
+export const FeedbackButton = styled.button<{ $isActive: boolean }>`
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  cursor: pointer;
+  border: 1px solid ${(props) =>
+    (props.$isActive
+      ? "rgba(104, 213, 247, 0.72)"
+      : "rgba(255, 255, 255, 0.08)")};
+  border-radius: 999px;
+  color: ${(props) => (props.$isActive ? "#68d5f7" : "#7f94a8")};
+  background: ${(props) =>
+    (props.$isActive
+      ? "linear-gradient(135deg, rgba(56, 189, 248, 0.18), rgba(37, 99, 235, 0.12))"
+      : "rgba(13, 31, 54, 0.54)")};
+  box-shadow: ${(props) =>
+    (props.$isActive
+      ? "0 0 0 3px rgba(56, 189, 248, 0.08), 0 0 18px rgba(56, 189, 248, 0.16)"
+      : "none")};
+  transition:
+    border-color 160ms ease,
+    color 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+
+  svg {
+    display: block;
+    width: 15px;
+    height: 15px;
+    overflow: visible;
+    fill: ${(props) => (props.$isActive ? "currentColor" : "transparent")};
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+    transition:
+      fill 160ms ease,
+      stroke 160ms ease,
+      transform 160ms ease;
+  }
+
+  svg.is-down {
+    transform: rotate(180deg);
+  }
+
+  &:hover {
+    border-color: rgba(104, 213, 247, 0.38);
+    color: #b8efff;
+    background: rgba(13, 31, 54, 0.82);
+    transform: translateY(-1px);
+  }
+
+  &:hover svg.is-down {
+    transform: rotate(180deg) translateY(-1px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid #68d5f7;
+    outline-offset: 2px;
   }
 `;
 
