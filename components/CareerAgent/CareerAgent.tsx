@@ -1,4 +1,11 @@
-import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
+import {
+  FormEvent,
+  KeyboardEvent,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   AgentBadge,
   AgentButton,
@@ -16,6 +23,7 @@ import {
   FeedbackActions,
   FeedbackButton,
   Message,
+  MessageContent,
   MessageList,
   SendButton,
   StarterButton,
@@ -80,6 +88,77 @@ const createSessionId = () => {
   }
 
   return `session_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+};
+
+const renderInlineText = (text: string) =>
+  text.split(/(\*\*[^*]+\*\*)/g).map((part, index) =>
+    (part.startsWith("**") && part.endsWith("**") ? (
+      <strong key={`${part}-${index}`}>{part.slice(2, -2)}</strong>
+    ) : (
+      part
+    )),
+  );
+
+const renderMessageContent = (content: string) => {
+  const lines = content.split(/\r?\n/);
+  const blocks: ReactNode[] = [];
+  let paragraph: string[] = [];
+  let index = 0;
+
+  const flushParagraph = () => {
+    const text = paragraph.join(" ").trim();
+    if (text) {
+      blocks.push(
+        <p key={`paragraph-${blocks.length}`}>{renderInlineText(text)}</p>,
+      );
+    }
+    paragraph = [];
+  };
+
+  while (index < lines.length) {
+    const line = lines[index].trim();
+    const orderedMatch = line.match(/^\d+[.)]\s+(.+)$/);
+    const unorderedMatch = line.match(/^[-*]\s+(.+)$/);
+
+    if (orderedMatch || unorderedMatch) {
+      flushParagraph();
+      const isOrdered = Boolean(orderedMatch);
+      const items: string[] = [];
+
+      while (index < lines.length) {
+        const candidate = lines[index].trim();
+        const match = isOrdered
+          ? candidate.match(/^\d+[.)]\s+(.+)$/)
+          : candidate.match(/^[-*]\s+(.+)$/);
+
+        if (!match) break;
+        items.push(match[1]);
+        index += 1;
+      }
+
+      const listItems = items.map((item, itemIndex) => (
+        <li key={`${item}-${itemIndex}`}>{renderInlineText(item)}</li>
+      ));
+
+      blocks.push(
+        isOrdered ? (
+          <ol key={`list-${blocks.length}`}>{listItems}</ol>
+        ) : (
+          <ul key={`list-${blocks.length}`}>{listItems}</ul>
+        ),
+      );
+    } else {
+      if (!line) {
+        flushParagraph();
+      } else {
+        paragraph.push(line);
+      }
+      index += 1;
+    }
+  }
+
+  flushParagraph();
+  return blocks;
 };
 
 export const CareerAgent = () => {
@@ -306,7 +385,7 @@ export const CareerAgent = () => {
             {messages.map((message) => (
               <Message key={message.id} $role={message.role}>
                 <span>{message.role === "assistant" ? "AI" : "You"}</span>
-                <p>{message.content}</p>
+                <MessageContent>{renderMessageContent(message.content)}</MessageContent>
                 {message.variant === "contact" && (
                   <ContactActions aria-label="Contact options">
                     {(message.contactOptions || ["email", "whatsapp"]).includes("email") && (
@@ -368,7 +447,9 @@ export const CareerAgent = () => {
             {isLoading && (
               <Message $role="assistant">
                 <span>AI</span>
-                <p>Thinking…</p>
+                <MessageContent>
+                  <p>Thinking…</p>
+                </MessageContent>
               </Message>
             )}
 

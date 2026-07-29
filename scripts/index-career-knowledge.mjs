@@ -146,9 +146,24 @@ const embedDocument = async (content, title) => {
   throw new Error(`Gemini embedding failed for ${title}.`);
 };
 
-const upsertDocument = async (table, record) => {
+const replaceDocuments = async (table, records) => {
+  const tableUrl = `${process.env.SUPABASE_URL.replace(/\/$/, '')}/rest/v1/${table}`;
+  const deleteResponse = await fetch(`${tableUrl}?id=not.is.null`, {
+    method: 'DELETE',
+    headers: {
+      apikey: process.env.SUPABASE_SERVICE_ROLE_KEY,
+      Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`,
+    },
+  });
+
+  if (!deleteResponse.ok) {
+    throw new Error(
+      `Supabase cleanup failed for ${table} with status ${deleteResponse.status}.`,
+    );
+  }
+
   const response = await fetch(
-    `${process.env.SUPABASE_URL.replace(/\/$/, '')}/rest/v1/${table}`,
+    tableUrl,
     {
       method: 'POST',
       headers: {
@@ -157,7 +172,7 @@ const upsertDocument = async (table, record) => {
         'Content-Type': 'application/json',
         Prefer: 'resolution=merge-duplicates,return=minimal',
       },
-      body: JSON.stringify(record),
+      body: JSON.stringify(records),
     },
   );
 
@@ -174,14 +189,15 @@ for (const source of sources) {
     'utf8',
   );
   const chunks = splitMarkdown(markdown);
+  const records = [];
 
   for (const [index, content] of chunks.entries()) {
     const id = createHash('sha256')
-      .update(`${source.file}:${index}:${content}`)
+      .update(`${source.file}:${index}`)
       .digest('hex');
     const embedding = await embedDocument(content, source.title);
 
-    await upsertDocument(source.table, {
+    records.push({
       id,
       content,
       metadata: {
@@ -192,10 +208,11 @@ for (const source of sources) {
       },
       embedding,
     });
-
-    console.log(`${source.table}: indexed chunk ${index + 1}/${chunks.length}`);
     await sleep(250);
   }
+
+  await replaceDocuments(source.table, records);
+  console.log(`${source.table}: indexed ${records.length} chunk(s)`);
 }
 
 console.log('Career knowledge indexing complete.');

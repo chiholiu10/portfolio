@@ -319,6 +319,101 @@ export const MessageList = styled.div`
   scrollbar-color: #24465b transparent;
 `;
 
+export const MessageContent = styled.div`
+  padding: 12px 14px;
+  color: inherit;
+  font-size: 13px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+
+  p {
+    margin: 0;
+  }
+
+  p + p,
+  p + ul,
+  p + ol,
+  ul + p,
+  ol + p {
+    margin-top: 10px;
+  }
+
+  ul,
+  ol {
+    display: grid;
+    gap: 8px;
+    margin: 10px 0 2px;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    position: relative;
+    min-height: 38px;
+    padding: 9px 11px 9px 39px;
+    color: var(--list-text);
+    border: 1px solid var(--list-border);
+    border-radius: 10px;
+    background:
+      linear-gradient(105deg, var(--list-glow), transparent 52%),
+      var(--list-background);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.035),
+      0 5px 14px rgba(2, 10, 22, 0.12);
+  }
+
+  ol {
+    counter-reset: career-agent-list;
+  }
+
+  ol li {
+    counter-increment: career-agent-list;
+  }
+
+  ol li::before {
+    position: absolute;
+    top: 9px;
+    left: 9px;
+    display: grid;
+    width: 22px;
+    height: 22px;
+    place-items: center;
+    color: var(--list-badge-text);
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1;
+    content: counter(career-agent-list);
+    border: 1px solid var(--list-accent-border);
+    border-radius: 7px;
+    background: var(--list-accent);
+    box-shadow: 0 4px 12px var(--list-accent-shadow);
+  }
+
+  ul li::before {
+    position: absolute;
+    top: 16px;
+    left: 15px;
+    width: 8px;
+    height: 8px;
+    content: "";
+    border: 2px solid var(--list-accent-border);
+    border-radius: 50%;
+    background: var(--list-accent);
+    box-shadow: 0 0 0 4px var(--list-accent-shadow);
+  }
+
+  strong {
+    color: var(--list-strong);
+    font-weight: 750;
+  }
+
+  @media (max-width: 420px) {
+    li {
+      padding-right: 9px;
+    }
+  }
+`;
+
 export const Message = styled.div<{ $role: "assistant" | "user" }>`
   align-self: ${(props) =>
     (props.$role === "user" ? "flex-end" : "flex-start")};
@@ -336,15 +431,37 @@ export const Message = styled.div<{ $role: "assistant" | "user" }>`
     text-transform: uppercase;
   }
 
-  p {
-    margin: 0;
-    padding: 12px 14px;
+  ${MessageContent} {
+    --list-text: ${(props) =>
+      (props.$role === "user" ? "#092033" : "#cbdbe6")};
+    --list-strong: ${(props) =>
+      (props.$role === "user" ? "#06111f" : "#f1fbff")};
+    --list-background: ${(props) =>
+      (props.$role === "user"
+        ? "rgba(255, 255, 255, 0.34)"
+        : "rgba(8, 25, 45, 0.72)")};
+    --list-border: ${(props) =>
+      (props.$role === "user"
+        ? "rgba(6, 17, 31, 0.14)"
+        : "rgba(104, 213, 247, 0.14)")};
+    --list-glow: ${(props) =>
+      (props.$role === "user"
+        ? "rgba(255, 255, 255, 0.18)"
+        : "rgba(104, 213, 247, 0.07)")};
+    --list-accent: ${(props) =>
+      (props.$role === "user" ? "#0b2a3d" : "#68d5f7")};
+    --list-accent-border: ${(props) =>
+      (props.$role === "user"
+        ? "rgba(6, 17, 31, 0.28)"
+        : "rgba(160, 235, 255, 0.7)")};
+    --list-accent-shadow: ${(props) =>
+      (props.$role === "user"
+        ? "rgba(6, 17, 31, 0.1)"
+        : "rgba(56, 189, 248, 0.16)")};
+    --list-badge-text: ${(props) =>
+      (props.$role === "user" ? "#eaf9ff" : "#06111f")};
     color: ${(props) =>
       (props.$role === "user" ? "#06111f" : "#c9d7e1")};
-    font-size: 13px;
-    line-height: 1.6;
-    white-space: pre-wrap;
-    overflow-wrap: anywhere;
     border: 1px solid ${(props) =>
       (props.$role === "user"
         ? "rgba(104, 213, 247, 0.6)"
