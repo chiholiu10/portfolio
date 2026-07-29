@@ -69,10 +69,17 @@ const pulse = keyframes`
 `;
 
 export const AgentShell = styled.div`
+  --career-agent-viewport-height: 100dvh;
+  --career-agent-viewport-offset: 0px;
+
   position: fixed;
   z-index: 1000;
   right: 16px;
   bottom: 16px;
+
+  @media (max-width: 767px), (pointer: coarse) {
+    z-index: 2147483000;
+  }
 
   ${breakpoint.md`
     right: 28px;
@@ -218,6 +225,22 @@ export const AgentPanel = styled.section.attrs({ id: "career-agent-panel" })`
   transform-origin: bottom right;
   animation: ${panelEnter} 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
 
+  @media (max-width: 767px), (pointer: coarse) {
+    position: fixed;
+    top: var(--career-agent-viewport-offset);
+    right: 0;
+    bottom: auto;
+    left: 0;
+    z-index: 2;
+    width: 100vw;
+    max-width: none;
+    height: var(--career-agent-viewport-height);
+    max-height: none;
+    border: 0;
+    border-radius: 0;
+    transform-origin: bottom center;
+  }
+
   &::before {
     position: absolute;
     inset: 0;
@@ -252,6 +275,11 @@ export const AgentHeader = styled.header`
   justify-content: space-between;
   padding: 16px 16px 15px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+  @media (max-width: 767px), (pointer: coarse) {
+    flex: 0 0 auto;
+    padding-top: max(12px, env(safe-area-inset-top));
+  }
 `;
 
 export const AgentIdentity = styled.div`
@@ -317,6 +345,8 @@ export const MessageList = styled.div`
   padding: 20px 16px;
   scroll-behavior: smooth;
   scrollbar-color: #24465b transparent;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 `;
 
 export const MessageContent = styled.div`
@@ -627,9 +657,16 @@ export const StarterButton = styled.button`
 `;
 
 export const AgentFooter = styled.footer`
+  flex: 0 0 auto;
   padding: 12px 14px 13px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(4, 13, 25, 0.72);
+
+  @media (max-width: 767px), (pointer: coarse) {
+    padding-right: max(12px, env(safe-area-inset-right));
+    padding-bottom: max(10px, env(safe-area-inset-bottom));
+    padding-left: max(12px, env(safe-area-inset-left));
+  }
 `;
 
 export const Composer = styled.form`
@@ -659,6 +696,11 @@ export const Composer = styled.form`
     border: 0;
     outline: 0;
     background: transparent;
+
+    @media (max-width: 767px), (pointer: coarse) {
+      font-size: 16px;
+      resize: none;
+    }
   }
 
   textarea::placeholder { color: #63778a; }

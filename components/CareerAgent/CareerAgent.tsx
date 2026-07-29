@@ -174,15 +174,54 @@ export const CareerAgent = () => {
   const messageListRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const shellRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     sessionId.current = createSessionId();
   }, []);
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (isOpen) inputRef.current?.focus();
+  }, [isOpen]);
 
-    inputRef.current?.focus();
+  useEffect(() => {
+    if (!isOpen) return undefined;
+
+    const shell = shellRef.current;
+    const viewport = window.visualViewport;
+
+    const updateViewport = () => {
+      const height = viewport?.height ?? window.innerHeight;
+      const offsetTop = viewport?.offsetTop ?? 0;
+
+      shell?.style.setProperty(
+        "--career-agent-viewport-height",
+        `${Math.round(height)}px`,
+      );
+      shell?.style.setProperty(
+        "--career-agent-viewport-offset",
+        `${Math.round(offsetTop)}px`,
+      );
+    };
+
+    const isMobileChat = window.matchMedia(
+      "(max-width: 767px), (pointer: coarse)",
+    ).matches;
+    const previousOverflow = document.body.style.overflow;
+
+    updateViewport();
+    viewport?.addEventListener("resize", updateViewport);
+    viewport?.addEventListener("scroll", updateViewport);
+    window.addEventListener("resize", updateViewport);
+
+    if (isMobileChat) document.body.style.overflow = "hidden";
+
+    return () => {
+      viewport?.removeEventListener("resize", updateViewport);
+      viewport?.removeEventListener("scroll", updateViewport);
+      window.removeEventListener("resize", updateViewport);
+      document.body.style.overflow = previousOverflow;
+    };
   }, [isOpen]);
 
   useEffect(() => {
@@ -358,7 +397,7 @@ export const CareerAgent = () => {
   };
 
   return (
-    <AgentShell>
+    <AgentShell ref={shellRef}>
       {isOpen && (
         <AgentPanel
           role="dialog"
