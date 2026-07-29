@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
 import {
-  answerWithGemini,
-  isGeminiQuotaError,
+  answerCareerQuestion,
+  isProviderQuotaError,
 } from "../../lib/career-agent/gemini";
 import { logCareerAgentMessage } from "../../lib/career-agent/history";
 
@@ -187,7 +187,10 @@ export default async function handler(
       clientAddress,
     });
 
-    const answer = await answerWithGemini(parsed.data.message, controller.signal);
+    const answer = await answerCareerQuestion(
+      parsed.data.message,
+      controller.signal,
+    );
 
     const { cleanAnswer, contactOptions } = extractContactOptions(answer);
     const chatId = parsed.data.sessionId;
@@ -211,7 +214,7 @@ export default async function handler(
     });
   } catch (error) {
     const timedOut = error instanceof Error && error.name === "AbortError";
-    const quotaExhausted = isGeminiQuotaError(error);
+    const quotaExhausted = isProviderQuotaError(error);
     let errorMessage = "The career assistant is currently unavailable.";
     let errorCode = "UNAVAILABLE";
 

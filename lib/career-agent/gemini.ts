@@ -22,6 +22,13 @@ type GeminiError = Error & {
   quotaExhausted?: boolean;
 };
 
+const createProviderError = (message: string, status: number) => {
+  const error = new Error(message) as GeminiError;
+  error.status = status;
+  error.quotaExhausted = status === 429;
+  return error;
+};
+
 const requestGemini = async (
   path: string,
   body: Record<string, unknown>,
@@ -44,10 +51,7 @@ const requestGemini = async (
   });
 
   if (!response.ok) {
-    const error = new Error("Gemini request failed.") as GeminiError;
-    error.status = response.status;
-    error.quotaExhausted = response.status === 429;
-    throw error;
+    throw createProviderError("Gemini request failed.", response.status);
   }
 
   return response.json() as Promise<unknown>;
@@ -120,7 +124,7 @@ const retrieveKnowledge = async (
     )
     .filter(Boolean)
     .join("\n\n---\n\n")
-    .slice(0, 32_000);
+    .slice(0, 24_000);
 };
 
 const SYSTEM_INSTRUCTION = `You are Chiho Liu's AI portfolio career assistant.
@@ -160,18 +164,12 @@ const extractGeneratedText = (payload: unknown) => {
   return text ? text.slice(0, 6000) : null;
 };
 
-export const answerWithGemini = async (
+const generateWithGemini = async (
   question: string,
+  knowledge: string,
   signal: AbortSignal,
 ) => {
-  const queryEmbedding = await createQueryEmbedding(question, signal);
-  const knowledge = await retrieveKnowledge(queryEmbedding, signal);
-
-  if (!knowledge) {
-    throw new Error("The portfolio knowledge base is empty.");
-  }
-
-  const model = process.env.GEMINI_MODEL || "gemini-3-flash-preview";
+  const model = process.env.GEMINI_MODEL || "gemini-3.1-flash-lite";
   const payload = await requestGemini(
     `${encodeURIComponent(model)}:generateContent`,
     {
@@ -203,7 +201,80 @@ export const answerWithGemini = async (
   return answer;
 };
 
-export const isGeminiQuotaError = (error: unknown) =>
+const generateWithGroq = async (
+  question: string,
+  knowledge: string,
+  signal: AbortSignal,
+) => {
+  const apiKey = process.env.GROQ_API_KEY;
+
+  if (!apiKey) {
+    throw new Error("Groq is not configured.");
+  }
+
+  const response = await fetch(
+    "https://api.groq.com/openai/v1/chat/completions",
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: process.env.GROQ_MODEL || "llama-3.3-70b-versatile",
+        messages: [
+          { role: "system", content: SYSTEM_INSTRUCTION },
+          {
+            role: "user",
+            content: `Verified portfolio knowledge:\n\n${knowledge}\n\nRecruiter question:\n${question}`,
+          },
+        ],
+        temperature: 0.2,
+        max_completion_tokens: 1200,
+      }),
+      signal,
+    },
+  );
+
+  if (!response.ok) {
+    throw createProviderError("Groq request failed.", response.status);
+  }
+
+  const payload = (await response.json()) as {
+    choices?: Array<{ message?: { content?: unknown } }>;
+  };
+  const answer = payload.choices?.[0]?.message?.content;
+
+  if (typeof answer !== "string" || !answer.trim()) {
+    throw new Error("Groq returned an empty answer.");
+  }
+
+  return answer.trim().slice(0, 6000);
+};
+
+export const answerCareerQuestion = async (
+  question: string,
+  signal: AbortSignal,
+) => {
+  const queryEmbedding = await createQueryEmbedding(question, signal);
+  const knowledge = await retrieveKnowledge(queryEmbedding, signal);
+
+  if (!knowledge) {
+    throw new Error("The portfolio knowledge base is empty.");
+  }
+
+  if (process.env.GROQ_API_KEY) {
+    try {
+      return await generateWithGroq(question, knowledge, signal);
+    } catch {
+      // Gemini is the explicitly configured free fallback.
+    }
+  }
+
+  return generateWithGemini(question, knowledge, signal);
+};
+
+export const isProviderQuotaError = (error: unknown) =>
   Boolean(
     error &&
       typeof error === "object" &&
