@@ -105,3 +105,24 @@ hashed client addresses, RLS, and retention cleanup. See:
 ```txt
 docs/career-agent-history.md
 ```
+
+## Production hardening
+
+The production API uses the existing Supabase project for distributed rate
+limiting, atomic feedback ownership checks, and scheduled retention. Apply
+`supabase/career-agent-history.sql` after database changes. The migration is
+idempotent and schedules daily cleanup through `pg_cron`; no paid Redis or cron
+service is required.
+
+Optional server-side environment variables:
+
+- `CAREER_AGENT_HASH_SECRET`: a long random secret used to HMAC client
+  addresses. When absent, the server-side Supabase service key is used as the
+  HMAC key.
+- `CAREER_AGENT_MATCH_THRESHOLD`: minimum vector similarity, default `0.35`.
+
+The browser stores chat history only in `sessionStorage`, so a refresh in the
+same tab keeps the conversation while closing the tab ends the browser session.
+Email addresses and phone numbers are masked before browser persistence, and
+internal message identifiers are not persisted. Legacy 24-hour `localStorage`
+data is removed automatically.

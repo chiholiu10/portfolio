@@ -43,7 +43,24 @@ services:
     volumes:
       - n8n_data:/home/node/.n8n
 
+  phoenix:
+    image: arizephoenix/phoenix:latest
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:6006:6006"
+      - "127.0.0.1:4317:4317"
+    env_file:
+      - .env.phoenix.local
+    environment:
+      PHOENIX_WORKING_DIR: /mnt/data
+      PHOENIX_TELEMETRY_ENABLED: "false"
+      PHOENIX_ALLOW_EXTERNAL_RESOURCES: "false"
+      PHOENIX_DEFAULT_RETENTION_POLICY_DAYS: "7"
+    volumes:
+      - phoenix_data:/mnt/data
+
 volumes:
   node_modules:
   flowise_data:
   n8n_data:
+  phoenix_data:

@@ -6,6 +6,7 @@ import {
   useRef,
   useState,
 } from "react";
+import Image from "next/image";
 import {
   AgentBadge,
   AgentButton,
@@ -14,6 +15,7 @@ import {
   AgentIdentity,
   AgentPanel,
   AgentShell,
+  ClearButton,
   CloseButton,
   Composer,
   ContactActionCard,
@@ -22,15 +24,24 @@ import {
   ErrorMessage,
   FeedbackActions,
   FeedbackButton,
+  HeaderActions,
   Message,
   MessageContent,
   MessageList,
+  PortfolioChatCard,
+  ProjectQuestionButton,
+  ProjectQuestionList,
+  PortfolioSuggestionGrid,
+  ScrollToBottomButton,
   SendButton,
   StarterButton,
   StarterPrompts,
   StatusDot,
   VisuallyHidden,
 } from "./CareerAgent.styles";
+import { getInputSafetyIssue } from "../../lib/career-agent/input-safety";
+import { maskSensitiveContent } from "../../lib/career-agent/privacy";
+import { PortfolioProject } from "../../lib/portfolio-projects";
 
 type ChatMessage = {
   id: string;
@@ -42,6 +53,9 @@ type ChatMessage = {
   messageId?: string;
   feedback?: "THUMBS_UP" | "THUMBS_DOWN";
   feedbackId?: string;
+  project?: PortfolioProject;
+  projectSuggestions?: PortfolioProject[];
+  suggestedQuestions?: string[];
 };
 
 const starterPrompts = [
@@ -55,6 +69,7 @@ const starterPrompts = [
 const MIN_SEND_INTERVAL_MS = 1200;
 const MAX_USER_MESSAGES_PER_SESSION = 20;
 const MAX_RENDERED_MESSAGES = 42;
+const CHAT_STORAGE_KEY = "career-agent-chat";
 
 const welcomeMessage: ChatMessage = {
   id: "welcome",
@@ -90,14 +105,85 @@ const createSessionId = () => {
   return `session_${Date.now()}_${Math.random().toString(36).slice(2)}`;
 };
 
-const renderInlineText = (text: string) =>
-  text.split(/(\*\*[^*]+\*\*)/g).map((part, index) =>
-    (part.startsWith("**") && part.endsWith("**") ? (
-      <strong key={`${part}-${index}`}>{part.slice(2, -2)}</strong>
-    ) : (
-      part
-    )),
+const isStoredMessage = (value: unknown): value is ChatMessage => {
+  if (!value || typeof value !== "object") return false;
+
+  const message = value as Partial<ChatMessage>;
+  return (
+    typeof message.id === "string" &&
+    message.id.length <= 160 &&
+    (message.role === "assistant" || message.role === "user") &&
+    typeof message.content === "string" &&
+    message.content.length <= 6000
   );
+};
+
+const sanitizeStoredMessage = (message: ChatMessage): ChatMessage => ({
+  id: message.id,
+  role: message.role,
+  content:
+    message.role === "user"
+      ? maskSensitiveContent(message.content)
+      : message.content.slice(0, 6000),
+  ...(message.variant === "contact" ? { variant: "contact" as const } : {}),
+  ...(message.contactOptions?.length
+    ? {
+        contactOptions: message.contactOptions.filter(
+          (option) => option === "email" || option === "whatsapp",
+        ),
+      }
+    : {}),
+});
+
+const restoreStoredChat = () => {
+  try {
+    const storage = window.sessionStorage;
+    const storedValue = storage.getItem(CHAT_STORAGE_KEY);
+    if (!storedValue) return null;
+
+    const storedChat = JSON.parse(storedValue) as {
+      sessionId?: unknown;
+      messages?: unknown;
+    };
+
+    const hasValidSession =
+      typeof storedChat.sessionId === "string" &&
+      /^[a-zA-Z0-9_]{10,160}$/.test(storedChat.sessionId);
+    const storedMessages = Array.isArray(storedChat.messages)
+      ? storedChat.messages
+          .filter(isStoredMessage)
+          .slice(-MAX_RENDERED_MESSAGES)
+      : [];
+
+    if (!hasValidSession || !storedMessages.length) {
+      storage.removeItem(CHAT_STORAGE_KEY);
+      return null;
+    }
+
+    return {
+      sessionId: storedChat.sessionId as string,
+      messages: storedMessages.map(sanitizeStoredMessage),
+    };
+  } catch {
+    try {
+      window.sessionStorage.removeItem(CHAT_STORAGE_KEY);
+    } catch {
+      // Browser storage can be unavailable in strict privacy modes.
+    }
+    return null;
+  }
+};
+
+const renderInlineText = (text: string) =>
+  text
+    .split(/(\*\*[^*]+\*\*)/g)
+    .map((part, index) =>
+      (part.startsWith("**") && part.endsWith("**") ? (
+        <strong key={`${part}-${index}`}>{part.slice(2, -2)}</strong>
+      ) : (
+        part
+      )),
+    );
 
 const renderMessageContent = (content: string) => {
   const lines = content.split(/\r?\n/);
@@ -161,13 +247,24 @@ const renderMessageContent = (content: string) => {
   return blocks;
 };
 
-export const CareerAgent = () => {
+type CareerAgentProps = {
+  portfolioProjects?: PortfolioProject[];
+};
+
+type SendMessage = (
+  message: string,
+  project?: PortfolioProject,
+) => Promise<void>;
+
+export const CareerAgent = ({ portfolioProjects = [] }: CareerAgentProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([welcomeMessage]);
   const [input, setInput] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isQuotaExhausted, setIsQuotaExhausted] = useState(false);
+  const [isChatHydrated, setIsChatHydrated] = useState(false);
+  const [showScrollToBottom, setShowScrollToBottom] = useState(false);
   const sessionId = useRef("");
   const requestInFlight = useRef(false);
   const lastSentAt = useRef(0);
@@ -175,10 +272,45 @@ export const CareerAgent = () => {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const shellRef = useRef<HTMLDivElement>(null);
+  const sendMessageRef = useRef<SendMessage>(async () => undefined);
+  const shouldStickToBottom = useRef(true);
 
   useEffect(() => {
-    sessionId.current = createSessionId();
+    const storedChat = restoreStoredChat();
+
+    if (storedChat) {
+      sessionId.current = storedChat.sessionId;
+      setMessages(storedChat.messages);
+    } else {
+      sessionId.current = createSessionId();
+    }
+
+    // Remove data created by the retired 24-hour persistence option.
+    try {
+      window.localStorage.removeItem(CHAT_STORAGE_KEY);
+    } catch {
+      // Browser storage can be unavailable in strict privacy modes.
+    }
+
+    setIsChatHydrated(true);
   }, []);
+
+  useEffect(() => {
+    if (!isChatHydrated || !sessionId.current) return;
+
+    try {
+      const serializedChat = JSON.stringify({
+        sessionId: sessionId.current,
+        messages: messages
+          .slice(-MAX_RENDERED_MESSAGES)
+          .map(sanitizeStoredMessage),
+      });
+
+      window.sessionStorage.setItem(CHAT_STORAGE_KEY, serializedChat);
+    } catch {
+      // The chat remains usable when browser storage is disabled or full.
+    }
+  }, [isChatHydrated, messages]);
 
   useEffect(() => {
     if (isOpen) inputRef.current?.focus();
@@ -226,19 +358,89 @@ export const CareerAgent = () => {
 
   useEffect(() => {
     const list = messageListRef.current;
+    if (!list || !shouldStickToBottom.current) return;
+
+    window.requestAnimationFrame(() => {
+      list.scrollTop = list.scrollHeight;
+    });
+  }, [messages, isLoading]);
+
+  const handleMessageListScroll = () => {
+    const list = messageListRef.current;
     if (!list) return;
 
-    list.scrollTop = list.scrollHeight;
-  }, [messages, isLoading]);
+    const distanceFromBottom =
+      list.scrollHeight - list.scrollTop - list.clientHeight;
+    const isNearBottom = distanceFromBottom <= 56;
+
+    shouldStickToBottom.current = isNearBottom;
+    setShowScrollToBottom(!isNearBottom);
+  };
+
+  const scrollToLatestMessage = () => {
+    const list = messageListRef.current;
+    if (!list) return;
+
+    shouldStickToBottom.current = true;
+    setShowScrollToBottom(false);
+    list.scrollTo({
+      top: list.scrollHeight,
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth",
+    });
+  };
 
   const closeAgent = () => {
     setIsOpen(false);
     triggerRef.current?.focus();
   };
 
-  const sendMessage = async (message: string) => {
+  const clearChat = () => {
+    sessionId.current = createSessionId();
+    requestInFlight.current = false;
+    setMessages([welcomeMessage]);
+    setInput("");
+    setError("");
+    setIsLoading(false);
+    setIsQuotaExhausted(false);
+    shouldStickToBottom.current = true;
+    setShowScrollToBottom(false);
+
+    try {
+      window.localStorage.removeItem(CHAT_STORAGE_KEY);
+      window.sessionStorage.removeItem(CHAT_STORAGE_KEY);
+    } catch {
+      // Browser storage can be unavailable in strict privacy modes.
+    }
+  };
+
+  const sendMessage = async (message: string, project?: PortfolioProject) => {
     const cleanMessage = message.trim();
     if (!cleanMessage || isLoading || requestInFlight.current) return;
+
+    const inputSafetyIssue = getInputSafetyIssue(cleanMessage);
+
+    if (inputSafetyIssue) {
+      if (inputSafetyIssue.code === "CONTACT_DETAILS") {
+        const contactMessage: ChatMessage = {
+          id: `contact_${Date.now()}`,
+          role: "assistant",
+          content: inputSafetyIssue.message,
+          variant: "contact",
+          contactOptions: ["email", "whatsapp"],
+        };
+
+        setMessages((current) =>
+          [...current, contactMessage].slice(-MAX_RENDERED_MESSAGES),
+        );
+        setInput("");
+        setError("");
+      } else {
+        setError(inputSafetyIssue.message);
+      }
+      return;
+    }
 
     const userMessageCount = messages.filter(
       (currentMessage) => currentMessage.role === "user",
@@ -260,11 +462,14 @@ export const CareerAgent = () => {
     if (!sessionId.current) sessionId.current = createSessionId();
     requestInFlight.current = true;
     lastSentAt.current = now;
+    shouldStickToBottom.current = true;
+    setShowScrollToBottom(false);
 
     const userMessage: ChatMessage = {
       id: `user_${Date.now()}`,
       role: "user",
       content: cleanMessage,
+      project,
     };
 
     setMessages((current) =>
@@ -283,6 +488,13 @@ export const CareerAgent = () => {
         body: JSON.stringify({
           message: cleanMessage,
           sessionId: sessionId.current,
+          history: messages
+            .filter((messageItem) => messageItem.id !== "welcome")
+            .slice(-6)
+            .map((messageItem) => ({
+              role: messageItem.role,
+              content: maskSensitiveContent(messageItem.content),
+            })),
         }),
       });
 
@@ -291,6 +503,7 @@ export const CareerAgent = () => {
         chatId?: string;
         messageId?: string;
         contactOptions?: Array<"email" | "whatsapp">;
+        portfolioProjectIds?: string[];
         error?: string;
         code?: string;
       };
@@ -311,7 +524,24 @@ export const CareerAgent = () => {
         contactOptions: result.contactOptions,
         chatId: result.chatId,
         messageId: result.messageId,
+        projectSuggestions: result.portfolioProjectIds
+          ?.map((projectId) =>
+            portfolioProjects.find(
+              (portfolioProject) => portfolioProject.id === projectId,
+            ),
+          )
+          .filter((portfolioProject): portfolioProject is PortfolioProject =>
+            Boolean(portfolioProject),
+          ),
       };
+
+      if (result.portfolioProjectIds?.length) {
+        window.dispatchEvent(
+          new CustomEvent("career-agent:projects-highlight", {
+            detail: { projectIds: result.portfolioProjectIds },
+          }),
+        );
+      }
 
       setMessages((current) =>
         [...current, assistantMessage].slice(-MAX_RENDERED_MESSAGES),
@@ -327,6 +557,67 @@ export const CareerAgent = () => {
       setIsLoading(false);
     }
   };
+  sendMessageRef.current = sendMessage;
+
+  useEffect(() => {
+    const selectPortfolioProject = (event: Event) => {
+      const { projectId } =
+        (event as CustomEvent<{ projectId?: string }>).detail || {};
+      const project = portfolioProjects.find(
+        (portfolioProject) => portfolioProject.id === projectId,
+      );
+
+      if (!project) return;
+
+      setIsOpen(true);
+      shouldStickToBottom.current = true;
+      setShowScrollToBottom(false);
+      const questions = project.suggestedQuestions || [];
+
+      if (!questions.length) {
+        sendMessageRef.current(
+          `Vertel wat Chiho heeft gedaan voor het project ${project.title}.`,
+          project,
+        );
+        return;
+      }
+
+      setMessages((current) =>
+        [
+          ...current,
+          {
+            id: `project_${project.id}_${Date.now()}`,
+            role: "assistant" as const,
+            content: `Waar wil je meer over weten over ${project.title}?`,
+            project,
+            suggestedQuestions: questions,
+          },
+        ].slice(-MAX_RENDERED_MESSAGES),
+      );
+    };
+
+    window.addEventListener(
+      "career-agent:project-selected",
+      selectPortfolioProject,
+    );
+    return () =>
+      window.removeEventListener(
+        "career-agent:project-selected",
+        selectPortfolioProject,
+      );
+  }, [portfolioProjects]);
+
+  const showProjectInPortfolio = (project: PortfolioProject) => {
+    window.dispatchEvent(
+      new CustomEvent("career-agent:projects-highlight", {
+        detail: { projectIds: [project.id] },
+      }),
+    );
+    setIsOpen(false);
+    document
+      .getElementById("portfolio-section")
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   const submitMessage = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -334,7 +625,11 @@ export const CareerAgent = () => {
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) {
+    if (
+      event.key === "Enter" &&
+      !event.shiftKey &&
+      !event.nativeEvent.isComposing
+    ) {
       event.preventDefault();
       sendMessage(input);
     }
@@ -415,25 +710,96 @@ export const CareerAgent = () => {
                 </span>
               </div>
             </AgentIdentity>
-            <CloseButton type="button" onClick={closeAgent} aria-label="Close assistant">
-              <span aria-hidden="true">×</span>
-            </CloseButton>
+            <HeaderActions>
+              {messages.length > 1 && (
+                <ClearButton type="button" onClick={clearChat}>
+                  Clear on device
+                </ClearButton>
+              )}
+              <CloseButton
+                type="button"
+                onClick={closeAgent}
+                aria-label="Close assistant"
+              >
+                <span aria-hidden="true">×</span>
+              </CloseButton>
+            </HeaderActions>
           </AgentHeader>
 
-          <MessageList ref={messageListRef} aria-live="polite" aria-busy={isLoading}>
+          <MessageList
+            ref={messageListRef}
+            aria-live="polite"
+            aria-busy={isLoading}
+            onScroll={handleMessageListScroll}
+          >
             {messages.map((message) => (
               <Message key={message.id} $role={message.role}>
                 <span>{message.role === "assistant" ? "AI" : "You"}</span>
-                <MessageContent>{renderMessageContent(message.content)}</MessageContent>
+                <MessageContent>
+                  {renderMessageContent(message.content)}
+                </MessageContent>
+                {message.project && (
+                  <PortfolioChatCard as="div" $isStatic>
+                    <Image
+                      src={message.project.imageUrl}
+                      alt={`${message.project.title} portfolio project`}
+                      width={320}
+                      height={180}
+                      sizes="(max-width: 767px) 78vw, 300px"
+                    />
+                    <strong>{message.project.title}</strong>
+                  </PortfolioChatCard>
+                )}
+                {message.suggestedQuestions?.length && message.project ? (
+                  <ProjectQuestionList
+                    aria-label={`Suggested questions about ${message.project.title}`}
+                  >
+                    {message.suggestedQuestions.map((question) => (
+                      <ProjectQuestionButton
+                        key={question}
+                        type="button"
+                        disabled={isLoading}
+                        onClick={() => sendMessage(question, message.project)}
+                      >
+                        {question}
+                      </ProjectQuestionButton>
+                    ))}
+                  </ProjectQuestionList>
+                ) : null}
+                {message.projectSuggestions?.length ? (
+                  <PortfolioSuggestionGrid aria-label="Recommended portfolio projects">
+                    {message.projectSuggestions.map((project) => (
+                      <PortfolioChatCard
+                        key={project.id}
+                        type="button"
+                        onClick={() => showProjectInPortfolio(project)}
+                      >
+                        <Image
+                          src={project.imageUrl}
+                          alt={`${project.title} portfolio project`}
+                          width={220}
+                          height={124}
+                          sizes="(max-width: 767px) 42vw, 145px"
+                        />
+                        <strong>{project.title}</strong>
+                        <small>Show in portfolio</small>
+                      </PortfolioChatCard>
+                    ))}
+                  </PortfolioSuggestionGrid>
+                ) : null}
                 {message.variant === "contact" && (
                   <ContactActions aria-label="Contact options">
-                    {(message.contactOptions || ["email", "whatsapp"]).includes("email") && (
+                    {(message.contactOptions || ["email", "whatsapp"]).includes(
+                      "email",
+                    ) && (
                       <ContactActionCard href={contactLinks.email}>
                         <strong>Email</strong>
                         <small>Send a direct email</small>
                       </ContactActionCard>
                     )}
-                    {(message.contactOptions || ["email", "whatsapp"]).includes("whatsapp") && (
+                    {(message.contactOptions || ["email", "whatsapp"]).includes(
+                      "whatsapp",
+                    ) && (
                       <ContactActionCard
                         href={contactLinks.whatsapp}
                         target={whatsappNumber ? "_blank" : undefined}
@@ -499,6 +865,19 @@ export const CareerAgent = () => {
             )}
           </MessageList>
 
+          {showScrollToBottom && (
+            <ScrollToBottomButton
+              type="button"
+              onClick={scrollToLatestMessage}
+              aria-label="Scroll to the latest message"
+              title="Latest message"
+            >
+              <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </ScrollToBottomButton>
+          )}
+
           {messages.length === 1 && !isQuotaExhausted && (
             <StarterPrompts aria-label="Suggested questions">
               {starterPrompts.map((prompt) => (
@@ -535,12 +914,15 @@ export const CareerAgent = () => {
                   disabled={!input.trim() || isLoading}
                   aria-label="Send message"
                 >
-                  <span aria-hidden="true">↗</span>
+                  <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
+                    <path d="M21 3 10.6 13.4" />
+                    <path d="m21 3-6.7 18-3.7-7.6L3 9.7 21 3Z" />
+                  </svg>
                 </SendButton>
               </Composer>
               <Disclaimer id="career-agent-disclaimer">
-                AI-generated answers from curated portfolio information. Do not share
-                sensitive data.
+                AI-generated answers from curated portfolio information. Do not
+                share sensitive data.
               </Disclaimer>
             </AgentFooter>
           )}

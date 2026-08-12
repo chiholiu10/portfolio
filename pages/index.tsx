@@ -10,12 +10,16 @@ import { Introduction } from "../components/Sections/Introduction/Introduction";
 import { Navbar } from "../components/Sections/Navbar/Navbar";
 import { Portfolio } from "../components/Sections/Portfolio/Portfolio";
 import { Tools } from "../components/Sections/Tools/Tools";
+import { createPortfolioProjects } from "../lib/portfolio-projects";
 
 export default function ClientSide({ sections, isProduction }) {
   const contactSection = sections.contact?.section;
   const showCareerAgent = isProduction
     ? contactSection?.showCareerAgentInProduction === true
     : contactSection?.showCareerAgentInLocalhost === true;
+  const portfolioProjects = createPortfolioProjects(
+    sections.portfolio?.section?.array || [],
+  );
 
   return (
     <>
@@ -29,7 +33,9 @@ export default function ClientSide({ sections, isProduction }) {
         <Tools data={sections.tools} />
         <Contact data={sections.contact} />
         <Footer data={sections.footer} />
-        {showCareerAgent && <CareerAgent />}
+        {showCareerAgent && (
+          <CareerAgent portfolioProjects={portfolioProjects} />
+        )}
       </ThemeProvider>
     </>
   );

@@ -4,7 +4,15 @@ import {
   answerCareerQuestion,
   isProviderQuotaError,
 } from "../../lib/career-agent/gemini";
+import { getDirectContactResponse } from "../../lib/career-agent/contact-intent";
 import { logCareerAgentMessage } from "../../lib/career-agent/history";
+import { getInputSafetyIssue } from "../../lib/career-agent/input-safety";
+import {
+  hashValue,
+  maskSensitiveContent,
+} from "../../lib/career-agent/privacy";
+import { consumeDistributedRateLimit } from "../../lib/career-agent/rate-limit";
+import { recommendPortfolioProjectIds } from "../../lib/portfolio-projects";
 
 const stripUnsafeControlCharacters = (message: string) =>
   Array.from(message)
@@ -28,6 +36,15 @@ const requestSchema = z.object({
     .min(8)
     .max(100)
     .regex(/^[a-zA-Z0-9_-]+$/),
+  history: z
+    .array(
+      z.object({
+        role: z.enum(["assistant", "user"]),
+        content: z.string().trim().min(1).max(6000),
+      }),
+    )
+    .max(6)
+    .default([]),
 });
 
 type ApiResponse =
@@ -37,12 +54,9 @@ type ApiResponse =
       chatId?: string;
       messageId?: string;
       contactOptions?: Array<"email" | "whatsapp">;
+      portfolioProjectIds?: string[];
     }
   | { error: string; code: string };
-
-type RateLimitEntry = { count: number; resetAt: number };
-
-const rateLimitStore = new Map<string, RateLimitEntry>();
 
 const getClientAddress = (request: NextApiRequest) => {
   const forwarded =
@@ -52,30 +66,6 @@ const getClientAddress = (request: NextApiRequest) => {
   return (
     value?.split(",")[0]?.trim() || request.socket.remoteAddress || "unknown"
   );
-};
-
-const consumeRateLimit = (key: string) => {
-  const now = Date.now();
-  const configuredLimit = Number(process.env.CAREER_AGENT_RATE_LIMIT || 12);
-  const configuredWindow = Number(
-    process.env.CAREER_AGENT_RATE_WINDOW_MS || 60_000,
-  );
-  const limit = Number.isFinite(configuredLimit) ? configuredLimit : 12;
-  const windowMs = Number.isFinite(configuredWindow)
-    ? configuredWindow
-    : 60_000;
-  const current = rateLimitStore.get(key);
-
-  if (!current || current.resetAt <= now) {
-    rateLimitStore.set(key, { count: 1, resetAt: now + windowMs });
-    return { limited: false, retryAfterSeconds: 0 };
-  }
-
-  current.count += 1;
-  return {
-    limited: current.count > limit,
-    retryAfterSeconds: Math.max(1, Math.ceil((current.resetAt - now) / 1000)),
-  };
 };
 
 const isAllowedOrigin = (request: NextApiRequest) => {
@@ -154,14 +144,54 @@ export default async function handler(
     });
   }
 
-  const clientAddress = getClientAddress(request);
-  const ipLimit = consumeRateLimit(`ip:${clientAddress}`);
+  const inputSafetyIssue = getInputSafetyIssue(parsed.data.message);
 
-  if (ipLimit.limited) {
-    response.setHeader("Retry-After", String(ipLimit.retryAfterSeconds));
-    return response.status(429).json({
-      error: "Too many messages. Please wait a moment and try again.",
-      code: "RATE_LIMITED",
+  if (inputSafetyIssue) {
+    return response.status(400).json({
+      error: inputSafetyIssue.message,
+      code: inputSafetyIssue.code,
+    });
+  }
+
+  const clientAddress = getClientAddress(request);
+  const hashingSecret =
+    process.env.CAREER_AGENT_HASH_SECRET ||
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    "";
+  const clientAddressHash = await hashValue(clientAddress, hashingSecret);
+  const configuredLimit = Number(process.env.CAREER_AGENT_RATE_LIMIT || 12);
+  const configuredWindow = Number(
+    process.env.CAREER_AGENT_RATE_WINDOW_MS || 60_000,
+  );
+
+  try {
+    const rateLimit = await consumeDistributedRateLimit(
+      `chat:${clientAddressHash || "unknown"}`,
+      Number.isFinite(configuredLimit) ? configuredLimit : 12,
+      Number.isFinite(configuredWindow) ? configuredWindow : 60_000,
+    );
+
+    if (!rateLimit.allowed) {
+      response.setHeader(
+        "Retry-After",
+        String(Math.max(1, rateLimit.retryAfterSeconds)),
+      );
+      return response.status(429).json({
+        error: "Too many messages. Please wait a moment and try again.",
+        code: "RATE_LIMITED",
+      });
+    }
+  } catch {
+    return response.status(503).json({
+      error: "The career assistant is temporarily unavailable.",
+      code: "RATE_LIMIT_UNAVAILABLE",
+    });
+  }
+
+  if (!clientAddressHash) {
+    return response.status(503).json({
+      error: "The career assistant is temporarily unavailable.",
+      code: "RATE_LIMIT_UNAVAILABLE",
     });
   }
 
@@ -187,14 +217,34 @@ export default async function handler(
       clientAddress,
     });
 
-    const answer = await answerCareerQuestion(
+    const directContactResponse = getDirectContactResponse(
       parsed.data.message,
-      controller.signal,
     );
+    const generation =
+      directContactResponse ||
+      (await answerCareerQuestion(
+        parsed.data.message,
+        parsed.data.history
+          .filter(
+            (turn) =>
+              turn.role === "assistant" ||
+              !getInputSafetyIssue(turn.content),
+          )
+          .map((turn) => ({
+            role: turn.role,
+            content: maskSensitiveContent(turn.content),
+          })),
+        controller.signal,
+      ));
 
-    const { cleanAnswer, contactOptions } = extractContactOptions(answer);
+    const { cleanAnswer, contactOptions } = extractContactOptions(
+      generation.answer,
+    );
     const chatId = parsed.data.sessionId;
     const messageId = crypto.randomUUID();
+    const portfolioProjectIds = recommendPortfolioProjectIds(
+      parsed.data.message,
+    );
 
     await logCareerAgentMessage({
       sessionId: parsed.data.sessionId,
@@ -202,6 +252,8 @@ export default async function handler(
       content: cleanAnswer,
       flowiseChatId: chatId,
       flowiseMessageId: messageId,
+      provider: generation.provider,
+      model: generation.model,
       contactOptions,
     });
 
@@ -211,6 +263,7 @@ export default async function handler(
       ...(chatId ? { chatId } : {}),
       ...(messageId ? { messageId } : {}),
       ...(contactOptions?.length ? { contactOptions } : {}),
+      ...(portfolioProjectIds.length ? { portfolioProjectIds } : {}),
     });
   } catch (error) {
     const timedOut = error instanceof Error && error.name === "AbortError";

@@ -18,18 +18,23 @@ export const Eyebrow = styled.p`
 
 export const HeaderH1 = styled.h1`
   ${HeaderGeneral};
+  box-sizing: border-box;
+  width: min(100%, 1120px);
+  max-width: calc(100vw - 24px);
+  margin: 0 auto;
+  padding: 20px 12px 0;
+  font-size: clamp(30px, 9vw, 54px);
+  overflow-wrap: normal;
+
   ${breakpoint.sm`
-    font-size: 40px;
     font-weight: 600;
-    margin-top: 100px;
-    padding: 20px;
+    padding-inline: 24px;
   `}
   ${breakpoint.md`
-    font-size: 46px;
+    font-size: clamp(42px, 5vw, 54px);
   `}
   ${breakpoint.xl`
-    font-size: 54px;
-    padding: 80px 0 0;
+    padding-inline: 0;
   `}
 `;
 

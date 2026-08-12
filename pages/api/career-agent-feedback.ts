@@ -1,14 +1,15 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
 import { logCareerAgentFeedback } from "../../lib/career-agent/history";
+import { hashValue } from "../../lib/career-agent/privacy";
+import { consumeDistributedRateLimit } from "../../lib/career-agent/rate-limit";
 
 const requestSchema = z.object({
   feedbackId: z.string().trim().min(1).max(200)
 .optional(),
-  sessionId: z.string().trim().min(8).max(100)
-.optional(),
-  chatId: z.string().trim().min(1).max(200),
-  messageId: z.string().trim().min(1).max(200),
+  sessionId: z.string().trim().min(8).max(100),
+  chatId: z.string().trim().min(8).max(100),
+  messageId: z.string().uuid(),
   rating: z.enum(["THUMBS_UP", "THUMBS_DOWN"]),
 });
 
@@ -31,6 +32,16 @@ const isAllowedOrigin = (request: NextApiRequest) => {
   } catch {
     return false;
   }
+};
+
+const getClientAddress = (request: NextApiRequest) => {
+  const forwarded =
+    request.headers["x-vercel-forwarded-for"] ||
+    request.headers["x-forwarded-for"];
+  const value = Array.isArray(forwarded) ? forwarded[0] : forwarded;
+  return (
+    value?.split(",")[0]?.trim() || request.socket.remoteAddress || "unknown"
+  );
 };
 
 export default async function handler(
@@ -81,6 +92,39 @@ export default async function handler(
     });
   }
 
+  const hashingSecret =
+    process.env.CAREER_AGENT_HASH_SECRET ||
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    "";
+  const clientAddressHash = await hashValue(
+    getClientAddress(request),
+    hashingSecret,
+  );
+
+  try {
+    const rateLimit = await consumeDistributedRateLimit(
+      `feedback:${clientAddressHash || "unknown"}`,
+      30,
+      60_000,
+    );
+
+    if (!rateLimit.allowed) {
+      response.setHeader(
+        "Retry-After",
+        String(Math.max(1, rateLimit.retryAfterSeconds)),
+      );
+      return response.status(429).json({
+        error: "Too many feedback requests.",
+        code: "RATE_LIMITED",
+      });
+    }
+  } catch {
+    return response.status(503).json({
+      error: "Feedback is temporarily unavailable.",
+      code: "RATE_LIMIT_UNAVAILABLE",
+    });
+  }
+
   const feedbackId = await logCareerAgentFeedback({
     sessionId: parsed.data.sessionId,
     flowiseChatId: parsed.data.chatId,
@@ -88,6 +132,13 @@ export default async function handler(
     flowiseFeedbackId: parsed.data.feedbackId,
     rating: parsed.data.rating,
   });
+
+  if (!feedbackId) {
+    return response.status(502).json({
+      error: "Feedback could not be saved.",
+      code: "FEEDBACK_NOT_SAVED",
+    });
+  }
 
   return response.status(200).json({
     ok: true,

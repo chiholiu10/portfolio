@@ -65,9 +65,6 @@
       "eslint --fix"
     ]
   },
-  "jest": {
-    "testEnvironment": "jsdom"
-  },
   "config": {
     "commitizen": {
       "path": "@commitlint/cz-commitlint"

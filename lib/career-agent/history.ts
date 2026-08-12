@@ -38,14 +38,22 @@ const getSupabaseHeaders = () => ({
 const insertSupabaseRow = async <TRecord extends Record<string, unknown>>(
   table: string,
   record: TRecord,
+  onConflict?: string,
 ) => {
   if (!isEnabled()) return null;
 
   const response = await fetch(
-    `${process.env.SUPABASE_URL?.replace(/\/$/, "")}/rest/v1/${table}`,
+    `${process.env.SUPABASE_URL?.replace(/\/$/, "")}/rest/v1/${table}${
+      onConflict ? `?on_conflict=${encodeURIComponent(onConflict)}` : ""
+    }`,
     {
       method: "POST",
-      headers: getSupabaseHeaders(),
+      headers: {
+        ...getSupabaseHeaders(),
+        ...(onConflict
+          ? { Prefer: "resolution=merge-duplicates,return=representation" }
+          : {}),
+      },
       body: JSON.stringify(record),
     },
   );
@@ -61,31 +69,14 @@ const insertSupabaseRow = async <TRecord extends Record<string, unknown>>(
   return payload?.[0]?.id || null;
 };
 
-const patchSupabaseRows = async <TRecord extends Record<string, unknown>>(
-  table: string,
-  query: string,
-  record: TRecord,
-) => {
-  if (!isEnabled()) return;
-
-  const response = await fetch(
-    `${process.env.SUPABASE_URL?.replace(/\/$/, "")}/rest/v1/${table}?${query}`,
-    {
-      method: "PATCH",
-      headers: getSupabaseHeaders(),
-      body: JSON.stringify(record),
-    },
-  );
-
-  if (!response.ok) {
-    throw new Error(`Supabase update failed for ${table}.`);
-  }
-};
-
 export const logCareerAgentMessage = async (input: LogMessageInput) => {
   try {
+    const hashingSecret =
+      process.env.CAREER_AGENT_HASH_SECRET ||
+      process.env.SUPABASE_SERVICE_ROLE_KEY ||
+      "";
     const clientAddressHash = input.clientAddress
-      ? await hashValue(input.clientAddress)
+      ? await hashValue(input.clientAddress, hashingSecret)
       : null;
 
     return await insertSupabaseRow("career_agent_messages", {
@@ -107,23 +98,28 @@ export const logCareerAgentMessage = async (input: LogMessageInput) => {
 
 export const logCareerAgentFeedback = async (input: LogFeedbackInput) => {
   try {
-    const feedbackId = await insertSupabaseRow("career_agent_feedback", {
-      session_id: input.sessionId || null,
-      flowise_chat_id: input.flowiseChatId,
-      flowise_message_id: input.flowiseMessageId,
-      flowise_feedback_id: input.flowiseFeedbackId || null,
-      rating: input.rating,
-    });
+    if (!isEnabled() || !input.sessionId) return null;
 
-    await patchSupabaseRows(
-      "career_agent_messages",
-      `flowise_message_id=eq.${encodeURIComponent(input.flowiseMessageId)}`,
+    const response = await fetch(
+      `${process.env.SUPABASE_URL?.replace(/\/$/, "")}/rest/v1/rpc/save_career_agent_feedback`,
       {
-        feedback: input.rating,
-        flowise_feedback_id: input.flowiseFeedbackId || null,
+        method: "POST",
+        headers: getSupabaseHeaders(),
+        body: JSON.stringify({
+          p_session_id: input.sessionId,
+          p_chat_id: input.flowiseChatId,
+          p_message_id: input.flowiseMessageId,
+          p_feedback_id: input.flowiseFeedbackId || null,
+          p_rating: input.rating,
+        }),
       },
     );
-    return feedbackId;
+
+    if (!response.ok) {
+      throw new Error("Supabase feedback transaction failed.");
+    }
+
+    return (await response.json()) as string | null;
   } catch (error) {
     console.error("Career agent feedback logging failed.", error);
     return null;

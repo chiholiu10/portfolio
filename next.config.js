@@ -1,5 +1,6 @@
 const nextConfig = {
   reactStrictMode: true,
+  poweredByHeader: false,
   env: {
     NEXT_SPACE: process.env.NEXT_SPACE,
   },
@@ -17,12 +18,48 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "**",
+        hostname: "res.cloudinary.com",
+      },
+      {
+        protocol: "https",
+        hostname: "images.ctfassets.net",
       },
     ],
   },
   async headers() {
+    const developmentScripts =
+      process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : "";
+    const contentSecurityPolicy = [
+      "default-src 'self'",
+      `script-src 'self' 'unsafe-inline'${developmentScripts}`,
+      "style-src 'self' 'unsafe-inline'",
+      "img-src 'self' data: blob: https://res.cloudinary.com https://images.ctfassets.net",
+      "font-src 'self' data:",
+      "connect-src 'self'",
+      "frame-ancestors 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "object-src 'none'",
+    ].join("; ");
+
     return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "Content-Security-Policy", value: contentSecurityPolicy },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "X-Frame-Options", value: "DENY" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=(), payment=()",
+          },
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=31536000; includeSubDomains",
+          },
+        ],
+      },
       {
         source: "/:all*(svg|jpg|jpeg|png|webp|avif|ico)",
         headers: [
