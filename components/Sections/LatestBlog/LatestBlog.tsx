@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { BlogPost, formatBlogDate } from "../../../lib/contentful-blog";
 import {
   AllPostsLink,
@@ -28,14 +27,11 @@ export const LatestBlog = ({ posts }: LatestBlogProps) => {
             Thoughts beyond the interface.
           </LatestBlogTitle>
         </div>
-        <Link href="/blog" legacyBehavior>
-          <AllPostsLink>View all articles</AllPostsLink>
-        </Link>
+        <AllPostsLink href="/blog">View all articles</AllPostsLink>
       </LatestBlogHeader>
       <LatestBlogGrid>
         {posts.slice(0, 3).map((post) => (
-          <Link key={post.sys.id} href={`/blog/${post.slug}`} legacyBehavior>
-            <LatestBlogCard>
+          <LatestBlogCard key={post.sys.id} href={`/blog/${post.slug}`}>
               {post.coverImage && (
                 <LatestBlogImage
                   src={post.coverImage.url}
@@ -56,8 +52,7 @@ export const LatestBlog = ({ posts }: LatestBlogProps) => {
                 <p>{post.excerpt}</p>
                 <LatestBlogReadMore>Read article →</LatestBlogReadMore>
               </LatestBlogCardBody>
-            </LatestBlogCard>
-          </Link>
+          </LatestBlogCard>
         ))}
       </LatestBlogGrid>
     </LatestBlogSection>

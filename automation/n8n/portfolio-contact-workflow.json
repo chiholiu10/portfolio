@@ -29,7 +29,7 @@
       "parameters": {
         "fromEmail": "Portfolio Agent <replace@example.com>",
         "toEmail": "replace@example.com",
-        "subject": "=Portfolio career enquiry — {{ $json.company }}",
+        "subject": "=Portfolio career enquiry | {{ $json.company }}",
         "emailFormat": "html",
         "html": "={{ $json.html }}",
         "options": {}

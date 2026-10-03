@@ -1,12 +1,12 @@
-# Chiho Liu — Portfolio & AI Career Assistant
+# Chiho Liu | Portfolio & AI Career Assistant
 
 [![CI](https://github.com/chiholiu10/portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/chiholiu10/portfolio/actions/workflows/ci.yml)
 
-A production-oriented portfolio built with Next.js, TypeScript and Contentful. It combines case studies and articles with a privacy-conscious AI career assistant that retrieves verified career knowledge before answering.
+A production-oriented portfolio built with Next.js, TypeScript and Contentful. It combines detailed case studies with a privacy-conscious AI career assistant that retrieves verified career knowledge before answering.
 
 ## Highlights
 
-- Responsive portfolio, project cases and Contentful-powered blog
+- Responsive portfolio and Contentful-managed project cases
 - AI career assistant with Groq/Gemini fallback and grounded answers
 - Supabase PostgreSQL/pgvector retrieval, feedback and optional chat history
 - Input safety, origin checks, rate limiting and server-only credentials
@@ -59,7 +59,7 @@ Fill only the variables needed by the feature you are testing. AI provider keys,
 
 ```text
 Browser
-  ├─ Portfolio and blog ──> Next.js ──> Contentful GraphQL
+  ├─ Portfolio content ───> Next.js ──> Contentful GraphQL
   └─ Career assistant ────> Next.js API
                               ├─ Supabase / pgvector retrieval
                               ├─ Groq or Gemini response generation
@@ -118,7 +118,7 @@ docker run --rm -p 3000:3000 --env-file .env.local chiho-portfolio
 
 ## Content workflow
 
-Portfolio and blog content is managed in Contentful. Career knowledge lives separately and is indexed into Supabase so individual portfolio projects can be retrieved precisely. After approved knowledge changes, run:
+Portfolio content is managed in Contentful. Career knowledge lives separately and is indexed into Supabase so individual portfolio projects can be retrieved precisely. After approved knowledge changes, run:
 
 ```bash
 yarn index:career-knowledge

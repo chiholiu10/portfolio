@@ -1,3 +1,4 @@
+import Link from "next/link";
 import styled, { keyframes } from "styled-components";
 import { breakpoint } from "../../../styles/Breakpoint";
 
@@ -124,4 +125,30 @@ export const BrandOrbit = styled.span`
       animation: none;
     }
   }
+`;
+
+export const RecruiterLink = styled(Link)`
+  display: none;
+
+  ${breakpoint.md`
+    display: inline-flex;
+    grid-column: 3;
+    align-items: center;
+    justify-self: end;
+    min-height: 36px;
+    padding: 0 14px;
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    border-radius: 999px;
+    color: #dff6ff;
+    font-size: 11px;
+    font-weight: 760;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      border-color: rgba(56, 189, 248, 0.55);
+      background: rgba(56, 189, 248, 0.08);
+    }
+  `}
 `;

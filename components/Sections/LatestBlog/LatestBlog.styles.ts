@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import styled from "styled-components";
 
 export const LatestBlogSection = styled.section`
@@ -37,7 +38,7 @@ export const LatestBlogTitle = styled.h2`
   text-wrap: balance;
 `;
 
-export const AllPostsLink = styled.a`
+export const AllPostsLink = styled(Link)`
   flex: none;
   padding: 12px 16px;
   border: 1px solid rgba(104, 213, 247, 0.22);
@@ -64,7 +65,7 @@ export const LatestBlogGrid = styled.div`
   }
 `;
 
-export const LatestBlogCard = styled.a`
+export const LatestBlogCard = styled(Link)`
   display: flex;
   min-height: 100%;
   flex-direction: column;

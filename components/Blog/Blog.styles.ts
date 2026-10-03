@@ -1,3 +1,4 @@
+import Link from "next/link";
 import styled from "styled-components";
 
 export const BlogShell = styled.main`
@@ -22,14 +23,14 @@ export const BlogNav = styled.nav`
   }
 `;
 
-export const Brand = styled.a`
+export const Brand = styled(Link)`
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 `;
 
-export const BackLink = styled.a`
+export const BackLink = styled(Link)`
   padding: 10px 14px;
   border: 1px solid rgba(104, 213, 247, 0.22);
   border-radius: 12px;
@@ -70,7 +71,7 @@ export const BlogGrid = styled.div`
   margin-top: clamp(52px, 8vw, 88px);
 `;
 
-export const BlogCard = styled.a`
+export const BlogCard = styled(Link)`
   display: flex;
   min-height: 320px;
   flex-direction: column;

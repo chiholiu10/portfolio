@@ -241,7 +241,7 @@ Chiho is open-minded, willing to experiment, and treats failure or setbacks as
 input for learning rather than something to avoid. A strong differentiator is
 his empathy: he listens to users, colleagues, designers, product owners, and
 non-technical stakeholders before making technical decisions. In an AI-driven
-development environment, describe this as valuable human judgment—not as a
+development environment, describe this as valuable human judgment, not as a
 generic claim that he is better than every other developer.
 When asked what distinguishes Chiho, especially in the AI era, lead with these
 human qualities. Answer in no more than three short sentences: open-mindedness,

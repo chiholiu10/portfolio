@@ -7,7 +7,6 @@ import Document, {
   NextScript,
 } from "next/document";
 import { ServerStyleSheet } from "styled-components";
-import HeadBlock from "../components/HeadBlock";
 
 export default class MyDocument extends Document {
   static async getInitialProps(
@@ -40,7 +39,13 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en-NL">
         <Head>
-          <HeadBlock />
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover"
+          />
+          <meta name="format-detection" content="telephone=no" />
+          <link rel="icon" href="/favicon.ico" />
+          <meta name="theme-color" content="#071327" />
         </Head>
         <body>
           <Main />

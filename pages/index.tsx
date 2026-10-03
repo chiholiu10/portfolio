@@ -1,4 +1,5 @@
 import { ThemeProvider } from "styled-components";
+import HeadBlock from "../components/HeadBlock";
 import { CareerAgent } from "../components/CareerAgent/CareerAgent";
 import { CSSreset } from "../styles/CssReset";
 import theme from "../styles/Theme";
@@ -7,14 +8,12 @@ import { Banner } from "../components/Sections/Banner/Banner";
 import { Experience } from "../components/Sections/Experience/Experience";
 import { Footer } from "../components/Sections/Footer/Footer";
 import { Introduction } from "../components/Sections/Introduction/Introduction";
-import { LatestBlog } from "../components/Sections/LatestBlog/LatestBlog";
 import { Navbar } from "../components/Sections/Navbar/Navbar";
 import { Portfolio } from "../components/Sections/Portfolio/Portfolio";
 import { Tools } from "../components/Sections/Tools/Tools";
 import { createPortfolioProjects } from "../lib/portfolio-projects";
-import { BlogPost, LATEST_BLOG_POSTS_QUERY } from "../lib/contentful-blog";
 
-export default function ClientSide({ sections, isProduction, latestPosts }) {
+export default function ClientSide({ sections, isProduction }) {
   const contactSection = sections.contact?.section;
   const showCareerAgent = isProduction
     ? contactSection?.showCareerAgentInProduction === true
@@ -25,6 +24,7 @@ export default function ClientSide({ sections, isProduction, latestPosts }) {
 
   return (
     <>
+      <HeadBlock />
       <ThemeProvider theme={theme}>
         <CSSreset theme={theme} />
         <Navbar data={sections.navbar} />
@@ -32,7 +32,6 @@ export default function ClientSide({ sections, isProduction, latestPosts }) {
         <Introduction data={sections.introduction} />
         <Experience data={sections.experience} />
         <Portfolio data={sections.portfolio} />
-        <LatestBlog posts={latestPosts} />
         <Tools data={sections.tools} />
         <Contact data={sections.contact} />
         <Footer data={sections.footer} />
@@ -84,16 +83,11 @@ export async function getStaticProps() {
 
   const client = createApolloClient();
 
-  const [results, latestBlogResult] = await Promise.all([
-    Promise.all(
-      contentQueries.map(([query, id]) =>
-        client.query({ query, variables: { id } }),
-      ),
+  const results = await Promise.all(
+    contentQueries.map(([query, id]) =>
+      client.query({ query, variables: { id } }),
     ),
-    client.query<{ blogPostCollection?: { items: BlogPost[] } }>({
-      query: LATEST_BLOG_POSTS_QUERY,
-    }),
-  ]);
+  );
 
   const [
     navbar,
@@ -109,7 +103,6 @@ export async function getStaticProps() {
   return {
     props: {
       isProduction: process.env.NODE_ENV === "production",
-      latestPosts: latestBlogResult.data?.blogPostCollection?.items || [],
       sections: {
         navbar,
         banner,
