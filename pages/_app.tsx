@@ -8,7 +8,7 @@ const MyApp = ({ Component, pageProps }) => {
   return (
     <>
       <Head>
-        <title>Frontend Developer Amsterdam | Chi Ho Liu</title>
+        <title>Frontend Developer | React &amp; Next.js | Chi Ho Liu</title>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -21,10 +21,6 @@ const MyApp = ({ Component, pageProps }) => {
                   name: "Chi Ho Liu",
                   url: "https://www.chiholiu.com/",
                   jobTitle: "Frontend Developer",
-                  homeLocation: {
-                    "@type": "City",
-                    name: "Amsterdam",
-                  },
                   knowsAbout: [
                     "React",
                     "Next.js",
@@ -41,17 +37,13 @@ const MyApp = ({ Component, pageProps }) => {
                   name: "Freelance frontend development",
                   serviceType: "Frontend web development",
                   provider: { "@id": "https://www.chiholiu.com/#person" },
-                  areaServed: {
-                    "@type": "City",
-                    name: "Amsterdam",
-                  },
                   url: "https://www.chiholiu.com/",
                 },
                 {
                   "@type": "WebSite",
                   "@id": "https://www.chiholiu.com/#website",
                   url: "https://www.chiholiu.com/",
-                  name: "Chi Ho Liu — Freelance Frontend Developer Amsterdam",
+                  name: "Chi Ho Liu — Frontend Developer",
                   inLanguage: "en-NL",
                 },
               ],

@@ -1,47 +1,28 @@
-# Node build stage
-FROM node:20 AS node-builder
+# syntax=docker/dockerfile:1
+FROM node:22-alpine AS dependencies
 
 WORKDIR /app
 
 COPY package.json yarn.lock ./
 
-RUN yarn install --frozen-lockfile
+RUN yarn install --frozen-lockfile --non-interactive
 
+FROM node:22-alpine AS builder
+WORKDIR /app
+ENV NEXT_TELEMETRY_DISABLED=1
+COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
-
 RUN yarn build
 
-# Java build stage using a more general Maven image
-FROM maven:3.9 AS java-builder
-
+FROM node:22-alpine AS runner
 WORKDIR /app
-
-# Copy the Java project files
-COPY . .
-
-# Run the Maven build (build the jar or war file)
-RUN mvn clean install
-
-# Debugging: List the contents of the target directory
-RUN echo "Listing /app/target directory:" && ls -l /app/target
-
-# Final stage - production image
-FROM node:20-alpine
-
-WORKDIR /app
-
-# Copy Node.js build outputs from the node-builder stage
-COPY --from=node-builder /app/package.json /app/yarn.lock ./
-COPY --from=node-builder /app/.next ./.next
-COPY --from=node-builder /app/public ./public
-
-# Check if the jar file exists before copying
-COPY --from=java-builder /app/target/ /app/target/
-
-# Install only production dependencies for Node.js
-RUN yarn install --production --frozen-lockfile
-
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
+COPY --chown=node:node --from=builder /app/package.json /app/yarn.lock ./
+COPY --chown=node:node --from=builder /app/node_modules ./node_modules
+COPY --chown=node:node --from=builder /app/.next ./.next
+COPY --chown=node:node --from=builder /app/public ./public
+USER node
 EXPOSE 3000
-
-# Start both Java and Node.js applications (example of running both)
-CMD ["sh", "-c", "java -jar /app/target/my-app.jar & yarn start"]
+CMD ["yarn", "start"]

@@ -7,7 +7,7 @@ const HeadBlock = () => (
     <meta name="format-detection" content="telephone=no" />
     <meta
       name="description"
-      content="Frontend developer in Amsterdam for fast, accessible React and Next.js websites. View the work and technical expertise of Chi Ho Liu."
+      content="Frontend developer specializing in React, Next.js and TypeScript. Building fast, accessible and user-friendly web applications."
     />
     <link rel="canonical" href="https://www.chiholiu.com/" />
     <link rel="alternate" hrefLang="en-NL" href="https://www.chiholiu.com/" />
@@ -20,11 +20,11 @@ const HeadBlock = () => (
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta
       property="og:title"
-      content="Frontend Developer Amsterdam | Chi Ho Liu"
+      content="Frontend Developer | React & Next.js | Chi Ho Liu"
     />
     <meta
       property="og:description"
-      content="Amsterdam-based  frontend developer creating fast, accessible React and Next.js experiences for ambitious teams."
+      content="Frontend developer specializing in React, Next.js and TypeScript, building fast, accessible and user-friendly web applications."
     />
     <meta property="og:url" content="https://www.chiholiu.com/" />
     <meta
@@ -33,16 +33,16 @@ const HeadBlock = () => (
     />
     <meta property="og:image:alt" content="Chi Ho Liu portfolio logo" />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Chi Ho Liu —  Frontend Developer" />
+    <meta property="og:site_name" content="Chi Ho Liu — Frontend Developer" />
     <meta property="og:locale" content="en_NL" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
-      content="Frontend Developer Amsterdam | Chi Ho Liu"
+      content="Frontend Developer | React & Next.js | Chi Ho Liu"
     />
     <meta
       name="twitter:description"
-      content="React and Next.js development in Amsterdam, focused on performance, accessibility and refined UX."
+      content="React, Next.js and TypeScript development focused on performance, accessibility and refined UX."
     />
     <meta
       name="twitter:image"
