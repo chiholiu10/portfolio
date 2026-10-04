@@ -3,7 +3,6 @@ import {
   NavbarComponent,
   NavbarInnerBlock,
   NavbarInnerComponent,
-  RecruiterLink,
 } from "./Navbar.styles";
 
 interface NavbarData {
@@ -39,9 +38,6 @@ export const Navbar = ({ data }: NavbarProps) => {
             <span className="role">{role}</span>
           </span>
         </NavbarInnerBlock>
-        <RecruiterLink href="/senior-frontend-developer">
-          For recruiters
-        </RecruiterLink>
       </NavbarInnerComponent>
     </NavbarComponent>
   );
