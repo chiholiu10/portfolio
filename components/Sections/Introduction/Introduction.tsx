@@ -12,7 +12,6 @@ import {
 } from "../../FramerMotions";
 import {
   CardFoot,
-  CardNumber,
   IntroBlock,
   IntroBlockCenter,
   IntroSubTitle,
@@ -62,7 +61,6 @@ export const Introduction = ({ data }: IntroductionProps) => {
           {arrays?.map((item, index) => (
             <StaggerItem key={index}>
               <IntroBlock $index={index}>
-                <CardNumber>{String(index + 1).padStart(2, "0")}</CardNumber>
                 <OrbitVisual $index={index} aria-hidden="true">
                   <OrbitPlanet $index={index} />
                 </OrbitVisual>

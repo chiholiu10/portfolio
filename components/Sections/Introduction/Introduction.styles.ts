@@ -3,7 +3,6 @@ import { breakpoint } from "../../../styles/Breakpoint";
 import {
   OrbitArtwork,
   OrbitCardAccent,
-  OrbitCardNumber,
   OrbitingPlanet,
   OrbitSurface,
 } from "../../OrbitCard/OrbitCard.styles";
@@ -15,7 +14,6 @@ export const IntroBlock = styled(OrbitSurface)`
   ${breakpoint.md`width: 300px;`}
 `;
 
-export const CardNumber = OrbitCardNumber;
 export const OrbitVisual = OrbitArtwork;
 export const OrbitPlanet = OrbitingPlanet;
 export const CardFoot = OrbitCardAccent;
