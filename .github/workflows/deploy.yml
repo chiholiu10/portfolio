@@ -33,18 +33,29 @@ jobs:
 
     steps:
       - name: Check out verified revision
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
           persist-credentials: false
 
       - name: Set up Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           node-version: 22
 
+      - name: Validate deployment credentials
+        run: |
+          missing=0
+          for variable in VERCEL_TOKEN VERCEL_ORG_ID VERCEL_PROJECT_ID; do
+            if [ -z "${!variable}" ]; then
+              echo "::error title=Missing GitHub secret::$variable is required for production deployment"
+              missing=1
+            fi
+          done
+          exit "$missing"
+
       - name: Install Vercel CLI
-        run: npm install --global vercel@latest
+        run: npm install --global vercel@62.7.0
 
       - name: Pull production configuration
         run: vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
