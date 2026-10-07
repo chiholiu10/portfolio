@@ -3,8 +3,17 @@ import { breakpoint } from "../../../styles/Breakpoint";
 import { ComponentSection } from "../../../styles/General.styles";
 
 export const HowIWorkSection = styled(ComponentSection)`
+  box-sizing: border-box;
   min-height: auto;
-  padding: 0 20px 150px;
+  padding: 0 12px 96px;
+
+  ${breakpoint.sm`
+    padding: 0 20px 120px;
+  `}
+
+  ${breakpoint.md`
+    padding-bottom: 150px;
+  `}
 `;
 
 export const HowIWorkPanel = styled.div`
@@ -20,6 +29,11 @@ export const HowIWorkPanel = styled.div`
     radial-gradient(circle at 85% 5%, rgba(56, 189, 248, 0.12), transparent 34%),
     #08131f;
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+
+  @media (max-width: 479px) {
+    padding: 24px 16px;
+    border-radius: 20px;
+  }
 `;
 
 export const HowIWorkIntro = styled.div`
@@ -44,6 +58,7 @@ export const HowIWorkTitle = styled.h2`
   font-weight: 600;
   line-height: 1.05;
   letter-spacing: -0.045em;
+  overflow-wrap: anywhere;
 `;
 
 export const HowIWorkLead = styled.p`
@@ -63,6 +78,7 @@ export const HowIWorkSteps = styled.ol`
 
   ${breakpoint.md`
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 1fr;
   `}
 `;
 
@@ -72,10 +88,19 @@ export const HowIWorkStep = styled.li`
   grid-template-columns: 42px minmax(0, 1fr);
   gap: 14px;
   min-width: 0;
+  height: 100%;
   padding: 19px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.025);
+
+  @media (max-width: 479px) {
+    grid-template-columns: 36px minmax(0, 1fr);
+    gap: 12px;
+    min-height: 122px;
+    padding: 16px 14px;
+    border-radius: 15px;
+  }
 `;
 
 export const HowIWorkIcon = styled.span`
@@ -88,9 +113,18 @@ export const HowIWorkIcon = styled.span`
   background: rgba(56, 189, 248, 0.1);
   font-size: 19px;
   font-weight: 700;
+
+  @media (max-width: 479px) {
+    width: 36px;
+    height: 36px;
+    border-radius: 11px;
+    font-size: 17px;
+  }
 `;
 
 export const HowIWorkStepCopy = styled.div`
+  min-width: 0;
+
   h3 {
     margin: 1px 0 7px;
     color: #edf5fa;
@@ -104,6 +138,7 @@ export const HowIWorkStepCopy = styled.div`
     color: #8ea0b5;
     font-size: 13px;
     line-height: 1.58;
+    overflow-wrap: anywhere;
   }
 `;
 
@@ -124,5 +159,9 @@ export const HowIWorkProof = styled.p`
     border-radius: 50%;
     background: #38bdf8;
     box-shadow: 0 0 14px rgba(56, 189, 248, 0.68);
+  }
+
+  @media (max-width: 479px) {
+    align-items: flex-start;
   }
 `;

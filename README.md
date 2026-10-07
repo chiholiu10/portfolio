@@ -4,6 +4,8 @@
 
 A production-oriented portfolio built with Next.js, TypeScript and Contentful. It combines detailed case studies with a privacy-conscious AI career assistant that retrieves verified career knowledge before answering.
 
+> **Temporary status:** The AI career assistant is currently hidden on both production and localhost through Contentful. The implementation remains available in the codebase and can be enabled again without rebuilding the feature.
+
 ## Highlights
 
 - Responsive portfolio and Contentful-managed project cases

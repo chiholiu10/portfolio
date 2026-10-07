@@ -11,7 +11,7 @@ export const ToolsBlock = styled(OrbitSurface)`
   min-width: 0;
   width: 100%;
   max-width: 100%;
-  min-height: 68px;
+  height: 72px;
   padding: 12px 14px;
   border-radius: 16px;
   background: rgba(10, 22, 37, 0.72);
@@ -63,14 +63,15 @@ export const ToolsCategoryHeader = styled.div`
 export const ToolsGrid = styled.div`
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(210px, 100%), 1fr));
   gap: 10px;
   width: 100%;
-  max-width: 900px;
+  max-width: 100%;
 
   > * {
     min-width: 0;
     width: 100%;
+    height: 100%;
   }
 `;
 
@@ -108,5 +109,6 @@ export const ToolsHeader = styled.div`
     font-size: 13px;
     font-weight: 650;
     letter-spacing: -0.02em;
+    overflow-wrap: anywhere;
   }
 `;
