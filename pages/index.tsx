@@ -7,6 +7,7 @@ import { Contact } from "../components/Contact/Contact";
 import { Banner } from "../components/Sections/Banner/Banner";
 import { Experience } from "../components/Sections/Experience/Experience";
 import { Footer } from "../components/Sections/Footer/Footer";
+import { HowIWork } from "../components/Sections/HowIWork/HowIWork";
 import { Introduction } from "../components/Sections/Introduction/Introduction";
 import { Navbar } from "../components/Sections/Navbar/Navbar";
 import { Portfolio } from "../components/Sections/Portfolio/Portfolio";
@@ -32,6 +33,7 @@ export default function ClientSide({ sections, isProduction }) {
         <Introduction data={sections.introduction} />
         <Experience data={sections.experience} />
         <Portfolio data={sections.portfolio} />
+        <HowIWork data={sections.howIWork} />
         <Tools data={sections.tools} />
         <Contact data={sections.contact} />
         <Footer data={sections.footer} />
@@ -60,6 +62,9 @@ export async function getStaticProps() {
   const { QUERY: PORTFOLIO_QUERY } = await import(
     "../components/Sections/Portfolio/PortfolioQuery"
   );
+  const { QUERY: HOW_I_WORK_QUERY } = await import(
+    "../components/Sections/HowIWork/HowIWorkQuery"
+  );
   const { QUERY: TOOLS_QUERY } = await import(
     "../components/Sections/Tools/ToolsQuery"
   );
@@ -76,6 +81,7 @@ export async function getStaticProps() {
     [INTRODUCTION_QUERY, "4DIoyNagIFWzKfhGrtKUXB"],
     [EXPERIENCE_QUERY, "2c3zCPqbJcXzcaM2bYTp52"],
     [PORTFOLIO_QUERY, "2qFy05XNAe3Ho1CmJiAgbO"],
+    [HOW_I_WORK_QUERY, "howIWorkSection"],
     [TOOLS_QUERY, "2FzwztBT4JTZm5icaV1tlb"],
     [CONTACT_QUERY, "6pPYUtgRlvgICxNf4Dhei"],
     [FOOTER_QUERY, "Veijh9SFm3OqyuVxBBy17"],
@@ -95,6 +101,7 @@ export async function getStaticProps() {
     introduction,
     experience,
     portfolio,
+    howIWork,
     tools,
     contact,
     footer,
@@ -109,6 +116,7 @@ export async function getStaticProps() {
         introduction,
         experience,
         portfolio,
+        howIWork,
         tools,
         contact,
         footer,

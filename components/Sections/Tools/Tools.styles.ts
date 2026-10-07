@@ -1,50 +1,95 @@
 import styled from "styled-components";
 import { breakpoint } from "../../../styles/Breakpoint";
-import {
-  OrbitArtwork,
-  OrbitCardAccent,
-  OrbitCardNumber,
-  OrbitingPlanet,
-  OrbitSurface,
-} from "../../OrbitCard/OrbitCard.styles";
+import { OrbitSurface } from "../../OrbitCard/OrbitCard.styles";
 
 export const ToolsBlock = styled(OrbitSurface)`
-  display: flex;
-  flex-direction: column;
-  width: 150px;
-  min-height: 178px;
-  padding: 18px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  align-items: center;
+  gap: 13px;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  min-height: 68px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(10, 22, 37, 0.72);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.035),
+    0 8px 20px rgba(0, 0, 0, 0.11);
 
-  ${breakpoint.sm`width: 170px; min-height: 190px;`}
-  ${breakpoint.md`width: 190px; min-height: 205px;`}
+  &:hover {
+    transform: translateY(-2px);
+    border-color: rgba(56, 189, 248, 0.26);
+  }
 `;
 
-export const ToolNumber = OrbitCardNumber;
-export const ToolAccent = OrbitCardAccent;
+export const ToolsCategory = styled.section`
+  box-sizing: border-box;
+  width: calc(100% - 40px);
+  max-width: 1120px;
+  margin: 18px auto 0;
+  padding: clamp(20px, 3vw, 28px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 22px;
+  background: rgba(8, 18, 31, 0.58);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
 
-export const ToolOrbit = styled(OrbitArtwork)`
-  top: -78px;
-  right: -70px;
-  width: 190px;
-  height: 190px;
-  opacity: 0.8;
+  &:first-child {
+    margin-top: 0;
+  }
 `;
 
-export const ToolPlanet = OrbitingPlanet;
+export const ToolsCategoryHeader = styled.div`
+  max-width: 640px;
+  margin-bottom: 18px;
+
+  h3 {
+    margin-bottom: 8px;
+    color: #eef6fb;
+    font-size: clamp(17px, 2vw, 21px);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+  }
+
+  p {
+    color: #8ea0b5;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+`;
+
+export const ToolsGrid = styled.div`
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+  gap: 10px;
+  width: 100%;
+  max-width: 900px;
+
+  > * {
+    min-width: 0;
+    width: 100%;
+  }
+`;
 
 export const ToolInnerBlock = styled.div`
   position: relative;
   z-index: 3;
   display: grid;
   place-items: center;
-  flex: 1;
-  padding-top: 22px;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.035);
 
   img {
-    width: 52px;
-    height: 52px;
+    width: 28px;
+    height: 28px;
     object-fit: contain;
-    filter: saturate(0.86) drop-shadow(0 12px 18px rgba(0, 0, 0, 0.3));
+    filter: saturate(0.86) drop-shadow(0 7px 12px rgba(0, 0, 0, 0.26));
     transition: transform 240ms ease, filter 240ms ease;
   }
 
@@ -57,19 +102,8 @@ export const ToolInnerBlock = styled.div`
 export const ToolsHeader = styled.div`
   position: relative;
   z-index: 3;
-  padding-top: 13px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
 
-  p {
-    margin-bottom: 5px;
-    color: #607084;
-    font-size: 8px;
-    font-weight: 750;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-
-  h3 {
+  h4 {
     color: #eef6fb;
     font-size: 13px;
     font-weight: 650;
