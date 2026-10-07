@@ -73,4 +73,27 @@ export default [
       "implicit-arrow-linebreak": "off",
     },
   },
+  {
+    files: ["components/**/*.{ts,tsx}"],
+    rules: {
+      "no-restricted-imports": ["error", {
+        patterns: [{ group: ["**/contentful/**", "@apollo/client", "@apollo/client/**"], message: "Load CMS data in lib/contentful and pass it through page props." }],
+      }],
+    },
+  },
+  ...[
+    { layer: "atoms", forbidden: ["**/molecules/**", "**/organisms/**", "**/templates/**"] },
+    { layer: "molecules", forbidden: ["**/organisms/**", "**/templates/**"] },
+    { layer: "organisms", forbidden: ["**/templates/**"] },
+  ].map(({ layer, forbidden }) => ({
+    files: [`components/${layer}/**/*.{ts,tsx}`],
+    rules: {
+      "no-restricted-imports": ["error", {
+        patterns: [
+          { group: forbidden, message: "Atomic components may only depend on their own layer and lower layers." },
+          { group: ["**/contentful/**", "@apollo/client", "@apollo/client/**"], message: "Load CMS data in lib/contentful and pass it through page props." },
+        ],
+      }],
+    },
+  })),
 ];

@@ -1,127 +1,15 @@
-import { ThemeProvider } from "styled-components";
-import HeadBlock from "../components/HeadBlock";
-import { CareerAgent } from "../components/CareerAgent/CareerAgent";
-import { CSSreset } from "../styles/CssReset";
-import theme from "../styles/Theme";
-import { Contact } from "../components/Contact/Contact";
-import { Banner } from "../components/Sections/Banner/Banner";
-import { Experience } from "../components/Sections/Experience/Experience";
-import { Footer } from "../components/Sections/Footer/Footer";
-import { HowIWork } from "../components/Sections/HowIWork/HowIWork";
-import { Introduction } from "../components/Sections/Introduction/Introduction";
-import { Navbar } from "../components/Sections/Navbar/Navbar";
-import { Portfolio } from "../components/Sections/Portfolio/Portfolio";
-import { Tools } from "../components/Sections/Tools/Tools";
-import { createPortfolioProjects } from "../lib/portfolio-projects";
+import type { GetStaticProps } from "next";
+import { HomeTemplate, HomeTemplateProps } from "../components/templates/HomeTemplate/HomeTemplate";
 
-export default function ClientSide({ sections, isProduction }) {
-  const contactSection = sections.contact?.section;
-  const showCareerAgent = isProduction
-    ? contactSection?.showCareerAgentInProduction === true
-    : contactSection?.showCareerAgentInLocalhost === true;
-  const portfolioProjects = createPortfolioProjects(
-    sections.portfolio?.section?.array || [],
-  );
+export default HomeTemplate;
 
-  return (
-    <>
-      <HeadBlock />
-      <ThemeProvider theme={theme}>
-        <CSSreset theme={theme} />
-        <Navbar data={sections.navbar} />
-        <Banner data={sections.banner} />
-        <Introduction data={sections.introduction} />
-        <Experience data={sections.experience} />
-        <Portfolio data={sections.portfolio} />
-        <HowIWork data={sections.howIWork} />
-        <Tools data={sections.tools} />
-        <Contact data={sections.contact} />
-        <Footer data={sections.footer} />
-        {showCareerAgent && (
-          <CareerAgent portfolioProjects={portfolioProjects} />
-        )}
-      </ThemeProvider>
-    </>
-  );
-}
-
-export async function getStaticProps() {
-  const { createApolloClient } = await import("../apollo-client");
-  const { QUERY: NAVBAR_QUERY } = await import(
-    "../components/Sections/Navbar/NavbarQuery"
-  );
-  const { QUERY: BANNER_QUERY } = await import(
-    "../components/Sections/Banner/BannerQuery"
-  );
-  const { QUERY: INTRODUCTION_QUERY } = await import(
-    "../components/Sections/Introduction/IntroductionQuery"
-  );
-  const { QUERY: EXPERIENCE_QUERY } = await import(
-    "../components/Sections/Experience/ExperienceQuery"
-  );
-  const { QUERY: PORTFOLIO_QUERY } = await import(
-    "../components/Sections/Portfolio/PortfolioQuery"
-  );
-  const { QUERY: HOW_I_WORK_QUERY } = await import(
-    "../components/Sections/HowIWork/HowIWorkQuery"
-  );
-  const { QUERY: TOOLS_QUERY } = await import(
-    "../components/Sections/Tools/ToolsQuery"
-  );
-  const { QUERY: CONTACT_QUERY } = await import(
-    "../components/Contact/ContactQuery"
-  );
-  const { QUERY: FOOTER_QUERY } = await import(
-    "../components/Sections/Footer/FooterQuery"
-  );
-
-  const contentQueries = [
-    [NAVBAR_QUERY, "1fU09M2HwR6lvRsgaT26YK"],
-    [BANNER_QUERY, "7wNcHAAqxL2cunkRCCxW4o"],
-    [INTRODUCTION_QUERY, "4DIoyNagIFWzKfhGrtKUXB"],
-    [EXPERIENCE_QUERY, "2c3zCPqbJcXzcaM2bYTp52"],
-    [PORTFOLIO_QUERY, "2qFy05XNAe3Ho1CmJiAgbO"],
-    [HOW_I_WORK_QUERY, "howIWorkSection"],
-    [TOOLS_QUERY, "2FzwztBT4JTZm5icaV1tlb"],
-    [CONTACT_QUERY, "6pPYUtgRlvgICxNf4Dhei"],
-    [FOOTER_QUERY, "Veijh9SFm3OqyuVxBBy17"],
-  ] as const;
-
-  const client = createApolloClient();
-
-  const results = await Promise.all(
-    contentQueries.map(([query, id]) =>
-      client.query({ query, variables: { id } }),
-    ),
-  );
-
-  const [
-    navbar,
-    banner,
-    introduction,
-    experience,
-    portfolio,
-    howIWork,
-    tools,
-    contact,
-    footer,
-  ] = results.map(({ data }) => data);
-
+export const getStaticProps: GetStaticProps<HomeTemplateProps> = async () => {
+  const { loadHomeSections } = await import("../lib/contentful/home");
   return {
     props: {
+      sections: await loadHomeSections(),
       isProduction: process.env.NODE_ENV === "production",
-      sections: {
-        navbar,
-        banner,
-        introduction,
-        experience,
-        portfolio,
-        howIWork,
-        tools,
-        contact,
-        footer,
-      },
     },
     revalidate: 3600,
   };
-}
+};

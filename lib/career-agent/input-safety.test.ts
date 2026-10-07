@@ -56,10 +56,18 @@ describe("career-agent input safety", () => {
 });
 
 describe("portfolio project recommendations", () => {
+  const content = {
+    projects: [
+      { id: "gemeente-amsterdam-vue", title: "Amsterdam", imageMatch: "Amsterdam", keywords: ["accessibility", "wcag", "gemeente"] },
+      { id: "momants-ai-agent", title: "Agent", imageMatch: "agent", keywords: ["accessibility", "wcag"] },
+      { id: "momants-homepage", title: "Homepage", imageMatch: "homepage", keywords: ["accessibility", "wcag"] },
+    ],
+    favoriteProjectIds: ["momants-ai-agent", "gemeente-amsterdam-vue", "missing-project"],
+  };
   it("selects evidence-backed accessibility projects", () => {
     expect(
       recommendPortfolioProjectIds(
-        "Laat zijn accessibility- en WCAG-ervaring zien",
+        "Laat zijn accessibility- en WCAG-ervaring zien", content,
       ),
     ).toEqual([
       "gemeente-amsterdam-vue",
@@ -70,18 +78,17 @@ describe("portfolio project recommendations", () => {
 
   it("returns a stable representative set for favorite-project questions", () => {
     expect(
-      recommendPortfolioProjectIds("Welk project vond Chiho het leukst?"),
+      recommendPortfolioProjectIds("Welk project vond Chiho het leukst?", content),
     ).toEqual([
       "momants-ai-agent",
-      "gemeente-amsterdam",
-      "cryptohopper",
+      "gemeente-amsterdam-vue",
     ]);
   });
 
   it("does not recommend a project again while explaining a selection", () => {
     expect(
       recommendPortfolioProjectIds(
-        "Vertel wat Chiho heeft gedaan voor het project Gemeente Amsterdam.",
+        "Vertel wat Chiho heeft gedaan voor het project Gemeente Amsterdam.", content,
       ),
     ).toEqual([]);
   });

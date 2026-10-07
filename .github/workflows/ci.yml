@@ -50,4 +50,8 @@ jobs:
         run: yarn test --runInBand --ci
 
       - name: Build production bundle
+        env:
+          CONTENTFUL_SPACE_ID: ${{ vars.CONTENTFUL_SPACE_ID || 'z1tccslo5ojo' }}
+          CONTENTFUL_ENVIRONMENT: ${{ vars.CONTENTFUL_ENVIRONMENT || 'master' }}
+          CONTENTFUL_ACCESS_TOKEN: ${{ secrets.CONTENTFUL_ACCESS_TOKEN }}
         run: yarn build

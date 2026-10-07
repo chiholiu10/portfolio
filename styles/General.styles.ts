@@ -60,7 +60,7 @@ export const BackgroundImage = styled.div<{
     display: flex;
   `}
   &.effect {
-    height: "100vh", // You can set this to any value as required
+    height: "100vh",
     width: "100%",
     objectFit: "cover", // This ensures that the image doesn't stretch and stays proportional
     position: "absolute", // Keep it fixed in place during scrolling

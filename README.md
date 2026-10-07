@@ -12,9 +12,30 @@ A production-oriented portfolio built with Next.js, TypeScript and Contentful. I
 - AI career assistant with Groq/Gemini fallback and grounded answers
 - Supabase PostgreSQL/pgvector retrieval, feedback and optional chat history
 - Input safety, origin checks, rate limiting and server-only credentials
+- Secure Node.js contact API with Supabase persistence and optional email alerts
 - Unit tests for contact intent and unsafe-input detection
 - Reproducible GitHub Actions CI and gated Vercel production deployment
 - Local observability with Phoenix, plus optional Flowise and n8n services
+
+## Contentful configuration
+
+Set `CONTENTFUL_SPACE_ID`, `CONTENTFUL_ENVIRONMENT` (default `master`) and the server-only `CONTENTFUL_ACCESS_TOKEN` in `.env.local` and the production hosting environment. The delivery token is never embedded in source code or public environment variables. GitHub CI also requires a repository secret named `CONTENTFUL_ACCESS_TOKEN`; optional repository variables override the space and environment.
+
+## Component architecture
+
+The UI follows Atomic Design while retaining the existing markup, styling and motion:
+
+- `components/atoms`: small visual primitives, avatar, icons, motion wrappers and page metadata.
+- `components/molecules`: reusable combinations such as `SectionHeading` and `ProjectCard`.
+- `components/organisms`: complete sections, contact form and career assistant.
+- `components/templates`: home and project page composition, without CMS queries.
+- `pages`: Next.js routing, data hooks and API endpoints.
+- `lib/contentful`: Apollo client, queries, section IDs and server content loaders.
+- `styles`: shared theme, tokens and global styling; component styles stay beside their components.
+
+Dependencies flow from templates to organisms, molecules and atoms. ESLint prevents imports into higher component layers and CMS queries inside UI components. The shared theme and reset are applied once in `pages/_app.tsx`.
+
+CMS payloads are validated at the server boundary using the Zod contracts in `lib/content-model.ts`. Invalid content fails the build or regeneration rather than replacing a valid page with broken data. Project IDs and image matches must be unique; unknown or ambiguous images are rejected instead of producing URLs based on array position. Archived projects are excluded from cards and recommendations. Tool grouping handles absent categories safely.
 
 ## Technology
 
@@ -62,13 +83,17 @@ Fill only the variables needed by the feature you are testing. AI provider keys,
 ```text
 Browser
   ├─ Portfolio content ───> Next.js ──> Contentful GraphQL
-  └─ Career assistant ────> Next.js API
+  ├─ Career assistant ────> Next.js API
                               ├─ Supabase / pgvector retrieval
                               ├─ Groq or Gemini response generation
                               └─ Optional history and feedback storage
+  └─ Contact form ────────> Node.js API ──> Supabase
+                                             └─ Optional Resend notification
 ```
 
 The browser never receives AI or Supabase privileged keys. Career-assistant requests pass through the Next.js API, where origin validation, payload validation, sensitive-input filtering and rate limiting are applied before retrieval or model calls.
+
+The contact API uses the same server-only Supabase connection and distributed rate limiter. Install [`supabase/contact-submissions.sql`](supabase/contact-submissions.sql) before enabling it. Email notifications are optional and require `RESEND_API_KEY`, `CONTACT_NOTIFICATION_EMAIL` and `CONTACT_FROM_EMAIL`. Contact records are protected by row-level security and deleted automatically after 30 days.
 
 More detailed setup notes live in [`docs/career-agent-setup.md`](docs/career-agent-setup.md) and [`docs/career-agent-history.md`](docs/career-agent-history.md).
 
@@ -120,7 +145,7 @@ docker run --rm -p 3000:3000 --env-file .env.local chiho-portfolio
 
 ## Content workflow
 
-Portfolio content is managed in Contentful. Career knowledge lives separately and is indexed into Supabase so individual portfolio projects can be retrieved precisely. After approved knowledge changes, run:
+Portfolio content is managed in Contentful. Project titles, image matches, keywords, suggested questions and case studies live in the Portfolio section entry (`2qFy05XNAe3Ho1CmJiAgbO`), in the `arrays` JSON field (`projects` and `favoriteProjectIds`). The `array` field contains the existing Cloudinary images. Keep project IDs stable because they form the project URLs. Set `archived: true` to hide a project. Publish the entry after editing; project pages revalidate hourly. Career knowledge lives separately and is indexed into Supabase so individual portfolio projects can be retrieved precisely. After approved knowledge changes, run:
 
 ```bash
 yarn index:career-knowledge

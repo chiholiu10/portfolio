@@ -12,6 +12,7 @@ import {
   maskSensitiveContent,
 } from "../../lib/career-agent/privacy";
 import { consumeDistributedRateLimit } from "../../lib/career-agent/rate-limit";
+import { loadPortfolioSection } from "../../lib/contentful/portfolio";
 import { recommendPortfolioProjectIds } from "../../lib/portfolio-projects";
 
 const stripUnsafeControlCharacters = (message: string) =>
@@ -242,8 +243,10 @@ export default async function handler(
     );
     const chatId = parsed.data.sessionId;
     const messageId = crypto.randomUUID();
+    const portfolioSection = await loadPortfolioSection().catch(() => null);
     const portfolioProjectIds = recommendPortfolioProjectIds(
       parsed.data.message,
+      portfolioSection?.arrays || { projects: [] },
     );
 
     await logCareerAgentMessage({

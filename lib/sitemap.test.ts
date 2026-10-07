@@ -2,20 +2,20 @@ import { describe, expect, it } from "@jest/globals";
 import { createSitemap } from "./sitemap";
 
 describe("createSitemap", () => {
-  it("includes recruiter-facing routes", () => {
+  it("includes valid portfolio routes", () => {
     const sitemap = createSitemap([
       {
         path: "/",
       },
       {
-        path: "/senior-frontend-developer",
+        path: "/project/gemeente-amsterdam-vue",
         lastModified: "2026-09-12T08:30:00.000Z",
       },
     ]);
 
     expect(sitemap).toContain("<loc>https://www.chiholiu.com/</loc>");
     expect(sitemap).toContain(
-      "<loc>https://www.chiholiu.com/senior-frontend-developer</loc>",
+      "<loc>https://www.chiholiu.com/project/gemeente-amsterdam-vue</loc>",
     );
     expect(sitemap).toContain(
       "<lastmod>2026-09-12T08:30:00.000Z</lastmod>",
