@@ -1,3 +1,4 @@
+import { contactRequestSchema } from "../../../lib/contact/validation";
 import type { HomeSections } from "../../../lib/content-model";
 import { FormEvent, useState } from "react";
 import { ComponentSection } from "../../../styles/General.styles";
@@ -11,6 +12,8 @@ import {
   ContactGrid,
   ContactHeader,
   Field,
+  FieldHint,
+  RequiredMark,
   FormIntro,
   FormStatus,
   HoneypotField,
@@ -26,6 +29,9 @@ export const Contact = ({ data }: ContactProps) => {
     "idle" | "sending" | "success" | "error"
   >("idle");
   const [statusMessage, setStatusMessage] = useState("");
+  const [isValid, setIsValid] = useState(false);
+  const [messageLength, setMessageLength] = useState(0);
+  const [messageCharacters, setMessageCharacters] = useState(0);
   const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL || "";
 
   const icon: IconPath[] = [
@@ -56,16 +62,39 @@ export const Contact = ({ data }: ContactProps) => {
     title,
   } = section;
 
+  const readForm = (form: HTMLFormElement) => {
+    const formData = new FormData(form);
+    return {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      company: formData.get("company"),
+      subject: formData.get("subject"),
+      message: formData.get("message"),
+      consent: formData.get("consent") === "on",
+      website: formData.get("website"),
+    };
+  };
+
+  const updateForm = (event: FormEvent<HTMLFormElement>) => {
+    const form = event.currentTarget;
+    const values = readForm(form);
+    const message = String(values.message || "");
+    setMessageLength(message.trim().length);
+    setMessageCharacters(message.length);
+    setIsValid(form.checkValidity() && contactRequestSchema.safeParse(values).success);
+  };
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
 
-    if (!form.checkValidity()) {
+    if (status === "sending") return;
+
+    if (!form.checkValidity() || !contactRequestSchema.safeParse(readForm(form)).success) {
       form.reportValidity();
       return;
     }
 
-    const formData = new FormData(form);
     setStatus("sending");
     setStatusMessage("Sending your message…");
 
@@ -73,15 +102,7 @@ export const Contact = ({ data }: ContactProps) => {
       const result = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: formData.get("name"),
-          email: formData.get("email"),
-          company: formData.get("company"),
-          subject: formData.get("subject"),
-          message: formData.get("message"),
-          consent: formData.get("consent") === "on",
-          website: formData.get("website"),
-        }),
+        body: JSON.stringify(readForm(form)),
       });
       const payload = (await result.json().catch(() => ({}))) as {
         error?: string;
@@ -91,6 +112,9 @@ export const Contact = ({ data }: ContactProps) => {
       if (!result.ok) throw new Error(payload.error || "Message could not be sent.");
 
       form.reset();
+      setIsValid(false);
+      setMessageLength(0);
+      setMessageCharacters(0);
       setStatus("success");
       setStatusMessage(
         "Thanks for reaching out. I will get back to you as soon as possible.",
@@ -114,7 +138,7 @@ export const Contact = ({ data }: ContactProps) => {
           {extraText && <FormIntro>{extraText}</FormIntro>}
         </ContactHeader>
 
-        <ContactForm onSubmit={handleSubmit}>
+        <ContactForm onSubmit={handleSubmit} onChange={updateForm}>
           <HoneypotField aria-hidden="true">
             <label htmlFor="website">Website</label>
             <input
@@ -127,7 +151,7 @@ export const Contact = ({ data }: ContactProps) => {
           </HoneypotField>
 
           <Field>
-            <label htmlFor="contact-name">Name</label>
+            <label htmlFor="contact-name">Name <RequiredMark aria-hidden="true">*</RequiredMark></label>
             <input
               id="contact-name"
               name="name"
@@ -138,7 +162,7 @@ export const Contact = ({ data }: ContactProps) => {
             />
           </Field>
           <Field>
-            <label htmlFor="contact-email">Email</label>
+            <label htmlFor="contact-email">Email <RequiredMark aria-hidden="true">*</RequiredMark></label>
             <input
               id="contact-email"
               name="email"
@@ -159,7 +183,7 @@ export const Contact = ({ data }: ContactProps) => {
             />
           </Field>
           <Field>
-            <label htmlFor="contact-subject">Subject</label>
+            <label htmlFor="contact-subject">Subject <RequiredMark aria-hidden="true">*</RequiredMark></label>
             <input
               id="contact-subject"
               name="subject"
@@ -169,16 +193,26 @@ export const Contact = ({ data }: ContactProps) => {
             />
           </Field>
           <Field $wide>
-            <label htmlFor="contact-message">Message</label>
+            <label htmlFor="contact-message">Message <RequiredMark aria-hidden="true">*</RequiredMark></label>
             <textarea
               id="contact-message"
               name="message"
+              aria-describedby="contact-message-hint"
               rows={6}
               minLength={20}
               maxLength={2000}
               required
             />
+            <FieldHint id="contact-message-hint">
+              <span>{messageLength < 20
+                ? `${20 - messageLength} more characters needed`
+                : null}</span>
+              <span>{2000 - messageCharacters} characters remaining</span>
+            </FieldHint>
           </Field>
+          <FieldHint style={{ gridColumn: "1 / -1" }}>
+            <span><RequiredMark aria-hidden="true">*</RequiredMark> Required fields</span>
+          </FieldHint>
           <PrivacyCopy>
             <input id="contact-consent" name="consent" type="checkbox" required />
             <label htmlFor="contact-consent">
@@ -187,10 +221,6 @@ export const Contact = ({ data }: ContactProps) => {
               information.
             </label>
           </PrivacyCopy>
-          <SubmitButton type="submit" disabled={status === "sending"}>
-            {status === "sending" ? "Sending…" : "Send message"}
-            <span aria-hidden="true">↗</span>
-          </SubmitButton>
           <FormStatus
             role={status === "error" ? "alert" : "status"}
             $error={status === "error"}
@@ -204,6 +234,15 @@ export const Contact = ({ data }: ContactProps) => {
               </>
             )}
           </FormStatus>
+          <SubmitButton type="submit" disabled={!isValid || status === "sending"} aria-busy={status === "sending"}>
+            <span className="button-content">
+            <span className="button-label">{status === "sending" ? "Sending…" : "Send message"}</span>
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="5" width="18" height="14" rx="3" />
+              <path d="m4 7 8 6 8-6" />
+            </svg>
+            </span>
+          </SubmitButton>
         </ContactForm>
       </ContactGrid>
 

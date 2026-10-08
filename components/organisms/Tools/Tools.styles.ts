@@ -21,7 +21,7 @@ export const ToolsBlock = styled(OrbitSurface)`
 
   &:hover {
     transform: translateY(-2px);
-    border-color: rgba(56, 189, 248, 0.26);
+    border-color: rgba(var(--accent-rgb), 0.26);
   }
 `;
 
@@ -96,7 +96,7 @@ export const ToolInnerBlock = styled.div`
 
   ${ToolsBlock}:hover & img {
     transform: translateY(-3px) scale(1.04);
-    filter: saturate(1) drop-shadow(0 14px 22px rgba(56, 189, 248, 0.14));
+    filter: saturate(1) drop-shadow(0 14px 22px rgba(var(--accent-rgb), 0.14));
   }
 `;
 

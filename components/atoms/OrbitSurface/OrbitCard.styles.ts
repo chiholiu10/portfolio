@@ -3,6 +3,7 @@ import styled, { keyframes } from "styled-components";
 const orbit = keyframes`to { transform: rotate(360deg); }`;
 
 export const OrbitSurface = styled.article<{ $index: number }>`
+  --accent-rgb: ${({ $index }) => ["133, 242, 207", "255, 180, 157", "194, 177, 255"][$index % 3]};
   position: relative;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -10,11 +11,11 @@ export const OrbitSurface = styled.article<{ $index: number }>`
   background:
     radial-gradient(
       circle at 88% 12%,
-      rgba(56, 189, 248, ${(props) => 0.09 + (props.$index % 3) * 0.018}),
+      rgba(var(--accent-rgb), ${(props) => 0.09 + (props.$index % 3) * 0.018}),
       transparent 38%
     ),
     linear-gradient(145deg, rgba(255, 255, 255, 0.035), transparent 48%),
-    rgba(7, 16, 28, 0.72);
+    rgba(21, 28, 50, 0.88);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.04),
     0 22px 55px rgba(0, 0, 0, 0.18);
@@ -29,7 +30,7 @@ export const OrbitArtwork = styled.div<{ $index: number }>`
   right: -46px;
   width: 176px;
   height: 176px;
-  border: 1px solid rgba(56, 189, 248, 0.2);
+  border: 1px solid rgba(var(--accent-rgb), 0.2);
   border-radius: 50%;
   transform: rotate(${(props) => props.$index * 23}deg);
 
@@ -42,7 +43,7 @@ export const OrbitArtwork = styled.div<{ $index: number }>`
 
   &::before {
     inset: 19px;
-    border: 1px dashed rgba(56, 189, 248, 0.16);
+    border: 1px dashed rgba(var(--accent-rgb), 0.16);
   }
 
   &::after {
@@ -50,7 +51,7 @@ export const OrbitArtwork = styled.div<{ $index: number }>`
     border: 1px solid rgba(255, 255, 255, 0.09);
     background: radial-gradient(
       circle,
-      rgba(56, 189, 248, 0.12),
+      rgba(var(--accent-rgb), 0.12),
       transparent 68%
     );
   }
@@ -71,8 +72,8 @@ export const OrbitingPlanet = styled.span<{ $index: number }>`
     height: 8px;
     border: 2px solid #07101c;
     border-radius: 50%;
-    background: #38bdf8;
-    box-shadow: 0 0 15px rgba(56, 189, 248, 0.7);
+    background: var(--accent);
+    box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.7);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -96,5 +97,5 @@ export const OrbitCardAccent = styled.span`
   z-index: 3;
   width: 26px;
   height: 1px;
-  background: linear-gradient(90deg, rgba(56, 189, 248, 0.65), transparent);
+  background: linear-gradient(90deg, rgba(var(--accent-rgb), 0.65), transparent);
 `;

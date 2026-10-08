@@ -27,6 +27,11 @@ export const Navbar = ({ data }: NavbarProps) => {
             <span className="role">{role}</span>
           </span>
         </NavbarInnerBlock>
+        <div className="nav-links">
+          <a href="#portfolio">Work</a>
+          <a href="#how-i-work">Approach</a>
+          <a href="#contact">Let’s talk</a>
+        </div>
       </NavbarInnerComponent>
     </NavbarComponent>
   );

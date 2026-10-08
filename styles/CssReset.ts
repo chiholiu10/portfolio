@@ -78,6 +78,14 @@ const orbitSpinReverse = keyframes`
 `;
 
 export const CSSreset = createGlobalStyle`
+    :root {
+      --accent: #85f2cf;
+      --accent-rgb: 133, 242, 207;
+      --accent-warm: #ffb49d;
+      --accent-lilac: #c2b1ff;
+      --surface: #151c32;
+    }
+    ::selection { background: #85f2cf; color: #101629; }
     html {
       line-height: 1.15;
       -webkit-text-size-adjust: 100%;
@@ -95,18 +103,18 @@ export const CSSreset = createGlobalStyle`
       max-width: 100vw;
       background:
         radial-gradient(
-          ellipse at 50% -15%,
-          rgba(56, 189, 248, 0.11) 0%,
+          ellipse at 15% -5%,
+          rgba(133, 242, 207, 0.18) 0%,
           transparent 48%
         ),
         radial-gradient(
-          ellipse at 30% 40%, 
-          rgba(14, 165, 233, 0.05) 0%, 
+          ellipse at 30% 40%,
+          rgba(194, 177, 255, 0.14) 0%,
           transparent 60%
         ),
         radial-gradient(
-          ellipse at 70% 60%, 
-          rgba(56, 189, 248, 0.03) 0%, 
+          ellipse at 70% 60%,
+          rgba(255, 180, 157, 0.10) 0%,
           transparent 50%
         ),
         radial-gradient(
@@ -129,7 +137,7 @@ export const CSSreset = createGlobalStyle`
         23px 41px,
         center;
       background-attachment: fixed;
-      
+
       &::before {
         content: '';
         position: fixed;
@@ -161,7 +169,7 @@ export const CSSreset = createGlobalStyle`
         mask: radial-gradient(circle, transparent 0 72%, #000 72.2% 72.5%, transparent 72.7%);
         animation: ${orbitSpin} 90s linear infinite;
       }
-      
+
       &::after {
         content: '';
         position: fixed;
@@ -235,7 +243,7 @@ export const CSSreset = createGlobalStyle`
       position: relative;
       z-index: 1;
       min-height: 100vh;
-      
+
       &::before {
         content: '';
         position: fixed;
@@ -246,7 +254,7 @@ export const CSSreset = createGlobalStyle`
         z-index: -1;
         pointer-events: none;
         border-radius: 50%;
-        
+
         background: radial-gradient(
           circle at center,
           rgba(99, 102, 241, 0.2) 0%,
@@ -254,17 +262,17 @@ export const CSSreset = createGlobalStyle`
           rgba(99, 102, 241, 0.02) 60%,
           transparent 80%
         );
-        
+
         border: 2px solid rgba(99, 102, 241, 0.1);
-        box-shadow: 
+        box-shadow:
           0 0 50px rgba(99, 102, 241, 0.1),
           inset 0 0 50px rgba(99, 102, 241, 0.04);
-        
-        animation: 
+
+        animation:
           ${wave3} 3s ease-in-out infinite 0.5s,
           ${floatWave} 8s ease-in-out infinite 1s;
       }
-    
+
     &::after {
       content: '';
       position: fixed;
@@ -275,16 +283,16 @@ export const CSSreset = createGlobalStyle`
       z-index: -1;
       pointer-events: none;
       border-radius: 50%;
-      
+
       background: radial-gradient(
         circle at center,
         rgba(14, 165, 233, 0.25) 0%,
         rgba(14, 165, 233, 0.08) 40%,
         transparent 70%
       );
-      
+
       border: 1px solid rgba(56, 189, 248, 0.2);
-      
+
       animation: ${wavePulse} 3s ease-in-out infinite;
     }
     html,

@@ -3,6 +3,7 @@ import {
   contactRequestSchema,
   normalizeContactRequest,
 } from "../../lib/contact/validation";
+import { sendContactEmails } from "../../lib/contact/email";
 import { hashValue } from "../../lib/career-agent/privacy";
 import { consumeDistributedRateLimit } from "../../lib/career-agent/rate-limit";
 
@@ -35,42 +36,6 @@ const getClientAddress = (request: NextApiRequest) => {
     request.headers["x-forwarded-for"];
   const value = Array.isArray(forwarded) ? forwarded[0] : forwarded;
   return value?.split(",")[0]?.trim() || request.socket.remoteAddress || "unknown";
-};
-
-const escapeHtml = (value: string) =>
-  value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-
-const sendNotification = async (
-  submission: ReturnType<typeof normalizeContactRequest>,
-  requestId: string,
-) => {
-  const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.CONTACT_NOTIFICATION_EMAIL;
-  const from = process.env.CONTACT_FROM_EMAIL;
-
-  if (!apiKey || !to || !from) return;
-
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from,
-      to: [to],
-      reply_to: submission.email,
-      subject: `Portfolio contact: ${submission.subject}`,
-      html: `<h1>New portfolio contact</h1><p><strong>Name:</strong> ${escapeHtml(submission.name)}</p><p><strong>Email:</strong> ${escapeHtml(submission.email)}</p><p><strong>Company:</strong> ${escapeHtml(submission.company || "Not provided")}</p><p><strong>Request ID:</strong> ${requestId}</p><p>${escapeHtml(submission.message).replace(/\n/g, "<br>")}</p>`,
-    }),
-  });
-
-  if (!response.ok) throw new Error("Notification delivery failed.");
 };
 
 export default async function handler(
@@ -187,11 +152,7 @@ export default async function handler(
     });
   }
 
-  try {
-    await sendNotification(submission, requestId);
-  } catch {
-    // The submission is safely stored. Email delivery must not create duplicates.
-  }
+  await sendContactEmails(submission, requestId);
 
   return response.status(201).json({ ok: true, requestId });
 }

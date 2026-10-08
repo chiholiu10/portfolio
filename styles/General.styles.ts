@@ -8,14 +8,14 @@ export const AIGlassMorph = css`
   border-radius: 12px;
   box-shadow:
     0 20px 40px -15px rgba(0, 0, 0, 0.9),
-    0 0 30px -5px rgba(14, 165, 233, 0.2);
+    0 0 30px -5px rgba(var(--accent-rgb), 0.2);
   background: rgba(15, 37, 75, 0.55);
   /* Rand licht feller op bij hover (Cyaan/Blauw) */
-  border: 1px solid rgba(56, 189, 248, 0.5);
+  border: 1px solid rgba(var(--accent-rgb), 0.5);
   /* De blauwe AI-glow wordt intenser */
   box-shadow:
     0 20px 40px -5px rgba(0, 0, 0, 0.9),
-    0 0 35px 2px rgba(14, 165, 233, 0.25);
+    0 0 35px 2px rgba(var(--accent-rgb), 0.25);
   /* Optioneel: lift het blokje een heel klein beetje omhoog */
   transform: translateY(-2px);
 `;
@@ -23,11 +23,11 @@ export const AIGlassMorph = css`
 export const AIGlassMorphStatic = css`
   background: rgba(10, 25, 50, 0.4);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(56, 189, 248, 0.25);
+  border: 1px solid rgba(var(--accent-rgb), 0.25);
   border-radius: 12px;
   box-shadow:
     0 20px 40px -15px rgba(0, 0, 0, 0.9),
-    0 0 30px -5px rgba(14, 165, 233, 0.2);
+    0 0 30px -5px rgba(var(--accent-rgb), 0.2);
 `;
 
 export const BackgroundWrapper = styled.div`
@@ -142,7 +142,7 @@ export const HeaderGeneral = `
   padding: 20px 20px 0;
   color: #eaf7ff;
   text-wrap: balance;
-  text-shadow: 0 0 36px rgba(56, 189, 248, 0.07);
+  text-shadow: 0 0 36px rgba(var(--accent-rgb), 0.07);
 `;
 
 export const Header = styled.h2`

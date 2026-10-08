@@ -9,13 +9,13 @@ const LineColor = css`
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(56, 189, 248, 0.2),
+    rgba(var(--accent-rgb), 0.2),
     rgba(99, 102, 241, 0.12),
     transparent
   );
   box-shadow:
-    0 0 60px rgba(14, 165, 233, 0.1),
-    inset 0 0 60px rgba(14, 165, 233, 0.05);
+    0 0 60px rgba(var(--accent-rgb), 0.1),
+    inset 0 0 60px rgba(var(--accent-rgb), 0.05);
 `;
 
 export const FooterComponent = styled.footer`
@@ -39,7 +39,7 @@ export const FooterComponent = styled.footer`
     border: 1px solid rgba(125, 211, 252, 0.5);
     border-radius: 50%;
     background: #07111f;
-    box-shadow: 0 0 14px rgba(56, 189, 248, 0.55);
+    box-shadow: 0 0 14px rgba(var(--accent-rgb), 0.55);
     transform: translateX(-50%);
   }
 `;

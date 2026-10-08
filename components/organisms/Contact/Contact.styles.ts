@@ -130,7 +130,7 @@ export const ContactHeader = styled.header`
   top: 100px;
 
   > span {
-    color: #62d7ff;
+    color: var(--accent);
     font: 700 10px ui-monospace, SFMono-Regular, Menlo, monospace;
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -167,8 +167,8 @@ export const ContactForm = styled.form`
   border: 1px solid rgba(98, 215, 255, 0.18);
   border-radius: 26px;
   background:
-    radial-gradient(circle at 100% 0, rgba(56, 189, 248, 0.12), transparent 34%),
-    rgba(7, 17, 29, 0.84);
+    radial-gradient(circle at 100% 0, rgba(var(--accent-rgb), 0.12), transparent 34%),
+    rgba(21, 28, 50, 0.92);
   box-shadow: 0 30px 90px rgba(0, 0, 0, 0.28);
   backdrop-filter: blur(20px);
 
@@ -226,11 +226,25 @@ export const Field = styled.div<{ $wide?: boolean }>`
 
   input:focus,
   textarea:focus {
-    border-color: #62d7ff;
+    border-color: var(--accent);
     box-shadow: 0 0 0 3px rgba(98, 215, 255, 0.12);
   }
 `;
 
+export const RequiredMark = styled.b`
+  color: var(--accent);
+  font-weight: 700;
+`;
+export const FieldHint = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  color: #91a4b7;
+  font-size: 11px;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+`;
 export const HoneypotField = styled.div`
   position: absolute;
   left: -10000px;
@@ -249,39 +263,79 @@ export const PrivacyCopy = styled.div`
   line-height: 1.55;
 
   input {
+    appearance: none;
+    position: relative;
+    display: grid;
+    place-items: center;
     flex: 0 0 auto;
-    width: 17px;
-    height: 17px;
-    margin-top: 1px;
-    accent-color: #38bdf8;
+    width: 22px;
+    height: 22px;
+    margin: 0;
+    border: 1px solid #65788c;
+    border-radius: 7px;
+    background: rgba(255, 255, 255, 0.03);
+    cursor: pointer;
+    transition: background 240ms ease, border-color 240ms ease, box-shadow 240ms ease;
+    &::before {
+      content: "";
+      width: 9px;
+      height: 5px;
+      border-left: 2px solid #101629;
+      border-bottom: 2px solid #101629;
+      opacity: 0;
+      transform: translateY(-2px) rotate(-45deg) scale(0.5);
+      transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1), opacity 180ms ease;
+    }
+    &:checked {
+      background: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 0 18px rgba(var(--accent-rgb), 0.15);
+    }
+    &:checked::before { opacity: 1; transform: translateY(-2px) rotate(-45deg) scale(1); }
+    &:hover { border-color: var(--accent); }
+    &:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+    @media (prefers-reduced-motion: reduce) {
+      &, &::before { transition: none; }
+    }
+    @media (forced-colors: active) { appearance: auto; &::before { display: none; } }
   }
 `;
 
 export const SubmitButton = styled.button`
   display: inline-flex;
   grid-column: 1 / -1;
-  justify-self: start;
+  justify-self: end;
+  align-self: end;
   align-items: center;
   justify-content: center;
   gap: 20px;
   min-width: 190px;
   min-height: 52px;
   padding: 0 18px;
-  border: 1px solid rgba(98, 215, 255, 0.42);
+  border: 1px solid #ffff00;
   border-radius: 12px;
   color: #04101a;
-  background: linear-gradient(110deg, #88e6ff, #4dbdf2);
+  background: #ffff00;
   font-size: 13px;
   font-weight: 800;
   cursor: pointer;
-
-  span {
-    font-size: 20px;
+  transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1), background 280ms ease, opacity 220ms ease;
+  &:hover:not(:disabled) { transform: translateY(-2px); }
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+    &:hover:not(:disabled) { transform: none; }
   }
 
-  &:hover:not(:disabled),
+  .button-content {
+    display: inline-flex;
+    align-items: center;
+    gap: 20px;
+    font: inherit;
+  }
+  svg { flex-shrink: 0; }
+
   &:focus-visible {
-    box-shadow: 0 0 32px rgba(56, 189, 248, 0.24);
+    box-shadow: 0 0 32px rgba(255, 212, 59, 0.24);
     transform: translateY(-2px);
   }
 
@@ -291,20 +345,15 @@ export const SubmitButton = styled.button`
   }
 
   &:disabled {
-    cursor: wait;
+    cursor: not-allowed;
     opacity: 0.64;
   }
 
-  @media (max-width: 620px) {
-    justify-self: stretch;
-    justify-content: space-between;
-    width: 100%;
-  }
 `;
 
 export const FormStatus = styled.p<{ $error?: boolean }>`
   grid-column: 1 / -1;
-  min-height: 20px;
+  &:empty { display: none; }
   margin: 0;
   color: ${({ $error }) => ($error ? "#ff9d9d" : "#8de8c4")};
   font-size: 13px;

@@ -8,9 +8,10 @@ import { QUERY as portfolio } from "./queries/PortfolioQuery";
 import { QUERY as tools } from "./queries/ToolsQuery";
 import { QUERY as contact } from "./queries/ContactQuery";
 import { QUERY as footer } from "./queries/FooterQuery";
+import { QUERY as howIWork } from "./queries/HowIWorkQuery";
 import { sectionIds } from "./section-ids";
 
-const queries = { navbar, banner, introduction, experience, portfolio, tools, contact, footer };
+const queries = { navbar, banner, introduction, howIWork, experience, portfolio, tools, contact, footer };
 
 export const loadHomeSections = async (): Promise<HomeSections> => {
   const client = createApolloClient();

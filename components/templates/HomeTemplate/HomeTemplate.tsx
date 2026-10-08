@@ -3,6 +3,7 @@ import HeadBlock from "../../atoms/PageHead/PageHead";
 import { CareerAgent } from "../../organisms/CareerAgent/CareerAgent";
 import { Contact } from "../../organisms/Contact/Contact";
 import { Banner } from "../../organisms/Banner/Banner";
+import { HowIWork } from "../../organisms/HowIWork/HowIWork";
 import { Experience } from "../../organisms/Experience/Experience";
 import { Footer } from "../../organisms/Footer/Footer";
 import { Introduction } from "../../organisms/Introduction/Introduction";
@@ -29,6 +30,7 @@ export function HomeTemplate({ sections, isProduction }: HomeTemplateProps) {
       <Navbar data={sections.navbar} />
       <Banner data={sections.banner} />
       <Introduction data={sections.introduction} />
+      <HowIWork data={sections.howIWork} />
       <Experience data={sections.experience} />
       <Portfolio data={sections.portfolio} />
       <Tools data={sections.tools} />

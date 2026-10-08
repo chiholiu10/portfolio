@@ -1,8 +1,10 @@
+import Link from "next/link";
 import type { PortfolioProject } from "../../../lib/portfolio-projects";
-import { PortfolioBlock, PortfolioCard as Card, PortfolioCardFooter, PortfolioImage, PortfolioLink } from "./ProjectCard.styles";
+import { PortfolioBlock, PortfolioCard as Card, PortfolioCardFooter, PortfolioImage } from "./ProjectCard.styles";
 
-export const ProjectCard = ({ project, extraText }: { project: PortfolioProject; extraText?: string | null }) => (
+export const ProjectCard = ({ project }: { project: PortfolioProject; extraText?: string | null }) => (
   <Card>
+    <Link href={`/project/${project.id}`} aria-label={`View ${project.title}`} style={{ display: "block" }}>
     <PortfolioBlock>
       <PortfolioImage
         src={project.imageUrl}
@@ -14,11 +16,9 @@ export const ProjectCard = ({ project, extraText }: { project: PortfolioProject;
         loading="lazy"
       />
     </PortfolioBlock>
+    </Link>
     <PortfolioCardFooter>
       <h3>{project.title}</h3>
-      <PortfolioLink href={`/project/${project.id}`}>
-        {extraText} <span aria-hidden="true">↗</span>
-      </PortfolioLink>
     </PortfolioCardFooter>
   </Card>
 );

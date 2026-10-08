@@ -5,11 +5,11 @@ const token: DefaultTheme = {
   colors: {
     white: "#FFFFFF",
     darkBlack: "#000000",
-    black: "#000000eb",
+    black: "#101629",
     lightBlack: "#2c2c2c",
     ultraLightBlack: "#2c2c2cf2",
-    grey: "#999999",
-    blue: "#00b6ff;",
+    grey: "#aeb9ca",
+    blue: "#85f2cf",
     transparent: "transparent",
   },
   typoGraphy: {

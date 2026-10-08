@@ -6,7 +6,7 @@ export const ProjectPage = styled.main`
   min-height: 100vh;
   color: #edf5fa;
   background:
-    radial-gradient(circle at 70% 5%, rgba(56, 189, 248, 0.1), transparent 30%),
+    radial-gradient(circle at 70% 5%, rgba(var(--accent-rgb), 0.1), transparent 30%),
     #080d12;
 `;
 
@@ -84,7 +84,7 @@ export const ProjectSection = styled.section`
 
   h2 {
     margin: 0;
-    color: #62d7ff;
+    color: var(--accent);
     font: 750 13px ui-monospace, SFMono-Regular, Menlo, monospace;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -116,7 +116,7 @@ export const TechnologyList = styled.ul`
     border: 1px solid rgba(98, 215, 255, 0.18);
     border-radius: 9px;
     color: #a8dff1;
-    background: rgba(56, 189, 248, 0.06);
+    background: rgba(var(--accent-rgb), 0.06);
     font-size: 12px;
     font-weight: 700;
   }

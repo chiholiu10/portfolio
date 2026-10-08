@@ -50,14 +50,14 @@ const orbBreathe = keyframes`
   0%, 100% {
     box-shadow:
       0 16px 48px rgba(0, 0, 0, 0.48),
-      0 0 24px rgba(14, 165, 233, 0.16),
+      0 0 24px rgba(var(--accent-rgb), 0.16),
       0 0 0 0 rgba(104, 213, 247, 0.22);
   }
 
   50% {
     box-shadow:
       0 18px 52px rgba(0, 0, 0, 0.5),
-      0 0 38px rgba(14, 165, 233, 0.28),
+      0 0 38px rgba(var(--accent-rgb), 0.28),
       0 0 0 9px rgba(104, 213, 247, 0);
   }
 `;
@@ -695,7 +695,7 @@ export const Message = styled.div<{ $role: "assistant" | "user" }>`
     --list-accent-shadow: ${(props) =>
       (props.$role === "user"
         ? "rgba(6, 17, 31, 0.1)"
-        : "rgba(56, 189, 248, 0.16)")};
+        : "rgba(var(--accent-rgb), 0.16)")};
     --list-badge-text: ${(props) =>
       (props.$role === "user" ? "#eaf9ff" : "#06111f")};
     color: ${(props) => (props.$role === "user" ? "#041521" : "#e4eef5")};
@@ -751,7 +751,7 @@ export const ProjectQuestionButton = styled.button`
   border: 1px solid rgba(104, 213, 247, 0.18);
   border-radius: 10px;
   background:
-    linear-gradient(90deg, rgba(56, 189, 248, 0.08), transparent 60%),
+    linear-gradient(90deg, rgba(var(--accent-rgb), 0.08), transparent 60%),
     rgba(13, 31, 54, 0.58);
   transition:
     color 160ms ease,
@@ -772,7 +772,7 @@ export const ProjectQuestionButton = styled.button`
     color: #f3fbff;
     border-color: rgba(104, 213, 247, 0.48);
     background:
-      linear-gradient(90deg, rgba(56, 189, 248, 0.15), transparent 70%),
+      linear-gradient(90deg, rgba(var(--accent-rgb), 0.15), transparent 70%),
       rgba(13, 31, 54, 0.82);
     transform: translateX(2px);
   }
@@ -914,11 +914,11 @@ export const FeedbackButton = styled.button<{ $isActive: boolean }>`
   color: ${(props) => (props.$isActive ? "#68d5f7" : "#7f94a8")};
   background: ${(props) =>
     (props.$isActive
-      ? "linear-gradient(135deg, rgba(56, 189, 248, 0.18), rgba(37, 99, 235, 0.12))"
+      ? "linear-gradient(135deg, rgba(var(--accent-rgb), 0.18), rgba(37, 99, 235, 0.12))"
       : "rgba(13, 31, 54, 0.54)")};
   box-shadow: ${(props) =>
     (props.$isActive
-      ? "0 0 0 3px rgba(56, 189, 248, 0.08), 0 0 18px rgba(56, 189, 248, 0.16)"
+      ? "0 0 0 3px rgba(var(--accent-rgb), 0.08), 0 0 18px rgba(var(--accent-rgb), 0.16)"
       : "none")};
   transition:
     border-color 160ms ease,

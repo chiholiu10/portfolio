@@ -1,6 +1,9 @@
 import type { ToolItem, ToolCategory } from "./content-model";
 
 export const additionalTools: ToolItem[] = [
+  { title: "Shopify", url: "/tools/shopify.svg" },
+  { title: "WordPress", url: "/tools/wordpress.svg" },
+  { title: "Elementor", url: "/tools/elementor.svg" },
   { title: "Codex", url: "/tools/codex.svg" },
   { title: "GitHub", url: "/tools/github.svg" },
   { title: "GitLab", url: "/tools/gitlab.svg" },
