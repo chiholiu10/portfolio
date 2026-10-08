@@ -22,7 +22,7 @@ export const NavbarInnerComponent = styled.div`
   background: rgba(12, 20, 33, 0.88);
   backdrop-filter: blur(20px);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.16);
-  .nav-links { display: flex; gap: 8px; align-items: center; }
+  .nav-links { display: flex; gap: 16px; align-items: center; }
   .nav-links a {
     display: inline-flex;
     align-items: center;
@@ -44,7 +44,7 @@ export const NavbarInnerComponent = styled.div`
     padding: 10px 12px;
     min-height: 58px;
     gap: 10px;
-    .nav-links { gap: 2px; }
+    .nav-links { gap: 12px; }
     .nav-links a { padding: 0 10px; font-size: 12px; }
     .nav-links a:nth-child(2) { display: none; }
   }

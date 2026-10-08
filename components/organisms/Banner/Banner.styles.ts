@@ -26,12 +26,13 @@ export const HeroCopy = styled.div`
   }
   h1 {
     color: #f4fbff;
-    font-size: clamp(48px, 6.5vw, 88px);
+    font-size: clamp(48px, 4.5vw, 64px);
     font-weight: 600;
     line-height: 1.02;
     letter-spacing: -0.065em;
     margin: 0 0 28px;
     max-width: 730px;
+    @media (max-width: 850px) { font-size: clamp(48px, 6.5vw, 88px); }
   }
   .hero-description {
     color: #aeb9ca;
