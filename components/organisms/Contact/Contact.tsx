@@ -22,9 +22,9 @@ import {
   SubmitButton,
 } from "./Contact.styles";
 
-type ContactProps = { data: HomeSections["contact"] };
+type ContactProps = { data: HomeSections["contact"]; showForm?: boolean };
 
-export const Contact = ({ data }: ContactProps) => {
+export const Contact = ({ data, showForm = false }: ContactProps) => {
   const [status, setStatus] = useState<
     "idle" | "sending" | "success" | "error"
   >("idle");
@@ -131,7 +131,7 @@ export const Contact = ({ data }: ContactProps) => {
 
   return (
     <ComponentSection id="contact" className="contactComponent">
-      <ContactGrid>
+      {showForm && <ContactGrid>
         <ContactHeader>
           {subtitle && <span>{subtitle}</span>}
           <h2>{title}</h2>
@@ -244,9 +244,9 @@ export const Contact = ({ data }: ContactProps) => {
             </span>
           </SubmitButton>
         </ContactForm>
-      </ContactGrid>
+      </ContactGrid>}
 
-      <SocialLabel>Or find me here</SocialLabel>
+      <SocialLabel>{showForm ? "Or find me here" : "Find me here"}</SocialLabel>
       <StaggerGroup>
         <ContactContainer>
           {arrays.map((item, index) => (
