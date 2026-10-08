@@ -69,21 +69,22 @@ const floatWave = keyframes`
   }
 `;
 
-const orbitSpin = keyframes`
-  to { transform: rotate(360deg); }
-`;
-
-const orbitSpinReverse = keyframes`
-  to { transform: rotate(-360deg); }
-`;
-
 export const CSSreset = createGlobalStyle`
     :root {
-      --accent: #85f2cf;
-      --accent-rgb: 133, 242, 207;
+      --accent: #166778;
+      --accent-rgb: 22, 103, 120;
       --accent-warm: #ffb49d;
       --accent-lilac: #c2b1ff;
-      --surface: #151c32;
+      --surface: #ffffff;
+      --text-heading: #173341;
+      --text-body: #435b68;
+      --text-muted: #526a78;
+      --font-hero: clamp(40px, 4.5vw, 64px);
+      --font-section: clamp(30px, 3.8vw, 44px);
+      --font-subheading: 20px;
+      --font-body: 16px;
+      --font-label: 12px;
+      --font-small: 14px;
     }
     ::selection { background: #85f2cf; color: #101629; }
     html {
@@ -101,117 +102,9 @@ export const CSSreset = createGlobalStyle`
       font-family: ${theme.typoGraphy.fonts.body};
       color: ${theme.colors.white};
       max-width: 100vw;
-      background:
-        radial-gradient(
-          ellipse at 15% -5%,
-          rgba(133, 242, 207, 0.18) 0%,
-          transparent 48%
-        ),
-        radial-gradient(
-          ellipse at 30% 40%,
-          rgba(194, 177, 255, 0.14) 0%,
-          transparent 60%
-        ),
-        radial-gradient(
-          ellipse at 70% 60%,
-          rgba(255, 180, 157, 0.10) 0%,
-          transparent 50%
-        ),
-        radial-gradient(
-          circle,
-          rgba(186, 230, 253, 0.22) 0 0.7px,
-          transparent 1.2px
-        ),
-        ${theme.colors.black || "#0a1929"};
+      color: #173341;
+      background: radial-gradient(ellipse at 15% 0%, #d9e9ee, transparent 55%), #f4f7f8;
 
-      background-size:
-        auto,
-        auto,
-        auto,
-        170px 170px,
-        auto;
-      background-position:
-        center,
-        center,
-        center,
-        23px 41px,
-        center;
-      background-attachment: fixed;
-
-      &::before {
-        content: '';
-        position: fixed;
-        top: -360px;
-        left: -300px;
-        width: 980px;
-        height: 980px;
-        z-index: 0;
-        pointer-events: none;
-        border-radius: 50%;
-        opacity: 0.65;
-        background:
-          radial-gradient(circle, transparent 44%, rgba(56, 189, 248, 0.08) 44.15%, transparent 44.4%),
-          radial-gradient(circle, transparent 63%, rgba(255, 255, 255, 0.045) 63.1%, transparent 63.35%),
-          conic-gradient(
-            from 25deg,
-            transparent 0 13%,
-            rgba(56, 189, 248, 0.16) 13.2% 13.45%,
-            transparent 13.7% 61%,
-            rgba(56, 189, 248, 0.08) 61.2% 61.35%,
-            transparent 61.6%
-          );
-        -webkit-mask: radial-gradient(
-          circle,
-          transparent 0 72%,
-          #000 72.2% 72.5%,
-          transparent 72.7%
-        );
-        mask: radial-gradient(circle, transparent 0 72%, #000 72.2% 72.5%, transparent 72.7%);
-        animation: ${orbitSpin} 90s linear infinite;
-      }
-
-      &::after {
-        content: '';
-        position: fixed;
-        right: -330px;
-        bottom: -280px;
-        width: 860px;
-        height: 860px;
-        z-index: 0;
-        pointer-events: none;
-        border-radius: 50%;
-        opacity: 0.55;
-        background:
-          radial-gradient(circle, transparent 53%, rgba(56, 189, 248, 0.06) 53.15%, transparent 53.4%),
-          radial-gradient(circle at 16% 50%, #38bdf8 0 4px, transparent 5px),
-          radial-gradient(circle at 84% 50%, rgba(255, 255, 255, 0.6) 0 3px, transparent 4px);
-        box-shadow:
-          inset 0 0 100px rgba(56, 189, 248, 0.025),
-          0 0 80px rgba(14, 165, 233, 0.025);
-        animation: ${orbitSpinReverse} 110s linear infinite;
-      }
-
-      @media (max-width: 639px) {
-        &::before {
-          width: 650px;
-          height: 650px;
-          top: -260px;
-          left: -330px;
-          opacity: 0.42;
-        }
-        &::after {
-          width: 580px;
-          height: 580px;
-          right: -360px;
-          bottom: -180px;
-          opacity: 0.38;
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        &::before,
-        &::after { animation: none; }
-      }
     }
 
     #__next {
@@ -220,6 +113,7 @@ export const CSSreset = createGlobalStyle`
       min-height: 100vh;
 
       &::after {
+        display: none;
         content: "";
         position: fixed;
         inset: 0;

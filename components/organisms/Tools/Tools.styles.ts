@@ -14,7 +14,7 @@ export const ToolsBlock = styled(OrbitSurface)`
   height: 72px;
   padding: 12px 14px;
   border-radius: 16px;
-  background: rgba(10, 22, 37, 0.72);
+  background: rgba(255, 255, 255, 0.8);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.035),
     0 8px 20px rgba(0, 0, 0, 0.11);
@@ -27,14 +27,18 @@ export const ToolsBlock = styled(OrbitSurface)`
 
 export const ToolsCategory = styled.section`
   box-sizing: border-box;
-  width: calc(100% - 40px);
-  max-width: 1120px;
+  width: calc(100% - 64px);
+  max-width: 1320px;
   margin: 18px auto 0;
   padding: clamp(20px, 3vw, 28px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 22px;
-  background: rgba(8, 18, 31, 0.58);
+  background: rgba(234, 242, 245, 0.85);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+
+  @media (max-width: 850px) {
+    width: calc(100% - 40px);
+  }
 
   &:first-child {
     margin-top: 0;
@@ -47,15 +51,15 @@ export const ToolsCategoryHeader = styled.div`
 
   h3 {
     margin-bottom: 8px;
-    color: #eef6fb;
-    font-size: clamp(17px, 2vw, 21px);
+    color: var(--text-heading);
+    font-size: var(--font-subheading);
     font-weight: 700;
     letter-spacing: -0.025em;
   }
 
   p {
-    color: #8ea0b5;
-    font-size: 13px;
+    color: var(--text-body);
+    font-size: var(--font-small);
     line-height: 1.6;
   }
 `;
@@ -105,8 +109,8 @@ export const ToolsHeader = styled.div`
   z-index: 3;
 
   h4 {
-    color: #eef6fb;
-    font-size: 13px;
+    color: var(--text-heading);
+    font-size: var(--font-small);
     font-weight: 650;
     letter-spacing: -0.02em;
     overflow-wrap: anywhere;

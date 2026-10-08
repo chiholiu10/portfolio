@@ -173,7 +173,7 @@ export const Contact = ({ data, showForm = false }: ContactProps) => {
             />
           </Field>
           <Field>
-            <label htmlFor="contact-company">Company <span>Optional</span></label>
+            <label htmlFor="contact-company">Company <span>optional</span></label>
             <input
               id="contact-company"
               name="company"

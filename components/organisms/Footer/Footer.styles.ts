@@ -5,7 +5,7 @@ const LineColor = css`
   position: absolute;
   top: 0;
   height: 1px;
-  width: 85%;
+  width: min(1320px, calc(100% - 64px));
   background: linear-gradient(
     90deg,
     transparent,
@@ -16,6 +16,10 @@ const LineColor = css`
   box-shadow:
     0 0 60px rgba(var(--accent-rgb), 0.1),
     inset 0 0 60px rgba(var(--accent-rgb), 0.05);
+
+  @media (max-width: 850px) {
+    width: calc(100% - 40px);
+  }
 `;
 
 export const FooterComponent = styled.footer`
@@ -26,7 +30,8 @@ export const FooterComponent = styled.footer`
   position: relative;
   &::before {
     ${LineColor}
-    left: 7.5%;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   &::after {
@@ -46,8 +51,8 @@ export const FooterComponent = styled.footer`
 
 export const FooterText = styled.p`
   margin: 0;
-  color: #718093;
-  font-size: 11px;
+  color: var(--text-muted);
+  font-size: var(--font-label);
   font-weight: 600;
   line-height: 1.5;
   letter-spacing: 0.08em;

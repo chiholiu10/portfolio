@@ -120,7 +120,7 @@ export const AgentButton = styled.button`
   padding: 8px;
   color: #f4fbff;
   font: inherit;
-  font-size: 13px;
+  font-size: var(--font-small);
   font-weight: 650;
   letter-spacing: -0.01em;
   cursor: pointer;
@@ -189,7 +189,7 @@ export const AgentBadge = styled.span`
   place-items: center;
   color: #f6feff;
   font-family: monospace;
-  font-size: 11px;
+  font-size: var(--font-label);
   font-weight: 700;
   letter-spacing: 0.08em;
   border: 1px solid rgba(210, 250, 255, 0.5);
@@ -391,7 +391,7 @@ export const AgentIdentity = styled.div`
     align-items: center;
     gap: 7px;
     color: #91a9bb;
-    font-size: 10px;
+    font-size: var(--font-label);
     letter-spacing: 0.04em;
   }
 `;
@@ -420,7 +420,7 @@ export const ClearButton = styled.button`
   padding: 0 9px;
   color: #71869a;
   font: inherit;
-  font-size: 10px;
+  font-size: var(--font-label);
   cursor: pointer;
   border: 0;
   border-radius: 9px;
@@ -550,7 +550,7 @@ export const ScrollToBottomButton = styled.button`
 export const MessageContent = styled.div`
   padding: 12px 14px;
   color: inherit;
-  font-size: 13px;
+  font-size: var(--font-small);
   line-height: 1.6;
   overflow-wrap: anywhere;
 
@@ -607,7 +607,7 @@ export const MessageContent = styled.div`
     height: 22px;
     place-items: center;
     color: var(--list-badge-text);
-    font-size: 10px;
+    font-size: var(--font-label);
     font-weight: 800;
     line-height: 1;
     content: counter(career-agent-list);
@@ -744,7 +744,7 @@ export const ProjectQuestionButton = styled.button`
   padding: 9px 32px 9px 11px;
   color: #b9d8e7;
   font: inherit;
-  font-size: 10px;
+  font-size: var(--font-label);
   line-height: 1.4;
   text-align: left;
   cursor: pointer;
@@ -812,7 +812,7 @@ export const PortfolioChatCard = styled.button<{ $isStatic?: boolean }>`
 
   strong {
     overflow: hidden;
-    font-size: 10px;
+    font-size: var(--font-label);
     text-overflow: ellipsis;
     white-space: nowrap;
   }
@@ -865,7 +865,7 @@ export const ContactActionCard = styled.a`
 
   strong {
     color: #f3fbff;
-    font-size: 12px;
+    font-size: var(--font-label);
     font-weight: 750;
   }
 
@@ -984,7 +984,7 @@ export const StarterButton = styled.button`
   padding: 10px 12px;
   color: #b8cfdd;
   font: inherit;
-  font-size: 10px;
+  font-size: var(--font-label);
   line-height: 1.35;
   text-align: left;
   cursor: pointer;
@@ -1051,7 +1051,7 @@ export const Composer = styled.form`
     padding: 9px 8px;
     color: #eaf7ff;
     font: inherit;
-    font-size: 13px;
+    font-size: var(--font-small);
     line-height: 1.5;
     border: 0;
     outline: 0;
@@ -1078,7 +1078,7 @@ export const SendButton = styled.button`
   flex: 0 0 42px;
   place-items: center;
   color: #ffffff;
-  font-size: 18px;
+  font-size: var(--font-body);
   cursor: pointer;
   border: 0;
   border: 1px solid rgba(228, 255, 253, 0.52);
@@ -1120,7 +1120,7 @@ export const SendButton = styled.button`
 export const Disclaimer = styled.p`
   margin: 8px 3px 0;
   color: #526578;
-  font-size: 10px;
+  font-size: var(--font-label);
   line-height: 1.45;
   text-align: center;
 `;
@@ -1154,7 +1154,7 @@ export const ErrorMessage = styled.p`
   margin: 0;
   padding: 10px 12px;
   color: #fecaca;
-  font-size: 11px;
+  font-size: var(--font-label);
   line-height: 1.5;
   border: 1px solid rgba(248, 113, 113, 0.2);
   border-radius: 9px;

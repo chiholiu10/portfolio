@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export const ProjectPage = styled.main`
   min-height: 100vh;
-  color: #edf5fa;
+  color: var(--text-heading);
   background:
     radial-gradient(circle at 70% 5%, rgba(var(--accent-rgb), 0.1), transparent 30%),
     #080d12;
@@ -12,16 +12,20 @@ export const ProjectPage = styled.main`
 
 export const ProjectContainer = styled.div`
   box-sizing: border-box;
-  width: min(1120px, calc(100% - 32px));
+  width: min(1320px, calc(100% - 64px));
   margin: 0 auto;
   padding: 34px 0 110px;
+
+  @media (max-width: 850px) {
+    width: calc(100% - 40px);
+  }
 `;
 
 export const BackLink = styled(Link)`
   display: inline-flex;
   margin-bottom: clamp(70px, 10vw, 130px);
   color: #85dfff;
-  font-size: 13px;
+  font-size: var(--font-small);
   font-weight: 700;
   text-decoration: none;
 `;
@@ -93,7 +97,7 @@ export const ProjectSection = styled.section`
   p {
     margin: 0;
     color: #b1bfcb;
-    font-size: 17px;
+    font-size: var(--font-body);
     line-height: 1.8;
   }
 
@@ -117,7 +121,7 @@ export const TechnologyList = styled.ul`
     border-radius: 9px;
     color: #a8dff1;
     background: rgba(var(--accent-rgb), 0.06);
-    font-size: 12px;
+    font-size: var(--font-label);
     font-weight: 700;
   }
 `;

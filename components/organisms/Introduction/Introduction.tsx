@@ -14,7 +14,6 @@ import {
   IntroBlockCenter,
   IntroSubTitle,
   IntroTitle,
-  OrbitPlanet,
   OrbitVisual,
 } from "./Introduction.styles";
 
@@ -37,9 +36,7 @@ export const Introduction = ({ data }: IntroductionProps) => {
           {arrays?.map((item, index) => (
             <StaggerItem key={index}>
               <IntroBlock $index={index}>
-                <OrbitVisual $index={index} aria-hidden="true">
-                  <OrbitPlanet $index={index} />
-                </OrbitVisual>
+                <OrbitVisual $index={index} aria-hidden="true" />
                 <IntroBlockCenter>
                   <IntroSubTitle>{item.description}</IntroSubTitle>
                   <IntroTitle>{item.title}</IntroTitle>

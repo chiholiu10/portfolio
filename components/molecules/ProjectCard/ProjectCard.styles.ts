@@ -23,8 +23,12 @@ export const PortfolioBlock = styled.div`
 export const PortfolioCard = styled.article`
   box-sizing: border-box;
   overflow: hidden;
-  width: min(390px, calc(100vw - 40px));
-  margin: 10px;
+  width: min(390px, calc((100vw - 128px) / 3));
+  margin: 0;
+
+  @media (max-width: 850px) {
+    width: min(390px, calc(100vw - 40px));
+  }
 `;
 
 export const PortfolioCardFooter = styled.div`
@@ -39,7 +43,7 @@ export const PortfolioCardFooter = styled.div`
     user-select: text;
     cursor: text;
     margin: 0;
-    color: #eef6fb;
+    color: var(--text-heading);
     font-size: 15px;
     font-weight: 650;
     line-height: 1.3;

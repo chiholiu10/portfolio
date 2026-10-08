@@ -12,8 +12,8 @@ export const ExperienceInnerBlock = styled.div`
   ${breakpoint.lg`
     flex-direction: row;
     align-items: center;
-    width: calc(100% - 40px);
-    max-width: 1200px;
+    width: calc(100% - 64px);
+    max-width: 1320px;
     margin-top: 150px;
     gap: clamp(40px, 6vw, 80px);
   `}
@@ -28,7 +28,7 @@ export const ExperienceBlockLeft = styled.div`
   ${breakpoint.md`
     justify-content: center;
     align-items: center;
-    font-size: 16px;
+    font-size: var(--font-body);
     padding: 50px;
   `}
 
@@ -65,8 +65,8 @@ export const ExperienceImage = styled(Image)`
 export const ExperienceContent = styled.div`
   max-width: 680px;
   margin: 0 auto;
-  color: #91a4b7;
-  font-size: 16px;
+  color: var(--text-body);
+  font-size: var(--font-body);
   font-weight: 400;
   line-height: 1.75;
   letter-spacing: 0.008em;
@@ -75,7 +75,7 @@ export const ExperienceContent = styled.div`
   padding: 20px;
   ${breakpoint.md`
     margin: 0;
-    font-size: 18px;
+    font-size: var(--font-body);
   `}
   ${breakpoint.md`
     text-align: left;

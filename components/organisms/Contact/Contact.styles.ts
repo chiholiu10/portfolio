@@ -54,18 +54,19 @@ export const ContactBlockAnchor = styled.a`
   font-size: 36px;
   display: flex;
   cursor: pointer;
-  width: 50px;
-  height: 50px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   position: relative;
   align-items: center;
   justify-content: center;
   ${AIGlassMorph}
   ${breakpoint.md`
-    width: 80px;
-    height: 80px;
+    width: 56px;
+    height: 56px;
   `}
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 24px rgba(23, 51, 65, 0.10);
+  border: 1px solid rgba(23, 51, 65, 0.1);
   &::after {
     pointer-events: none;
     position: absolute;
@@ -84,16 +85,16 @@ export const ContactBlockAnchor = styled.a`
     `};
   }
   ${ContactSVG} {
-    width: 45px;
-    height: 45px;
+    width: 32px;
+    height: 32px;
     ${breakpoint.md`
-      width: 60px;
-      height: 60px;
+      width: 42px;
+      height: 42px;
     `}
   }
   &:hover {
     @media (hover: hover) and (pointer: fine) {
-      ${AIGlassMorph}
+      box-shadow: 0 10px 28px rgba(23, 51, 65, 0.14);
       ${ContactSVG} {
       }
     }
@@ -108,16 +109,20 @@ export const ContactContainer = styled.div`
   padding: 32px 0 50px;
   margin: 20px;
   ${breakpoint.md`
-    gap: 30px;
+    gap: 24px;
   `}
 `;
 
 export const ContactGrid = styled.div`
   display: grid;
-  width: min(1120px, calc(100% - 32px));
+  width: min(1320px, calc(100% - 64px));
   margin: 0 auto;
   padding-top: clamp(90px, 12vw, 160px);
   gap: clamp(36px, 7vw, 88px);
+
+  @media (max-width: 850px) {
+    width: calc(100% - 40px);
+  }
 
   ${breakpoint.md`
     grid-template-columns: minmax(260px, 0.72fr) minmax(480px, 1.28fr);
@@ -138,8 +143,8 @@ export const ContactHeader = styled.header`
 
   h2 {
     margin: 16px 0 20px;
-    color: #f4fbff;
-    font-size: clamp(48px, 7vw, 88px);
+    color: var(--text-heading);
+    font-size: var(--font-section);
     line-height: 0.9;
     letter-spacing: -0.065em;
   }
@@ -152,8 +157,8 @@ export const ContactHeader = styled.header`
 export const FormIntro = styled.p`
   max-width: 430px;
   margin: 0;
-  color: #91a4b7;
-  font-size: 16px;
+  color: var(--text-body);
+  font-size: var(--font-body);
   line-height: 1.75;
 `;
 
@@ -168,8 +173,8 @@ export const ContactForm = styled.form`
   border-radius: 26px;
   background:
     radial-gradient(circle at 100% 0, rgba(var(--accent-rgb), 0.12), transparent 34%),
-    rgba(21, 28, 50, 0.92);
-  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.28);
+    rgba(255, 255, 255, 0.94);
+  box-shadow: 0 30px 90px rgba(23, 51, 65, 0.10);
   backdrop-filter: blur(20px);
 
   @media (max-width: 620px) {
@@ -185,18 +190,18 @@ export const Field = styled.div<{ $wide?: boolean }>`
   gap: 9px;
 
   label {
-    color: #c9d7e2;
-    font-size: 12px;
+    color: #344b59;
+    font-size: var(--font-label);
     font-weight: 700;
     letter-spacing: 0.04em;
   }
 
   label span {
     margin-left: 6px;
-    color: #617487;
+    color: var(--text-muted);
     font-size: 10px;
     font-weight: 500;
-    text-transform: uppercase;
+    text-transform: lowercase;
   }
 
   input,
@@ -207,8 +212,8 @@ export const Field = styled.div<{ $wide?: boolean }>`
     border: 1px solid rgba(148, 180, 202, 0.2);
     border-radius: 12px;
     outline: 0;
-    color: #f1f8fc !important;
-    background: rgba(4, 12, 21, 0.72);
+    color: var(--text-heading) !important;
+    background: #f4f7f8;
     font: inherit;
     transition: border-color 180ms ease, box-shadow 180ms ease;
   }
@@ -240,8 +245,8 @@ export const FieldHint = styled.div`
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 4px 12px;
-  color: #91a4b7;
-  font-size: 11px;
+  color: var(--text-body);
+  font-size: var(--font-label);
   line-height: 1.5;
   font-variant-numeric: tabular-nums;
 `;
@@ -258,8 +263,8 @@ export const PrivacyCopy = styled.div`
   grid-column: 1 / -1;
   align-items: flex-start;
   gap: 11px;
-  color: #7f93a6;
-  font-size: 12px;
+  color: var(--text-muted);
+  font-size: var(--font-label);
   line-height: 1.55;
 
   input {
@@ -316,7 +321,7 @@ export const SubmitButton = styled.button`
   border-radius: 12px;
   color: #04101a;
   background: #ffff00;
-  font-size: 13px;
+  font-size: var(--font-small);
   font-weight: 800;
   cursor: pointer;
   transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1), background 280ms ease, opacity 220ms ease;
@@ -355,8 +360,8 @@ export const FormStatus = styled.p<{ $error?: boolean }>`
   grid-column: 1 / -1;
   &:empty { display: none; }
   margin: 0;
-  color: ${({ $error }) => ($error ? "#ff9d9d" : "#8de8c4")};
-  font-size: 13px;
+  color: ${({ $error }) => ($error ? "#a12626" : "#166044")};
+  font-size: var(--font-small);
 
   a {
     color: inherit;
@@ -367,7 +372,7 @@ export const FormStatus = styled.p<{ $error?: boolean }>`
 
 export const SocialLabel = styled.p`
   margin: 72px 0 0;
-  color: #65798d;
+  color: var(--text-muted);
   font: 700 10px ui-monospace, SFMono-Regular, Menlo, monospace;
   letter-spacing: 0.15em;
   text-align: center;

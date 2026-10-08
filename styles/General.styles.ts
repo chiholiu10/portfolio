@@ -3,30 +3,30 @@ import { breakpoint } from "./Breakpoint";
 import theme from "./Theme";
 
 export const AIGlassMorph = css`
-  background: rgba(10, 25, 50, 0.4);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(24px);
   border-radius: 12px;
   box-shadow:
-    0 20px 40px -15px rgba(0, 0, 0, 0.9),
+    0 20px 40px -15px rgba(23, 51, 65, 0.12),
     0 0 30px -5px rgba(var(--accent-rgb), 0.2);
-  background: rgba(15, 37, 75, 0.55);
+  background: rgba(230, 241, 245, 0.9);
   /* Rand licht feller op bij hover (Cyaan/Blauw) */
   border: 1px solid rgba(var(--accent-rgb), 0.5);
   /* De blauwe AI-glow wordt intenser */
   box-shadow:
-    0 20px 40px -5px rgba(0, 0, 0, 0.9),
+    0 20px 40px -5px rgba(23, 51, 65, 0.12),
     0 0 35px 2px rgba(var(--accent-rgb), 0.25);
   /* Optioneel: lift het blokje een heel klein beetje omhoog */
   transform: translateY(-2px);
 `;
 
 export const AIGlassMorphStatic = css`
-  background: rgba(10, 25, 50, 0.4);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(var(--accent-rgb), 0.25);
   border-radius: 12px;
   box-shadow:
-    0 20px 40px -15px rgba(0, 0, 0, 0.9),
+    0 20px 40px -15px rgba(23, 51, 65, 0.12),
     0 0 30px -5px rgba(var(--accent-rgb), 0.2);
 `;
 
@@ -134,13 +134,13 @@ export const ComponentSection = styled.section<ComponentSectionProps>`
 
 export const HeaderGeneral = `
   font-kerning: normal;
-  font-size: 26px;
+  font-size: var(--font-section);
   font-weight: 650;
-  line-height: 1.08;
-  letter-spacing: -0.045em;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
   text-align: center;
   padding: 20px 20px 0;
-  color: #eaf7ff;
+  color: var(--text-heading);
   text-wrap: balance;
   text-shadow: 0 0 36px rgba(var(--accent-rgb), 0.07);
 `;
@@ -148,25 +148,26 @@ export const HeaderGeneral = `
 export const Header = styled.h2`
   ${HeaderGeneral};
   ${breakpoint.sm`
-    font-size: 40px;
+    font-size: var(--font-section);
     font-weight: 600;
     margin-top: 100px;
   `}
   ${breakpoint.md`
-    font-size: 46px;
+    font-size: var(--font-section);
   `}
   ${breakpoint.xl`
-    font-size: 54px;
+    font-size: var(--font-section);
     padding: 80px 0 0;
   `}
 `;
 
 export const SubHeader = styled.p`
-  color: #91a4b7;
+  max-width: 65ch;
+  color: var(--text-body);
   font-weight: 400;
   margin: 0 auto;
   padding: 20px 20px 80px;
-  font-size: 16px;
+  font-size: var(--font-body);
   line-height: 1.75;
   letter-spacing: 0.008em;
   text-align: center;
@@ -174,7 +175,7 @@ export const SubHeader = styled.p`
 
   ${breakpoint.md`
     width: 700px;
-    font-size: 18px;
+    font-size: var(--font-body);
     margin-bottom: 50px;
   `}
   ${breakpoint.xl`
@@ -185,15 +186,20 @@ export const SubHeader = styled.p`
 export const DisplayFlex = styled.div`
   display: flex;
   flex-wrap: wrap;
+  box-sizing: border-box;
+  width: min(1320px, calc(100% - 64px));
   padding-bottom: 180px;
   margin-left: auto;
   margin-right: auto;
   justify-content: center;
   gap: 30px;
   ${breakpoint.md`
-    max-width: 1800px;
-    gap: 50px;
+    gap: 32px;
   `}
+
+  @media (max-width: 850px) {
+    width: calc(100% - 40px);
+  }
 `;
 
 export const TilesProps = ` 
@@ -206,7 +212,7 @@ export const TilesProps = `
 `;
 
 export const TitleBlockProps = `
-  color: ${theme.colors.white};
+  color: var(--text-heading);
   font-weight: 600;
   line-height: 1.2;
   text-transform: capitalize;
@@ -226,7 +232,7 @@ export const ComponentRow = styled.div`
     align-content: space-around;
   `}
   ${breakpoint.lg`
-    max-width: 1200px;
+    max-width: 1320px;
     gap: 40px;
   `}
 `;

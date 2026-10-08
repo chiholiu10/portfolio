@@ -44,9 +44,11 @@ it("sends separate owner and visitor emails with reply addresses and escaped con
   expect(notification.text).toContain(submission.message);
 });
 
-it("still sends confirmation when the notification fails", async () => {
+it("reports a failure when the owner notification fails", async () => {
   (global.fetch as jest.MockedFunction<typeof fetch>).mockRejectedValueOnce(new Error("network failed"));
-  await expect(sendContactEmails(submission, "request-123")).resolves.toBeUndefined();
+  await expect(sendContactEmails(submission, "request-123")).rejects.toThrow(
+    "Contact notification could not be delivered",
+  );
   expect(global.fetch).toHaveBeenCalledTimes(2);
   expect(console.error).toHaveBeenCalledWith("Contact email delivery failed", {
     requestId: "request-123", kind: "notification", reason: "network failed",
@@ -63,6 +65,8 @@ it("preserves submission success when confirmation is rejected", async () => {
 
 it("does not send with incomplete configuration", async () => {
   delete process.env.RESEND_API_KEY;
-  await sendContactEmails(submission, "request-123");
+  await expect(sendContactEmails(submission, "request-123")).rejects.toThrow(
+    "Contact email is not configured",
+  );
   expect(global.fetch).not.toHaveBeenCalled();
 });

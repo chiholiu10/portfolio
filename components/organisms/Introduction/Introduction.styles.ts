@@ -26,8 +26,8 @@ export const IntroBlockCenter = styled.div`
 
 export const IntroSubTitle = styled.p`
   margin-bottom: 9px;
-  color: #6f7d8e;
-  font-size: 10px;
+  color: var(--text-muted);
+  font-size: var(--font-label);
   font-weight: 750;
   letter-spacing: 0.13em;
   text-transform: uppercase;
@@ -35,8 +35,8 @@ export const IntroSubTitle = styled.p`
 
 export const IntroTitle = styled.h3`
   max-width: 230px;
-  color: #f3f8fc;
-  font-size: clamp(15px, 1.4vw, 18px);
+  color: var(--text-heading);
+  font-size: var(--font-subheading);
   font-weight: 650;
   letter-spacing: -0.025em;
   line-height: 1.25;

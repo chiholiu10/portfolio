@@ -18,7 +18,7 @@ export const sendContactEmails = async (
 
   if (!apiKey || !owner || !from) {
     console.error("Contact email is not configured", { requestId });
-    return;
+    throw new Error("Contact email is not configured");
   }
 
   const emails = [
@@ -65,4 +65,9 @@ export const sendContactEmails = async (
       });
     }
   });
+
+  const notificationResult = results[0];
+  if (notificationResult.status === "rejected") {
+    throw new Error("Contact notification could not be delivered");
+  }
 };

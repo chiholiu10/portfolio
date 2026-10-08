@@ -152,7 +152,16 @@ export default async function handler(
     });
   }
 
-  await sendContactEmails(submission, requestId);
+  try {
+    await sendContactEmails(submission, requestId);
+  } catch {
+    return response.status(502).json({
+      error:
+        "Your message was saved, but the email notification could not be sent. Please email me directly.",
+      code: "EMAIL_NOT_SENT",
+      requestId,
+    });
+  }
 
   return response.status(201).json({ ok: true, requestId });
 }
