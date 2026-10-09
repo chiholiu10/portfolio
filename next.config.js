@@ -28,6 +28,10 @@ const nextConfig = {
   },
   async redirects() {
     return [{
+      source: "/project/gemeente-amsterdam-vue",
+      destination: "/project/gemeente-amsterdam",
+      permanent: true,
+    }, {
       source: "/project/tours-tickets-dashboard",
       destination: "/project/moments-dashboard",
       permanent: true,

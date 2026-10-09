@@ -58,11 +58,11 @@ describe("career-agent input safety", () => {
 describe("portfolio project recommendations", () => {
   const content = {
     projects: [
-      { id: "gemeente-amsterdam-vue", title: "Amsterdam", imageMatch: "Amsterdam", keywords: ["accessibility", "wcag", "gemeente"] },
+      { id: "gemeente-amsterdam", title: "Amsterdam", imageMatch: "Amsterdam", keywords: ["accessibility", "wcag", "gemeente"] },
       { id: "momants-ai-agent", title: "Agent", imageMatch: "agent", keywords: ["accessibility", "wcag"] },
       { id: "momants-homepage", title: "Homepage", imageMatch: "homepage", keywords: ["accessibility", "wcag"] },
     ],
-    favoriteProjectIds: ["momants-ai-agent", "gemeente-amsterdam-vue", "missing-project"],
+    favoriteProjectIds: ["momants-ai-agent", "gemeente-amsterdam", "missing-project"],
   };
   it("selects evidence-backed accessibility projects", () => {
     expect(
@@ -70,7 +70,7 @@ describe("portfolio project recommendations", () => {
         "Laat zijn accessibility- en WCAG-ervaring zien", content,
       ),
     ).toEqual([
-      "gemeente-amsterdam-vue",
+      "gemeente-amsterdam",
       "momants-ai-agent",
       "momants-homepage",
     ]);
@@ -81,7 +81,7 @@ describe("portfolio project recommendations", () => {
       recommendPortfolioProjectIds("Welk project vond Chiho het leukst?", content),
     ).toEqual([
       "momants-ai-agent",
-      "gemeente-amsterdam-vue",
+      "gemeente-amsterdam",
     ]);
   });
 

@@ -8,14 +8,14 @@ describe("createSitemap", () => {
         path: "/",
       },
       {
-        path: "/project/gemeente-amsterdam-vue",
+        path: "/project/gemeente-amsterdam",
         lastModified: "2026-09-12T08:30:00.000Z",
       },
     ]);
 
     expect(sitemap).toContain("<loc>https://www.chiholiu.com/</loc>");
     expect(sitemap).toContain(
-      "<loc>https://www.chiholiu.com/project/gemeente-amsterdam-vue</loc>",
+      "<loc>https://www.chiholiu.com/project/gemeente-amsterdam</loc>",
     );
     expect(sitemap).toContain(
       "<lastmod>2026-09-12T08:30:00.000Z</lastmod>",
