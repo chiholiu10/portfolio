@@ -1,5 +1,5 @@
 import { m } from "motion/react";
-import { premiumEase } from "./motion.config";
+import { premiumEase } from "@/components/atoms/Motion/motion.config";
 
 export const StaggerItem = ({ children }) => {
   return (

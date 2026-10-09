@@ -1,18 +1,18 @@
-import type { HomeSections } from "../../../lib/content-model";
-import { SectionHeading } from "../../molecules/SectionHeading/SectionHeading";
+import type { HomeSections } from "@/lib/content-model";
+import { SectionHeading } from "@/components/molecules/SectionHeading/SectionHeading";
 import { m, useScroll, useTransform } from "motion/react";
 import Image from "next/image";
-import { createPortfolioProjects } from "../../../lib/portfolio-projects";
+import { createPortfolioProjects } from "@/lib/portfolio-projects";
 import {
   BackgroundImage,
   ComponentSection,
   DisplayFlex,
-} from "../../../styles/General.styles";
+} from "@/styles/General.styles";
 import {
   StaggerItem,
   StaggerGroup,
-} from "../../atoms/Motion";
-import { ProjectCard } from "../../molecules/ProjectCard/ProjectCard";
+} from "@/components/atoms/Motion";
+import { ProjectCard } from "@/components/molecules/ProjectCard/ProjectCard";
 
 type PortfolioProps = { data: HomeSections["portfolio"] };
 

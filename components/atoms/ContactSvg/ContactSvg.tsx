@@ -1,7 +1,7 @@
 import { m } from "motion/react";
 import { useInView } from "react-intersection-observer";
-import { ContactSVG } from "./Contact.styles";
-import { premiumEase } from "../Motion/motion.config";
+import { ContactSVG } from "@/components/atoms/ContactSvg/Contact.styles";
+import { premiumEase } from "@/components/atoms/Motion/motion.config";
 
 export type IconPath = Record<number, string>;
 

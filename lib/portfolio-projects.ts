@@ -1,6 +1,6 @@
-import type { PortfolioContent } from "./content-model";
+import type { PortfolioContent } from "@/lib/content-model";
 
-export type { PortfolioContent, ProjectCaseStudy } from "./content-model";
+export type { PortfolioContent, ProjectCaseStudy } from "@/lib/content-model";
 
 export type PortfolioProject = {
   id: string;

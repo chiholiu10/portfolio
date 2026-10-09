@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-import { breakpoint } from "../../../styles/Breakpoint";
+import { breakpoint } from "@/styles/Breakpoint";
 
 const panelEnter = keyframes`
   0% {

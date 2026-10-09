@@ -1,5 +1,5 @@
 import { describe, expect, it } from "@jest/globals";
-import { createSitemap } from "./sitemap";
+import { createSitemap } from "@/lib/sitemap";
 
 describe("createSitemap", () => {
   it("includes valid portfolio routes", () => {

@@ -1,10 +1,10 @@
-import type { HomeSections } from "../../../lib/content-model";
+import type { HomeSections } from "@/lib/content-model";
 import {
   BrandOrbit,
   NavbarComponent,
   NavbarInnerBlock,
   NavbarInnerComponent,
-} from "./Navbar.styles";
+} from "@/components/organisms/Navbar/Navbar.styles";
 
 type NavbarProps = { data: HomeSections["navbar"] };
 

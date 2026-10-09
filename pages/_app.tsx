@@ -1,11 +1,11 @@
 import type { AppProps } from "next/app";
 import { ThemeProvider } from "styled-components";
-import { CSSreset } from "../styles/CssReset";
-import theme from "../styles/Theme";
+import { CSSreset } from "@/styles/CssReset";
+import theme from "@/styles/Theme";
 import { LazyMotion, MotionConfig } from "motion/react";
 
 const loadMotionFeatures = () =>
-  import("../lib/motion-features").then((module) => module.default);
+  import("@/lib/motion-features").then((module) => module.default);
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (

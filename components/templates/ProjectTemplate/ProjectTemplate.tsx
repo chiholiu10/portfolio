@@ -9,10 +9,10 @@ import {
   ProjectSection,
   ProjectVisual,
   TechnologyList,
-} from "./ProjectCase.styles";
+} from "@/components/templates/ProjectTemplate/ProjectCase.styles";
 import {
   ProjectCaseStudy,
-} from "../../../lib/portfolio-projects";
+} from "@/lib/portfolio-projects";
 
 export type ProjectTemplateProps = {
   project: {

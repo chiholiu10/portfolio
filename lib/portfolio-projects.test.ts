@@ -1,5 +1,5 @@
 import { describe, it, expect } from "@jest/globals";
-import { createPortfolioProjects, recommendPortfolioProjectIds } from "./portfolio-projects";
+import { createPortfolioProjects, recommendPortfolioProjectIds } from "@/lib/portfolio-projects";
 
 const first = { id: "first", title: "First", imageMatch: "First", keywords: ["React"] };
 const second = { id: "second", title: "Second", imageMatch: "Second", keywords: ["React"], archived: true };

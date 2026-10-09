@@ -1,7 +1,7 @@
-import { createApolloClient } from "./client";
-import { QUERY } from "./queries/PortfolioQuery";
-import { sectionIds } from "./section-ids";
-import { parseHomeSection } from "../content-model";
+import { createApolloClient } from "@/lib/contentful/client";
+import { QUERY } from "@/lib/contentful/queries/PortfolioQuery";
+import { sectionIds } from "@/lib/contentful/section-ids";
+import { parseHomeSection } from "@/lib/content-model";
 
 export const loadPortfolioSection = async () => {
   const { data } = await createApolloClient().query<unknown>({ query: QUERY, variables: { id: sectionIds.portfolio } });

@@ -1,11 +1,11 @@
-import { additionalTools, normalizeToolName, groupTools } from "../../../lib/tools";
-import type { HomeSections } from "../../../lib/content-model";
-import { SectionHeading } from "../../molecules/SectionHeading/SectionHeading";
+import { additionalTools, normalizeToolName, groupTools } from "@/lib/tools";
+import type { HomeSections } from "@/lib/content-model";
+import { SectionHeading } from "@/components/molecules/SectionHeading/SectionHeading";
 import Image from "next/image";
 import {
   ComponentSection,
-} from "../../../styles/General.styles";
-import { StaggerItem } from "../../atoms/Motion";
+} from "@/styles/General.styles";
+import { StaggerItem } from "@/components/atoms/Motion";
 import {
   ToolInnerBlock,
   ToolsBlock,
@@ -13,8 +13,8 @@ import {
   ToolsCategoryHeader,
   ToolsGrid,
   ToolsHeader,
-} from "./Tools.styles";
-import { StaggerGroup } from "../../atoms/Motion/StaggerGroup";
+} from "@/components/organisms/Tools/Tools.styles";
+import { StaggerGroup } from "@/components/atoms/Motion/StaggerGroup";
 
 type ToolsProps = { data: HomeSections["tools"] };
 

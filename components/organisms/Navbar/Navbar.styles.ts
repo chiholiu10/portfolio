@@ -1,4 +1,4 @@
-import { architecturalPatternStatic } from "../../../styles/ArchitecturalPattern";
+import { architecturalPatternStatic } from "@/styles/ArchitecturalPattern";
 import styled from "styled-components";
 
 export const NavbarComponent = styled.nav`

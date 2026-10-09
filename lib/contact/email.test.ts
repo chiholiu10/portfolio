@@ -1,5 +1,5 @@
 import { beforeEach, afterEach, it, expect, jest } from "@jest/globals";
-import { sendContactEmails } from "./email";
+import { sendContactEmails } from "@/lib/contact/email";
 
 const submission = {
   name: "Chi & Co",

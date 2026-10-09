@@ -1,6 +1,6 @@
 import Link from "next/link";
-import type { PortfolioProject } from "../../../lib/portfolio-projects";
-import { PortfolioBlock, PortfolioCard as Card, PortfolioCardFooter, PortfolioImage } from "./ProjectCard.styles";
+import type { PortfolioProject } from "@/lib/portfolio-projects";
+import { PortfolioBlock, PortfolioCard as Card, PortfolioCardFooter, PortfolioImage } from "@/components/molecules/ProjectCard/ProjectCard.styles";
 
 export const ProjectCard = ({ project }: { project: PortfolioProject; extraText?: string | null }) => (
   <Card>

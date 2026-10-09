@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { breakpoint } from "../../../styles/Breakpoint";
-import { OrbitSurface } from "../../atoms/OrbitSurface/OrbitCard.styles";
+import { breakpoint } from "@/styles/Breakpoint";
+import { OrbitSurface } from "@/components/atoms/OrbitSurface/OrbitCard.styles";
 
 export const ToolsBlock = styled(OrbitSurface)`
   box-sizing: border-box;

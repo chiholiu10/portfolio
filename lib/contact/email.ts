@@ -1,4 +1,4 @@
-import type { normalizeContactRequest } from "./validation";
+import type { normalizeContactRequest } from "@/lib/contact/validation";
 
 const escapeHtml = (value: string) =>
   value

@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import { breakpoint } from "../../../styles/Breakpoint";
+import { breakpoint } from "@/styles/Breakpoint";
 import {
   OrbitArtwork,
   OrbitCardAccent,
   OrbitingPlanet,
   OrbitSurface,
-} from "../../atoms/OrbitSurface/OrbitCard.styles";
+} from "@/components/atoms/OrbitSurface/OrbitCard.styles";
 
 export const IntroBlock = styled(OrbitSurface)`
   width: min(300px, calc(100vw - 40px));

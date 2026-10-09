@@ -2,7 +2,7 @@ import { describe, expect, it } from "@jest/globals";
 import {
   contactRequestSchema,
   normalizeContactRequest,
-} from "./validation";
+} from "@/lib/contact/validation";
 
 const validRequest = {
   name: "Chiho Liu",

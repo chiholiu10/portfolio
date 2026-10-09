@@ -1,5 +1,5 @@
-import type { HomeSections } from "../../../lib/content-model";
-import { FooterComponent, FooterText } from "./Footer.styles";
+import type { HomeSections } from "@/lib/content-model";
+import { FooterComponent, FooterText } from "@/components/organisms/Footer/Footer.styles";
 
 type FooterProps = { data: HomeSections["footer"] };
 

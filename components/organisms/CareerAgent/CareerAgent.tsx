@@ -38,10 +38,10 @@ import {
   StarterPrompts,
   StatusDot,
   VisuallyHidden,
-} from "./CareerAgent.styles";
-import { getInputSafetyIssue } from "../../../lib/career-agent/input-safety";
-import { maskSensitiveContent } from "../../../lib/career-agent/privacy";
-import { PortfolioProject } from "../../../lib/portfolio-projects";
+} from "@/components/organisms/CareerAgent/CareerAgent.styles";
+import { getInputSafetyIssue } from "@/lib/career-agent/input-safety";
+import { maskSensitiveContent } from "@/lib/career-agent/privacy";
+import { PortfolioProject } from "@/lib/portfolio-projects";
 
 type ChatMessage = {
   id: string;

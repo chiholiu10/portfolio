@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { SECTION_FIELDS } from "./SectionFields";
+import { SECTION_FIELDS } from "@/lib/contentful/queries/SectionFields";
 
 export const QUERY = gql`
   query sectionEntryQuery($id: String!) {

@@ -1,5 +1,5 @@
  
-import theme from "./Theme";
+import theme from "@/styles/Theme";
 
 export const breakpoint = Object.keys(theme.breakpoints).reduce(
   (acc, label) => {

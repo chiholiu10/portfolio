@@ -1,5 +1,5 @@
 import { DefaultTheme } from "styled-components";
-import token from "./token";
+import token from "@/styles/token";
 
 const theme: DefaultTheme = {
   colors: token.colors,

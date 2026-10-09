@@ -3,17 +3,17 @@ import { z } from "zod";
 import {
   answerCareerQuestion,
   isProviderQuotaError,
-} from "../../lib/career-agent/gemini";
-import { getDirectContactResponse } from "../../lib/career-agent/contact-intent";
-import { logCareerAgentMessage } from "../../lib/career-agent/history";
-import { getInputSafetyIssue } from "../../lib/career-agent/input-safety";
+} from "@/lib/career-agent/gemini";
+import { getDirectContactResponse } from "@/lib/career-agent/contact-intent";
+import { logCareerAgentMessage } from "@/lib/career-agent/history";
+import { getInputSafetyIssue } from "@/lib/career-agent/input-safety";
 import {
   hashValue,
   maskSensitiveContent,
-} from "../../lib/career-agent/privacy";
-import { consumeDistributedRateLimit } from "../../lib/career-agent/rate-limit";
-import { loadPortfolioSection } from "../../lib/contentful/portfolio";
-import { recommendPortfolioProjectIds } from "../../lib/portfolio-projects";
+} from "@/lib/career-agent/privacy";
+import { consumeDistributedRateLimit } from "@/lib/career-agent/rate-limit";
+import { loadPortfolioSection } from "@/lib/contentful/portfolio";
+import { recommendPortfolioProjectIds } from "@/lib/portfolio-projects";
 
 const stripUnsafeControlCharacters = (message: string) =>
   Array.from(message)

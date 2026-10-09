@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
-import { logCareerAgentFeedback } from "../../lib/career-agent/history";
-import { hashValue } from "../../lib/career-agent/privacy";
-import { consumeDistributedRateLimit } from "../../lib/career-agent/rate-limit";
+import { logCareerAgentFeedback } from "@/lib/career-agent/history";
+import { hashValue } from "@/lib/career-agent/privacy";
+import { consumeDistributedRateLimit } from "@/lib/career-agent/rate-limit";
 
 const requestSchema = z.object({
   feedbackId: z.string().trim().min(1).max(200)

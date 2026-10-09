@@ -1,8 +1,8 @@
 import styled, { keyframes } from "styled-components";
-import { breakpoint } from "../../../styles/Breakpoint";
-import theme from "../../../styles/Theme";
-import { ContactSVG } from "../../atoms/ContactSvg/Contact.styles";
-import { AIGlassMorph } from "../../../styles/General.styles";
+import { breakpoint } from "@/styles/Breakpoint";
+import theme from "@/styles/Theme";
+import { ContactSVG } from "@/components/atoms/ContactSvg/Contact.styles";
+import { AIGlassMorph } from "@/styles/General.styles";
 
 const float = keyframes`
   0% {

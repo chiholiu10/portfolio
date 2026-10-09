@@ -17,6 +17,7 @@ const compat = new FlatCompat({
 
 export default [
   { ignores: [".next/**", "next-env.d.ts"] },
+  { settings: { "import/resolver": { typescript: { project: "./tsconfig.json" } } } },
   ...fixupConfigRules(
     compat.extends(
       "next",

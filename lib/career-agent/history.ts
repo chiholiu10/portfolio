@@ -1,4 +1,4 @@
-import { hashValue, maskSensitiveContent } from "./privacy";
+import { hashValue, maskSensitiveContent } from "@/lib/career-agent/privacy";
 
 type ChatRole = "user" | "assistant";
 type FeedbackRating = "THUMBS_UP" | "THUMBS_DOWN";

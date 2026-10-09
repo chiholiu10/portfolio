@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Image from "next/image";
-import { breakpoint } from "../../../styles/Breakpoint";
-import { AIGlassMorph } from "../../../styles/General.styles";
+import { breakpoint } from "@/styles/Breakpoint";
+import { AIGlassMorph } from "@/styles/General.styles";
 
 export const ExperienceInnerBlock = styled.div`
   display: flex;

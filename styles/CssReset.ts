@@ -1,5 +1,5 @@
 import { createGlobalStyle, keyframes } from "styled-components";
-import theme from "./Theme";
+import theme from "@/styles/Theme";
 
 const wave1 = keyframes`
   0% {

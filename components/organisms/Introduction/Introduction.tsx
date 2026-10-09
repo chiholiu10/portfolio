@@ -1,13 +1,13 @@
-import type { HomeSections } from "../../../lib/content-model";
-import { SectionHeading } from "../../molecules/SectionHeading/SectionHeading";
+import type { HomeSections } from "@/lib/content-model";
+import { SectionHeading } from "@/components/molecules/SectionHeading/SectionHeading";
 import {
   ComponentSection,
   DisplayFlex,
-} from "../../../styles/General.styles";
+} from "@/styles/General.styles";
 import {
   StaggerGroup,
   StaggerItem,
-} from "../../atoms/Motion";
+} from "@/components/atoms/Motion";
 import {
   CardFoot,
   IntroBlock,
@@ -15,7 +15,7 @@ import {
   IntroSubTitle,
   IntroTitle,
   OrbitVisual,
-} from "./Introduction.styles";
+} from "@/components/organisms/Introduction/Introduction.styles";
 
 type IntroductionProps = { data: HomeSections["introduction"] };
 

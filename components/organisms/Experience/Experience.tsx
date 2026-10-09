@@ -1,6 +1,6 @@
-import type { HomeSections } from "../../../lib/content-model";
-import { ComponentSection } from "../../../styles/General.styles";
-import { FadeUp, WordReveal } from "../../atoms/Motion";
+import type { HomeSections } from "@/lib/content-model";
+import { ComponentSection } from "@/styles/General.styles";
+import { FadeUp, WordReveal } from "@/components/atoms/Motion";
 import {
   ExperienceBlockLeft,
   ExperienceBlockRight,
@@ -8,7 +8,7 @@ import {
   ExperienceFigure,
   ExperienceImage,
   ExperienceInnerBlock,
-} from "./Experience.styles";
+} from "@/components/organisms/Experience/Experience.styles";
 
 type ExperienceProps = { data: HomeSections["experience"] };
 

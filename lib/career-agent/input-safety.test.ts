@@ -1,7 +1,7 @@
 import { describe, expect, it } from "@jest/globals";
-import { getInputSafetyIssue } from "./input-safety";
-import { maskSensitiveContent } from "./privacy";
-import { recommendPortfolioProjectIds } from "../portfolio-projects";
+import { getInputSafetyIssue } from "@/lib/career-agent/input-safety";
+import { maskSensitiveContent } from "@/lib/career-agent/privacy";
+import { recommendPortfolioProjectIds } from "@/lib/portfolio-projects";
 
 describe("career-agent input safety", () => {
   it("allows ordinary career and React questions", () => {

@@ -1,4 +1,4 @@
-import type { HomeSections } from "../../../lib/content-model";
+import type { HomeSections } from "@/lib/content-model";
 import {
   HowIWorkIcon,
   HowIWorkIntro,
@@ -10,7 +10,7 @@ import {
   HowIWorkStepCopy,
   HowIWorkSteps,
   HowIWorkTitle,
-} from "./HowIWork.styles";
+} from "@/components/organisms/HowIWork/HowIWork.styles";
 
 type HowIWorkProps = { data: HomeSections["howIWork"] };
 

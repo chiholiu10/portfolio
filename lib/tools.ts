@@ -1,4 +1,4 @@
-import type { ToolItem, ToolCategory } from "./content-model";
+import type { ToolItem, ToolCategory } from "@/lib/content-model";
 
 export const additionalTools: ToolItem[] = [
   { title: "Shopify", url: "/tools/shopify.svg" },

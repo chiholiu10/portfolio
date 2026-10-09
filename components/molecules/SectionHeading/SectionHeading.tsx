@@ -1,5 +1,5 @@
-import { Header, SubHeader } from "../../../styles/General.styles";
-import { FadeUp, WordReveal } from "../../atoms/Motion";
+import { Header, SubHeader } from "@/styles/General.styles";
+import { FadeUp, WordReveal } from "@/components/atoms/Motion";
 
 type SectionHeadingProps = {
   id: string;

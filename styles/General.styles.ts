@@ -1,6 +1,6 @@
 import styled, { css, keyframes } from "styled-components";
-import { breakpoint } from "./Breakpoint";
-import theme from "./Theme";
+import { breakpoint } from "@/styles/Breakpoint";
+import theme from "@/styles/Theme";
 
 export const AIGlassMorph = css`
   background: rgba(255, 255, 255, 0.8);

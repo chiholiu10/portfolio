@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ComponentSection } from "../../../styles/General.styles";
+import { ComponentSection } from "@/styles/General.styles";
 
 export const HowIWorkSection = styled(ComponentSection)`
   box-sizing: border-box;

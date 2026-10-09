@@ -2,10 +2,10 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import {
   contactRequestSchema,
   normalizeContactRequest,
-} from "../../lib/contact/validation";
-import { sendContactEmails } from "../../lib/contact/email";
-import { hashValue } from "../../lib/career-agent/privacy";
-import { consumeDistributedRateLimit } from "../../lib/career-agent/rate-limit";
+} from "@/lib/contact/validation";
+import { sendContactEmails } from "@/lib/contact/email";
+import { hashValue } from "@/lib/career-agent/privacy";
+import { consumeDistributedRateLimit } from "@/lib/career-agent/rate-limit";
 
 type ApiResponse =
   | { ok: true; requestId: string }

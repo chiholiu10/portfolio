@@ -1,9 +1,9 @@
-import { contactRequestSchema } from "../../../lib/contact/validation";
-import type { HomeSections } from "../../../lib/content-model";
+import { contactRequestSchema } from "@/lib/contact/validation";
+import type { HomeSections } from "@/lib/content-model";
 import { FormEvent, useState } from "react";
-import { ComponentSection } from "../../../styles/General.styles";
-import { ContactSvg, IconPath } from "../../atoms/ContactSvg/ContactSvg";
-import { StaggerGroup, StaggerItem } from "../../atoms/Motion";
+import { ComponentSection } from "@/styles/General.styles";
+import { ContactSvg, IconPath } from "@/components/atoms/ContactSvg/ContactSvg";
+import { StaggerGroup, StaggerItem } from "@/components/atoms/Motion";
 import {
   ContactBlock,
   ContactBlockAnchor,
@@ -20,7 +20,7 @@ import {
   PrivacyCopy,
   SocialLabel,
   SubmitButton,
-} from "./Contact.styles";
+} from "@/components/organisms/Contact/Contact.styles";
 
 type ContactProps = { data: HomeSections["contact"]; showForm?: boolean };
 

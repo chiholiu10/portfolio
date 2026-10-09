@@ -1,16 +1,16 @@
-import type { HomeSections } from "../../../lib/content-model";
-import HeadBlock from "../../atoms/PageHead/PageHead";
-import { CareerAgent } from "../../organisms/CareerAgent/CareerAgent";
-import { Contact } from "../../organisms/Contact/Contact";
-import { Banner } from "../../organisms/Banner/Banner";
-import { HowIWork } from "../../organisms/HowIWork/HowIWork";
-import { Experience } from "../../organisms/Experience/Experience";
-import { Footer } from "../../organisms/Footer/Footer";
-import { Introduction } from "../../organisms/Introduction/Introduction";
-import { Navbar } from "../../organisms/Navbar/Navbar";
-import { Portfolio } from "../../organisms/Portfolio/Portfolio";
-import { Tools } from "../../organisms/Tools/Tools";
-import { createPortfolioProjects } from "../../../lib/portfolio-projects";
+import type { HomeSections } from "@/lib/content-model";
+import HeadBlock from "@/components/atoms/PageHead/PageHead";
+import { CareerAgent } from "@/components/organisms/CareerAgent/CareerAgent";
+import { Contact } from "@/components/organisms/Contact/Contact";
+import { Banner } from "@/components/organisms/Banner/Banner";
+import { HowIWork } from "@/components/organisms/HowIWork/HowIWork";
+import { Experience } from "@/components/organisms/Experience/Experience";
+import { Footer } from "@/components/organisms/Footer/Footer";
+import { Introduction } from "@/components/organisms/Introduction/Introduction";
+import { Navbar } from "@/components/organisms/Navbar/Navbar";
+import { Portfolio } from "@/components/organisms/Portfolio/Portfolio";
+import { Tools } from "@/components/organisms/Tools/Tools";
+import { createPortfolioProjects } from "@/lib/portfolio-projects";
 
 export type HomeTemplateProps = { sections: HomeSections; isProduction: boolean };
 

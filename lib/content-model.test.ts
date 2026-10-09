@@ -1,5 +1,5 @@
 import { describe, it, expect } from "@jest/globals";
-import { parseHomeSection, portfolioContentSchema } from "./content-model";
+import { parseHomeSection, portfolioContentSchema } from "@/lib/content-model";
 
 const project = { id: "sample-project", title: "Sample", imageMatch: "Sample", keywords: [] };
 

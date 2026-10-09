@@ -1,5 +1,5 @@
 import type { GetServerSideProps } from "next";
-import { createSitemap } from "../lib/sitemap";
+import { createSitemap } from "@/lib/sitemap";
 
 export default function Sitemap() {
   return null;

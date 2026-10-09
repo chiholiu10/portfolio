@@ -1,5 +1,5 @@
 import { m } from "motion/react";
-import { premiumSpring } from "./motion.config";
+import { premiumSpring } from "@/components/atoms/Motion/motion.config";
 
 export const NavbarLogoAnimation = ({ children }) => {
   return (

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "@jest/globals";
-import { groupTools } from "./tools";
+import { groupTools } from "@/lib/tools";
 
 describe("tool grouping", () => {
   const items = [{ title: "React", url: "/react.svg" }, { title: "Node", url: "/node.svg" }];

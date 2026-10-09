@@ -1,5 +1,5 @@
 import { describe, expect, it } from "@jest/globals";
-import { getDirectContactResponse } from "./contact-intent";
+import { getDirectContactResponse } from "@/lib/career-agent/contact-intent";
 
 describe("getDirectContactResponse", () => {
   it("shows both options for a general Dutch contact question", () => {
