@@ -275,6 +275,9 @@ export const PrivacyCopy = styled.div`
   color: var(--text-muted);
   font-size: var(--font-label);
   line-height: 1.55;
+  label { cursor: pointer; display: grid; gap: 6px; }
+  label > span { color: var(--text-body); }
+  small { font: inherit; color: var(--text-muted); }
 
   input {
     appearance: none;
@@ -294,8 +297,8 @@ export const PrivacyCopy = styled.div`
       content: "";
       width: 9px;
       height: 5px;
-      border-left: 2px solid #101629;
-      border-bottom: 2px solid #101629;
+      border-left: 2px solid #fff;
+      border-bottom: 2px solid #fff;
       opacity: 0;
       transform: translateY(-2px) rotate(-45deg) scale(0.5);
       transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1), opacity 180ms ease;

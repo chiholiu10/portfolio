@@ -193,21 +193,18 @@ export const Contact = ({ data }: ContactProps) => {
               required
             />
             <FieldHint id="contact-message-hint">
-              <span>{messageLength < 20
-                ? `${20 - messageLength} more characters needed`
-                : null}</span>
-              <span>{2000 - messageCharacters} characters remaining</span>
+              <span>{messageLength === 0
+                ? "20–2,000 characters"
+                : messageLength < 20
+                  ? `${20 - messageLength} more characters needed`
+                  : `${messageCharacters} / 2,000 characters`}</span>
             </FieldHint>
           </Field>
-          <FieldHint style={{ gridColumn: "1 / -1" }}>
-            <span><RequiredMark aria-hidden="true">*</RequiredMark> Required fields</span>
-          </FieldHint>
           <PrivacyCopy>
             <input id="contact-consent" name="consent" type="checkbox" required />
             <label htmlFor="contact-consent">
-              I agree that my details may be stored for up to 30 days to answer
-              this request. Please do not include passwords or other sensitive
-              information.
+              <span>I agree to my details being used to respond.</span>
+              <small>Stored for up to 30 days. Please don’t share passwords or sensitive information.</small>
             </label>
           </PrivacyCopy>
           <FormStatus
