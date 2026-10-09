@@ -1,3 +1,4 @@
+import { Eyebrow } from "@/components/atoms/Eyebrow/Eyebrow";
 import { contactRequestSchema } from "@/lib/contact/validation";
 import type { HomeSections } from "@/lib/content-model";
 import { FormEvent, useState } from "react";
@@ -58,7 +59,6 @@ export const Contact = ({ data, showForm = false }: ContactProps) => {
   const {
     arrays,
     extraText,
-    subtitle,
     title,
   } = section;
 
@@ -67,7 +67,6 @@ export const Contact = ({ data, showForm = false }: ContactProps) => {
     return {
       name: formData.get("name"),
       email: formData.get("email"),
-      company: formData.get("company"),
       subject: formData.get("subject"),
       message: formData.get("message"),
       consent: formData.get("consent") === "on",
@@ -133,7 +132,7 @@ export const Contact = ({ data, showForm = false }: ContactProps) => {
     <ComponentSection id="contact" className="contactComponent">
       {showForm && <ContactGrid>
         <ContactHeader>
-          {subtitle && <span>{subtitle}</span>}
+          {section.eyebrow && <Eyebrow>{section.eyebrow}</Eyebrow>}
           <h2>{title}</h2>
           {extraText && <FormIntro>{extraText}</FormIntro>}
         </ContactHeader>
@@ -172,17 +171,7 @@ export const Contact = ({ data, showForm = false }: ContactProps) => {
               required
             />
           </Field>
-          <Field>
-            <label htmlFor="contact-company">Company <span>optional</span></label>
-            <input
-              id="contact-company"
-              name="company"
-              type="text"
-              autoComplete="organization"
-              maxLength={120}
-            />
-          </Field>
-          <Field>
+          <Field $wide>
             <label htmlFor="contact-subject">Subject <RequiredMark aria-hidden="true">*</RequiredMark></label>
             <input
               id="contact-subject"
@@ -198,7 +187,7 @@ export const Contact = ({ data, showForm = false }: ContactProps) => {
               id="contact-message"
               name="message"
               aria-describedby="contact-message-hint"
-              rows={6}
+              rows={4}
               minLength={20}
               maxLength={2000}
               required

@@ -3,7 +3,7 @@ import Image from "next/image";
 import { breakpoint } from "@/styles/Breakpoint";
 import { AIGlassMorph } from "@/styles/General.styles";
 
-export const ExperienceInnerBlock = styled.div`
+export const InspirationInnerBlock = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -13,13 +13,13 @@ export const ExperienceInnerBlock = styled.div`
     flex-direction: row;
     align-items: center;
     width: calc(100% - 64px);
-    max-width: 1320px;
+    max-width: 1120px;
     margin-top: 150px;
     gap: clamp(40px, 6vw, 80px);
   `}
 `;
 
-export const ExperienceBlockLeft = styled.div`
+export const InspirationBlockLeft = styled.div`
   position: relative;
   display: flex;
   min-width: 0;
@@ -39,7 +39,7 @@ export const ExperienceBlockLeft = styled.div`
   `}
 `;
 
-export const ExperienceBlockRight = styled.div`
+export const InspirationBlockRight = styled.div`
   position: relative;
   margin: 0;
   min-width: 0;
@@ -54,15 +54,15 @@ export const ExperienceBlockRight = styled.div`
   `}
 `;
 
-export const ExperienceFigure = styled.figure``;
+export const InspirationFigure = styled.figure``;
 
-export const ExperienceImage = styled(Image)`
+export const InspirationImage = styled(Image)`
   width: 100%;
   height: auto;
   ${AIGlassMorph}
 `;
 
-export const ExperienceContent = styled.div`
+export const InspirationContent = styled.div`
   max-width: 680px;
   margin: 0 auto;
   color: var(--text-body);
@@ -72,13 +72,13 @@ export const ExperienceContent = styled.div`
   letter-spacing: 0.008em;
   text-align: center;
   text-wrap: pretty;
-  padding: 20px;
+  padding: 0;
   ${breakpoint.md`
     margin: 0;
     font-size: var(--font-body);
   `}
   ${breakpoint.md`
     text-align: left;
-    padding-left: 50px;
+    padding-left: 0;
   `}
 `;

@@ -1,3 +1,4 @@
+import { Eyebrow } from "@/components/atoms/Eyebrow/Eyebrow";
 import type { HomeSections } from "@/lib/content-model";
 import { BannerLogo } from "@/components/atoms/Avatar/Avatar";
 import { Hero, HeroCopy, HeroActions, HeroVisual, VisualCaption, Approach } from "@/components/organisms/Banner/Banner.styles";
@@ -14,7 +15,7 @@ export const Banner = ({ data }: BannerProps) => {
     <>
     <Hero id="banner" className="bannerComponent">
       <HeroCopy>
-        <p>{section.extraText || "Design × Engineering"}</p>
+        {section.eyebrow && <Eyebrow>{section.eyebrow}</Eyebrow>}
         <h1>{section.title}</h1>
         <p className="hero-description">{introduction}</p>
         <HeroActions>
@@ -29,7 +30,10 @@ export const Banner = ({ data }: BannerProps) => {
     </Hero>
     {approach && (
       <Approach id="approach" aria-labelledby="approach-title">
-        <h2 id="approach-title">My approach</h2>
+        <div className="approach-heading">
+          {section.approachEyebrow && <Eyebrow>{section.approachEyebrow}</Eyebrow>}
+          <h2 id="approach-title">My approach</h2>
+        </div>
         <p>{approach}</p>
       </Approach>
     )}

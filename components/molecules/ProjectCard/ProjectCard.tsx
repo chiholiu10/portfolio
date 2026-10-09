@@ -11,7 +11,7 @@ export const ProjectCard = ({ project }: { project: PortfolioProject; extraText?
         alt={`${project.title} frontend project`}
         width={700}
         height={394}
-        sizes="(max-width: 767px) calc(100vw - 40px), 390px"
+        sizes="(max-width: 600px) calc(100vw - 40px), (max-width: 1024px) 46vw, (max-width: 1184px) 30vw, 358px"
         quality={65}
         loading="lazy"
       />

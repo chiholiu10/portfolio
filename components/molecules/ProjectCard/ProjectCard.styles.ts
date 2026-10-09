@@ -23,12 +23,10 @@ export const PortfolioBlock = styled.div`
 export const PortfolioCard = styled.article`
   box-sizing: border-box;
   overflow: hidden;
-  width: min(390px, calc((100vw - 128px) / 3));
+  width: 100%;
   margin: 0;
 
-  @media (max-width: 850px) {
-    width: min(390px, calc(100vw - 40px));
-  }
+
 `;
 
 export const PortfolioCardFooter = styled.div`

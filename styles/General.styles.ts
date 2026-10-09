@@ -103,7 +103,7 @@ export const ComponentSection = styled.section<ComponentSectionProps>`
       padding-top: 180px;
     `}
   }
-  &.experienceComponent {
+  &.inspirationComponent {
     position: relative;
 
     img {
@@ -187,7 +187,7 @@ export const DisplayFlex = styled.div`
   display: flex;
   flex-wrap: wrap;
   box-sizing: border-box;
-  width: min(1320px, calc(100% - 64px));
+  width: min(1120px, calc(100% - 64px));
   padding-bottom: 180px;
   margin-left: auto;
   margin-right: auto;
@@ -232,7 +232,7 @@ export const ComponentRow = styled.div`
     align-content: space-around;
   `}
   ${breakpoint.lg`
-    max-width: 1320px;
+    max-width: 1120px;
     gap: 40px;
   `}
 `;

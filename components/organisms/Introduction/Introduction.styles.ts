@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { breakpoint } from "@/styles/Breakpoint";
+import { DisplayFlex } from "@/styles/General.styles";
 import {
   OrbitArtwork,
   OrbitCardAccent,
@@ -7,11 +7,21 @@ import {
   OrbitSurface,
 } from "@/components/atoms/OrbitSurface/OrbitCard.styles";
 
+export const IntroGrid = styled(DisplayFlex)`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 348px));
+  grid-auto-rows: 1fr;
+  align-items: stretch;
+  > div { display: flex; min-width: 0; }
+  @media (max-width: 388px) { grid-template-columns: minmax(0, 1fr); }
+`;
+
 export const IntroBlock = styled(OrbitSurface)`
-  width: min(300px, calc(100vw - 40px));
-  min-height: 220px;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 268px;
   padding: 24px;
-  ${breakpoint.md`width: 300px;`}
 `;
 
 export const OrbitVisual = OrbitArtwork;

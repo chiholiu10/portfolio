@@ -3,7 +3,7 @@ export const sectionIds = {
   banner: "7wNcHAAqxL2cunkRCCxW4o",
   introduction: "4DIoyNagIFWzKfhGrtKUXB",
   howIWork: "howIWorkSection",
-  experience: "2c3zCPqbJcXzcaM2bYTp52",
+  inspiration: "2c3zCPqbJcXzcaM2bYTp52",
   portfolio: "2qFy05XNAe3Ho1CmJiAgbO",
   tools: "2FzwztBT4JTZm5icaV1tlb",
   contact: "6pPYUtgRlvgICxNf4Dhei",

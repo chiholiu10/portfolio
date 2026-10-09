@@ -4,7 +4,7 @@ import { CareerAgent } from "@/components/organisms/CareerAgent/CareerAgent";
 import { Contact } from "@/components/organisms/Contact/Contact";
 import { Banner } from "@/components/organisms/Banner/Banner";
 import { HowIWork } from "@/components/organisms/HowIWork/HowIWork";
-import { Experience } from "@/components/organisms/Experience/Experience";
+import { Inspiration } from "@/components/organisms/Inspiration/Inspiration";
 import { Footer } from "@/components/organisms/Footer/Footer";
 import { Introduction } from "@/components/organisms/Introduction/Introduction";
 import { Navbar } from "@/components/organisms/Navbar/Navbar";
@@ -31,7 +31,7 @@ export function HomeTemplate({ sections, isProduction }: HomeTemplateProps) {
       <Banner data={sections.banner} />
       <Introduction data={sections.introduction} />
       <HowIWork data={sections.howIWork} />
-      <Experience data={sections.experience} />
+      <Inspiration data={sections.inspiration} />
       <Portfolio data={sections.portfolio} />
       <Tools data={sections.tools} />
       <Contact data={sections.contact} showForm={!isProduction} />

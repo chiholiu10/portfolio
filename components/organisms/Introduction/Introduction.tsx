@@ -2,7 +2,6 @@ import type { HomeSections } from "@/lib/content-model";
 import { SectionHeading } from "@/components/molecules/SectionHeading/SectionHeading";
 import {
   ComponentSection,
-  DisplayFlex,
 } from "@/styles/General.styles";
 import {
   StaggerGroup,
@@ -11,6 +10,7 @@ import {
 import {
   CardFoot,
   IntroBlock,
+  IntroGrid,
   IntroBlockCenter,
   IntroSubTitle,
   IntroTitle,
@@ -30,9 +30,9 @@ export const Introduction = ({ data }: IntroductionProps) => {
 
   return (
     <ComponentSection id="introduction">
-      <SectionHeading id="introduction-section" title={title} subtitle={subtitle} />
+      <SectionHeading id="introduction-section" title={title} subtitle={subtitle} eyebrow={section.eyebrow} />
       <StaggerGroup>
-        <DisplayFlex>
+        <IntroGrid>
           {arrays?.map((item, index) => (
             <StaggerItem key={index}>
               <IntroBlock $index={index}>
@@ -45,7 +45,7 @@ export const Introduction = ({ data }: IntroductionProps) => {
               </IntroBlock>
             </StaggerItem>
           ))}
-        </DisplayFlex>
+        </IntroGrid>
       </StaggerGroup>
     </ComponentSection>
   );

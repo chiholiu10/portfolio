@@ -46,7 +46,7 @@ export const Tools = ({ data }: ToolsProps) => {
 
   return (
     <ComponentSection>
-      <SectionHeading id="tools-section" title={title} subtitle={subtitle} />
+      <SectionHeading id="tools-section" title={title} subtitle={subtitle} eyebrow={section.eyebrow} />
       <StaggerGroup>
         {categories.map((category) => (
           <ToolsCategory key={category.title}>

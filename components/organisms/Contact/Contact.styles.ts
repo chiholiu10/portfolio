@@ -51,6 +51,7 @@ export const ContactBlock = styled.div`
 `;
 
 export const ContactBlockAnchor = styled.a`
+  color: var(--accent);
   font-size: 36px;
   display: flex;
   cursor: pointer;
@@ -94,6 +95,7 @@ export const ContactBlockAnchor = styled.a`
   }
   &:hover {
     @media (hover: hover) and (pointer: fine) {
+      color: #125667;
       box-shadow: 0 10px 28px rgba(23, 51, 65, 0.14);
       ${ContactSVG} {
       }
@@ -115,17 +117,17 @@ export const ContactContainer = styled.div`
 
 export const ContactGrid = styled.div`
   display: grid;
-  width: min(1320px, calc(100% - 64px));
+  width: min(1120px, calc(100% - 64px));
   margin: 0 auto;
-  padding-top: clamp(90px, 12vw, 160px);
-  gap: clamp(36px, 7vw, 88px);
+  padding-top: clamp(64px, 8vw, 96px);
+  gap: clamp(28px, 4vw, 52px);
 
   @media (max-width: 850px) {
     width: calc(100% - 40px);
   }
 
   ${breakpoint.md`
-    grid-template-columns: minmax(260px, 0.72fr) minmax(480px, 1.28fr);
+    grid-template-columns: minmax(240px, 1fr) minmax(0, 520px);
     align-items: start;
   `}
 `;
@@ -145,7 +147,7 @@ export const ContactHeader = styled.header`
     margin: 16px 0 20px;
     color: var(--text-heading);
     font-size: var(--font-section);
-    line-height: 0.9;
+    line-height: 1.12;
     letter-spacing: -0.065em;
   }
 
@@ -167,15 +169,22 @@ export const ContactForm = styled.form`
   display: grid;
   box-sizing: border-box;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 22px 18px;
-  padding: clamp(24px, 4vw, 42px);
+  width: 100%;
+  max-width: 520px;
+  justify-self: end;
+  gap: 24px 24px;
+  padding: clamp(28px, 3vw, 34px);
   border: 1px solid rgba(98, 215, 255, 0.18);
-  border-radius: 26px;
+  border-radius: 20px;
   background:
     radial-gradient(circle at 100% 0, rgba(var(--accent-rgb), 0.12), transparent 34%),
     rgba(255, 255, 255, 0.94);
   box-shadow: 0 30px 90px rgba(23, 51, 65, 0.10);
   backdrop-filter: blur(20px);
+
+  @media (max-width: 767px) {
+    justify-self: center;
+  }
 
   @media (max-width: 620px) {
     grid-template-columns: 1fr;
@@ -219,13 +228,13 @@ export const Field = styled.div<{ $wide?: boolean }>`
   }
 
   input {
-    min-height: 48px;
-    padding: 0 14px;
+    min-height: 44px;
+    padding: 0 16px;
   }
 
   textarea {
-    min-height: 148px;
-    padding: 14px;
+    min-height: 104px;
+    padding: 14px 16px;
     resize: vertical;
   }
 
@@ -314,18 +323,18 @@ export const SubmitButton = styled.button`
   align-items: center;
   justify-content: center;
   gap: 20px;
-  min-width: 190px;
-  min-height: 52px;
+  min-width: 168px;
+  min-height: 44px;
   padding: 0 18px;
-  border: 1px solid #ffff00;
+  border: 1px solid var(--accent);
   border-radius: 12px;
-  color: #04101a;
-  background: #ffff00;
+  color: #fff;
+  background: var(--accent);
   font-size: var(--font-small);
   font-weight: 800;
   cursor: pointer;
   transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1), background 280ms ease, opacity 220ms ease;
-  &:hover:not(:disabled) { transform: translateY(-2px); }
+  &:hover:not(:disabled) { background: #125667; transform: translateY(-2px); }
   @media (prefers-reduced-motion: reduce) {
     transition: none;
     &:hover:not(:disabled) { transform: none; }
@@ -340,12 +349,12 @@ export const SubmitButton = styled.button`
   svg { flex-shrink: 0; }
 
   &:focus-visible {
-    box-shadow: 0 0 32px rgba(255, 212, 59, 0.24);
+    box-shadow: 0 0 0 3px rgba(22, 105, 122, 0.18);
     transform: translateY(-2px);
   }
 
   &:focus-visible {
-    outline: 2px solid #fff;
+    outline: 2px solid var(--accent);
     outline-offset: 3px;
   }
 

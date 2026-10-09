@@ -1,12 +1,9 @@
+import styled from "styled-components";
 import type { HomeSections } from "@/lib/content-model";
 import { SectionHeading } from "@/components/molecules/SectionHeading/SectionHeading";
-import { m, useScroll, useTransform } from "motion/react";
-import Image from "next/image";
 import { createPortfolioProjects } from "@/lib/portfolio-projects";
 import {
-  BackgroundImage,
   ComponentSection,
-  DisplayFlex,
 } from "@/styles/General.styles";
 import {
   StaggerItem,
@@ -14,12 +11,28 @@ import {
 } from "@/components/atoms/Motion";
 import { ProjectCard } from "@/components/molecules/ProjectCard/ProjectCard";
 
+const PortfolioSection = styled(ComponentSection)`
+  min-height: auto;
+  padding-bottom: 64px;
+`;
+const PortfolioGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 40px;
+  width: min(1120px, calc(100% - 64px));
+  margin: 0 auto;
+  > div { min-width: 0; }
+  @media (min-width: 601px) and (max-width: 1024px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px;
+  }
+  @media (max-width: 850px) { width: calc(100% - 40px); }
+  @media (max-width: 600px) { grid-template-columns: 1fr; gap: 24px; }
+`;
+
 type PortfolioProps = { data: HomeSections["portfolio"] };
 
 export const Portfolio = ({ data }: PortfolioProps) => {
-  const { scrollY } = useScroll();
-  const y2 = useTransform(scrollY, [0, 7000], [1, -1000]);
-
   const { section } = data;
 
   if (!section) {
@@ -30,32 +43,17 @@ export const Portfolio = ({ data }: PortfolioProps) => {
   const projects = createPortfolioProjects(array, arrays);
 
   return (
-    <ComponentSection id="portfolio" className="portfolioComponent">
-      <m.div style={{ y: y2, x: 0 }}>
-        <BackgroundImage $left="60%">
-          <Image
-            src={
-              "https://res.cloudinary.com/dh7tnzzxm/image/upload/v1651443884/circle_effect_8ce52c0de3.png"
-            }
-            width={612}
-            height={612}
-            sizes="(min-width: 768px) 40vw, 1px"
-            style={{ width: "100%", height: "auto" }}
-            loading="lazy"
-            alt="background-image-effect"
-          />
-        </BackgroundImage>
-      </m.div>
-      <SectionHeading id="portfolio-section" title={title} subtitle={subtitle} />
+    <PortfolioSection id="portfolio" className="portfolioComponent">
+      <SectionHeading id="portfolio-section" title={title} subtitle={subtitle} eyebrow={section.eyebrow} />
       <StaggerGroup>
-        <DisplayFlex>
+        <PortfolioGrid>
           {projects.map((project) => (
             <StaggerItem key={project.id}>
               <ProjectCard project={project} extraText={extraText} />
             </StaggerItem>
           ))}
-        </DisplayFlex>
+        </PortfolioGrid>
       </StaggerGroup>
-    </ComponentSection>
+    </PortfolioSection>
   );
 };

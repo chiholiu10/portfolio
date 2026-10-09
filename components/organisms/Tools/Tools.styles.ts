@@ -28,7 +28,7 @@ export const ToolsBlock = styled(OrbitSurface)`
 export const ToolsCategory = styled.section`
   box-sizing: border-box;
   width: calc(100% - 64px);
-  max-width: 1320px;
+  max-width: 1120px;
   margin: 18px auto 0;
   padding: clamp(20px, 3vw, 28px);
   border: 1px solid rgba(255, 255, 255, 0.08);

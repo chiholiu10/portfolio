@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Hero = styled.section`
-  width: min(1320px, calc(100% - 64px));
+  width: min(1120px, calc(100% - 64px));
   margin: 0 auto;
   padding: 156px 0 80px;
   display: grid;
@@ -16,14 +16,7 @@ export const Hero = styled.section`
   }
 `;
 export const HeroCopy = styled.div`
-  > p:first-child {
-    color: var(--accent);
-    font-size: var(--font-label);
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    margin-bottom: 24px;
-  }
+  > p:first-child { margin-bottom: 16px; }
   h1 {
     color: var(--text-heading);
     font-size: var(--font-hero);
@@ -32,6 +25,9 @@ export const HeroCopy = styled.div`
     letter-spacing: -0.035em;
     margin: 0 0 28px;
     max-width: 730px;
+    @media (min-width: 1025px) {
+      font-size: clamp(40px, 4vw, 56px);
+    }
   }
   .hero-description {
     color: var(--text-body);
@@ -113,13 +109,17 @@ export const VisualCaption = styled.div`
 
 export const Approach = styled.section`
   display: grid;
-  grid-template-columns: 0.65fr 1.35fr;
-  gap: 48px;
-  width: min(1320px, calc(100% - 64px));
+  grid-template-columns: 1fr;
+  gap: 20px;
+  align-items: start;
+  width: min(1120px, calc(100% - 64px));
   margin: 0 auto 64px;
   padding: 48px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  border-top: 1px solid rgba(var(--accent-rgb), 0.14);
+  .approach-heading { min-width: 0; }
+  .approach-heading > p { margin-bottom: 16px; }
   h2 {
+    text-align: left;
     margin: 0;
     font-size: var(--font-section);
     line-height: 1.1;
@@ -127,11 +127,11 @@ export const Approach = styled.section`
     color: var(--text-heading);
     font-weight: 600;
   }
-  p { margin: 0; max-width: 65ch; color: var(--text-body); font-size: var(--font-body); line-height: 1.7; }
-  @media (max-width: 700px) {
+  > p { margin: 0; max-width: 65ch; color: var(--text-body); font-size: var(--font-body); line-height: 1.7; }
+  @media (max-width: 850px) {
     width: calc(100% - 40px);
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: 20px;
     padding: 32px 0;
   }
 `;

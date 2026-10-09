@@ -9,8 +9,8 @@ describe("CMS content contracts", () => {
   });
 
   it("rejects invalid content with a useful field path, without logging content values", () => {
-    expect(() => parseHomeSection("experience", { section: { subtitle: "Private content", image: null } }))
-      .toThrow("Invalid Contentful experience section: section.image");
+    expect(() => parseHomeSection("inspiration", { section: { subtitle: "Private content", image: null } }))
+      .toThrow("Invalid Contentful inspiration section: section.image");
   });
 
   it("rejects duplicate project IDs and image matches", () => {
@@ -22,6 +22,6 @@ describe("CMS content contracts", () => {
   });
 
   it("rejects images outside the configured hosts", () => {
-    expect(() => parseHomeSection("experience", { section: { subtitle: "Work", image: { url: "https://example.com/image.png" } } })).toThrow();
+    expect(() => parseHomeSection("inspiration", { section: { subtitle: "Work", image: { url: "https://example.com/image.png" } } })).toThrow();
   });
 });

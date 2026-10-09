@@ -5,7 +5,7 @@ const LineColor = css`
   position: absolute;
   top: 0;
   height: 1px;
-  width: min(1320px, calc(100% - 64px));
+  width: min(1120px, calc(100% - 64px));
   background: linear-gradient(
     90deg,
     transparent,
