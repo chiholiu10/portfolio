@@ -1,3 +1,4 @@
+import { useSkipEntrance } from "@/components/atoms/Motion/RevealSession";
 import { m } from "motion/react";
 import { premiumEase } from "@/components/atoms/Motion/motion.config";
 
@@ -7,6 +8,7 @@ interface WordRevealProps {
 }
 
 export const WordReveal = ({ text = "" }: WordRevealProps) => {
+  const skip = useSkipEntrance();
   if (!text) return null;
 
   const words = text.split(" ");
@@ -16,6 +18,7 @@ export const WordReveal = ({ text = "" }: WordRevealProps) => {
         <m.span
           key={i}
           initial={{ opacity: 0, y: 9 }}
+          animate={skip ? { opacity: 1, y: 0 } : undefined}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{
             once: true,
@@ -23,8 +26,8 @@ export const WordReveal = ({ text = "" }: WordRevealProps) => {
             margin: "-80px 0px -80px 0px",
           }}
           transition={{
-            duration: 0.56,
-            delay: Math.min(i * 0.018, 0.38),
+            duration: skip ? 0 : 0.56,
+            delay: skip ? 0 : Math.min(i * 0.018, 0.38),
             ease: premiumEase,
           }}
           style={{

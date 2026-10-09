@@ -1,9 +1,12 @@
+import { useSkipEntrance } from "@/components/atoms/Motion/RevealSession";
 import { m } from "motion/react";
 
 export const StaggerGroup = ({ children, stagger = 0.08 }) => {
+  const skip = useSkipEntrance();
   return (
     <m.div
       initial="hidden"
+      animate={skip ? "visible" : undefined}
       whileInView="visible"
       viewport={{
         once: true,
@@ -14,8 +17,8 @@ export const StaggerGroup = ({ children, stagger = 0.08 }) => {
         hidden: {},
         visible: {
           transition: {
-            staggerChildren: stagger,
-            delayChildren: 0.04,
+            staggerChildren: skip ? 0 : stagger,
+            delayChildren: skip ? 0 : 0.04,
           },
         },
       }}

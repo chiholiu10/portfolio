@@ -1,4 +1,5 @@
-import { m } from "motion/react";
+import { useSkipEntrance } from "@/components/atoms/Motion/RevealSession";
+import { m, useReducedMotion } from "motion/react";
 import { useInView } from "react-intersection-observer";
 import { ContactSVG } from "@/components/atoms/ContactSvg/Contact.styles";
 import { premiumEase } from "@/components/atoms/Motion/motion.config";
@@ -11,22 +12,23 @@ type ContactSvgProps = {
 };
 
 export const ContactSvg = ({ index, icon }: ContactSvgProps) => {
-  const [ref, inView] = useInView();
+  const [ref, inView] = useInView({ triggerOnce: true });
+  const prefersReducedMotion = useReducedMotion();
+  const skip = useSkipEntrance();
+  const reduceMotion = prefersReducedMotion || skip;
 
   const iconPath = icon?.[index]?.[index];
 
   const svgProperties = {
-    initial: { pathLength: 0 },
-    animate: inView ? { pathLength: 1 } : { pathLength: 0 },
-    viewport: { once: true },
+    initial: { pathLength: reduceMotion ? 1 : 0 },
+    animate: { pathLength: inView || reduceMotion ? 1 : 0 },
     fill: "transparent",
     strokeWidth: 13,
-    whileInView: "visible",
-    stroke: "rgb(56, 189, 248)",
+    stroke: "currentColor",
     transition: {
-      duration: 1.05,
+      duration: reduceMotion ? 0 : 1.05,
       ease: premiumEase,
-      delay: index * 0.035,
+      delay: reduceMotion ? 0 : index * 0.035,
     },
   };
 

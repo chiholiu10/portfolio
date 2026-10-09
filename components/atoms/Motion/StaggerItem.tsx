@@ -1,7 +1,9 @@
+import { useSkipEntrance } from "@/components/atoms/Motion/RevealSession";
 import { m } from "motion/react";
 import { premiumEase } from "@/components/atoms/Motion/motion.config";
 
 export const StaggerItem = ({ children }) => {
+  const skip = useSkipEntrance();
   return (
     <m.div
       variants={{
@@ -17,7 +19,7 @@ export const StaggerItem = ({ children }) => {
         },
       }}
       transition={{
-        duration: 0.72,
+        duration: skip ? 0 : 0.72,
         ease: premiumEase,
       }}
       style={{

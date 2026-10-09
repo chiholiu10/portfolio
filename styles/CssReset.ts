@@ -103,7 +103,7 @@ export const CSSreset = createGlobalStyle`
       color: ${theme.colors.white};
       max-width: 100vw;
       color: #173341;
-      background: radial-gradient(ellipse at 15% 0%, #d9e9ee, transparent 55%), #f4f7f8;
+      background: #f4f7f8;
 
     }
 
