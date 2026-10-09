@@ -26,6 +26,17 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [{
+      source: "/project/tours-tickets-dashboard",
+      destination: "/project/moments-dashboard",
+      permanent: true,
+    }, {
+      source: "/project/portfolio-showcase",
+      destination: "/project/vodafoneziggo",
+      permanent: true,
+    }];
+  },
   async headers() {
     const developmentScripts =
       process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : "";
