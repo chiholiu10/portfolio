@@ -11,10 +11,10 @@ export const InspirationInnerBlock = styled.div`
 
   ${breakpoint.lg`
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     width: calc(100% - 64px);
     max-width: 1120px;
-    margin-top: 150px;
+    margin-top: 0;
     gap: clamp(40px, 6vw, 80px);
   `}
 `;
@@ -54,7 +54,9 @@ export const InspirationBlockRight = styled.div`
   `}
 `;
 
-export const InspirationFigure = styled.figure``;
+export const InspirationFigure = styled.figure`
+  margin: 0;
+`;
 
 export const InspirationImage = styled(Image)`
   width: 100%;
