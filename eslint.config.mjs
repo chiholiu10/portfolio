@@ -1,36 +1,15 @@
-import { fixupConfigRules } from "@eslint/compat";
-import { FlatCompat } from "@eslint/eslintrc";
-import { fileURLToPath } from "node:url";
+import nextConfig from "eslint-config-next";
+import prettierConfig from "eslint-config-prettier";
 import js from "@eslint/js";
-import typescriptEslint from "@typescript-eslint/eslint-plugin";
-import tsParser from "@typescript-eslint/parser";
 import globals from "globals";
-import path from "node:path";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-});
-
-export default [
+const config = [
   { ignores: [".next/**", "next-env.d.ts"] },
   { settings: { "import/resolver": { typescript: { project: "./tsconfig.json" } } } },
-  ...fixupConfigRules(
-    compat.extends(
-      "next",
-      "prettier",
-      "airbnb-base",
-      "eslint:recommended",
-      "plugin:import/typescript",
-    ),
-  ),
+  ...nextConfig,
+  js.configs.recommended,
+  prettierConfig,
   {
-    plugins: {
-      "@typescript-eslint": typescriptEslint,
-    },
     files: ["**/*.{ts,tsx,js}"],
     languageOptions: {
       globals: {
@@ -39,7 +18,6 @@ export default [
         Atomics: "readonly",
         SharedArrayBuffer: "readonly",
       },
-      parser: tsParser,
       ecmaVersion: 2018,
       sourceType: "module",
     },
@@ -62,6 +40,7 @@ export default [
       "import/newline-after-import": ["error", { count: 1 }],
       "import/no-unresolved": [2, { caseSensitive: false }],
       "import/extensions": "off",
+      "no-nested-ternary": "error",
       "no-console": ["error", { allow: ["error"] }],
       "import/prefer-default-export": "off",
       quotes: ["error", "double"],
@@ -98,3 +77,5 @@ export default [
     },
   })),
 ];
+
+export default config;

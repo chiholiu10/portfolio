@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import Image from "next/image";
-import Link from "next/link";
 import { NavbarInnerComponent } from "@/components/organisms/Navbar/Navbar.styles";
 
 export const ProjectNavigation = styled(NavbarInnerComponent)`
@@ -19,19 +18,6 @@ export const ProjectContainer = styled.div`
   margin: 0 auto;
   padding: 156px 0 100px;
   @media (max-width: 850px) { width: calc(100% - 40px); padding-top: 124px; }
-`;
-
-export const BackLink = styled(Link)`
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--text-heading);
-  font-size: var(--font-small);
-  font-weight: 650;
-  text-decoration: none;
-  transition: color 280ms ease;
-  &:hover { color: var(--accent); }
-  &:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 `;
 
 export const ProjectHero = styled.header`

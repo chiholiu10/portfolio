@@ -276,23 +276,26 @@ export const CareerAgent = ({ portfolioProjects = [] }: CareerAgentProps) => {
   const shouldStickToBottom = useRef(true);
 
   useEffect(() => {
-    const storedChat = restoreStoredChat();
+    const frame = requestAnimationFrame(() => {
+      const storedChat = restoreStoredChat();
 
-    if (storedChat) {
-      sessionId.current = storedChat.sessionId;
-      setMessages(storedChat.messages);
-    } else {
-      sessionId.current = createSessionId();
-    }
+      if (storedChat) {
+        sessionId.current = storedChat.sessionId;
+        setMessages(storedChat.messages);
+      } else {
+        sessionId.current = createSessionId();
+      }
 
-    // Remove data created by the retired 24-hour persistence option.
-    try {
-      window.localStorage.removeItem(CHAT_STORAGE_KEY);
-    } catch {
-      // Browser storage can be unavailable in strict privacy modes.
-    }
+      // Remove data created by the retired 24-hour persistence option.
+      try {
+        window.localStorage.removeItem(CHAT_STORAGE_KEY);
+      } catch {
+        // Browser storage can be unavailable in strict privacy modes.
+      }
 
-    setIsChatHydrated(true);
+      setIsChatHydrated(true);
+    });
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   useEffect(() => {
@@ -557,7 +560,9 @@ export const CareerAgent = ({ portfolioProjects = [] }: CareerAgentProps) => {
       setIsLoading(false);
     }
   };
-  sendMessageRef.current = sendMessage;
+  useEffect(() => {
+    sendMessageRef.current = sendMessage;
+  });
 
   useEffect(() => {
     const selectPortfolioProject = (event: Event) => {

@@ -11,13 +11,12 @@ export const RevealSessionProvider = ({ children }: { children: ReactNode }) => 
     const navigation = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
     let saved = 0;
     try { saved = Number(sessionStorage.getItem(key)) || 0; } catch { /* Storage may be disabled. */ }
-    if (window.scrollY > 0 || ((navigation?.type === "reload" || navigation?.type === "back_forward") && saved > 0)) {
-      setSkip(true);
-    }
     const save = () => {
       try { sessionStorage.setItem(key, String(window.scrollY)); } catch { /* Storage may be disabled. */ }
     };
-    const restore = () => { if (window.scrollY > 0) setSkip(true); };
+    const restore = () => {
+      if (window.scrollY > 0 || ((navigation?.type === "reload" || navigation?.type === "back_forward") && saved > 0)) setSkip(true);
+    };
     window.addEventListener("scroll", save, { passive: true });
     window.addEventListener("pagehide", save);
     window.addEventListener("pageshow", restore);

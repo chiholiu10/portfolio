@@ -30,7 +30,7 @@ const hoverStyles = `
 const durations = [6.3, 7.8, 6.9, 8.6];
 const delays = [-2.1, -5.7, -1.3, -4.4];
 
-export const ContactBlock = styled.div`
+export const ContactBlock = styled.div<{ $index: number }>`
   animation-name: ${float};
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;

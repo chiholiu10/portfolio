@@ -22,8 +22,7 @@
     "removeComments": true,
     "types": [
       "node",
-      "jest",
-      "@testing-library/jest-dom"
+      "jest"
     ],
     "plugins": [
       {

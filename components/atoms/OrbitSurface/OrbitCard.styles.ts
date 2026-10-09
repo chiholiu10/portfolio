@@ -26,14 +26,6 @@ export const OrbitingPlanet = styled.span<{ $index: number }>`
   display: none;
 `;
 
-export const OrbitCardNumber = styled.span`
-  position: relative;
-  z-index: 3;
-  color: var(--text-muted);
-  font-size: var(--font-label);
-  font-weight: 700;
-`;
-
 export const OrbitCardAccent = styled.span`
   display: none;
 `;

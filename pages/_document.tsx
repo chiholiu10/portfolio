@@ -34,7 +34,6 @@ export default class MyDocument extends Document {
   }
 
   // Next.js requires this instance render method for custom Documents.
-  // eslint-disable-next-line class-methods-use-this
   render() {
     return (
       <Html lang="en-NL">

@@ -1,4 +1,3 @@
-/* eslint-disable no-await-in-loop, no-console, no-continue, no-restricted-syntax */
 import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';

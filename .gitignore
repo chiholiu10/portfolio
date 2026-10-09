@@ -36,3 +36,6 @@ yarn-error.log*
 knowledge/*.md
 !knowledge/README.md
 !knowledge/*.example.md
+
+# TypeScript build cache
+*.tsbuildinfo
