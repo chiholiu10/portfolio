@@ -23,9 +23,9 @@ import {
   SubmitButton,
 } from "@/components/organisms/Contact/Contact.styles";
 
-type ContactProps = { data: HomeSections["contact"]; showForm?: boolean };
+type ContactProps = { data: HomeSections["contact"] };
 
-export const Contact = ({ data, showForm = false }: ContactProps) => {
+export const Contact = ({ data }: ContactProps) => {
   const [status, setStatus] = useState<
     "idle" | "sending" | "success" | "error"
   >("idle");
@@ -130,7 +130,7 @@ export const Contact = ({ data, showForm = false }: ContactProps) => {
 
   return (
     <ComponentSection id="contact" className="contactComponent">
-      {showForm && <ContactGrid>
+      <ContactGrid>
         <ContactHeader>
           {section.eyebrow && <Eyebrow>{section.eyebrow}</Eyebrow>}
           <h2>{title}</h2>
@@ -233,9 +233,9 @@ export const Contact = ({ data, showForm = false }: ContactProps) => {
             </span>
           </SubmitButton>
         </ContactForm>
-      </ContactGrid>}
+      </ContactGrid>
 
-      <SocialLabel>{showForm ? "Or find me here" : "Find me here"}</SocialLabel>
+      <SocialLabel>Or find me here</SocialLabel>
       <StaggerGroup>
         <ContactContainer>
           {arrays.map((item, index) => (
