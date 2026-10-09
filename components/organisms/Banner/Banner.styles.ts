@@ -91,22 +91,6 @@ export const HeroVisual = styled.div`
   }
   @media (max-width: 850px) { width: 100%; min-height: 252px; .profile-avatar { max-width: 294px; } }
 `;
-export const VisualCaption = styled.div`
-  position: absolute;
-  bottom: 24px;
-  left: 24px;
-  right: 24px;
-  z-index: 2;
-  padding-top: 16px;
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  color: var(--text-heading);
-  font-size: var(--font-label);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-`;
-
 export const Approach = styled.section`
   display: grid;
   grid-template-columns: 1fr;

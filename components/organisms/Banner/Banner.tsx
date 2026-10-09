@@ -1,7 +1,7 @@
 import { Eyebrow } from "@/components/atoms/Eyebrow/Eyebrow";
 import type { HomeSections } from "@/lib/content-model";
 import { BannerLogo } from "@/components/atoms/Avatar/Avatar";
-import { Hero, HeroCopy, HeroActions, HeroVisual, VisualCaption, Approach } from "@/components/organisms/Banner/Banner.styles";
+import { Hero, HeroCopy, HeroActions, HeroVisual, Approach } from "@/components/organisms/Banner/Banner.styles";
 
 type BannerProps = { data: HomeSections["banner"] };
 
@@ -25,7 +25,6 @@ export const Banner = ({ data }: BannerProps) => {
       </HeroCopy>
       <HeroVisual>
         <BannerLogo />
-        <VisualCaption><span>Chiho Liu</span><span>Frontend · UX · AI</span></VisualCaption>
       </HeroVisual>
     </Hero>
     {approach && (

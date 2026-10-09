@@ -56,7 +56,7 @@ export function ProjectTemplate({ project }: ProjectTemplateProps) {
             <BrandOrbit aria-hidden="true">CL</BrandOrbit>
             <span className="brand-copy">
               <span className="brand">Chiho Liu</span>
-              <span className="role">Front-end × UX</span>
+              <span className="role">Front-end × UX × AI</span>
             </span>
           </NavbarInnerBlock>
           <div className="nav-links"><Link href="/">← Homepage</Link><Link href="/#contact">Let’s talk</Link></div>
