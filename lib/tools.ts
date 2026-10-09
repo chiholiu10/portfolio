@@ -8,6 +8,8 @@ export const additionalTools: ToolItem[] = [
   { title: "GitHub", url: "/tools/github.svg" },
   { title: "GitLab", url: "/tools/gitlab.svg" },
   { title: "Node.js", url: "/tools/nodejs.svg" },
+  { title: "Supabase", url: "/tools/supabase.svg" },
+  { title: "PostgreSQL", url: "/tools/postgresql.svg" },
 ];
 
 export const normalizeToolName = (title?: string | null) =>
@@ -39,4 +41,3 @@ export const groupTools = (items: ToolItem[], toolCategories: ToolCategory[]) =>
 
   return categories;
 };
-
