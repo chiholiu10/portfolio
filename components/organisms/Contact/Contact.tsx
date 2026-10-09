@@ -33,6 +33,9 @@ export const Contact = ({ data }: ContactProps) => {
   const [isValid, setIsValid] = useState(false);
   const [messageLength, setMessageLength] = useState(0);
   const [messageCharacters, setMessageCharacters] = useState(0);
+  let messageHint = `${messageCharacters} / 2,000 characters`;
+  if (messageLength === 0) messageHint = "20–2,000 characters";
+  else if (messageLength < 20) messageHint = `${20 - messageLength} more characters needed`;
   const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL || "";
 
   const icon: IconPath[] = [
@@ -193,11 +196,7 @@ export const Contact = ({ data }: ContactProps) => {
               required
             />
             <FieldHint id="contact-message-hint">
-              <span>{messageLength === 0
-                ? "20–2,000 characters"
-                : messageLength < 20
-                  ? `${20 - messageLength} more characters needed`
-                  : `${messageCharacters} / 2,000 characters`}</span>
+              <span>{messageHint}</span>
             </FieldHint>
           </Field>
           <PrivacyCopy>
