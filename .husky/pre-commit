@@ -1,13 +1,3 @@
-echo "🔍 Running Pre-Commit Hooks..."
-
-# Run ESLint before lint-staged to catch broader linting issues
-
-yarn lint || { echo "❌ ESLint failed!"; exit 1; }
-
-# Run lint-staged (only on staged files)
-yarn lint-staged || { echo "❌ Linting failed!"; exit 1; }
-
-# Ensure build works
-yarn run build || { echo "❌ Build failed!"; exit 1; }
-
-echo "✅ Pre-commit checks passed!"
+yarn lint-staged || exit 1
+yarn lint || exit 1
+yarn typecheck || exit 1

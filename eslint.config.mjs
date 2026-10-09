@@ -2,11 +2,19 @@ import nextConfig from "eslint-config-next";
 import prettierConfig from "eslint-config-prettier";
 import js from "@eslint/js";
 import globals from "globals";
+import tsPlugin from "@typescript-eslint/eslint-plugin";
 
 const config = [
-  { ignores: [".next/**", "next-env.d.ts"] },
-  { settings: { "import/resolver": { typescript: { project: "./tsconfig.json" } } } },
+  { ignores: ["**/.next/**", "**/next-env.d.ts"] },
+  {
+    settings: {
+      "import/resolver": {
+        typescript: { project: "./apps/web/tsconfig.json" },
+      },
+    },
+  },
   ...nextConfig,
+  { plugins: { "@typescript-eslint": tsPlugin } },
   js.configs.recommended,
   prettierConfig,
   {
@@ -21,9 +29,9 @@ const config = [
       ecmaVersion: 2018,
       sourceType: "module",
     },
-    ignores: [".next/**", "next-env.d.ts"],
+    ignores: ["**/.next/**", "**/next-env.d.ts"],
     rules: {
-      // ALLES UITGEZET - voor snelle fix
+      // Formatting is handled by Prettier.
       "function-paren-newline": "off",
       "operator-linebreak": "off",
       indent: "off",
@@ -32,7 +40,10 @@ const config = [
       "import/no-extraneous-dependencies": "off",
       "import/order": "off",
       "no-unused-vars": "off",
-      "@typescript-eslint/no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+      ],
       "react-hooks/exhaustive-deps": "warn",
       "no-underscore-dangle": "off",
       "object-curly-newline": "off",
@@ -43,7 +54,7 @@ const config = [
       "no-nested-ternary": "error",
       "no-console": ["error", { allow: ["error"] }],
       "import/prefer-default-export": "off",
-      quotes: ["error", "double"],
+      quotes: ["error", "double", { avoidEscape: true }],
       "max-len": "off",
       "import/no-cycle": "off",
       "no-tabs": "off",
@@ -54,26 +65,67 @@ const config = [
     },
   },
   {
-    files: ["components/**/*.{ts,tsx}"],
+    files: ["**/*.js"],
     rules: {
-      "no-restricted-imports": ["error", {
-        patterns: [{ group: ["**/contentful/**", "@apollo/client", "@apollo/client/**"], message: "Load CMS data in lib/contentful and pass it through page props." }],
-      }],
+      "@typescript-eslint/no-unused-vars": "off",
+      "no-unused-vars": [
+        "error",
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+      ],
+    },
+  },
+  {
+    files: ["apps/web/components/**/*.{ts,tsx}"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: [
+                "**/contentful/**",
+                "@apollo/client",
+                "@apollo/client/**",
+              ],
+              message:
+                "Load CMS data in lib/contentful and pass it through page props.",
+            },
+          ],
+        },
+      ],
     },
   },
   ...[
-    { layer: "atoms", forbidden: ["**/molecules/**", "**/organisms/**", "**/templates/**"] },
+    {
+      layer: "atoms",
+      forbidden: ["**/molecules/**", "**/organisms/**", "**/templates/**"],
+    },
     { layer: "molecules", forbidden: ["**/organisms/**", "**/templates/**"] },
     { layer: "organisms", forbidden: ["**/templates/**"] },
   ].map(({ layer, forbidden }) => ({
-    files: [`components/${layer}/**/*.{ts,tsx}`],
+    files: [`apps/web/components/${layer}/**/*.{ts,tsx}`],
     rules: {
-      "no-restricted-imports": ["error", {
-        patterns: [
-          { group: forbidden, message: "Atomic components may only depend on their own layer and lower layers." },
-          { group: ["**/contentful/**", "@apollo/client", "@apollo/client/**"], message: "Load CMS data in lib/contentful and pass it through page props." },
-        ],
-      }],
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: forbidden,
+              message:
+                "Atomic components may only depend on their own layer and lower layers.",
+            },
+            {
+              group: [
+                "**/contentful/**",
+                "@apollo/client",
+                "@apollo/client/**",
+              ],
+              message:
+                "Load CMS data in lib/contentful and pass it through page props.",
+            },
+          ],
+        },
+      ],
     },
   })),
 ];

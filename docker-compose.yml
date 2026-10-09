@@ -1,66 +1,37 @@
-version: "3.8"
 services:
-  app:
-    build: .
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile.dev
     ports:
-      - "3000:3000"
-    environment:
-      - NODE_ENV=development
-    volumes:
-      - .:/app
-      - node_modules:/app/node_modules
-    working_dir: /app
-
-  flowise:
-    image: flowiseai/flowise:latest
-    restart: unless-stopped
-    ports:
-      - "3002:3000"
-    environment:
-      PORT: 3000
-      FLOWISE_USERNAME: ${FLOWISE_USERNAME:-admin}
-      FLOWISE_PASSWORD: ${FLOWISE_PASSWORD:-change-me-locally}
-      FLOWISE_SECRETKEY_OVERWRITE: ${FLOWISE_SECRETKEY_OVERWRITE:-change-this-local-secret}
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    volumes:
-      - flowise_data:/root/.flowise
-
-  n8n:
-    image: n8nio/n8n:latest
-    restart: unless-stopped
-    ports:
-      - "5678:5678"
-    environment:
-      N8N_HOST: localhost
-      N8N_PORT: 5678
-      N8N_PROTOCOL: http
-      N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY:-change-this-local-encryption-key}
-      GENERIC_TIMEZONE: Europe/Amsterdam
-      TZ: Europe/Amsterdam
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    volumes:
-      - n8n_data:/home/node/.n8n
-
-  phoenix:
-    image: arizephoenix/phoenix:latest
-    restart: unless-stopped
-    ports:
-      - "127.0.0.1:6006:6006"
-      - "127.0.0.1:4317:4317"
+      - "3100:3100"
     env_file:
-      - .env.phoenix.local
+      - apps/web/.env
     environment:
-      PHOENIX_WORKING_DIR: /mnt/data
-      PHOENIX_TELEMETRY_ENABLED: "false"
-      PHOENIX_ALLOW_EXTERNAL_RESOURCES: "false"
-      PHOENIX_DEFAULT_RETENTION_POLICY_DAYS: "7"
+      MATCHER_API_URL: http://matcher-api:8000
+      MATCHER_API_TOKEN: local-development-only
+      WATCHPACK_POLLING: "true"
     volumes:
-      - phoenix_data:/mnt/data
+      - .:/workspace
+      - node_modules:/workspace/node_modules
+      - web_next:/workspace/apps/web/.next
+    depends_on:
+      matcher-api:
+        condition: service_healthy
+
+  matcher-api:
+    build:
+      context: .
+      dockerfile: apps/matcher-api/Dockerfile
+    environment:
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-2.5-flash}
+      HOST: 0.0.0.0
+      MATCHER_API_TOKEN: local-development-only
+    volumes:
+      - ./apps/matcher-api:/app
+    command: ["python", "dev.py"]
 
 volumes:
   node_modules:
-  flowise_data:
-  n8n_data:
-  phoenix_data:
+  web_next:

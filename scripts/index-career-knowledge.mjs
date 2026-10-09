@@ -1,57 +1,58 @@
-import { createHash } from 'node:crypto';
-import { readFile } from 'node:fs/promises';
-import path from 'node:path';
-import process from 'node:process';
-import { fileURLToPath } from 'node:url';
+import { createHash } from "node:crypto";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
+import process from "node:process";
+import { fileURLToPath } from "node:url";
 
-process.loadEnvFile('.env');
+process.loadEnvFile("apps/web/.env");
 
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const GEMINI_API_ROOT = 'https://generativelanguage.googleapis.com/v1beta/models';
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const GEMINI_API_ROOT =
+  "https://generativelanguage.googleapis.com/v1beta/models";
 const MAX_CHUNK_CHARACTERS = 4_500;
 
 const sources = [
   {
-    file: '08-technical-skills.md',
-    table: 'technical_skills_documents',
-    title: 'Technical Skills',
+    file: "08-technical-skills.md",
+    table: "technical_skills_documents",
+    title: "Technical Skills",
   },
   {
-    file: '07-stockload.md',
-    table: 'stockload_documents',
-    title: 'Stockload',
+    file: "07-stockload.md",
+    table: "stockload_documents",
+    title: "Stockload",
   },
   {
-    file: '05-momants-ai.md',
-    table: 'momants_documents',
-    title: 'Momants.ai',
+    file: "05-momants-ai.md",
+    table: "momants_documents",
+    title: "Momants.ai",
   },
   {
-    file: '04-gemeente-amsterdam.md',
-    table: 'gemeente_amsterdam_documents',
-    title: 'Gemeente Amsterdam',
+    file: "04-gemeente-amsterdam.md",
+    table: "gemeente_amsterdam_documents",
+    title: "Gemeente Amsterdam",
   },
   {
-    file: '03-vodafoneziggo-checkout.md',
-    table: 'vodafoneziggo_checkout_documents',
-    title: 'VodafoneZiggo Checkout',
+    file: "03-vodafoneziggo-checkout.md",
+    table: "vodafoneziggo_checkout_documents",
+    title: "VodafoneZiggo Checkout",
   },
   {
-    file: '02-vodafoneziggo-product-card.md',
-    table: 'vodafoneziggo_product_card_documents',
-    title: 'VodafoneZiggo Product Card',
+    file: "02-vodafoneziggo-product-card.md",
+    table: "vodafoneziggo_product_card_documents",
+    title: "VodafoneZiggo Product Card",
   },
   {
-    file: '01-portfolio-website.md',
-    table: 'portfolio_website_documents',
-    title: 'Portfolio Website',
+    file: "01-portfolio-website.md",
+    table: "portfolio_website_documents",
+    title: "Portfolio Website",
   },
 ];
 
 const requiredEnvironment = [
-  'GEMINI_API_KEY',
-  'SUPABASE_URL',
-  'SUPABASE_SERVICE_ROLE_KEY',
+  "GEMINI_API_KEY",
+  "SUPABASE_URL",
+  "SUPABASE_SERVICE_ROLE_KEY",
 ];
 
 for (const variable of requiredEnvironment) {
@@ -60,9 +61,10 @@ for (const variable of requiredEnvironment) {
   }
 }
 
-const sleep = (milliseconds) => new Promise((resolve) => {
-  setTimeout(resolve, milliseconds);
-});
+const sleep = (milliseconds) =>
+  new Promise((resolve) => {
+    setTimeout(resolve, milliseconds);
+  });
 
 const splitMarkdown = (markdown) => {
   const sections = markdown
@@ -70,15 +72,12 @@ const splitMarkdown = (markdown) => {
     .map((section) => section.trim())
     .filter(Boolean);
   const chunks = [];
-  let current = '';
+  let current = "";
 
   for (const section of sections) {
-    if (
-      current
-      && current.length + section.length + 2 > MAX_CHUNK_CHARACTERS
-    ) {
+    if (current && current.length + section.length + 2 > MAX_CHUNK_CHARACTERS) {
       chunks.push(current);
-      current = '';
+      current = "";
     }
 
     if (section.length <= MAX_CHUNK_CHARACTERS) {
@@ -89,11 +88,11 @@ const splitMarkdown = (markdown) => {
     const paragraphs = section.split(/\n{2,}/);
     for (const paragraph of paragraphs) {
       if (
-        current
-        && current.length + paragraph.length + 2 > MAX_CHUNK_CHARACTERS
+        current &&
+        current.length + paragraph.length + 2 > MAX_CHUNK_CHARACTERS
       ) {
         chunks.push(current);
-        current = '';
+        current = "";
       }
       current = current ? `${current}\n\n${paragraph}` : paragraph;
     }
@@ -108,15 +107,15 @@ const embedDocument = async (content, title) => {
     const response = await fetch(
       `${GEMINI_API_ROOT}/gemini-embedding-001:embedContent`,
       {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'x-goog-api-key': process.env.GEMINI_API_KEY,
+          "Content-Type": "application/json",
+          "x-goog-api-key": process.env.GEMINI_API_KEY,
         },
         body: JSON.stringify({
-          model: 'models/gemini-embedding-001',
+          model: "models/gemini-embedding-001",
           content: { parts: [{ text: content }] },
-          taskType: 'RETRIEVAL_DOCUMENT',
+          taskType: "RETRIEVAL_DOCUMENT",
           title,
         }),
       },
@@ -146,9 +145,9 @@ const embedDocument = async (content, title) => {
 };
 
 const replaceDocuments = async (table, records) => {
-  const tableUrl = `${process.env.SUPABASE_URL.replace(/\/$/, '')}/rest/v1/${table}`;
+  const tableUrl = `${process.env.SUPABASE_URL.replace(/\/$/, "")}/rest/v1/${table}`;
   const deleteResponse = await fetch(`${tableUrl}?id=not.is.null`, {
-    method: 'DELETE',
+    method: "DELETE",
     headers: {
       apikey: process.env.SUPABASE_SERVICE_ROLE_KEY,
       Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`,
@@ -161,19 +160,16 @@ const replaceDocuments = async (table, records) => {
     );
   }
 
-  const response = await fetch(
-    tableUrl,
-    {
-      method: 'POST',
-      headers: {
-        apikey: process.env.SUPABASE_SERVICE_ROLE_KEY,
-        Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`,
-        'Content-Type': 'application/json',
-        Prefer: 'resolution=merge-duplicates,return=minimal',
-      },
-      body: JSON.stringify(records),
+  const response = await fetch(tableUrl, {
+    method: "POST",
+    headers: {
+      apikey: process.env.SUPABASE_SERVICE_ROLE_KEY,
+      Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`,
+      "Content-Type": "application/json",
+      Prefer: "resolution=merge-duplicates,return=minimal",
     },
-  );
+    body: JSON.stringify(records),
+  });
 
   if (!response.ok) {
     throw new Error(
@@ -184,16 +180,16 @@ const replaceDocuments = async (table, records) => {
 
 for (const source of sources) {
   const markdown = await readFile(
-    path.join(ROOT, 'knowledge', source.file),
-    'utf8',
+    path.join(ROOT, "knowledge", source.file),
+    "utf8",
   );
   const chunks = splitMarkdown(markdown);
   const records = [];
 
   for (const [index, content] of chunks.entries()) {
-    const id = createHash('sha256')
+    const id = createHash("sha256")
       .update(`${source.file}:${index}`)
-      .digest('hex');
+      .digest("hex");
     const embedding = await embedDocument(content, source.title);
 
     records.push({
@@ -214,4 +210,4 @@ for (const source of sources) {
   console.log(`${source.table}: indexed ${records.length} chunk(s)`);
 }
 
-console.log('Career knowledge indexing complete.');
+console.log("Career knowledge indexing complete.");
