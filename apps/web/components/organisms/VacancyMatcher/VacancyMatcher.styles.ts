@@ -61,25 +61,25 @@ export const MatcherSurface = styled.section.attrs({ className: "ui-section" })`
     min-height: 180px;
     resize: vertical;
     padding: 18px;
-    border: 1px solid #d6e3e8;
+    border: 1px solid #a8bce5;
     border-radius: 12px;
-    background: #f6f9fa;
+    background: #f0f5ff;
+    outline: 0;
     color: var(--text-heading);
     font: inherit;
     font-size: 16px;
     line-height: 1.7;
     transition:
       border-color 180ms ease,
-      background 180ms ease;
+      box-shadow 180ms ease;
   }
   .matcher-input::placeholder {
-    color: #607781;
+    color: var(--text-muted);
     opacity: 1;
   }
-  .matcher-input:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 3px;
-    background: #fff;
+  .matcher-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.14);
   }
   .matcher-note {
     color: var(--text-muted);
