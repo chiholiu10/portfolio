@@ -28,12 +28,12 @@ export const NavbarInnerComponent = styled.div.attrs({ className: "ui-div" })`
   background: linear-gradient(
     105deg,
     rgba(250, 251, 252, 0.94) 0%,
-    rgba(236, 247, 249, 0.9) 45%,
-    rgba(203, 230, 238, 0.9) 100%
+    rgba(241, 247, 255, 0.9) 45%,
+    rgba(220, 235, 255, 0.9) 100%
   );
   backdrop-filter: blur(20px);
   box-shadow:
-    0 8px 28px rgba(23, 59, 75, 0.1),
+    0 8px 28px rgba(20, 33, 61, 0.1),
     inset 0 1px 2px rgba(255, 255, 255, 0.9),
     inset 0 -1px 2px rgba(255, 255, 255, 0.45);
   .nav-links {
@@ -47,7 +47,7 @@ export const NavbarInnerComponent = styled.div.attrs({ className: "ui-div" })`
     min-height: 40px;
     padding: 0 10px;
     border-radius: 10px;
-    color: #344b59;
+    color: #34435e;
     font-size: 12px;
     font-weight: 600;
     text-decoration: none;
@@ -66,7 +66,7 @@ export const NavbarInnerComponent = styled.div.attrs({ className: "ui-div" })`
       background: var(--accent);
     }
     &:last-child:hover {
-      background: #125667;
+      background: #1947b5;
     }
   }
   :where(.ui-a):focus-visible {
@@ -104,17 +104,17 @@ export const NavbarInnerBlock = styled.a.attrs({ className: "ui-a" })`
   .brand-copy {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
   }
   .brand {
     font-size: 14px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
+    font-weight: 600;
+    letter-spacing: -0.015em;
   }
   .role {
     color: var(--text-body);
     font-size: 9px;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.025em;
     text-transform: uppercase;
     display: none;
   }
@@ -129,12 +129,13 @@ export const NavbarInnerBlock = styled.a.attrs({ className: "ui-a" })`
 export const BrandOrbit = styled.span.attrs({ className: "ui-span" })`
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 12px 5px 12px 5px;
-  background: #173b4b;
-  color: #f4fbff;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  border: 1px solid rgba(var(--accent-rgb), 0.16);
+  background: linear-gradient(135deg, #ffffff, #e5efff);
+  color: var(--accent);
   font-size: 13px;
-  font-weight: 800;
-  letter-spacing: -0.04em;
+  font-weight: 600;
+  letter-spacing: -0.025em;
 `;

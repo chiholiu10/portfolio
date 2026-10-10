@@ -3,8 +3,8 @@
   "short_name": "Chi Ho Liu",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f4f7f8",
-  "theme_color": "#166778",
+  "background_color": "#fbfcff",
+  "theme_color": "#245ce0",
   "icons": [
     {
       "src": "/favicon.svg",
