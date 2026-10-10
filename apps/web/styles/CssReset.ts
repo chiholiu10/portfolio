@@ -2,6 +2,34 @@ import { createGlobalStyle } from "styled-components";
 import theme from "@/styles/Theme";
 
 export const CSSreset = createGlobalStyle`
+  @font-face {
+    font-family: "MiSans Latin";
+    src: url("/fonts/misans/MiSansLatin-Regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "MiSans Latin";
+    src: url("/fonts/misans/MiSansLatin-Medium.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "MiSans Latin";
+    src: url("/fonts/misans/MiSansLatin-Semibold.woff2") format("woff2");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "MiSans Latin";
+    src: url("/fonts/misans/MiSansLatin-Bold.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
   :root {
     --accent: #166778;
     --accent-rgb: 22, 103, 120;

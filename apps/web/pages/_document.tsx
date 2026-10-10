@@ -38,9 +38,18 @@ export default class MyDocument extends Document {
     return (
       <Html className="ui-html" lang="en-NL">
         <Head>
+          <link
+            rel="preload"
+            href="/fonts/misans/MiSansLatin-Regular.woff2"
+            as="font"
+            type="font/woff2"
+            crossOrigin="anonymous"
+          />
           <meta name="format-detection" content="telephone=no" />
-          <link rel="icon" href="/favicon.ico" />
-          <meta name="theme-color" content="#071327" />
+          <link rel="icon" href="/favicon.ico?v=cl" sizes="16x16 32x32 48x48" />
+          <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+          <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+          <meta name="theme-color" content="#166778" />
         </Head>
         <body className="ui-body">
           <Main />
