@@ -33,19 +33,6 @@ export const FooterComponent = styled.footer.attrs({ className: "ui-footer" })`
     left: 50%;
     transform: translateX(-50%);
   }
-  &::after {
-    content: "";
-    position: absolute;
-    top: -3px;
-    left: 50%;
-    width: 7px;
-    height: 7px;
-    border: 1px solid rgba(125, 211, 252, 0.5);
-    border-radius: 50%;
-    background: #07111f;
-    box-shadow: 0 0 14px rgba(var(--accent-rgb), 0.55);
-    transform: translateX(-50%);
-  }
 `;
 
 export const FooterText = styled.p.attrs({ className: "ui-p" })`
