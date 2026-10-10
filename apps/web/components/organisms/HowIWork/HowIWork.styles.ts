@@ -62,7 +62,7 @@ export const HowIWorkStep = styled(m.li).attrs({ className: "ui-li" })`
   align-items: start;
   gap: 18px;
   min-width: 0;
-  --step-color: #173b4b;
+  --step-color: #14213d;
   > .step-icon {
     grid-column: 1;
     grid-row: 1;
@@ -99,24 +99,18 @@ export const HowIWorkIcon = styled(m.span).attrs({ className: "ui-span" })`
   width: 44px;
   height: 44px;
   margin-bottom: 0;
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  border-radius: 14px;
+  border: 1px solid rgba(20, 33, 61, 0.1);
+  border-radius: 12px;
   color: var(--step-color);
-  background: linear-gradient(145deg, #ffffff 0%, #edf5f8 42%, #cadfe7 100%);
+  background: linear-gradient(145deg, #ffffff, #f3f6fc);
   box-shadow:
-    inset 0 2px 2px rgba(255, 255, 255, 0.95),
-    inset 0 -3px 4px rgba(23, 59, 75, 0.16),
-    inset 1px 0 2px rgba(255, 255, 255, 0.8),
-    0 3px 0 #b8cfd8,
-    0 8px 12px rgba(23, 59, 75, 0.14),
-    0 18px 30px rgba(23, 59, 75, 0.1);
-  font-size: 29px;
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 4px 12px rgba(20, 33, 61, 0.06);
   z-index: 1;
   box-sizing: border-box;
   :where(.ui-svg) {
     width: 22px;
     height: 22px;
-    filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.95));
   }
   ${breakpoint.md`
     width: 52px;
@@ -162,7 +156,7 @@ export const HowIWorkConnector = styled(m.span).attrs({ className: "ui-span" })`
   left: 21.5px;
   width: 1px;
   height: calc(100% + 36px);
-  background: rgba(23, 59, 75, 0.25);
+  background: rgba(20, 33, 61, 0.25);
   transform-origin: top;
   pointer-events: none;
   ${breakpoint.md`
