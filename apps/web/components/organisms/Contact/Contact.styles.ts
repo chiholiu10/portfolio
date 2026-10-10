@@ -67,8 +67,8 @@ export const ContactBlockAnchor = styled.a.attrs({ className: "ui-a" })`
     width: 56px;
     height: 56px;
   `}
-  box-shadow: 0 8px 24px rgba(23, 51, 65, 0.10);
-  border: 1px solid rgba(23, 51, 65, 0.1);
+  box-shadow: 0 8px 24px rgba(20, 33, 61, 0.10);
+  border: 1px solid rgba(20, 33, 61, 0.1);
   &::after {
     pointer-events: none;
     position: absolute;
@@ -96,8 +96,8 @@ export const ContactBlockAnchor = styled.a.attrs({ className: "ui-a" })`
   }
   &:hover {
     @media (hover: hover) and (pointer: fine) {
-      color: #125667;
-      box-shadow: 0 10px 28px rgba(23, 51, 65, 0.14);
+      color: #1947b5;
+      box-shadow: 0 10px 28px rgba(20, 33, 61, 0.14);
       ${ContactSVG} {
       }
     }
@@ -182,7 +182,7 @@ export const ContactForm = styled.form.attrs({ className: "ui-form" })`
       transparent 34%
     ),
     rgba(255, 255, 255, 0.94);
-  box-shadow: 0 30px 90px rgba(23, 51, 65, 0.1);
+  box-shadow: 0 30px 90px rgba(20, 33, 61, 0.1);
   backdrop-filter: blur(20px);
   ${breakpoint.sm`
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -201,7 +201,7 @@ export const Field = styled.div.attrs({ className: "ui-div" })<{
   flex-direction: column;
   gap: 9px;
   :where(.ui-label) {
-    color: #344b59;
+    color: #34435e;
     font-size: var(--font-label);
     font-weight: 700;
     letter-spacing: 0.04em;
@@ -218,11 +218,11 @@ export const Field = styled.div.attrs({ className: "ui-div" })<{
     box-sizing: border-box;
     min-width: 0;
     width: 100%;
-    border: 1px solid rgba(148, 180, 202, 0.2);
+    border: 1px solid #a8bce5;
     border-radius: 12px;
     outline: 0;
     color: var(--text-heading) !important;
-    background: #f4f7f8;
+    background: #f0f5ff;
     font: inherit;
     transition:
       border-color 180ms ease,
@@ -240,7 +240,7 @@ export const Field = styled.div.attrs({ className: "ui-div" })<{
   :where(.ui-input):focus,
   :where(.ui-textarea):focus {
     border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(98, 215, 255, 0.12);
+    box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.14);
   }
 `;
 
@@ -369,7 +369,7 @@ export const SubmitButton = styled(m.button).attrs({ className: "ui-button" })`
     background 280ms ease,
     opacity 220ms ease;
   &:hover:not(:disabled) {
-    background: #125667;
+    background: #1947b5;
     transform: translateY(-2px);
   }
   @media (prefers-reduced-motion: reduce) {

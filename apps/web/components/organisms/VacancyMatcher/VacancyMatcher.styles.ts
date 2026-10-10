@@ -38,7 +38,7 @@ export const MatcherSurface = styled.section.attrs({ className: "ui-section" })`
     border: 1px solid #dce7eb;
     border-radius: 20px;
     background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 12px 40px rgba(23, 51, 65, 0.04);
+    box-shadow: 0 12px 40px rgba(20, 33, 61, 0.04);
     ${breakpoint.lg`
       padding: 32px;
     `}
@@ -49,7 +49,7 @@ export const MatcherSurface = styled.section.attrs({ className: "ui-section" })`
     align-items: center;
     flex-wrap: wrap;
     gap: 12px;
-    margin-bottom: 14px;
+    margin-bottom: 22px;
   }
   .matcher-label {
     font-size: 15px;
