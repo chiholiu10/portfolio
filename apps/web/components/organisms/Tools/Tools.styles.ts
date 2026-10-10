@@ -13,10 +13,11 @@ export const ToolsBlock = styled(OrbitSurface)`
   height: 72px;
   padding: 12px 14px;
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.8);
+  background: #ffffff;
+  border-color: rgba(var(--accent-rgb), 0.1);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.035),
-    0 8px 20px rgba(0, 0, 0, 0.11);
+    inset 0 1px 0 #fff,
+    0 3px 10px rgba(20, 33, 61, 0.04);
   &:hover {
     transform: translateY(-2px);
     border-color: rgba(var(--accent-rgb), 0.26);
@@ -29,10 +30,10 @@ export const ToolsCategory = styled.section.attrs({ className: "ui-section" })`
   max-inline-size: 1120px;
   margin: 18px auto 0;
   padding: clamp(20px, 3vw, 28px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(var(--accent-rgb), 0.08);
   border-radius: 22px;
-  background: rgba(234, 242, 245, 0.85);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+  background: linear-gradient(135deg, #ffffff, #f0f5ff);
+  box-shadow: inset 0 1px 0 #fff;
   &:first-child {
     margin-top: 0;
   }
@@ -43,7 +44,7 @@ export const ToolsCategory = styled.section.attrs({ className: "ui-section" })`
 
 export const ToolsCategoryHeader = styled.div.attrs({ className: "ui-div" })`
   max-inline-size: 640px;
-  margin-bottom: 18px;
+  margin-bottom: 36px;
   :where(.ui-h3) {
     margin-bottom: 8px;
     color: var(--text-heading);
@@ -64,6 +65,9 @@ export const ToolsGrid = styled.div.attrs({ className: "ui-div" })`
   grid-template-columns: repeat(auto-fill, minmax(min(210px, 100%), 1fr));
   gap: 10px;
   width: min(100%, 100%);
+  ${breakpoint.xxl`
+    gap: 20px;
+  `}
   > * {
     min-width: 0;
     width: 100%;
@@ -85,14 +89,14 @@ export const ToolInnerBlock = styled.div.attrs({ className: "ui-div" })`
     width: 28px;
     height: 28px;
     object-fit: contain;
-    filter: saturate(0.86) drop-shadow(0 7px 12px rgba(0, 0, 0, 0.26));
+    filter: none;
     transition:
       transform 240ms ease,
       filter 240ms ease;
   }
   ${ToolsBlock}:hover & :where(.ui-img) {
-    transform: translateY(-3px) scale(1.04);
-    filter: saturate(1) drop-shadow(0 14px 22px rgba(var(--accent-rgb), 0.14));
+    transform: translateY(-2px);
+    filter: none;
   }
 `;
 
