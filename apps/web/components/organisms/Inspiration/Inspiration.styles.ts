@@ -81,7 +81,7 @@ export const InspirationImage = styled(Image).attrs({ className: "ui-img" })`
     border-radius: 12px;
     border: 1px solid rgba(var(--accent-rgb), 0.5);
     box-shadow:
-      0 20px 40px -5px rgba(23, 51, 65, 0.12),
+      0 20px 40px -5px rgba(20, 33, 61, 0.12),
       0 0 35px 2px rgba(var(--accent-rgb), 0.25);
     transform: translateY(-2px);
   `}

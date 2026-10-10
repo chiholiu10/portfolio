@@ -30,7 +30,7 @@ export default function MatchPage({
         style={{
           display: "block",
           textAlign: "center",
-          color: "#166778",
+          color: "#245ce0",
           marginBottom: 40,
         }}
       >

@@ -25,7 +25,7 @@ const Ambient = styled.div.attrs({ className: "ambient-background" })`
     background-image: ${gridPattern};
     background-size: 132px 132px;
     background-position: center;
-    opacity: 0.45;
+    opacity: 0.28;
     mask-image: radial-gradient(ellipse at center, #000 30%, transparent 95%);
   }
 `;
@@ -59,10 +59,10 @@ export function AmbientBackground() {
               2) /
             4;
           const offset = (y * width + x) * 4;
-          pixels.data[offset] = 55;
-          pixels.data[offset + 1] = 100;
-          pixels.data[offset + 2] = 145;
-          pixels.data[offset + 3] = Math.round(Math.pow(field, 1.7) * 105);
+          pixels.data[offset] = 65;
+          pixels.data[offset + 1] = 120;
+          pixels.data[offset + 2] = 245;
+          pixels.data[offset + 3] = Math.round(Math.pow(field, 1.7) * 48);
         }
       }
       context!.putImageData(pixels, 0, 0);

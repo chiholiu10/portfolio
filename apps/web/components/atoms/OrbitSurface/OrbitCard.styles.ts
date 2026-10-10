@@ -9,7 +9,7 @@ export const OrbitSurface = styled.article.attrs({ className: "ui-article" })<{
   border-radius: 26px;
   background: linear-gradient(160deg, #fff 35%, #f1f7f9);
   box-shadow:
-    0 12px 32px rgba(23, 51, 65, 0.08),
+    0 12px 32px rgba(20, 33, 61, 0.08),
     inset 0 1px 0 #fff;
   transition:
     transform 260ms ease,
@@ -27,12 +27,12 @@ export const OrbitArtwork = styled.div.attrs({ className: "ui-div" })<{
   background-image:
     radial-gradient(
       circle at 20% 30%,
-      rgba(22, 103, 120, 0.25) 0 1px,
+      rgba(36, 92, 224, 0.25) 0 1px,
       transparent 2px
     ),
     radial-gradient(
       circle at 75% 45%,
-      rgba(22, 103, 120, 0.2) 0 1px,
+      rgba(36, 92, 224, 0.2) 0 1px,
       transparent 2px
     );
   background-size: cover;

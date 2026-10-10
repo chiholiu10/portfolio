@@ -31,14 +31,14 @@ export const CSSreset = createGlobalStyle`
     font-display: swap;
   }
   :root {
-    --accent: #166778;
-    --accent-rgb: 22, 103, 120;
+    --accent: #245ce0;
+    --accent-rgb: 36, 92, 224;
     --accent-warm: #ffb49d;
     --accent-lilac: #c2b1ff;
     --surface: #ffffff;
-    --text-heading: #173341;
-    --text-body: #435b68;
-    --text-muted: #526a78;
+    --text-heading: #14213d;
+    --text-body: #40506b;
+    --text-muted: #53647e;
     --font-hero: clamp(40px, 4.5vw, 64px);
     --font-section: clamp(30px, 3.8vw, 44px);
     --font-subheading: 20px;
@@ -63,8 +63,8 @@ export const CSSreset = createGlobalStyle`
     overflow-x: hidden;
     font-family: ${theme.typoGraphy.fonts.body};
     max-inline-size: 100vw;
-    color: #173341;
-    background: #f4f7f8;
+    color: #14213d;
+    background: #fbfcff;
   }
   #__next {
     position: relative;

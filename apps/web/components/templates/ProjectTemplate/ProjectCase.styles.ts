@@ -69,7 +69,7 @@ export const ProjectVisual = styled.div.attrs({ className: "ui-div" })`
   border: 1px solid rgba(var(--accent-rgb), 0.12);
   border-radius: 20px;
   background: var(--surface);
-  box-shadow: 0 24px 60px rgba(23, 51, 65, 0.1);
+  box-shadow: 0 24px 60px rgba(20, 33, 61, 0.1);
   ${breakpoint.md`
     margin-top: 48px;
     margin-bottom: 48px;
@@ -142,7 +142,7 @@ export const ProjectEvidence = styled.figure.attrs({ className: "ui-figure" })`
   border: 1px solid rgba(var(--accent-rgb), 0.12);
   border-radius: 18px;
   background: var(--surface);
-  box-shadow: 0 16px 40px rgba(23, 51, 65, 0.07);
+  box-shadow: 0 16px 40px rgba(20, 33, 61, 0.07);
   :where(.ui-figcaption) {
     padding: 16px 0 0;
     color: var(--text-body);
