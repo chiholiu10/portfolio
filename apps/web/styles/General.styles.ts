@@ -78,6 +78,11 @@ export const ComponentSection = styled.section.attrs({
       padding-top: 180px;
     }
   `}
+  ${breakpoint.xl`
+    &:not(.bannerComponent) {
+      margin-top: 32px;
+    }
+  `}
 `;
 
 export const HeaderGeneral = `

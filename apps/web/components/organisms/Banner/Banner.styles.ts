@@ -1,5 +1,6 @@
 import { breakpoint } from "@/styles/Breakpoint";
 import styled from "styled-components";
+import { m } from "motion/react";
 
 export const Hero = styled.section.attrs({ className: "ui-section" })`
   width: calc(100% - 40px);
@@ -16,7 +17,7 @@ export const Hero = styled.section.attrs({ className: "ui-section" })`
     gap: 64px;
   `}
 `;
-export const HeroCopy = styled.div.attrs({ className: "ui-div" })`
+export const HeroCopy = styled(m.div).attrs({ className: "ui-div" })`
   > :where(.ui-p):first-child {
     margin-bottom: 16px;
   }
@@ -58,8 +59,9 @@ export const HeroActions = styled.div.attrs({ className: "ui-div" })`
     border-radius: 6px;
     font-size: 14px;
     font-weight: 650;
-    border: 1px solid #d7d7d3;
-    color: var(--text-heading);
+    border: 1px solid #166778;
+    background: #f1f8fa;
+    color: #166778;
     transition:
       transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
       background 280ms ease;
@@ -73,6 +75,14 @@ export const HeroActions = styled.div.attrs({ className: "ui-div" })`
     }
     &:hover {
       transform: translateY(-2px);
+      background: #dceef2;
+    }
+    &:first-child:hover {
+      background: #125565;
+      border-color: #125565;
+    }
+    &:active {
+      transform: translateY(0);
     }
     &:focus-visible {
       outline: 2px solid #173341;
@@ -84,7 +94,7 @@ export const HeroActions = styled.div.attrs({ className: "ui-div" })`
     align-items: initial;
   `}
 `;
-export const HeroVisual = styled.div.attrs({ className: "ui-div" })`
+export const HeroVisual = styled(m.div).attrs({ className: "ui-div" })`
   position: relative;
   isolation: isolate;
   width: 100%;
@@ -133,7 +143,6 @@ export const Approach = styled.section.attrs({ className: "ui-section" })`
   width: calc(100% - 40px);
   margin: 0 auto 64px;
   padding: 32px 0;
-  border-top: 1px solid rgba(var(--accent-rgb), 0.14);
   .approach-heading {
     min-width: 0;
   }
@@ -158,6 +167,8 @@ export const Approach = styled.section.attrs({ className: "ui-section" })`
   }
   ${breakpoint.xl`
     width: min(1120px, calc(100% - 64px));
+    margin-top: 32px;
+    margin-bottom: 96px;
     padding-top: 48px;
     padding-bottom: 48px;
   `}

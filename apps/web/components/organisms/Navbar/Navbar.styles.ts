@@ -1,5 +1,4 @@
 import { breakpoint } from "@/styles/Breakpoint";
-import { architecturalPatternStatic } from "@/styles/ArchitecturalPattern";
 import styled from "styled-components";
 
 export const NavbarComponent = styled.nav.attrs({ className: "ui-nav" })`
@@ -20,36 +19,23 @@ export const NavbarInnerComponent = styled.div.attrs({ className: "ui-div" })`
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  min-height: 52px;
-  padding: 6px 12px;
+  min-height: 48px;
+  padding: 4px 12px;
   position: relative;
   isolation: isolate;
-  border: 1px solid rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.8);
   border-radius: 18px;
   background: linear-gradient(
-    115deg,
-    rgba(244, 249, 251, 0.96),
-    rgba(221, 234, 240, 0.94)
+    105deg,
+    rgba(250, 251, 252, 0.94) 0%,
+    rgba(236, 247, 249, 0.9) 45%,
+    rgba(203, 230, 238, 0.9) 100%
   );
   backdrop-filter: blur(20px);
   box-shadow:
-    0 8px 30px rgba(0, 0, 0, 0.16),
-    inset 0 1px 0 #fff;
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    border-radius: inherit;
-    pointer-events: none;
-    background-image: ${architecturalPatternStatic};
-    mask-image: linear-gradient(
-      to right,
-      transparent 22%,
-      #000 65%,
-      transparent
-    );
-  }
+    0 8px 28px rgba(23, 59, 75, 0.1),
+    inset 0 1px 2px rgba(255, 255, 255, 0.9),
+    inset 0 -1px 2px rgba(255, 255, 255, 0.45);
   .nav-links {
     display: flex;
     gap: 12px;
@@ -92,8 +78,8 @@ export const NavbarInnerComponent = styled.div.attrs({ className: "ui-div" })`
   }
   ${breakpoint.sm`
     gap: 24px;
-    min-height: 56px;
-    padding: 8px 16px 8px 20px;
+    min-height: 52px;
+    padding: 6px 16px 6px 20px;
     .nav-links {
       gap: 16px;
     }

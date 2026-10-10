@@ -55,23 +55,14 @@ export const HowIWorkSteps = styled(m.ol).attrs({ className: "ui-ol" })`
     gap: 48px;
   `}
 `;
-export const HowIWorkStep = styled.li.attrs({ className: "ui-li" })`
+export const HowIWorkStep = styled(m.li).attrs({ className: "ui-li" })`
   position: relative;
   display: grid;
   grid-template-columns: 44px minmax(0, 1fr);
   align-items: start;
   gap: 18px;
   min-width: 0;
-  --step-color: #166778;
-  &:nth-child(2) {
-    --step-color: #31758b;
-  }
-  &:nth-child(3) {
-    --step-color: #636c94;
-  }
-  &:nth-child(4) {
-    --step-color: #8c7137;
-  }
+  --step-color: #173b4b;
   > .step-icon {
     grid-column: 1;
     grid-row: 1;
@@ -97,7 +88,7 @@ export const HowIWorkStep = styled.li.attrs({ className: "ui-li" })`
     }
   `}
   ${breakpoint.xxl`
-    grid-template-columns: minmax(0, 1fr) 76px minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) 60px minmax(0, 1fr);
     gap: 32px;
   `}
 `;
@@ -108,19 +99,24 @@ export const HowIWorkIcon = styled(m.span).attrs({ className: "ui-span" })`
   width: 44px;
   height: 44px;
   margin-bottom: 0;
-  border: 1px solid color-mix(in srgb, var(--step-color) 22%, transparent);
-  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 14px;
   color: var(--step-color);
-  background: #f8fafb;
+  background: linear-gradient(145deg, #ffffff 0%, #edf5f8 42%, #cadfe7 100%);
   box-shadow:
-    inset 0 1px 0 #fff,
-    0 4px 12px rgba(23, 59, 75, 0.035);
+    inset 0 2px 2px rgba(255, 255, 255, 0.95),
+    inset 0 -3px 4px rgba(23, 59, 75, 0.16),
+    inset 1px 0 2px rgba(255, 255, 255, 0.8),
+    0 3px 0 #b8cfd8,
+    0 8px 12px rgba(23, 59, 75, 0.14),
+    0 18px 30px rgba(23, 59, 75, 0.1);
   font-size: 29px;
   z-index: 1;
   box-sizing: border-box;
   :where(.ui-svg) {
     width: 22px;
     height: 22px;
+    filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.95));
   }
   ${breakpoint.md`
     width: 52px;
@@ -131,11 +127,11 @@ export const HowIWorkIcon = styled(m.span).attrs({ className: "ui-span" })`
     }
   `}
   ${breakpoint.xxl`
-    width: 76px;
-    height: 76px;
+    width: 60px;
+    height: 60px;
     :where(.ui-svg) {
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
     }
   `}
 `;
@@ -166,7 +162,7 @@ export const HowIWorkConnector = styled(m.span).attrs({ className: "ui-span" })`
   left: 21.5px;
   width: 1px;
   height: calc(100% + 36px);
-  background: var(--step-color);
+  background: rgba(23, 59, 75, 0.25);
   transform-origin: top;
   pointer-events: none;
   ${breakpoint.md`

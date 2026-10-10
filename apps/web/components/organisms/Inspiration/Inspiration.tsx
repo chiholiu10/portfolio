@@ -47,10 +47,7 @@ export const Inspiration = ({ data }: InspirationProps) => {
                 alt="Chi Ho Liu working as a front-end developer"
                 width={810}
                 height={540}
-                sizes={responsiveImageSizes(
-                  { lg: "500px" },
-                  "calc(100vw - 40px)",
-                )}
+                sizes={responsiveImageSizes({ lg: "500px" }, "100vw")}
                 quality={70}
                 loading="lazy"
               />
