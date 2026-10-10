@@ -1,33 +1,14 @@
 import type { PropsWithChildren } from "react";
-import { useSkipEntrance } from "@/components/atoms/Motion/RevealSession";
 import { m } from "motion/react";
-import { premiumEase } from "@/components/atoms/Motion/motion.config";
+import { useScrollReveal } from "@/components/atoms/Motion/useScrollReveal";
 
-export const StaggerItem = ({ children }: PropsWithChildren) => {
-  const skip = useSkipEntrance();
+export const StaggerItem = ({
+  children,
+  index = 0,
+}: PropsWithChildren<{ index?: number }>) => {
+  const { ref, style } = useScrollReveal<HTMLDivElement>(index);
   return (
-    <m.div
-      className="ui-div"
-      variants={{
-        hidden: {
-          opacity: 0,
-          y: 18,
-          scale: 0.985,
-        },
-        visible: {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-        },
-      }}
-      transition={{
-        duration: skip ? 0 : 0.72,
-        ease: premiumEase,
-      }}
-      style={{
-        willChange: "transform, opacity",
-      }}
-    >
+    <m.div className="ui-div" ref={ref} style={style}>
       {children}
     </m.div>
   );

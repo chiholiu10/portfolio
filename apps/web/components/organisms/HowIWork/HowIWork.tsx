@@ -1,6 +1,4 @@
-import { useSkipEntrance } from "@/components/atoms/Motion/RevealSession";
-import { useRef } from "react";
-import { useInView, useReducedMotion } from "motion/react";
+import { useScrollReveal } from "@/components/atoms/Motion/useScrollReveal";
 import type { HomeSections } from "@/lib/content-model";
 import { ProcessIcon } from "@/components/organisms/HowIWork/ProcessIcon";
 import {
@@ -20,11 +18,6 @@ import {
 type HowIWorkProps = { data: HomeSections["howIWork"] };
 
 export const HowIWork = ({ data }: HowIWorkProps) => {
-  const prefersReducedMotion = useReducedMotion();
-  const skip = useSkipEntrance();
-  const reduceMotion = prefersReducedMotion || skip;
-  const timelineRef = useRef<HTMLOListElement>(null);
-  const revealed = useInView(timelineRef, { once: true, amount: 0.1 });
   const section = data?.section;
 
   if (!section) return null;
@@ -42,61 +35,43 @@ export const HowIWork = ({ data }: HowIWorkProps) => {
           <HowIWorkLead>{subtitle}</HowIWorkLead>
         </HowIWorkIntro>
 
-        <HowIWorkSteps
-          ref={timelineRef}
-          initial={reduceMotion ? false : "hidden"}
-          animate={revealed || reduceMotion ? "visible" : "hidden"}
-        >
+        <HowIWorkSteps>
           {arrays?.map((item, index) => (
-            <HowIWorkStep key={item.title}>
-              {index < arrays.length - 1 && (
-                <HowIWorkConnector
-                  aria-hidden="true"
-                  variants={{
-                    hidden: { scaleY: 0, opacity: 0 },
-                    visible: { scaleY: 1, opacity: 0.45 },
-                  }}
-                  transition={{
-                    duration: reduceMotion ? 0 : 0.45,
-                    delay: reduceMotion ? 0 : index * 1.1 + 0.65,
-                    ease: "easeInOut",
-                  }}
-                />
-              )}
-              <HowIWorkIcon
-                className="step-icon"
-                aria-hidden="true"
-                variants={{
-                  hidden: { opacity: 0, scale: 0.75 },
-                  visible: { opacity: 1, scale: 1 },
-                }}
-                transition={{
-                  duration: reduceMotion ? 0 : 0.4,
-                  delay: reduceMotion ? 0 : index * 1.1,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-              >
-                <ProcessIcon index={index} />
-              </HowIWorkIcon>
-              <HowIWorkStepCopy
-                className="step-copy"
-                variants={{
-                  hidden: { opacity: 0, y: 12 },
-                  visible: { opacity: 1, y: 0 },
-                }}
-                transition={{
-                  duration: reduceMotion ? 0 : 0.55,
-                  delay: reduceMotion ? 0 : index * 1.1 + 0.15,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-              >
-                <h3 className="ui-h3">{item.title}</h3>
-                <p className="ui-p">{item.description}</p>
-              </HowIWorkStepCopy>
-            </HowIWorkStep>
+            <ScrollStep
+              key={item.title}
+              item={item}
+              index={index}
+              last={index === arrays.length - 1}
+            />
           ))}
         </HowIWorkSteps>
       </HowIWorkPanel>
     </HowIWorkSection>
   );
 };
+
+function ScrollStep({
+  item,
+  index,
+  last,
+}: {
+  item: { title: string; description: string };
+  index: number;
+  last: boolean;
+}) {
+  const { ref, style } = useScrollReveal<HTMLLIElement>();
+  return (
+    <HowIWorkStep ref={ref} style={style}>
+      {!last && (
+        <HowIWorkConnector aria-hidden="true" style={{ opacity: 0.45 }} />
+      )}
+      <HowIWorkIcon className="step-icon" aria-hidden="true">
+        <ProcessIcon index={index} />
+      </HowIWorkIcon>
+      <HowIWorkStepCopy className="step-copy">
+        <h3 className="ui-h3">{item.title}</h3>
+        <p className="ui-p">{item.description}</p>
+      </HowIWorkStepCopy>
+    </HowIWorkStep>
+  );
+}

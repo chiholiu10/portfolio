@@ -1,7 +1,10 @@
+import { useInView, useReducedMotion, type MotionStyle } from "motion/react";
+import { useScrollReveal } from "@/components/atoms/Motion/useScrollReveal";
+import type { ReactNode } from "react";
 import { Eyebrow } from "@/components/atoms/Eyebrow/Eyebrow";
 import { contactRequestSchema } from "@/lib/contact/validation";
 import type { HomeSections } from "@/lib/content-model";
-import { FormEvent, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { ComponentSection } from "@/styles/General.styles";
 import { ContactSvg, IconPath } from "@/components/atoms/ContactSvg/ContactSvg";
 import { StaggerGroup, StaggerItem } from "@/components/atoms/Motion";
@@ -10,6 +13,7 @@ import {
   ContactBlockAnchor,
   ContactContainer,
   ContactForm,
+  ContactFormRow,
   ContactGrid,
   ContactHeader,
   Field,
@@ -158,132 +162,145 @@ export const Contact = ({ data }: ContactProps) => {
             />
           </HoneypotField>
 
-          <Field>
-            <label className="ui-label" htmlFor="contact-name">
-              Name <RequiredMark aria-hidden="true">*</RequiredMark>
-            </label>
-            <input
-              className="ui-input"
-              id="contact-name"
-              name="name"
-              type="text"
-              autoComplete="name"
-              maxLength={80}
-              required
-            />
-          </Field>
-          <Field>
-            <label className="ui-label" htmlFor="contact-email">
-              Email <RequiredMark aria-hidden="true">*</RequiredMark>
-            </label>
-            <input
-              className="ui-input"
-              id="contact-email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              maxLength={254}
-              required
-            />
-          </Field>
-          <Field $wide>
-            <label className="ui-label" htmlFor="contact-subject">
-              Subject <RequiredMark aria-hidden="true">*</RequiredMark>
-            </label>
-            <input
-              className="ui-input"
-              id="contact-subject"
-              name="subject"
-              type="text"
-              maxLength={140}
-              required
-            />
-          </Field>
-          <Field $wide>
-            <label className="ui-label" htmlFor="contact-message">
-              Message <RequiredMark aria-hidden="true">*</RequiredMark>
-            </label>
-            <textarea
-              className="ui-textarea"
-              id="contact-message"
-              name="message"
-              aria-describedby="contact-message-hint"
-              rows={4}
-              minLength={20}
-              maxLength={2000}
-              required
-            />
-            <FieldHint id="contact-message-hint">
-              <span className="ui-span">{messageHint}</span>
-            </FieldHint>
-          </Field>
-          <PrivacyCopy>
-            <input
-              className="ui-input"
-              id="contact-consent"
-              name="consent"
-              type="checkbox"
-              required
-            />
-            <label className="ui-label" htmlFor="contact-consent">
-              <span className="ui-span">
-                I agree to my details being used to respond.
+          <FormRow columns>
+            <Field>
+              <label className="ui-label" htmlFor="contact-name">
+                Name <RequiredMark aria-hidden="true">*</RequiredMark>
+              </label>
+              <input
+                className="ui-input"
+                id="contact-name"
+                name="name"
+                type="text"
+                autoComplete="name"
+                maxLength={80}
+                required
+              />
+            </Field>
+            <Field>
+              <label className="ui-label" htmlFor="contact-email">
+                Email <RequiredMark aria-hidden="true">*</RequiredMark>
+              </label>
+              <input
+                className="ui-input"
+                id="contact-email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                maxLength={254}
+                required
+              />
+            </Field>
+          </FormRow>
+          <FormRow>
+            <Field $wide>
+              <label className="ui-label" htmlFor="contact-subject">
+                Subject <RequiredMark aria-hidden="true">*</RequiredMark>
+              </label>
+              <input
+                className="ui-input"
+                id="contact-subject"
+                name="subject"
+                type="text"
+                maxLength={140}
+                required
+              />
+            </Field>
+          </FormRow>
+          <FormRow>
+            <Field $wide>
+              <label className="ui-label" htmlFor="contact-message">
+                Message <RequiredMark aria-hidden="true">*</RequiredMark>
+              </label>
+              <textarea
+                className="ui-textarea"
+                id="contact-message"
+                name="message"
+                aria-describedby="contact-message-hint"
+                rows={4}
+                minLength={20}
+                maxLength={2000}
+                required
+              />
+              <FieldHint id="contact-message-hint">
+                <span className="ui-span">{messageHint}</span>
+              </FieldHint>
+            </Field>
+          </FormRow>
+          <FormFooter>
+            <PrivacyCopy
+              variants={footerReveal}
+              transition={{ duration: 0.25 }}
+            >
+              <input
+                className="ui-input"
+                id="contact-consent"
+                name="consent"
+                type="checkbox"
+                required
+              />
+              <label className="ui-label" htmlFor="contact-consent">
+                <span className="ui-span">
+                  I agree to my details being used to respond.
+                </span>
+                <small className="ui-small">
+                  Stored for up to 30 days. Please don’t share passwords or
+                  sensitive information.
+                </small>
+              </label>
+            </PrivacyCopy>
+            <FormStatus
+              role={status === "error" ? "alert" : "status"}
+              $error={status === "error"}
+            >
+              {statusMessage}
+              {status === "error" && contactEmail && (
+                <>
+                  {" "}
+                  You can also email me directly at{" "}
+                  <a className="ui-a" href={`mailto:${contactEmail}`}>
+                    {contactEmail}
+                  </a>
+                  .
+                </>
+              )}
+            </FormStatus>
+            <SubmitButton
+              variants={footerReveal}
+              transition={{ duration: 0.25, delay: 0.07 }}
+              type="submit"
+              disabled={!isValid || status === "sending"}
+              aria-busy={status === "sending"}
+            >
+              <span className="ui-span button-content">
+                <span className="ui-span button-label">
+                  {status === "sending" ? "Sending…" : "Send message"}
+                </span>
+                <svg
+                  className="ui-svg"
+                  aria-hidden="true"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <rect
+                    className="ui-rect"
+                    x="3"
+                    y="5"
+                    width="18"
+                    height="14"
+                    rx="3"
+                  />
+                  <path className="ui-path" d="m4 7 8 6 8-6" />
+                </svg>
               </span>
-              <small className="ui-small">
-                Stored for up to 30 days. Please don’t share passwords or
-                sensitive information.
-              </small>
-            </label>
-          </PrivacyCopy>
-          <FormStatus
-            role={status === "error" ? "alert" : "status"}
-            $error={status === "error"}
-          >
-            {statusMessage}
-            {status === "error" && contactEmail && (
-              <>
-                {" "}
-                You can also email me directly at{" "}
-                <a className="ui-a" href={`mailto:${contactEmail}`}>
-                  {contactEmail}
-                </a>
-                .
-              </>
-            )}
-          </FormStatus>
-          <SubmitButton
-            type="submit"
-            disabled={!isValid || status === "sending"}
-            aria-busy={status === "sending"}
-          >
-            <span className="ui-span button-content">
-              <span className="ui-span button-label">
-                {status === "sending" ? "Sending…" : "Send message"}
-              </span>
-              <svg
-                className="ui-svg"
-                aria-hidden="true"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.7"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <rect
-                  className="ui-rect"
-                  x="3"
-                  y="5"
-                  width="18"
-                  height="14"
-                  rx="3"
-                />
-                <path className="ui-path" d="m4 7 8 6 8-6" />
-              </svg>
-            </span>
-          </SubmitButton>
+            </SubmitButton>
+          </FormFooter>
         </ContactForm>
       </ContactGrid>
 
@@ -291,7 +308,7 @@ export const Contact = ({ data }: ContactProps) => {
       <StaggerGroup>
         <ContactContainer>
           {arrays.map((item, index) => (
-            <StaggerItem key={index}>
+            <StaggerItem key={index} index={index}>
               <ContactBlock $index={index}>
                 <ContactBlockAnchor
                   href={item.anchor}
@@ -309,3 +326,49 @@ export const Contact = ({ data }: ContactProps) => {
     </ComponentSection>
   );
 };
+
+function FormRow({
+  children,
+  columns = false,
+}: {
+  children: ReactNode;
+  columns?: boolean;
+}) {
+  const { ref, style, reduceMotion } = useScrollReveal<HTMLDivElement>();
+  const [focused, setFocused] = useState(false);
+  let rowStyle: MotionStyle = style;
+  if (focused || reduceMotion) rowStyle = { opacity: 1, y: 0 };
+  return (
+    <ContactFormRow
+      ref={ref}
+      $columns={columns}
+      onFocusCapture={() => setFocused(true)}
+      style={rowStyle}
+    >
+      {children}
+    </ContactFormRow>
+  );
+}
+
+const footerReveal = {
+  hidden: { opacity: 0, y: 10 },
+  visible: { opacity: 1, y: 0 },
+};
+
+function FormFooter({ children }: { children: ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const visible = useInView(ref, { once: true, margin: "0px 0px -30% 0px" });
+  const reduceMotion = useReducedMotion();
+  const [focused, setFocused] = useState(false);
+  return (
+    <ContactFormRow
+      ref={ref}
+      $columns={false}
+      initial={reduceMotion ? false : "hidden"}
+      animate={visible || focused || reduceMotion ? "visible" : "hidden"}
+      onFocusCapture={() => setFocused(true)}
+    >
+      {children}
+    </ContactFormRow>
+  );
+}

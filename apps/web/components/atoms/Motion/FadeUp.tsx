@@ -1,41 +1,13 @@
-import { useSkipEntrance } from "@/components/atoms/Motion/RevealSession";
 import { m } from "motion/react";
-import React from "react";
-import { premiumEase } from "@/components/atoms/Motion/motion.config";
+import type { ReactNode } from "react";
+import { useScrollReveal } from "@/components/atoms/Motion/useScrollReveal";
 
-type FadeUpProps = {
-  id: string;
-  children: React.ReactNode;
-  delay?: number;
-  threshold?: number;
-  rootMargin?: string;
-};
+type FadeUpProps = { id: string; children: ReactNode };
 
-export const FadeUp = ({
-  id,
-  children,
-  delay = 0,
-  threshold = 0.25,
-  rootMargin = "-80px 0px -80px 0px",
-}: FadeUpProps) => {
-  const skip = useSkipEntrance();
+export const FadeUp = ({ id, children }: FadeUpProps) => {
+  const { ref, style } = useScrollReveal<HTMLDivElement>();
   return (
-    <m.div
-      className="ui-div"
-      id={id}
-      initial={{ opacity: 0, y: 24, scale: 0.99 }}
-      animate={skip ? { opacity: 1, y: 0, scale: 1 } : undefined}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true, amount: threshold, margin: rootMargin }}
-      transition={{
-        duration: skip ? 0 : 0.82,
-        ease: premiumEase,
-        delay: skip ? 0 : delay,
-      }}
-      style={{
-        willChange: "transform, opacity",
-      }}
-    >
+    <m.div className="ui-div" id={id} ref={ref} style={style}>
       {children}
     </m.div>
   );

@@ -1,3 +1,4 @@
+import { m } from "motion/react";
 import styled, { keyframes } from "styled-components";
 import { breakpoint } from "@/styles/Breakpoint";
 import theme from "@/styles/Theme";
@@ -265,7 +266,7 @@ export const HoneypotField = styled.div.attrs({ className: "ui-div" })`
   overflow: hidden;
 `;
 
-export const PrivacyCopy = styled.div.attrs({ className: "ui-div" })`
+export const PrivacyCopy = styled(m.div).attrs({ className: "ui-div" })`
   display: flex;
   grid-column: 1 / -1;
   align-items: flex-start;
@@ -345,7 +346,7 @@ export const PrivacyCopy = styled.div.attrs({ className: "ui-div" })`
   }
 `;
 
-export const SubmitButton = styled.button.attrs({ className: "ui-button" })`
+export const SubmitButton = styled(m.button).attrs({ className: "ui-button" })`
   display: inline-flex;
   grid-column: 1 / -1;
   justify-self: end;
@@ -428,4 +429,17 @@ export const SocialLabel = styled.p.attrs({ className: "ui-p" })`
   letter-spacing: 0.15em;
   text-align: center;
   text-transform: uppercase;
+`;
+
+export const ContactFormRow = styled(m.div).attrs({ className: "ui-div" })<{
+  $columns: boolean;
+}>`
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+  min-width: 0;
+  ${breakpoint.sm`
+    grid-template-columns: ${({ $columns }) => ($columns ? "repeat(2, minmax(0, 1fr))" : "minmax(0, 1fr)")};
+  `}
 `;

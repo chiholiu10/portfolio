@@ -1,6 +1,8 @@
 import { Eyebrow } from "@/components/atoms/Eyebrow/Eyebrow";
 import type { HomeSections } from "@/lib/content-model";
 import { BannerLogo } from "@/components/atoms/Avatar/Avatar";
+import { useReducedMotion } from "motion/react";
+import { premiumEase } from "@/components/atoms/Motion/motion.config";
 import {
   Hero,
   HeroCopy,
@@ -12,6 +14,7 @@ import {
 type BannerProps = { data: HomeSections["banner"] };
 
 export const Banner = ({ data }: BannerProps) => {
+  const reduceMotion = useReducedMotion();
   const { section } = data;
   if (!section) return null;
   const sentences =
@@ -21,7 +24,11 @@ export const Banner = ({ data }: BannerProps) => {
   return (
     <>
       <Hero id="banner" className="bannerComponent">
-        <HeroCopy>
+        <HeroCopy
+          initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: reduceMotion ? 0 : 0.65, ease: premiumEase }}
+        >
           {section.eyebrow && <Eyebrow>{section.eyebrow}</Eyebrow>}
           <h1 className="ui-h1">{section.title}</h1>
           <p className="ui-p hero-description">{introduction}</p>
@@ -34,7 +41,15 @@ export const Banner = ({ data }: BannerProps) => {
             </a>
           </HeroActions>
         </HeroCopy>
-        <HeroVisual>
+        <HeroVisual
+          initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: reduceMotion ? 0 : 0.75,
+            delay: reduceMotion ? 0 : 0.1,
+            ease: premiumEase,
+          }}
+        >
           <BannerLogo />
         </HeroVisual>
       </Hero>
