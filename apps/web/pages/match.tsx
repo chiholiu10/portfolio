@@ -2,17 +2,29 @@ import Head from "next/head";
 import Link from "next/link";
 import { VacancyMatcher } from "@/components/organisms/VacancyMatcher/VacancyMatcher";
 
-export default function MatchPage() {
+import type { GetStaticProps, InferGetStaticPropsType } from "next";
+import type { HomeSections } from "@/lib/content-model";
+import { loadVacancyMatcherSection } from "@/lib/contentful/home";
+
+export const getStaticProps: GetStaticProps<{
+  data: HomeSections["vacancyMatcher"];
+}> = async () => ({
+  props: { data: await loadVacancyMatcherSection() },
+  revalidate: 3600,
+});
+
+export default function MatchPage({
+  data,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
+  if (!data.section) return null;
+  const copy = data.section.arrays;
   return (
     <>
       <Head>
-        <title>Vacancy matcher | Chiho Liu</title>
-        <meta
-          name="description"
-          content="Discover which of Chiho Liu's projects are relevant to your vacancy."
-        />
+        <title>{copy.pageTitle}</title>
+        <meta name="description" content={copy.pageDescription} />
       </Head>
-      <VacancyMatcher />
+      <VacancyMatcher data={data} />
       <Link
         href="/#vacancy-match"
         style={{
@@ -22,7 +34,7 @@ export default function MatchPage() {
           marginBottom: 40,
         }}
       >
-        ← Home
+        {copy.homeLink}
       </Link>
     </>
   );

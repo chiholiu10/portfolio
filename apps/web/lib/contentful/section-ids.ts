@@ -1,4 +1,5 @@
 export const sectionIds = {
+  vacancyMatcher: "vacancyMatcherSection",
   navbar: "1fU09M2HwR6lvRsgaT26YK",
   banner: "7wNcHAAqxL2cunkRCCxW4o",
   introduction: "4DIoyNagIFWzKfhGrtKUXB",

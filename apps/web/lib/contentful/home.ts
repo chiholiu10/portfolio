@@ -12,6 +12,7 @@ import { QUERY as howIWork } from "@/lib/contentful/queries/HowIWorkQuery";
 import { sectionIds } from "@/lib/contentful/section-ids";
 
 const queries = {
+  vacancyMatcher: introduction,
   navbar,
   banner,
   introduction,
@@ -34,3 +35,10 @@ export const loadHomeSections = async (): Promise<HomeSections> => {
   );
   return Object.fromEntries(entries) as HomeSections;
 };
+
+export async function loadVacancyMatcherSection() {
+  const data = await fetchContentful(introduction, {
+    id: sectionIds.vacancyMatcher,
+  });
+  return parseHomeSection("vacancyMatcher", data);
+}

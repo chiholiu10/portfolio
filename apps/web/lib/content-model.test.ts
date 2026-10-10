@@ -9,6 +9,19 @@ const project = {
 };
 
 describe("CMS content contracts", () => {
+  it("rejects incomplete vacancy matcher copy before rendering the form", () => {
+    expect(() =>
+      parseHomeSection("vacancyMatcher", {
+        section: {
+          eyebrow: "Relevant work",
+          title: "Match a vacancy",
+          subtitle: "Find supporting projects",
+          arrays: {},
+        },
+      }),
+    ).toThrow("section.arrays.label");
+  });
+
   it("allows an explicitly absent section", () => {
     expect(parseHomeSection("footer", { section: null })).toEqual({
       section: null,

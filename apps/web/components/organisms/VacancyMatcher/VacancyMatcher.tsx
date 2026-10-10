@@ -1,4 +1,6 @@
-import { useRef, useState, type FormEvent } from "react";
+import { useScrollReveal } from "@/components/atoms/Motion/useScrollReveal";
+import { FadeUp } from "@/components/atoms/Motion";
+import { useRef, useState, type ReactNode, type FormEvent } from "react";
 import Link from "next/link";
 import { m, useReducedMotion } from "motion/react";
 import {
@@ -7,16 +9,22 @@ import {
 } from "@portfolio/matcher-contracts";
 import { MatcherSurface } from "@/components/organisms/VacancyMatcher/VacancyMatcher.styles";
 
-const example =
-  "We are looking for a front-end developer with React, TypeScript and a strong sense of UX. You build reusable components, collaborate with designers and write tests.";
+import type { HomeSections } from "@/lib/content-model";
 
-export function VacancyMatcher() {
+type VacancyMatcherProps = { data: HomeSections["vacancyMatcher"] };
+
+export function VacancyMatcher({ data }: VacancyMatcherProps) {
   const [vacancy, setVacancy] = useState("");
   const [result, setResult] = useState<VacancyMatch | null>(null);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
   const requestInFlight = useRef(false);
   const reduceMotion = useReducedMotion();
+  const { ref: formRef, style: formStyle } = useScrollReveal<HTMLFormElement>();
+  const [formFocused, setFormFocused] = useState(false);
+
+  if (!data.section) return null;
+  const { eyebrow, title, subtitle, arrays: copy } = data.section;
 
   async function submit(event: FormEvent) {
     event.preventDefault();
@@ -33,18 +41,13 @@ export function VacancyMatcher() {
         signal: AbortSignal.timeout(35_000),
       });
       const payload = await response.json();
-      if (!response.ok)
-        throw new Error(
-          typeof payload.error === "string"
-            ? payload.error
-            : "The vacancy could not be analysed right now.",
-        );
+      if (!response.ok) throw new Error(copy.errorMessage);
       setResult(matchResponseSchema.parse(payload));
     } catch (failure) {
       setError(
-        failure instanceof Error && failure.name !== "TimeoutError"
-          ? failure.message
-          : "The analysis is taking too long. Please try again.",
+        failure instanceof Error && failure.name === "TimeoutError"
+          ? copy.timeoutMessage
+          : copy.errorMessage,
       );
     } finally {
       requestInFlight.current = false;
@@ -54,30 +57,36 @@ export function VacancyMatcher() {
 
   return (
     <MatcherSurface id="vacancy-match" aria-labelledby="matcher-title">
-      <p className="matcher-eyebrow">FIND RELEVANT WORK</p>
-      <h2 className="matcher-title" id="matcher-title">
-        Does my experience match your vacancy?
-      </h2>
-      <p className="matcher-intro">
-        Paste the vacancy to discover which projects are relevant, supported by
-        concrete examples from my work.
-      </p>
-      <form className="matcher-form" onSubmit={submit} aria-busy={pending}>
+      <FadeUp id="matcher-heading-reveal">
+        <p className="matcher-eyebrow">{eyebrow}</p>
+        <h2 className="matcher-title" id="matcher-title">
+          {title}
+        </h2>
+        <p className="matcher-intro">{subtitle}</p>
+      </FadeUp>
+      <m.form
+        className="matcher-form"
+        ref={formRef}
+        style={formFocused ? { opacity: 1, y: 0 } : formStyle}
+        onFocusCapture={() => setFormFocused(true)}
+        onSubmit={submit}
+        aria-busy={pending}
+      >
         <div className="matcher-field-heading">
           <label className="matcher-label" htmlFor="matcher-vacancy">
-            Job description
+            {copy.label}
           </label>
           <button
             className="matcher-example"
             type="button"
             disabled={pending}
             onClick={() => {
-              setVacancy(example);
+              setVacancy(copy.example);
               setResult(null);
               setError("");
             }}
           >
-            Try an example
+            {copy.exampleButton}
           </button>
         </div>
         <textarea
@@ -93,7 +102,7 @@ export function VacancyMatcher() {
             setResult(null);
             setError("");
           }}
-          placeholder="Paste the role, requirements and responsibilities here…"
+          placeholder={copy.placeholder}
           aria-describedby="matcher-privacy"
         />
 
@@ -125,47 +134,36 @@ export function VacancyMatcher() {
                 />
               </svg>
             </m.span>
-            {pending ? "Analysing vacancy…" : "Find relevant projects"}
+            {pending ? copy.pendingButton : copy.submitButton}
           </button>
         </div>
         <p className="matcher-note" id="matcher-privacy">
-          40–8,000 characters. Not stored. AI analysis uses Google Gemini. Avoid
-          personal or confidential information.
+          {copy.lengthHint}
         </p>
         {error && (
           <p className="matcher-error" role="alert">
             {error}
           </p>
         )}
-      </form>
+      </m.form>
       <div aria-live="polite" aria-atomic="true">
         {pending && (
           <p className="matcher-note" role="status">
-            Comparing the requirements with documented project experience.
+            {copy.pendingMessage}
           </p>
         )}
         {result && (
           <div className="matcher-results">
             <h3 className="matcher-result-title">
-              {result.matches.length
-                ? "These case studies match your vacancy"
-                : "No clear match found"}
+              {result.matches.length ? copy.resultsTitle : copy.emptyTitle}
             </h3>
             <p className="matcher-note matcher-results-note">
-              {result.mode === "ai"
-                ? "AI identified the requirements; the examples come from documented project case studies."
-                : "Keyword comparison is being used because AI analysis is currently unavailable."}{" "}
-              This is an evidence-based comparison, not a suitability score.
+              {result.mode === "ai" ? copy.aiNote : copy.keywordNote}{" "}
+              {copy.comparisonNote}
             </p>
             <ol className="matcher-list">
-              {result.matches.map((match, index) => (
-                <m.li
-                  className="matcher-case"
-                  key={match.id}
-                  initial={reduceMotion ? false : { opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1, duration: 0.35 }}
-                >
+              {result.matches.map((match) => (
+                <ScrollCase key={match.id}>
                   <div className="matcher-case-content">
                     <h4 className="matcher-case-title">{match.title}</h4>
                     <p className="matcher-evidence">
@@ -176,7 +174,7 @@ export function VacancyMatcher() {
                     {match.evidence.length > 280 && (
                       <details className="matcher-details">
                         <summary className="matcher-details-toggle">
-                          Read contribution
+                          {copy.readContribution}
                         </summary>
                         <p className="matcher-details-copy">{match.evidence}</p>
                       </details>
@@ -190,30 +188,35 @@ export function VacancyMatcher() {
                     </div>
                     <Link
                       className="matcher-link"
-                      aria-label={`View case study: ${match.title}`}
+                      aria-label={`${copy.caseButton}: ${match.title}`}
                       href={`/project/${match.id}`}
                     >
-                      View case study
+                      {copy.caseButton}
                     </Link>
                   </div>
-                </m.li>
+                </ScrollCase>
               ))}
             </ol>
             {result.missing.length > 0 && (
               <p className="matcher-note matcher-missing">
-                Not demonstrated in the current case studies:{" "}
-                {result.missing.join(", ")}.
+                {copy.missingLabel} {result.missing.join(", ")}.
               </p>
             )}
             {!result.requirements.length && (
-              <p className="matcher-note">
-                No recognisable requirements were found. Add the requested
-                technologies or responsibilities.
-              </p>
+              <p className="matcher-note">{copy.noRequirements}</p>
             )}
           </div>
         )}
       </div>
     </MatcherSurface>
+  );
+}
+
+function ScrollCase({ children }: { children: ReactNode }) {
+  const { ref, style } = useScrollReveal<HTMLLIElement>();
+  return (
+    <m.li className="matcher-case" ref={ref} style={style}>
+      {children}
+    </m.li>
   );
 }

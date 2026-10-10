@@ -37,7 +37,7 @@ export function HomeTemplate({ sections, isProduction }: HomeTemplateProps) {
       <HowIWork data={sections.howIWork} />
       <Inspiration data={sections.inspiration} />
       <Portfolio data={sections.portfolio} />
-      <VacancyMatcher />
+      <VacancyMatcher data={sections.vacancyMatcher} />
       <Tools data={sections.tools} />
       <Contact data={sections.contact} />
       <Footer data={sections.footer} />
