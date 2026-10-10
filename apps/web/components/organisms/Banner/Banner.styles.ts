@@ -59,9 +59,9 @@ export const HeroActions = styled.div.attrs({ className: "ui-div" })`
     border-radius: 6px;
     font-size: 14px;
     font-weight: 650;
-    border: 1px solid #166778;
-    background: #f1f8fa;
-    color: #166778;
+    border: 1px solid #245ce0;
+    background: #f4f8ff;
+    color: #245ce0;
     transition:
       transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
       background 280ms ease;
@@ -69,23 +69,23 @@ export const HeroActions = styled.div.attrs({ className: "ui-div" })`
       transition: none;
     }
     &:first-child {
-      background: #166778;
+      background: #245ce0;
       color: #fff;
-      border-color: #166778;
+      border-color: #245ce0;
     }
     &:hover {
       transform: translateY(-2px);
-      background: #dceef2;
+      background: #e5efff;
     }
     &:first-child:hover {
-      background: #125565;
-      border-color: #125565;
+      background: #1947b5;
+      border-color: #1947b5;
     }
     &:active {
       transform: translateY(0);
     }
     &:focus-visible {
-      outline: 2px solid #173341;
+      outline: 2px solid #14213d;
       outline-offset: 4px;
     }
   }
@@ -101,14 +101,30 @@ export const HeroVisual = styled(m.div).attrs({ className: "ui-div" })`
   justify-self: center;
   min-height: 252px;
   border-radius: 28px;
-  background: linear-gradient(145deg, #d2e6ed, #e8eef2);
+  background: linear-gradient(145deg, #e6efff, #f5f8ff);
   border: 1px solid rgba(180, 232, 238, 0.3);
   box-shadow:
-    0 28px 70px rgba(23, 51, 65, 0.14),
+    0 28px 70px rgba(20, 33, 61, 0.14),
     inset 0 1px 0 rgba(255, 255, 255, 0.12);
   display: grid;
   place-items: center;
   overflow: hidden;
+  @supports (
+    (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
+  ) {
+    background: linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.55),
+      rgba(230, 239, 255, 0.25)
+    );
+    -webkit-backdrop-filter: blur(16px) saturate(115%);
+    backdrop-filter: blur(16px) saturate(115%);
+    border-color: rgba(255, 255, 255, 0.8);
+    box-shadow:
+      0 24px 60px rgba(20, 33, 61, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.95),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.4);
+  }
   .profile-avatar {
     width: 112%;
     height: auto;
@@ -122,7 +138,7 @@ export const HeroVisual = styled(m.div).attrs({ className: "ui-div" })`
     width: 252px;
     height: 252px;
     border-radius: 50%;
-    background: #166778;
+    background: #245ce0;
     opacity: 0.24;
     top: 48px;
     right: -100px;

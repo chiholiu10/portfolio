@@ -32,7 +32,7 @@ export const IntroBlock = styled(OrbitSurface)`
   width: 100%;
   height: 100%;
   min-height: 0;
-  padding: 20px;
+  padding: 28px 20px;
   border-radius: 14px;
   @supports (
     (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
@@ -40,13 +40,13 @@ export const IntroBlock = styled(OrbitSurface)`
     background: linear-gradient(
       145deg,
       rgba(255, 255, 255, 0.7),
-      rgba(238, 248, 251, 0.4)
+      rgba(239, 245, 255, 0.4)
     );
     -webkit-backdrop-filter: blur(18px) saturate(120%);
     backdrop-filter: blur(18px) saturate(120%);
     border-color: rgba(255, 255, 255, 0.75);
     box-shadow:
-      0 12px 32px rgba(23, 51, 65, 0.08),
+      0 12px 32px rgba(20, 33, 61, 0.08),
       inset 0 1px 0 rgba(255, 255, 255, 0.95),
       inset 0 -1px 0 rgba(255, 255, 255, 0.35);
   }
