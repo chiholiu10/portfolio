@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { RevealSessionProvider } from "@/components/atoms/Motion/RevealSession";
-import { StarBackground } from "@/components/atoms/StarBackground/StarBackground";
+import { AmbientBackground } from "@/components/atoms/AmbientBackground/AmbientBackground";
 import type { AppProps } from "next/app";
 import { ThemeProvider } from "styled-components";
 import { CSSreset } from "@/styles/CssReset";
@@ -22,7 +22,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       <LazyMotion features={loadMotionFeatures} strict>
         <ThemeProvider theme={theme}>
           <CSSreset />
-          <StarBackground />
+          <AmbientBackground />
           <RevealSessionProvider>
             <Component {...pageProps} />
           </RevealSessionProvider>
