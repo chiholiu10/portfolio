@@ -102,6 +102,13 @@ export default async function handler(
       }),
       signal: AbortSignal.timeout(30_000),
     });
+    if (response.status === 503) {
+      const failure = await response.json().catch(() => null);
+      if (failure?.code === "MATCHER_BUSY") {
+        res.setHeader("Retry-After", "5");
+        return res.status(503).json({ code: "MATCHER_BUSY" });
+      }
+    }
     if (!response.ok) throw new Error("Matcher unavailable");
     const result = matchResponseSchema.parse(await response.json());
     const allowed = new Map(projects.map((project) => [project.id, project]));

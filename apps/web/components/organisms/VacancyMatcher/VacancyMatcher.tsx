@@ -41,7 +41,14 @@ export function VacancyMatcher({ data }: VacancyMatcherProps) {
         signal: AbortSignal.timeout(35_000),
       });
       const payload = await response.json();
-      if (!response.ok) throw new Error(copy.errorMessage);
+      if (!response.ok) {
+        setError(
+          response.status === 429 || payload?.code === "MATCHER_BUSY"
+            ? copy.busyMessage
+            : copy.errorMessage,
+        );
+        return;
+      }
       setResult(matchResponseSchema.parse(payload));
     } catch (failure) {
       setError(

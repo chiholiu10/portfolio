@@ -17,7 +17,7 @@ Open http://localhost:3100/#vacancy-match or http://localhost:3100/match. This c
 
 Existing `.env.local` values in `apps/web` override Next.js environment values. Set `MATCHER_API_URL=http://matcher-api:8000` when using Docker. The development-only shared token in Compose is limited to the private local network; production requires a strong token.
 
-For running without Docker, use `yarn dev:web` and `MATCHER_API_TOKEN=your-local-token yarn dev:python` in separate terminals. Configure the same token and `MATCHER_API_URL=http://127.0.0.1:8000` in `apps/web/.env.local`.
+For running without Docker, use `yarn dev:web` and `yarn dev:python` in separate terminals. The Python command loads the shared configuration from `apps/web/.env.local`. Configure the token and `MATCHER_API_URL=http://127.0.0.1:8000` in `apps/web/.env.local`.
 
 ## Vacancy matching
 
@@ -200,3 +200,10 @@ Do not run the indexer automatically for untrusted pull requests because it writ
 ## License
 
 This repository contains personal portfolio content and is not licensed for redistribution. The source is available for review as part of the portfolio.
+
+The matcher admits at most four simultaneous analyses per Python process, with
+room for eight waiting requests and a three-second wait deadline. Excess traffic
+receives `503 MATCHER_BUSY` with `Retry-After: 5`; the interface keeps the vacancy
+and shows a CMS-managed retry message. This is a per-process limit, not a global
+Gemini quota across multiple replicas. The concurrency test uses simulated work
+and makes no paid AI calls.

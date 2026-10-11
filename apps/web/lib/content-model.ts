@@ -168,6 +168,7 @@ export const homeSectionSchemas = {
       noRequirements: z.string().min(1),
       errorMessage: z.string().min(1),
       timeoutMessage: z.string().min(1),
+      busyMessage: z.string().min(1),
       pageTitle: z.string().min(1),
       pageDescription: z.string().min(1),
       homeLink: z.string().min(1),
