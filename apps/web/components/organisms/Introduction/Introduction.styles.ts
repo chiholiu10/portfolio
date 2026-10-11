@@ -42,8 +42,10 @@ export const IntroBlock = styled(OrbitSurface)`
       rgba(255, 255, 255, 0.7),
       rgba(239, 245, 255, 0.4)
     );
-    -webkit-backdrop-filter: blur(18px) saturate(120%);
-    backdrop-filter: blur(18px) saturate(120%);
+    ${breakpoint.lg`
+      -webkit-backdrop-filter: blur(18px) saturate(120%);
+      backdrop-filter: blur(18px) saturate(120%);
+    `}
     border-color: rgba(255, 255, 255, 0.75);
     box-shadow:
       0 12px 32px rgba(20, 33, 61, 0.08),

@@ -183,7 +183,9 @@ export const ContactForm = styled.form.attrs({ className: "ui-form" })`
     ),
     rgba(255, 255, 255, 0.94);
   box-shadow: 0 30px 90px rgba(20, 33, 61, 0.1);
-  backdrop-filter: blur(20px);
+  ${breakpoint.lg`
+    backdrop-filter: blur(20px);
+  `}
   ${breakpoint.sm`
     grid-template-columns: repeat(2, minmax(0, 1fr));
   `}

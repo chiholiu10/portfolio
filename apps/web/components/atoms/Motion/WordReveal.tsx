@@ -1,5 +1,15 @@
 import { m, useTransform, type MotionValue } from "motion/react";
 import { useScrollReveal } from "@/components/atoms/Motion/useScrollReveal";
+import { useSyncExternalStore } from "react";
+import { mediaQuery } from "@/styles/Breakpoint";
+
+function subscribeToWidth(callback: () => void) {
+  const query = window.matchMedia(mediaQuery.lg);
+  query.addEventListener("change", callback);
+  return () => query.removeEventListener("change", callback);
+}
+const getWideSnapshot = () => window.matchMedia(mediaQuery.lg).matches;
+const getServerSnapshot = () => true;
 
 interface WordRevealProps {
   text?: string | null;
@@ -7,8 +17,26 @@ interface WordRevealProps {
 }
 
 export const WordReveal = ({ text = "", id }: WordRevealProps) => {
-  const { ref, progress, reduceMotion } = useScrollReveal<HTMLSpanElement>();
+  const { ref, progress, reduceMotion, style } =
+    useScrollReveal<HTMLSpanElement>();
+  const wide = useSyncExternalStore(
+    subscribeToWidth,
+    getWideSnapshot,
+    getServerSnapshot,
+  );
   if (!text) return null;
+  if (!wide || reduceMotion) {
+    return (
+      <m.span
+        className="ui-span"
+        id={id}
+        ref={ref}
+        style={{ display: "inline-block", ...style }}
+      >
+        {text}
+      </m.span>
+    );
+  }
   const words = text.trim().split(/\s+/);
   return (
     <span className="ui-span" id={id} ref={ref}>
@@ -18,7 +46,7 @@ export const WordReveal = ({ text = "", id }: WordRevealProps) => {
           word={word}
           progress={progress}
           offset={words.length > 1 ? (index / (words.length - 1)) * 0.22 : 0}
-          reduceMotion={reduceMotion === true}
+          reduceMotion={false}
         />
       ))}
     </span>

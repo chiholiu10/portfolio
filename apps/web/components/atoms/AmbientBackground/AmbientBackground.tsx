@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
+import { mediaQuery } from "@/styles/Breakpoint";
 
 const gridSvg =
   '<svg xmlns="http://www.w3.org/2000/svg" width="132" height="132" viewBox="0 0 132 132"><path d="M8 0H124M0 8V124" fill="none" stroke="#7293ad" stroke-opacity=".16"/><circle cx="0" cy="0" r="1.5" fill="#7293ad" fill-opacity=".18"/></svg>';
@@ -47,6 +48,7 @@ export function AmbientBackground() {
     let lastPaint = -Infinity;
     let elapsed = 0;
     let previous = 0;
+    let resumeTimer: ReturnType<typeof setTimeout>;
     function paint(time: number) {
       for (let y = 0; y < height; y++) {
         const ny = y / height;
@@ -82,12 +84,23 @@ export function AmbientBackground() {
       if (motion.matches) paint(0);
       else if (!document.hidden) frame = requestAnimationFrame(tick);
     }
+    // Let touch scrolling use the frame budget; resume the field after scrolling.
+    function handleScroll() {
+      if (window.matchMedia(mediaQuery.lg).matches || motion.matches) return;
+      cancelAnimationFrame(frame);
+      clearTimeout(resumeTimer);
+      previous = 0;
+      resumeTimer = setTimeout(syncMotion, 150);
+    }
     paint(0);
     syncMotion();
     motion.addEventListener("change", syncMotion);
     document.addEventListener("visibilitychange", syncMotion);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
       cancelAnimationFrame(frame);
+      clearTimeout(resumeTimer);
+      window.removeEventListener("scroll", handleScroll);
       motion.removeEventListener("change", syncMotion);
       document.removeEventListener("visibilitychange", syncMotion);
     };

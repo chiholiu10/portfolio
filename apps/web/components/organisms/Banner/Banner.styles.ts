@@ -117,8 +117,10 @@ export const HeroVisual = styled(m.div).attrs({ className: "ui-div" })`
       rgba(255, 255, 255, 0.55),
       rgba(230, 239, 255, 0.25)
     );
-    -webkit-backdrop-filter: blur(16px) saturate(115%);
-    backdrop-filter: blur(16px) saturate(115%);
+    ${breakpoint.lg`
+      -webkit-backdrop-filter: blur(16px) saturate(115%);
+      backdrop-filter: blur(16px) saturate(115%);
+    `}
     border-color: rgba(255, 255, 255, 0.8);
     box-shadow:
       0 24px 60px rgba(20, 33, 61, 0.1),
