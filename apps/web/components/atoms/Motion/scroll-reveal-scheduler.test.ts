@@ -38,7 +38,7 @@ test("shares the observer, stops completed reveals and pauses offscreen reversib
   };
   global.cancelAnimationFrame = jest.fn();
   let top = 600;
-  const rect = jest.fn(() => ({ top }));
+  const rect = jest.fn(() => ({ top, bottom: top + 200 }));
   const first = { getBoundingClientRect: rect } as unknown as HTMLElement;
   const second = { getBoundingClientRect: rect } as unknown as HTMLElement;
   const update = jest.fn();
@@ -60,7 +60,7 @@ test("shares the observer, stops completed reveals and pauses offscreen reversib
   try {
     expect(constructor).toHaveBeenCalledTimes(1);
     flush();
-    expect(update).toHaveBeenLastCalledWith(0.5);
+    expect(update.mock.calls.at(-1)?.[0]).toBeCloseTo(0.5);
     top = 400;
     listeners.get("scroll")?.();
     flush();
@@ -90,7 +90,19 @@ test("shares the observer, stops completed reveals and pauses offscreen reversib
     );
     top = 600;
     flush();
-    expect(update).toHaveBeenLastCalledWith(0.5);
+    expect(update.mock.calls.at(-1)?.[0]).toBeCloseTo(0.5);
+    top = -100;
+    listeners.get("scroll")?.();
+    flush();
+    expect(update).toHaveBeenLastCalledWith(0);
+    top = 0;
+    listeners.get("scroll")?.();
+    flush();
+    expect(update.mock.calls.at(-1)?.[0]).toBeCloseTo(0.5);
+    top = 100;
+    listeners.get("scroll")?.();
+    flush();
+    expect(update).toHaveBeenLastCalledWith(1);
   } finally {
     cleanupFirst();
     cleanupSecond();

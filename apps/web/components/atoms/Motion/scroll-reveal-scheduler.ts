@@ -2,6 +2,8 @@ type Reveal = {
   update: (progress: number) => void;
   offset: () => number;
   once: boolean;
+  start?: number;
+  end?: number;
 };
 
 const reveals = new Map<HTMLElement, Reveal>();
@@ -17,11 +19,19 @@ function flush() {
   // Read all geometry before updating MotionValues to avoid interleaved layout work.
   const measurements = Array.from(active, (element) => {
     const reveal = reveals.get(element)!;
-    const top = element.getBoundingClientRect().top - reveal.offset();
+    const rect = element.getBoundingClientRect();
+    const offset = reveal.offset();
+    const top = rect.top - offset;
+    const bottom = rect.bottom - offset;
+    const start = reveal.start ?? 0.7;
+    const end = reveal.end ?? 0.5;
+    const entrance = (height * start - top) / (height * (start - end));
+    // Re-enter smoothly from the top when scrolling back up.
+    const exit = reveal.once ? 1 : (bottom - height * 0.1) / (height * 0.2);
     return {
       element,
       reveal,
-      progress: Math.max(0, Math.min(1, (height * 0.7 - top) / (height * 0.2))),
+      progress: Math.max(0, Math.min(1, entrance, exit)),
     };
   });
   for (const { element, reveal, progress } of measurements) {
@@ -48,7 +58,8 @@ function start() {
         if (entry.isIntersecting) active.add(element);
         else {
           active.delete(element);
-          const progress = entry.boundingClientRect.top < 0 ? 1 : 0;
+          const progress =
+            reveal.once && entry.boundingClientRect.top < 0 ? 1 : 0;
           reveal.update(progress);
           if (reveal.once && progress === 1) {
             completed.add(element);

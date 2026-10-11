@@ -11,7 +11,11 @@ import { observeScrollReveal } from "@/components/atoms/Motion/scroll-reveal-sch
 /** Scroll controls the reveal from 70% to 50% of the viewport height. */
 export function useScrollReveal<Element extends HTMLElement>(
   staggerIndex = 0,
-  { once = false }: { once?: boolean } = {},
+  {
+    once = false,
+    start = 0.7,
+    end = 0.5,
+  }: { once?: boolean; start?: number; end?: number } = {},
 ) {
   const ref = useRef<Element>(null);
   const reduceMotion = useReducedMotion();
@@ -42,10 +46,12 @@ export function useScrollReveal<Element extends HTMLElement>(
     }
     return observeScrollReveal(element, {
       once,
+      start,
+      end,
       offset: () => y.get(),
       update: (value) => scrollYProgress.set(value),
     });
-  }, [once, reduceMotion, scrollYProgress, y]);
+  }, [once, start, end, reduceMotion, scrollYProgress, y]);
   return {
     ref,
     progress,
