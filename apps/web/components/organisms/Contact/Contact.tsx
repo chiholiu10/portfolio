@@ -1,13 +1,13 @@
-import { useInView, useReducedMotion, type MotionStyle } from "motion/react";
+import { m, useReducedMotion, type MotionStyle } from "motion/react";
+import { premiumEase } from "@/components/atoms/Motion/motion.config";
 import { useScrollReveal } from "@/components/atoms/Motion/useScrollReveal";
 import type { ReactNode } from "react";
 import { Eyebrow } from "@/components/atoms/Eyebrow/Eyebrow";
 import { contactRequestSchema } from "@/lib/contact/validation";
 import type { HomeSections } from "@/lib/content-model";
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useState } from "react";
 import { ComponentSection } from "@/styles/General.styles";
 import { ContactSvg, IconPath } from "@/components/atoms/ContactSvg/ContactSvg";
-import { StaggerGroup, StaggerItem } from "@/components/atoms/Motion";
 import {
   ContactBlock,
   ContactBlockAnchor,
@@ -227,11 +227,8 @@ export const Contact = ({ data }: ContactProps) => {
               </FieldHint>
             </Field>
           </FormRow>
-          <FormFooter>
-            <PrivacyCopy
-              variants={footerReveal}
-              transition={{ duration: 0.25 }}
-            >
+          <FormRow>
+            <PrivacyCopy>
               <input
                 className="ui-input"
                 id="contact-consent"
@@ -265,9 +262,9 @@ export const Contact = ({ data }: ContactProps) => {
                 </>
               )}
             </FormStatus>
+          </FormRow>
+          <FormRow>
             <SubmitButton
-              variants={footerReveal}
-              transition={{ duration: 0.25, delay: 0.07 }}
               type="submit"
               disabled={!isValid || status === "sending"}
               aria-busy={status === "sending"}
@@ -300,32 +297,58 @@ export const Contact = ({ data }: ContactProps) => {
                 </svg>
               </span>
             </SubmitButton>
-          </FormFooter>
+          </FormRow>
         </ContactForm>
       </ContactGrid>
 
       <SocialLabel>Or find me here</SocialLabel>
-      <StaggerGroup>
-        <ContactContainer>
-          {arrays.map((item, index) => (
-            <StaggerItem key={index} index={index}>
-              <ContactBlock $index={index}>
-                <ContactBlockAnchor
-                  href={item.anchor}
-                  target="_blank"
-                  rel="noopener noreferrer nofollow"
-                  aria-label={item.name}
-                >
-                  <ContactSvg index={index} icon={icon} />
-                </ContactBlockAnchor>
-              </ContactBlock>
-            </StaggerItem>
-          ))}
-        </ContactContainer>
-      </StaggerGroup>
+      <ContactContainer>
+        {arrays.map((item, index) => (
+          <SocialReveal key={item.anchor} index={index}>
+            <ContactBlock $index={index}>
+              <ContactBlockAnchor
+                href={item.anchor}
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+                aria-label={item.name}
+              >
+                <ContactSvg index={index} icon={icon} />
+              </ContactBlockAnchor>
+            </ContactBlock>
+          </SocialReveal>
+        ))}
+      </ContactContainer>
     </ComponentSection>
   );
 };
+
+function SocialReveal({
+  children,
+  index,
+}: {
+  children: ReactNode;
+  index: number;
+}) {
+  const reduceMotion = useReducedMotion();
+  const [focused, setFocused] = useState(false);
+  return (
+    <m.div
+      className="ui-div"
+      initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      animate={focused ? { opacity: 1, y: 0 } : undefined}
+      viewport={{ once: true, amount: 0.8, margin: "0px 0px -64px 0px" }}
+      transition={{
+        duration: reduceMotion || focused ? 0 : 0.6,
+        delay: reduceMotion || focused ? 0 : index * 0.12,
+        ease: premiumEase,
+      }}
+      onFocusCapture={() => setFocused(true)}
+    >
+      {children}
+    </m.div>
+  );
+}
 
 function FormRow({
   children,
@@ -344,29 +367,6 @@ function FormRow({
       $columns={columns}
       onFocusCapture={() => setFocused(true)}
       style={rowStyle}
-    >
-      {children}
-    </ContactFormRow>
-  );
-}
-
-const footerReveal = {
-  hidden: { opacity: 0, y: 10 },
-  visible: { opacity: 1, y: 0 },
-};
-
-function FormFooter({ children }: { children: ReactNode }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const visible = useInView(ref, { once: true, margin: "0px 0px -30% 0px" });
-  const reduceMotion = useReducedMotion();
-  const [focused, setFocused] = useState(false);
-  return (
-    <ContactFormRow
-      ref={ref}
-      $columns={false}
-      initial={reduceMotion ? false : "hidden"}
-      animate={visible || focused || reduceMotion ? "visible" : "hidden"}
-      onFocusCapture={() => setFocused(true)}
     >
       {children}
     </ContactFormRow>

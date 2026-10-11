@@ -26,7 +26,7 @@ export const ContactSvg = ({ index, icon }: ContactSvgProps) => {
     strokeWidth: 13,
     stroke: "currentColor",
     transition: {
-      duration: reduceMotion ? 0 : 1.05,
+      duration: reduceMotion ? 0 : 0.45,
       ease: premiumEase,
       delay: reduceMotion ? 0 : index * 0.035,
     },
