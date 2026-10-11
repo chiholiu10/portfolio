@@ -6,4 +6,5 @@ module.exports = createJestConfig({
   testEnvironment: "node",
   testMatch: ["<rootDir>/**/*.test.ts"],
   watchman: false,
+  moduleNameMapper: { "^@/(.*)$": "<rootDir>/$1" },
 });

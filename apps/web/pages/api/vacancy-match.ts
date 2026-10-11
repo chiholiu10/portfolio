@@ -1,3 +1,5 @@
+import { randomUUID } from "node:crypto";
+import { requestMatcher, matcherFailureCategory } from "@/lib/matcher-service";
 import type { NextApiRequest, NextApiResponse } from "next";
 import {
   matchResponseSchema,
@@ -14,6 +16,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+  const requestId = randomUUID();
+  res.setHeader("X-Request-ID", requestId);
   res.setHeader("Cache-Control", "no-store");
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
@@ -40,6 +44,7 @@ export default async function handler(
     return res
       .status(503)
       .json({ error: "The vacancy matcher has not been configured yet." });
+  let phase = "rate_limit";
   try {
     if (process.env.NODE_ENV === "production") {
       const address =
@@ -71,6 +76,7 @@ export default async function handler(
           .json({ error: "Please wait before running another analysis." });
       localRequests.set(key, now);
     }
+    phase = "contentful";
     const section = await loadPortfolioSection();
     const projects = section.arrays.projects
       .filter((project) => !project.archived && project.caseStudy)
@@ -90,18 +96,16 @@ export default async function handler(
           evidence: JSON.stringify({ title: project.title, caseStudy: study }),
         };
       });
-    const response = await fetch(new URL("/match", serviceUrl), {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
+    phase = "matcher";
+    const response = await requestMatcher(
+      new URL("/match", serviceUrl),
+      token,
+      JSON.stringify({
         vacancy: maskSensitiveContent(parsed.data.vacancy),
         projects,
       }),
-      signal: AbortSignal.timeout(30_000),
-    });
+      requestId,
+    );
     if (response.status === 503) {
       const failure = await response.json().catch(() => null);
       if (failure?.code === "MATCHER_BUSY") {
@@ -120,7 +124,15 @@ export default async function handler(
         evidence: allowed.get(match.id)!.summary,
       }));
     return res.status(200).json(result);
-  } catch {
+  } catch (error) {
+    console.error(
+      JSON.stringify({
+        event: "vacancy_match_failure",
+        requestId,
+        category: matcherFailureCategory(error),
+        phase,
+      }),
+    );
     return res.status(503).json({
       error: "The vacancy could not be analysed. Please try again later.",
     });
