@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "node scripts/dev.mjs",
     "dev:web": "yarn workspace @portfolio/web dev",
-    "dev:python": "python3 apps/matcher-api/server.py",
+    "dev:python": "node scripts/dev-python.mjs",
     "dev:stop": "docker compose stop web matcher-api",
     "build": "yarn format:check && yarn workspace @portfolio/web build",
     "start": "yarn workspace @portfolio/web start",
