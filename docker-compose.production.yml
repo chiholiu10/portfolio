@@ -1,0 +1,12 @@
+services:
+  matcher-api:
+    build:
+      context: .
+      dockerfile: apps/matcher-api/Dockerfile
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      MATCHER_API_TOKEN: ${MATCHER_API_TOKEN:?Set MATCHER_API_TOKEN}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-2.5-flash}

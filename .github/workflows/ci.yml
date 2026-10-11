@@ -57,8 +57,14 @@ jobs:
         with:
           python-version: "3.13"
 
+      - name: Install Python dependencies
+        run: yarn setup:python
+
       - name: Test Python matcher
         run: yarn test:python
+
+      - name: Test Docker startup and crash recovery
+        run: yarn test:docker
 
       - name: Build production bundle
         env:

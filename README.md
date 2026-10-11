@@ -1,7 +1,7 @@
 # Portfolio monorepo
 
 - `apps/web`: Next.js portfolio, Contentful loaders and the public API gateway.
-- `apps/matcher-api`: dependency-free Python vacancy matcher, private HTTP service.
+- `apps/matcher-api`: FastAPI/Uvicorn vacancy matcher, private ASGI service.
 - `packages/matcher-contracts`: typed request/response contracts shared with the frontend.
 
 ## Development
@@ -17,7 +17,7 @@ Open http://localhost:3100/#vacancy-match or http://localhost:3100/match. This c
 
 Existing `.env.local` values in `apps/web` override Next.js environment values. Set `MATCHER_API_URL=http://matcher-api:8000` when using Docker. The development-only shared token in Compose is limited to the private local network; production requires a strong token.
 
-For running without Docker, use `yarn dev:web` and `yarn dev:python` in separate terminals. The Python command loads the shared configuration from `apps/web/.env.local`. Configure the token and `MATCHER_API_URL=http://127.0.0.1:8000` in `apps/web/.env.local`.
+For running without Docker, run `yarn setup:python` once, then use `yarn dev:web` and `yarn dev:python` in separate terminals. The Python command loads the shared configuration from `apps/web/.env.local`. Configure the token and `MATCHER_API_URL=http://127.0.0.1:8000` in `apps/web/.env.local`.
 
 ## Vacancy matching
 
@@ -36,7 +36,7 @@ yarn build
 
 ## Production deployment
 
-Set the Vercel project Root Directory to `apps/web` (include files outside the root directory), install with `yarn install --frozen-lockfile` and build with `next build`. The GitHub deployment workflow runs Vercel from `apps/web`. Deploy the Python Dockerfile to a private service and set `MATCHER_API_URL` and the same strong `MATCHER_API_TOKEN` on both services. The web service also needs the existing Supabase distributed rate-limit configuration and `CAREER_AGENT_HASH_SECRET`. Production requests fail closed when rate limiting is unavailable. Only Python needs the Gemini key for the matcher.
+Set the Vercel project Root Directory to `apps/web` (include files outside the root directory), install with `yarn install --frozen-lockfile` and build with `next build`. The GitHub deployment workflow runs Vercel from the repository root using the configured project root. Deploy the Python Dockerfile to a private service and set `MATCHER_API_URL` and the same strong `MATCHER_API_TOKEN` on both services. The web service also needs the existing Supabase distributed rate-limit configuration and `CAREER_AGENT_HASH_SECRET`. Production requests fail closed when rate limiting is unavailable. Only Python needs the Gemini key for the matcher.
 
 The root production Dockerfile builds the web app on port 3100. Supply Contentful environment values securely during the build and runtime secrets during deployment; never bake credentials into images. Compose is the local development setup.
 
@@ -207,3 +207,5 @@ receives `503 MATCHER_BUSY` with `Retry-After: 5`; the interface keeps the vacan
 and shows a CMS-managed retry message. This is a per-process limit, not a global
 Gemini quota across multiple replicas. The concurrency test uses simulated work
 and makes no paid AI calls.
+
+See [matcher reliability](docs/matcher-reliability.md) for healthchecks, crash recovery, retry boundaries and Docker tests.

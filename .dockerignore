@@ -12,3 +12,5 @@ yarn-error.log*
 README.md
 
 **/__pycache__
+
+**/.venv

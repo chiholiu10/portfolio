@@ -17,7 +17,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "yarn workspace @portfolio/web test",
-    "test:python": "python3 -m unittest discover -s apps/matcher-api -p \"test_*.py\"",
+    "test:python": "apps/matcher-api/.venv/bin/python -m unittest discover -s apps/matcher-api -p \"test_*.py\"",
     "test:format": "node --test scripts/prettier-styles-plugin.test.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -26,7 +26,9 @@
     "commitlint": "commitlint --edit",
     "ci": "yarn install --frozen-lockfile --non-interactive",
     "reinstall": "rm -rf node_modules && yarn install --frozen-lockfile",
-    "index:career-knowledge": "node scripts/index-career-knowledge.mjs"
+    "index:career-knowledge": "node scripts/index-career-knowledge.mjs",
+    "setup:python": "python3 -m venv apps/matcher-api/.venv && apps/matcher-api/.venv/bin/pip install -r apps/matcher-api/requirements-test.txt",
+    "test:docker": "node scripts/test-matcher-docker.mjs"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.4.0",
