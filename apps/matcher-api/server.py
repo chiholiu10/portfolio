@@ -4,18 +4,23 @@ import json
 import os
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from matcher import match_vacancy
+from capacity import AnalysisCapacity, CapacityBusy
+
+capacity = AnalysisCapacity()
 
 
 class Handler(BaseHTTPRequestHandler):
     def log_message(self, *_args):
         pass
 
-    def respond(self, status, payload):
+    def respond(self, status, payload, retry_after=None):
         data = json.dumps(payload).encode()
         self.send_response(status)
         self.send_header("Content-Type", "application/json")
         self.send_header("Cache-Control", "no-store")
         self.send_header("Content-Length", str(len(data)))
+        if retry_after is not None:
+            self.send_header("Retry-After", str(retry_after))
         self.end_headers()
         self.wfile.write(data)
 
@@ -41,7 +46,11 @@ class Handler(BaseHTTPRequestHandler):
             for project in projects:
                 if not isinstance(project, dict) or not all(isinstance(project.get(k), str) for k in ("id", "title", "evidence")):
                     raise ValueError("Invalid project")
-            self.respond(200, match_vacancy(vacancy, projects))
+            with capacity.slot():
+                result = match_vacancy(vacancy, projects)
+            self.respond(200, result)
+        except CapacityBusy:
+            self.respond(503, {"code": "MATCHER_BUSY"}, retry_after=5)
         except (ValueError, KeyError, TypeError, UnicodeDecodeError):
             self.respond(400, {"error": "Invalid request"})
         except Exception:
