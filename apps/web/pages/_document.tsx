@@ -46,9 +46,20 @@ export default class MyDocument extends Document {
             crossOrigin="anonymous"
           />
           <meta name="format-detection" content="telephone=no" />
-          <link rel="icon" href="/favicon.ico?v=cl" sizes="16x16 32x32 48x48" />
-          <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-          <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+          <link
+            rel="icon"
+            href="/favicon.ico?v=cl-solid-blue"
+            sizes="16x16 32x32 48x48"
+          />
+          <link
+            rel="icon"
+            href="/favicon.svg?v=cl-solid-blue"
+            type="image/svg+xml"
+          />
+          <link
+            rel="apple-touch-icon"
+            href="/apple-touch-icon.png?v=cl-solid-blue"
+          />
           <meta name="theme-color" content="#245ce0" />
         </Head>
         <body className="ui-body">
