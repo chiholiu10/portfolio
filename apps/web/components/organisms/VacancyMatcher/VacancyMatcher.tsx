@@ -1,6 +1,12 @@
 import { useScrollReveal } from "@/components/atoms/Motion/useScrollReveal";
 import { FadeUp } from "@/components/atoms/Motion";
-import { useRef, useState, type ReactNode, type FormEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+  type FormEvent,
+} from "react";
 import Link from "next/link";
 import { m, useReducedMotion } from "motion/react";
 import {
@@ -19,9 +25,22 @@ export function VacancyMatcher({ data }: VacancyMatcherProps) {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
   const requestInFlight = useRef(false);
+  const resultsRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
   const { ref: formRef, style: formStyle } = useScrollReveal<HTMLFormElement>();
   const [formFocused, setFormFocused] = useState(false);
+
+  useEffect(() => {
+    if (!result) return;
+    const frame = requestAnimationFrame(() => {
+      resultsRef.current?.scrollIntoView({
+        behavior: reduceMotion ? "instant" : "smooth",
+        block: "start",
+      });
+      resultsRef.current?.focus({ preventScroll: true });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [result, reduceMotion]);
 
   if (!data.section) return null;
   const { eyebrow, title, subtitle, arrays: copy } = data.section;
@@ -160,8 +179,13 @@ export function VacancyMatcher({ data }: VacancyMatcherProps) {
           </p>
         )}
         {result && (
-          <div className="matcher-results">
-            <h3 className="matcher-result-title">
+          <div
+            className="matcher-results"
+            ref={resultsRef}
+            tabIndex={-1}
+            aria-labelledby="matcher-results-title"
+          >
+            <h3 className="matcher-result-title" id="matcher-results-title">
               {result.matches.length ? copy.resultsTitle : copy.emptyTitle}
             </h3>
             <p className="matcher-note matcher-results-note">
@@ -220,9 +244,14 @@ export function VacancyMatcher({ data }: VacancyMatcherProps) {
 }
 
 function ScrollCase({ children }: { children: ReactNode }) {
-  const { ref, style } = useScrollReveal<HTMLLIElement>();
+  const reduceMotion = useReducedMotion();
   return (
-    <m.li className="matcher-case" ref={ref} style={style}>
+    <m.li
+      className="matcher-case"
+      initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: reduceMotion ? 0 : 0.35 }}
+    >
       {children}
     </m.li>
   );

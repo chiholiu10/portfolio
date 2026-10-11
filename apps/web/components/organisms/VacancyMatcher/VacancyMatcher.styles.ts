@@ -161,6 +161,7 @@ export const MatcherSurface = styled.section.attrs({ className: "ui-section" })`
     line-height: 1.6;
   }
   .matcher-results {
+    scroll-margin-top: 100px;
     margin-top: 32px;
   }
   .matcher-result-title {
