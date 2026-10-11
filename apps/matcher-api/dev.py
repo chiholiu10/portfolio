@@ -1,4 +1,4 @@
-"""Reload the dependency-free development server when Python sources change."""
+"""Reload the development ASGI server when Python sources change."""
 import pathlib
 import signal
 import subprocess
@@ -11,6 +11,8 @@ def snapshot():
 
 
 process = subprocess.Popen([sys.executable, "server.py"])
+started = time.monotonic()
+failures = 0
 
 
 def stop(*_args):
@@ -30,7 +32,12 @@ try:
             if process.poll() is None:
                 process.terminate()
                 process.wait(timeout=5)
+            else:
+                failures = failures + 1 if time.monotonic() - started < 5 else 0
+                # Avoid a rapid restart loop for missing dependencies or a persistent startup error.
+                time.sleep(min(5, 0.5 * (2 ** min(failures, 4))))
             process = subprocess.Popen([sys.executable, "server.py"])
+            started = time.monotonic()
             state = current
 finally:
     if process.poll() is None:

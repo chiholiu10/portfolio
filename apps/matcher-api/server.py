@@ -1,61 +1,107 @@
-"""Private HTTP service; Next.js is the public gateway. No request text is stored."""
+"""Private ASGI service. Logs contain request IDs and categories, never request text."""
 import hmac
 import json
+import logging
 import os
-from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+import re
+import time
+import uuid
+
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel, ConfigDict, Field, ValidationError
+from starlette.concurrency import run_in_threadpool
+from request_context import request_id as current_request_id
 from matcher import match_vacancy
 from capacity import AnalysisCapacity, CapacityBusy
 
+logger = logging.getLogger("matcher")
 capacity = AnalysisCapacity()
+app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 
 
-class Handler(BaseHTTPRequestHandler):
-    def log_message(self, *_args):
-        pass
+class Project(BaseModel):
+    model_config = ConfigDict(strict=True)
+    id: str = Field(pattern=r"^[a-z0-9]+(?:-[a-z0-9]+)*$", max_length=200)
+    title: str = Field(max_length=1000)
+    evidence: str = Field(max_length=100000)
+    summary: str = Field(default="", max_length=100000)
 
-    def respond(self, status, payload, retry_after=None):
-        data = json.dumps(payload).encode()
-        self.send_response(status)
-        self.send_header("Content-Type", "application/json")
-        self.send_header("Cache-Control", "no-store")
-        self.send_header("Content-Length", str(len(data)))
-        if retry_after is not None:
-            self.send_header("Retry-After", str(retry_after))
-        self.end_headers()
-        self.wfile.write(data)
 
-    def do_GET(self):
-        self.respond(200 if self.path == "/health" else 404, {"ok": self.path == "/health"})
+class MatchRequest(BaseModel):
+    model_config = ConfigDict(strict=True)
+    vacancy: str = Field(min_length=40, max_length=8000)
+    projects: list[Project] = Field(max_length=100)
 
-    def do_POST(self):
-        if self.path != "/match":
-            return self.respond(404, {"error": "Not found"})
-        secret = os.environ.get("MATCHER_API_TOKEN", "")
-        if not secret or not hmac.compare_digest(self.headers.get("Authorization", ""), "Bearer " + secret):
-            return self.respond(401, {"error": "Unauthorized"})
-        try:
-            size = int(self.headers.get("Content-Length", "0"))
-            if not 0 < size <= 300_000:
-                return self.respond(413, {"error": "Request too large"})
-            payload = json.loads(self.rfile.read(size))
-            vacancy, projects = payload["vacancy"], payload["projects"]
-            if not isinstance(vacancy, str) or not 40 <= len(vacancy) <= 8000:
-                raise ValueError("Invalid vacancy")
-            if not isinstance(projects, list) or len(projects) > 100:
-                raise ValueError("Invalid projects")
-            for project in projects:
-                if not isinstance(project, dict) or not all(isinstance(project.get(k), str) for k in ("id", "title", "evidence")):
-                    raise ValueError("Invalid project")
-            with capacity.slot():
-                result = match_vacancy(vacancy, projects)
-            self.respond(200, result)
-        except CapacityBusy:
-            self.respond(503, {"code": "MATCHER_BUSY"}, retry_after=5)
-        except (ValueError, KeyError, TypeError, UnicodeDecodeError):
-            self.respond(400, {"error": "Invalid request"})
-        except Exception:
-            self.respond(503, {"error": "Matcher unavailable"})
+
+def response(status, payload, retry_after=None):
+    headers = {"Cache-Control": "no-store"}
+    if retry_after is not None:
+        headers["Retry-After"] = str(retry_after)
+    return JSONResponse(payload, status_code=status, headers=headers)
+
+
+@app.middleware("http")
+async def request_logging(request: Request, call_next):
+    supplied = request.headers.get("X-Request-ID", "")
+    request_id = supplied if re.fullmatch(r"[a-zA-Z0-9-]{1,64}", supplied) else str(uuid.uuid4())
+    context_token = current_request_id.set(request_id)
+    started = time.monotonic()
+    try:
+        result = await call_next(request)
+    except Exception as error:
+        logger.error(json.dumps({"event": "matcher_failure", "requestId": request_id,
+                                 "category": type(error).__name__}))
+        result = response(503, {"code": "MATCHER_UNAVAILABLE"})
+    current_request_id.reset(context_token)
+    result.headers["X-Request-ID"] = request_id
+    if request.url.path == "/match":
+        logger.info(json.dumps({"event": "matcher_request", "requestId": request_id,
+                                "status": result.status_code,
+                                "durationMs": round((time.monotonic() - started) * 1000)}))
+    return result
+
+
+@app.get("/health")
+async def health():
+    return response(200, {"ok": True})
+
+
+@app.get("/ready")
+async def ready():
+    configured = bool(os.environ.get("MATCHER_API_TOKEN"))
+    return response(200 if configured else 503, {"ok": configured})
+
+
+@app.post("/match")
+async def match(request: Request):
+    secret = os.environ.get("MATCHER_API_TOKEN", "")
+    if not secret or not hmac.compare_digest(request.headers.get("Authorization", "").encode(),
+                                              ("Bearer " + secret).encode()):
+        return response(401, {"error": "Unauthorized"})
+    body = bytearray()
+    async for chunk in request.stream():
+        body.extend(chunk)
+        if len(body) > 300000:
+            return response(413, {"error": "Request too large"})
+    try:
+        payload = MatchRequest.model_validate_json(body)
+    except (ValidationError, ValueError):
+        return response(400, {"error": "Invalid request"})
+
+    def analyse():
+        with capacity.slot():
+            return match_vacancy(payload.vacancy, [project.model_dump() for project in payload.projects])
+
+    try:
+        result = await run_in_threadpool(analyse)
+        return response(200, result)
+    except CapacityBusy:
+        return response(503, {"code": "MATCHER_BUSY"}, retry_after=5)
 
 
 if __name__ == "__main__":
-    ThreadingHTTPServer((os.environ.get("HOST", "127.0.0.1"), 8000), Handler).serve_forever()
+    import uvicorn
+    logging.basicConfig(level=logging.INFO, format="%(message)s")
+    uvicorn.run(app, host=os.environ.get("HOST", "127.0.0.1"), port=int(os.environ.get("PORT", "8000")),
+                access_log=False, limit_concurrency=64, timeout_keep_alive=5)

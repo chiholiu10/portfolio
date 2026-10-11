@@ -27,3 +27,14 @@ class MatcherTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ProviderRecoveryTests(unittest.TestCase):
+    def test_provider_failure_falls_back_without_fabricating_ai(self):
+        from unittest.mock import patch
+        import os
+        with patch.dict(os.environ, {"GEMINI_API_KEY": "test-key"}), patch("matcher.urllib.request.urlopen", side_effect=OSError("offline")) as provider, patch("matcher.time.sleep"):
+            result = match_vacancy("React TypeScript developer", [{"id": "example", "title": "Example", "evidence": "React TypeScript"}])
+        self.assertEqual(provider.call_count, 2)
+        self.assertEqual(result["mode"], "keywords")
+        self.assertEqual(result["matches"][0]["id"], "example")

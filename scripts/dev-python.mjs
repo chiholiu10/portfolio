@@ -14,7 +14,12 @@ if (!process.env.MATCHER_API_TOKEN) {
   );
   process.exit(1);
 }
-const child = spawn("python3", ["dev.py"], {
+const pythonPath = `${root}apps/matcher-api/.venv/bin/python`;
+if (!existsSync(pythonPath)) {
+  console.error("Run yarn setup:python before starting the matcher.");
+  process.exit(1);
+}
+const child = spawn(pythonPath, ["dev.py"], {
   cwd: `${root}apps/matcher-api`,
   env: process.env,
   stdio: "inherit",

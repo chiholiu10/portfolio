@@ -1,8 +1,12 @@
 """Extract requirements, then rank only verifiable portfolio evidence."""
+import logging
+import time
+import urllib.error
 import json
 import os
 import re
 import urllib.request
+from request_context import request_id
 
 SKILLS = {
     "React": [r"\breact(?:\.js)?\b"],
@@ -54,14 +58,26 @@ def extract_requirements(vacancy):
                                               "temperature": 0, "maxOutputTokens": 1000}}).encode(),
         headers={"Content-Type": "application/json", "x-goog-api-key": key}, method="POST")
     try:
-        with urllib.request.urlopen(request, timeout=20) as response:
-            payload = json.load(response)
+        for attempt in range(2):
+            try:
+                with urllib.request.urlopen(request, timeout=8) as response:
+                    payload = json.load(response)
+                break
+            except urllib.error.HTTPError as error:
+                if attempt or error.code not in (429, 502, 503, 504):
+                    raise
+                time.sleep(0.2)
+            except OSError:
+                if attempt:
+                    raise
+                time.sleep(0.2)
         text = "".join(part.get("text", "") for part in payload["candidates"][0]["content"]["parts"])
         labels = json.loads(text)["requirements"]
         if not isinstance(labels, list):
             raise ValueError("Invalid requirements")
         return list(dict.fromkeys(direct + [label for label in labels if label in SKILLS])), "ai"
-    except (OSError, ValueError, KeyError, IndexError, TypeError):
+    except (OSError, ValueError, KeyError, IndexError, TypeError) as error:
+        logging.getLogger("matcher").warning(json.dumps({"event": "gemini_fallback", "category": type(error).__name__, "requestId": request_id.get()}))
         # Never fabricate an AI result when the provider is unavailable.
         return direct, "keywords"
 
