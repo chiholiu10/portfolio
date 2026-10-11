@@ -11,7 +11,7 @@ import { observeScrollReveal } from "@/components/atoms/Motion/scroll-reveal-sch
 /** Scroll controls the reveal from 70% to 50% of the viewport height. */
 export function useScrollReveal<Element extends HTMLElement>(
   staggerIndex = 0,
-  { once = true }: { once?: boolean } = {},
+  { once = false }: { once?: boolean } = {},
 ) {
   const ref = useRef<Element>(null);
   const reduceMotion = useReducedMotion();
