@@ -227,7 +227,7 @@ export const Contact = ({ data }: ContactProps) => {
               </FieldHint>
             </Field>
           </FormRow>
-          <FormRow>
+          <FormRow consent>
             <PrivacyCopy>
               <input
                 className="ui-input"
@@ -263,7 +263,7 @@ export const Contact = ({ data }: ContactProps) => {
               )}
             </FormStatus>
           </FormRow>
-          <FormRow>
+          <FormRow early>
             <SubmitButton
               type="submit"
               disabled={!isValid || status === "sending"}
@@ -353,11 +353,21 @@ function SocialReveal({
 function FormRow({
   children,
   columns = false,
+  early = false,
+  consent = false,
 }: {
   children: ReactNode;
   columns?: boolean;
+  early?: boolean;
+  consent?: boolean;
 }) {
-  const { ref, style, reduceMotion } = useScrollReveal<HTMLDivElement>();
+  const timing = { once: true, start: 0.7, end: 0.5 };
+  if (consent) Object.assign(timing, { start: 0.9, end: 0.75 });
+  if (early) Object.assign(timing, { start: 0.95, end: 0.8 });
+  const { ref, style, reduceMotion } = useScrollReveal<HTMLDivElement>(
+    0,
+    timing,
+  );
   const [focused, setFocused] = useState(false);
   let rowStyle: MotionStyle = style;
   if (focused || reduceMotion) rowStyle = { opacity: 1, y: 0 };
