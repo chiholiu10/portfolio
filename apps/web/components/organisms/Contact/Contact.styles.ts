@@ -164,7 +164,7 @@ export const FormIntro = styled.p.attrs({ className: "ui-p" })`
   line-height: 1.75;
 `;
 
-export const ContactForm = styled.form.attrs({ className: "ui-form" })`
+export const ContactForm = styled(m.form).attrs({ className: "ui-form" })`
   position: relative;
   display: grid;
   box-sizing: border-box;

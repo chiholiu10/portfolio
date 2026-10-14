@@ -1,11 +1,10 @@
-import { m, useReducedMotion, type MotionStyle } from "motion/react";
+import { m, useReducedMotion } from "motion/react";
 import { premiumEase } from "@/components/atoms/Motion/motion.config";
-import { useScrollReveal } from "@/components/atoms/Motion/useScrollReveal";
 import type { ReactNode } from "react";
 import { Eyebrow } from "@/components/atoms/Eyebrow/Eyebrow";
 import { contactRequestSchema } from "@/lib/contact/validation";
 import type { HomeSections } from "@/lib/content-model";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { ComponentSection } from "@/styles/General.styles";
 import { ContactSvg, IconPath } from "@/components/atoms/ContactSvg/ContactSvg";
 import {
@@ -30,6 +29,7 @@ import {
 type ContactProps = { data: HomeSections["contact"] };
 
 export const Contact = ({ data }: ContactProps) => {
+  const reduceMotion = useReducedMotion();
   const [status, setStatus] = useState<
     "idle" | "sending" | "success" | "error"
   >("idle");
@@ -42,6 +42,35 @@ export const Contact = ({ data }: ContactProps) => {
   else if (messageLength < 20)
     messageHint = `${20 - messageLength} more characters needed`;
   const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL || "";
+
+  useEffect(() => {
+    let frame = 0;
+    let settleTimer = 0;
+
+    const alignContact = () => {
+      if (window.location.hash !== "#contact") return;
+
+      const contact = document.getElementById("contact");
+      if (!contact) return;
+
+      contact.scrollIntoView({ block: "start" });
+      frame = window.requestAnimationFrame(() => {
+        contact.scrollIntoView({ block: "start" });
+      });
+      settleTimer = window.setTimeout(() => {
+        contact.scrollIntoView({ block: "start" });
+      }, 250);
+    };
+
+    alignContact();
+    window.addEventListener("hashchange", alignContact);
+
+    return () => {
+      window.removeEventListener("hashchange", alignContact);
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(settleTimer);
+    };
+  }, []);
 
   const icon: IconPath[] = [
     {
@@ -147,7 +176,17 @@ export const Contact = ({ data }: ContactProps) => {
           {extraText && <FormIntro>{extraText}</FormIntro>}
         </ContactHeader>
 
-        <ContactForm onSubmit={handleSubmit} onChange={updateForm}>
+        <ContactForm
+          onSubmit={handleSubmit}
+          onChange={updateForm}
+          initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: "some" }}
+          transition={{
+            duration: reduceMotion ? 0 : 0.65,
+            ease: premiumEase,
+          }}
+        >
           <HoneypotField aria-hidden="true">
             <label className="ui-label" htmlFor="website">
               Website
@@ -353,32 +392,11 @@ function SocialReveal({
 function FormRow({
   children,
   columns = false,
-  early = false,
-  consent = false,
 }: {
   children: ReactNode;
   columns?: boolean;
   early?: boolean;
   consent?: boolean;
 }) {
-  const timing = { once: true, start: 0.7, end: 0.5 };
-  if (consent) Object.assign(timing, { start: 0.9, end: 0.75 });
-  if (early) Object.assign(timing, { start: 0.95, end: 0.8 });
-  const { ref, style, reduceMotion } = useScrollReveal<HTMLDivElement>(
-    0,
-    timing,
-  );
-  const [focused, setFocused] = useState(false);
-  let rowStyle: MotionStyle = style;
-  if (focused || reduceMotion) rowStyle = { opacity: 1, y: 0 };
-  return (
-    <ContactFormRow
-      ref={ref}
-      $columns={columns}
-      onFocusCapture={() => setFocused(true)}
-      style={rowStyle}
-    >
-      {children}
-    </ContactFormRow>
-  );
+  return <ContactFormRow $columns={columns}>{children}</ContactFormRow>;
 }

@@ -60,13 +60,14 @@ export const ComponentSection = styled.section.attrs({
     }
   }
   &.contactComponent {
+    scroll-margin-top: 84px;
     :where(.ui-img) {
       right: 0;
       left: auto;
       bottom: 0;
       aspect-ratio: auto;
     }
-    overflow: hidden;
+    overflow-x: hidden;
   }
   :where(.ui-input),
   :where(.ui-textarea) {
