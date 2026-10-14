@@ -209,3 +209,5 @@ Gemini quota across multiple replicas. The concurrency test uses simulated work
 and makes no paid AI calls.
 
 See [matcher reliability](docs/matcher-reliability.md) for healthchecks, crash recovery, retry boundaries and Docker tests.
+
+See [observability architecture](docs/observability-architecture.md) for the proposed Grafana/OpenTelemetry diagram and explanations of metrics, traces and logs.

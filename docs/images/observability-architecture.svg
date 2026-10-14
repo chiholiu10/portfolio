@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="860" viewBox="0 0 960 860" role="img" aria-labelledby="title desc">
+<title id="title">Voorgestelde observability-architectuur</title><desc id="desc">React roept Next.js aan. Next.js gebruikt Contentful en FastAPI. FastAPI gebruikt Gemini of keywordfallback. Beide services sturen telemetry naar Grafana Cloud via OpenTelemetry.</desc>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#245ce0"/></marker></defs>
+<rect width="960" height="860" fill="#f5f8ff"/>
+<path d="M450 95V140" fill="none" stroke="#245ce0" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M330 173H140V250" fill="none" stroke="#245ce0" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M450 205V250" fill="none" stroke="#245ce0" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M570 278H640V363H680" fill="none" stroke="#245ce0" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M570 298H620V463H680" fill="none" stroke="#245ce0" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M380 205V225H275V483H295" fill="none" stroke="#245ce0" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="6 5"/>
+<path d="M450 315V445" fill="none" stroke="#245ce0" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="6 5"/>
+<path d="M450 520V585" fill="none" stroke="#245ce0" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="6 5"/>
+<path d="M370 660V690H220V725" fill="none" stroke="#245ce0" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M530 660V690H680V725" fill="none" stroke="#245ce0" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="330" y="30" width="240" height="65" rx="14" fill="white" stroke="#b8caf0" stroke-width="2"/>
+<text x="450.0" y="69.5" text-anchor="middle" fill="#14213d" font-family="Arial,sans-serif" font-size="20" font-weight="600">React-interface</text>
+<rect x="330" y="140" width="240" height="65" rx="14" fill="white" stroke="#b8caf0" stroke-width="2"/>
+<text x="450.0" y="179.5" text-anchor="middle" fill="#14213d" font-family="Arial,sans-serif" font-size="20" font-weight="600">Next.js API-gateway</text>
+<rect x="30" y="250" width="220" height="65" rx="14" fill="white" stroke="#b8caf0" stroke-width="2"/>
+<text x="140.0" y="289.5" text-anchor="middle" fill="#14213d" font-family="Arial,sans-serif" font-size="20" font-weight="600">Contentful</text>
+<rect x="330" y="250" width="240" height="65" rx="14" fill="white" stroke="#b8caf0" stroke-width="2"/>
+<text x="450.0" y="289.5" text-anchor="middle" fill="#14213d" font-family="Arial,sans-serif" font-size="20" font-weight="600">FastAPI-matcher</text>
+<rect x="680" y="330" width="220" height="65" rx="14" fill="white" stroke="#b8caf0" stroke-width="2"/>
+<text x="790.0" y="369.5" text-anchor="middle" fill="#14213d" font-family="Arial,sans-serif" font-size="20" font-weight="600">Gemini</text>
+<rect x="680" y="430" width="220" height="65" rx="14" fill="white" stroke="#b8caf0" stroke-width="2"/>
+<text x="790.0" y="469.5" text-anchor="middle" fill="#14213d" font-family="Arial,sans-serif" font-size="20" font-weight="600">Keywordfallback</text>
+<rect x="295" y="445" width="310" height="75" rx="14" fill="white" stroke="#b8caf0" stroke-width="2"/>
+<text x="450.0" y="482.5" text-anchor="middle" fill="#14213d" font-family="Arial,sans-serif" font-size="20" font-weight="600">OpenTelemetry</text>
+<text x="450.0" y="506.5" text-anchor="middle" fill="#53647e" font-family="Arial,sans-serif" font-size="15">Instrumentatie en exporters</text>
+<rect x="295" y="585" width="310" height="75" rx="14" fill="white" stroke="#b8caf0" stroke-width="2"/>
+<text x="450.0" y="629.5" text-anchor="middle" fill="#14213d" font-family="Arial,sans-serif" font-size="20" font-weight="600">Grafana Cloud</text>
+<rect x="100" y="725" width="240" height="65" rx="14" fill="white" stroke="#b8caf0" stroke-width="2"/>
+<text x="220.0" y="764.5" text-anchor="middle" fill="#14213d" font-family="Arial,sans-serif" font-size="20" font-weight="600">Dashboard</text>
+<rect x="560" y="725" width="240" height="65" rx="14" fill="white" stroke="#b8caf0" stroke-width="2"/>
+<text x="680.0" y="764.5" text-anchor="middle" fill="#14213d" font-family="Arial,sans-serif" font-size="20" font-weight="600">Meldingen</text>
+<text x="480" y="832" text-anchor="middle" font-family="Arial,sans-serif" font-size="15" fill="#53647e">Voorstel · Doorgetrokken: applicatieverkeer · Gestippeld: telemetry</text></svg>
