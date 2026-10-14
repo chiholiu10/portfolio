@@ -41,3 +41,25 @@ export function matcherFailureCategory(error: unknown) {
   if (failure?.cause?.code === "ECONNREFUSED") return "connection_refused";
   return "upstream_failure";
 }
+
+/** Deployment configuration is trusted; request Host headers never select the backend. */
+export function matcherEndpoint(value: string, production: boolean): URL {
+  const url = new URL(value);
+  const hostname = url.hostname.toLowerCase().replace(/\.$/, "");
+  const local =
+    hostname === "localhost" ||
+    hostname.endsWith(".localhost") ||
+    /^127\./.test(hostname) ||
+    ["[::1]", "[::ffff:7f00:1]", "0.0.0.0", "[::]", "matcher-api"].includes(
+      hostname,
+    );
+  if (
+    !["http:", "https:"].includes(url.protocol) ||
+    url.username ||
+    url.password ||
+    (production && (url.protocol !== "https:" || local))
+  ) {
+    throw new Error("Invalid matcher endpoint configuration");
+  }
+  return new URL("/match", url);
+}

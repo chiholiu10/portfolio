@@ -1,5 +1,9 @@
 import { randomUUID } from "node:crypto";
-import { requestMatcher, matcherFailureCategory } from "@/lib/matcher-service";
+import {
+  requestMatcher,
+  matcherFailureCategory,
+  matcherEndpoint,
+} from "@/lib/matcher-service";
 import type { NextApiRequest, NextApiResponse } from "next";
 import {
   matchResponseSchema,
@@ -44,8 +48,13 @@ export default async function handler(
     return res
       .status(503)
       .json({ error: "The vacancy matcher has not been configured yet." });
-  let phase = "rate_limit";
+  let phase = "configuration";
   try {
+    const endpoint = matcherEndpoint(
+      serviceUrl,
+      process.env.NODE_ENV === "production",
+    );
+    phase = "rate_limit";
     if (process.env.NODE_ENV === "production") {
       const address =
         req.headers["x-vercel-forwarded-for"] ||
@@ -98,7 +107,7 @@ export default async function handler(
       });
     phase = "matcher";
     const response = await requestMatcher(
-      new URL("/match", serviceUrl),
+      endpoint,
       token,
       JSON.stringify({
         vacancy: maskSensitiveContent(parsed.data.vacancy),

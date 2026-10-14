@@ -10,7 +10,7 @@ Without Docker, run `yarn setup:python` once, then `yarn dev:python` and `yarn d
 
 ## Production
 
-Use `docker compose --env-file apps/web/.env -f docker-compose.production.yml up --build -d` to run the production matcher alongside a website on the same host. This exposes the API on loopback only. Provide a strong shared `MATCHER_API_TOKEN`; the production configuration has no development token default. The website is deployed separately. Alternatively deploy Next.js and the private ASGI service independently on managed hosting and set `MATCHER_API_URL` to the actual backend URL, never localhost on Vercel.
+Use `docker compose --env-file apps/web/.env -f docker-compose.production.yml up --build -d` to run the production matcher on a host behind a TLS reverse proxy. This exposes the API on loopback only; the proxy must provide the HTTPS endpoint for the website. Provide a strong shared `MATCHER_API_TOKEN`; the production configuration has no development token default. The website is deployed separately. Production gateway configuration requires a remote HTTPS matcher URL; HTTP and localhost endpoints are accepted only in development. Configure `MATCHER_API_URL=http://127.0.0.1:8000` locally and `MATCHER_API_URL=https://api.chiholiu.com` in Vercel Production. Never select the backend from browser-supplied Host headers. Alternatively deploy Next.js and the private ASGI service independently on managed hosting and set `MATCHER_API_URL` to the actual backend URL, never localhost on Vercel.
 
 `/health` checks process liveness. `/ready` also checks the shared token is configured. Gemini availability is intentionally excluded: keyword matching is still available during a provider outage. Docker marks unhealthy containers but does not restart them merely for being unhealthy; use the hosting platform's health-based replacement for that case. Restart policies recover process exits.
 
@@ -27,3 +27,7 @@ Use `docker compose --env-file apps/web/.env -f docker-compose.production.yml up
 `yarn test --runInBand` checks gateway failures, recovery and retry boundaries. `yarn test:python` checks validation, authentication, matching, capacity, provider fallback and actual native process crash recovery on an isolated port. `yarn test:docker` builds a disposable matcher image, checks readiness, sends a real match request, terminates PID 1 inside the container using its registered SIGTERM handler, verifies restart count and checks matching again. It uses keyword mode and never calls Gemini. Resources are removed afterwards. CI runs all three suites.
 
 These checks establish tested failure behavior and crash recovery; they cannot guarantee continuous availability of hosting, networking or external providers.
+
+## Proposed observability
+
+The [observability architecture](observability-architecture.md) includes the Grafana/OpenTelemetry diagram, explains metrics, traces and logs, and describes privacy and serverless export requirements. This integration is proposed, not implemented.

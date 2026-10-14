@@ -1,5 +1,5 @@
 import { afterEach, expect, it, jest } from "@jest/globals";
-import { requestMatcher } from "./matcher-service";
+import { requestMatcher, matcherEndpoint } from "./matcher-service";
 
 const originalFetch = global.fetch;
 afterEach(() => {
@@ -43,4 +43,31 @@ it("does not retry a timeout or busy response and duplicate analysis work", asyn
       .status,
   ).toBe(503);
   expect(mocked).toHaveBeenCalledTimes(2);
+});
+
+it("allows local development and Docker endpoints", () => {
+  expect(matcherEndpoint("http://127.0.0.1:8000", false).href).toBe(
+    "http://127.0.0.1:8000/match",
+  );
+  expect(matcherEndpoint("http://matcher-api:8000", false).hostname).toBe(
+    "matcher-api",
+  );
+});
+it("requires a remote HTTPS endpoint in production", () => {
+  expect(matcherEndpoint("https://api.chiholiu.com", true).href).toBe(
+    "https://api.chiholiu.com/match",
+  );
+  for (const value of [
+    "http://api.chiholiu.com",
+    "https://localhost",
+    "https://127.0.0.1",
+    "https://127.1",
+    "https://[::1]",
+    "https://matcher-api",
+    "https://localhost.",
+    "https://user:password@api.chiholiu.com",
+    "file:///match",
+  ]) {
+    expect(() => matcherEndpoint(value, true)).toThrow();
+  }
 });
