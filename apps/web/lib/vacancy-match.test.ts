@@ -20,12 +20,39 @@ describe("vacancy matcher boundaries", () => {
         mode: "ai",
         requirements: [],
         missing: [],
+        requirementAnalysis: [],
         matches: [
           {
             id: "https://example.com",
             title: "Unknown",
             evidence: "Unknown",
             skills: [],
+          },
+        ],
+      }).success,
+    ).toBe(false);
+  });
+
+  it("rejects untrusted project links inside explanations", () => {
+    expect(
+      matchResponseSchema.safeParse({
+        mode: "ai",
+        requirements: ["React"],
+        missing: [],
+        matches: [],
+        requirementAnalysis: [
+          {
+            requirement: "React",
+            status: "verified",
+            confidence: 95,
+            evidence: [
+              {
+                projectId: "https://example.com",
+                projectTitle: "Unknown",
+                excerpt: "Unknown",
+                relevance: "Unknown",
+              },
+            ],
           },
         ],
       }).success,

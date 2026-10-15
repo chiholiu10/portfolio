@@ -53,6 +53,135 @@ afterEach(() => {
 });
 
 describe("vacancy matcher service failures", () => {
+  it("returns verified portfolio evidence for an explicit AI requirement", async () => {
+    jest.mocked(loadPortfolioSection).mockResolvedValue({
+      arrays: {
+        projects: [
+          {
+            id: "ai-vacancy-matcher",
+            title: "AI Vacancy Matcher",
+            archived: false,
+            caseStudy: {
+              summary:
+                "An explainable AI vacancy matcher backed by verified portfolio evidence.",
+              technologies: ["Gemini", "Python", "FastAPI"],
+            },
+          },
+        ],
+      },
+    } as unknown as Awaited<ReturnType<typeof loadPortfolioSection>>);
+    global.fetch = jest
+      .fn<ReturnType<typeof fetch>, Parameters<typeof fetch>>()
+      .mockResolvedValue(
+        Response.json({
+          mode: "ai",
+          requirements: ["AI"],
+          missing: [],
+          matches: [
+            {
+              id: "ai-vacancy-matcher",
+              title: "Untrusted title",
+              evidence: "Untrusted evidence",
+              skills: ["AI"],
+            },
+          ],
+        }),
+      );
+
+    const res = await request("ai-evidence-client");
+
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        missing: [],
+        requirementAnalysis: [
+          expect.objectContaining({
+            requirement: "AI",
+            status: "verified",
+            confidence: 85,
+            evidence: [
+              expect.objectContaining({
+                projectId: "ai-vacancy-matcher",
+                projectTitle: "AI Vacancy Matcher",
+                excerpt:
+                  "An explainable AI vacancy matcher backed by verified portfolio evidence.",
+              }),
+            ],
+          }),
+        ],
+      }),
+    );
+  });
+
+  it("builds explanations from trusted portfolio content", async () => {
+    jest.mocked(loadPortfolioSection).mockResolvedValue({
+      arrays: {
+        projects: [
+          {
+            id: "verified-case",
+            title: "Verified case",
+            archived: false,
+            caseStudy: {
+              summary: "Built a production React interface.",
+            },
+          },
+        ],
+      },
+    } as unknown as Awaited<ReturnType<typeof loadPortfolioSection>>);
+    global.fetch = jest
+      .fn<ReturnType<typeof fetch>, Parameters<typeof fetch>>()
+      .mockResolvedValue(
+        Response.json({
+          mode: "keywords",
+          requirements: ["React", "Python"],
+          missing: [],
+          matches: [
+            {
+              id: "verified-case",
+              title: "Untrusted title",
+              evidence: "Untrusted evidence",
+              skills: ["React", "Invented skill"],
+            },
+          ],
+        }),
+      );
+
+    const res = await request("explanation-client");
+
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        missing: ["Python"],
+        matches: [
+          expect.objectContaining({
+            title: "Verified case",
+            evidence: "Built a production React interface.",
+            skills: ["React"],
+          }),
+        ],
+        requirementAnalysis: [
+          expect.objectContaining({
+            requirement: "React",
+            status: "verified",
+            confidence: 85,
+            evidence: [
+              expect.objectContaining({
+                projectTitle: "Verified case",
+                excerpt: "Built a production React interface.",
+              }),
+            ],
+          }),
+          {
+            requirement: "Python",
+            status: "missing",
+            confidence: 0,
+            evidence: [],
+          },
+        ],
+      }),
+    );
+  });
+
   it("returns a safe 503 when Python is unreachable and recovers on the next request", async () => {
     const fetchMock = jest.fn<
       ReturnType<typeof fetch>,
@@ -84,6 +213,7 @@ describe("vacancy matcher service failures", () => {
       requirements: [],
       missing: [],
       matches: [],
+      requirementAnalysis: [],
     });
   });
 

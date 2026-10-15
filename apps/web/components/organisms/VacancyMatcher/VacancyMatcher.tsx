@@ -192,46 +192,94 @@ export function VacancyMatcher({ data }: VacancyMatcherProps) {
               {result.mode === "ai" ? copy.aiNote : copy.keywordNote}{" "}
               {copy.comparisonNote}
             </p>
-            <ol className="matcher-list">
-              {result.matches.map((match) => (
-                <ScrollCase key={match.id}>
-                  <div className="matcher-case-content">
-                    <h4 className="matcher-case-title">{match.title}</h4>
-                    <p className="matcher-evidence">
-                      {match.evidence.length > 280
-                        ? `${match.evidence.slice(0, 280).replace(/\s+\S*$/, "")}…`
-                        : match.evidence}
-                    </p>
-                    {match.evidence.length > 280 && (
-                      <details className="matcher-details">
-                        <summary className="matcher-details-toggle">
-                          {copy.readContribution}
-                        </summary>
-                        <p className="matcher-details-copy">{match.evidence}</p>
-                      </details>
-                    )}
-                    <div className="matcher-tags">
-                      {match.skills.map((skill) => (
-                        <span className="matcher-tag" key={skill}>
-                          {skill}
+            {result.requirementAnalysis.length > 0 && (
+              <div className="matcher-explanation">
+                <div className="matcher-explanation-summary">
+                  <p className="matcher-coverage">
+                    <strong className="matcher-coverage-value">
+                      {
+                        result.requirementAnalysis.filter(
+                          (item) => item.status === "verified",
+                        ).length
+                      }
+                      /{result.requirementAnalysis.length}
+                    </strong>{" "}
+                    detected requirements supported by portfolio evidence
+                  </p>
+                  <p className="matcher-confidence-note">
+                    Confidence measures verified evidence support, not the
+                    probability that a recruiter will consider it a match.
+                  </p>
+                </div>
+                <ol className="matcher-requirement-list">
+                  {result.requirementAnalysis.map((item) => (
+                    <ScrollCase key={item.requirement}>
+                      <div className="matcher-requirement-heading">
+                        <h4 className="matcher-case-title">
+                          {item.requirement}
+                        </h4>
+                        <span
+                          className={`matcher-confidence matcher-confidence--${item.status}`}
+                        >
+                          {item.status === "verified"
+                            ? `${item.confidence}% evidence confidence`
+                            : "No verified evidence"}
                         </span>
-                      ))}
-                    </div>
-                    <Link
-                      className="matcher-link"
-                      aria-label={`${copy.caseButton}: ${match.title}`}
-                      href={`/project/${match.id}`}
-                    >
-                      {copy.caseButton}
-                    </Link>
-                  </div>
-                </ScrollCase>
-              ))}
-            </ol>
-            {result.missing.length > 0 && (
-              <p className="matcher-note matcher-missing">
-                {copy.missingLabel} {result.missing.join(", ")}.
-              </p>
+                      </div>
+                      {item.evidence.length > 0 ? (
+                        <ul className="matcher-evidence-list">
+                          {item.evidence.map((evidence) => (
+                            <li
+                              className="matcher-evidence-item"
+                              key={evidence.projectId}
+                            >
+                              <div className="matcher-evidence-heading">
+                                <strong className="matcher-evidence-title">
+                                  {evidence.projectTitle}
+                                </strong>
+                                <Link
+                                  className="matcher-evidence-link"
+                                  href={`/project/${evidence.projectId}`}
+                                  aria-label={`${copy.caseButton}: ${evidence.projectTitle}`}
+                                >
+                                  {copy.caseButton}
+                                </Link>
+                              </div>
+                              <p className="matcher-relevance">
+                                <span className="matcher-relevance-label">
+                                  Why this matches
+                                </span>
+                                {evidence.relevance}
+                              </p>
+                              <p className="matcher-evidence">
+                                {evidence.excerpt.length > 240
+                                  ? `${evidence.excerpt.slice(0, 240).replace(/\s+\S*$/, "")}…`
+                                  : evidence.excerpt}
+                              </p>
+                              {evidence.excerpt.length > 240 && (
+                                <details className="matcher-details">
+                                  <summary className="matcher-details-toggle">
+                                    {copy.readContribution}
+                                  </summary>
+                                  <p className="matcher-details-copy">
+                                    {evidence.excerpt}
+                                  </p>
+                                </details>
+                              )}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p className="matcher-missing-copy">
+                          The portfolio contains no verified evidence for this
+                          requirement. This is intentionally reported instead of
+                          inferred.
+                        </p>
+                      )}
+                    </ScrollCase>
+                  ))}
+                </ol>
+              </div>
             )}
             {!result.requirements.length && (
               <p className="matcher-note">{copy.noRequirements}</p>
@@ -247,7 +295,7 @@ function ScrollCase({ children }: { children: ReactNode }) {
   const reduceMotion = useReducedMotion();
   return (
     <m.li
-      className="matcher-case"
+      className="matcher-requirement"
       initial={reduceMotion ? false : { opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: reduceMotion ? 0 : 0.35 }}

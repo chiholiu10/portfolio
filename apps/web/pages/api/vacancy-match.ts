@@ -7,11 +7,13 @@ import {
 import type { NextApiRequest, NextApiResponse } from "next";
 import {
   matchResponseSchema,
+  matcherServiceResponseSchema,
   vacancyRequestSchema,
 } from "@portfolio/matcher-contracts";
 import { loadPortfolioSection } from "@/lib/contentful/portfolio";
 import { hashValue, maskSensitiveContent } from "@/lib/career-agent/privacy";
 import { consumeDistributedRateLimit } from "@/lib/career-agent/rate-limit";
+import { buildRequirementAnalysis } from "@/lib/vacancy-match-explanation";
 
 export const config = { api: { bodyParser: { sizeLimit: "16kb" } } };
 const localRequests = new Map<string, number>();
@@ -50,10 +52,10 @@ export default async function handler(
       .json({ error: "The vacancy matcher has not been configured yet." });
   let phase = "configuration";
   try {
-    const endpoint = matcherEndpoint(
-      serviceUrl,
-      process.env.NODE_ENV === "production",
-    );
+    const requiresPublicHttps =
+      process.env.NODE_ENV === "production" &&
+      process.env.MATCHER_ALLOW_PRIVATE_HTTP !== "true";
+    const endpoint = matcherEndpoint(serviceUrl, requiresPublicHttps);
     phase = "rate_limit";
     if (process.env.NODE_ENV === "production") {
       const address =
@@ -102,7 +104,9 @@ export default async function handler(
           ]
             .filter(Boolean)
             .join(" "),
-          evidence: JSON.stringify({ title: project.title, caseStudy: study }),
+          // A project name can contain a technology without proving that it was
+          // actually used. Only the reviewed case-study fields count as evidence.
+          evidence: JSON.stringify({ caseStudy: study }),
         };
       });
     phase = "matcher";
@@ -123,7 +127,7 @@ export default async function handler(
       }
     }
     if (!response.ok) throw new Error("Matcher unavailable");
-    const result = matchResponseSchema.parse(await response.json());
+    const result = matcherServiceResponseSchema.parse(await response.json());
     const allowed = new Map(projects.map((project) => [project.id, project]));
     result.matches = result.matches
       .filter((match) => allowed.has(match.id))
@@ -131,8 +135,20 @@ export default async function handler(
         ...match,
         title: allowed.get(match.id)!.title,
         evidence: allowed.get(match.id)!.summary,
+        skills: match.skills.filter((skill) =>
+          result.requirements.includes(skill),
+        ),
       }));
-    return res.status(200).json(result);
+    result.missing = result.requirements.filter(
+      (requirement) =>
+        !result.matches.some((match) => match.skills.includes(requirement)),
+    );
+    return res.status(200).json(
+      matchResponseSchema.parse({
+        ...result,
+        requirementAnalysis: buildRequirementAnalysis(result, allowed),
+      }),
+    );
   } catch (error) {
     console.error(
       JSON.stringify({
