@@ -1,0 +1,54 @@
+[
+  {
+    "id": "senior-react-accessibility",
+    "description": "Senior React role requiring typed, tested and accessible delivery.",
+    "vacancy": "We need a senior React developer with TypeScript, Playwright testing and strong accessibility experience.",
+    "expectedRequirements": ["React", "TypeScript", "Testing", "Accessibility"],
+    "expectedProjectIds": ["momants-ai", "vodafoneziggo"],
+    "forbiddenProjectIds": ["gemeente-amsterdam", "stockload"]
+  },
+  {
+    "id": "vue-government-dashboard",
+    "description": "Vue dashboard role with state, UX and collaboration requirements.",
+    "vacancy": "Build a Vue dashboard with Vuex state management, Jest and Cypress testing, responsive UX and close team collaboration.",
+    "expectedRequirements": [
+      "Vue",
+      "UX",
+      "Testing",
+      "Collaboration",
+      "State management"
+    ],
+    "expectedProjectIds": ["gemeente-amsterdam"],
+    "forbiddenProjectIds": ["momants-ai", "stockload"]
+  },
+  {
+    "id": "commerce-frontend",
+    "description": "Commerce role centred on WordPress, Shopify and frontend UX.",
+    "vacancy": "We are hiring for WordPress and Shopify delivery using JavaScript, CSS and strong user experience practices.",
+    "expectedRequirements": ["JavaScript", "CSS", "UX", "WordPress", "Shopify"],
+    "expectedProjectIds": ["stockload"],
+    "forbiddenProjectIds": ["gemeente-amsterdam", "vodafoneziggo"]
+  },
+  {
+    "id": "applied-ai-platform",
+    "description": "Product role combining Next.js, TypeScript, AI and Python integration.",
+    "vacancy": "Create an applied AI product with Next.js, TypeScript and a Python service behind the frontend.",
+    "expectedRequirements": ["Next.js", "TypeScript", "Python", "AI"],
+    "expectedProjectIds": ["ai-vacancy-matcher", "momants-ai"],
+    "forbiddenProjectIds": ["gemeente-amsterdam", "stockload"]
+  },
+  {
+    "id": "enterprise-aem",
+    "description": "Enterprise component role with AEM, testing and accessibility.",
+    "vacancy": "The team needs AEM experience plus React, TypeScript, automated testing and WCAG accessibility.",
+    "expectedRequirements": [
+      "React",
+      "TypeScript",
+      "Testing",
+      "AEM",
+      "Accessibility"
+    ],
+    "expectedProjectIds": ["vodafoneziggo", "momants-ai"],
+    "forbiddenProjectIds": ["gemeente-amsterdam", "stockload"]
+  }
+]

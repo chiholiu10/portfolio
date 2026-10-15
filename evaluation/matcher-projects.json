@@ -1,0 +1,32 @@
+[
+  {
+    "id": "gemeente-amsterdam",
+    "title": "Gemeente Amsterdam",
+    "summary": "Vue dashboard with tested, responsive parking insights.",
+    "evidence": "Built responsive Vue and Vuex components with Chart.js. Added Jest unit tests, Cypress end-to-end tests and improved UX in collaboration with a UX designer, data analyst and product owner."
+  },
+  {
+    "id": "vodafoneziggo",
+    "title": "VodafoneZiggo",
+    "summary": "Accessible React and AEM commerce components.",
+    "evidence": "Developed React and TypeScript components in AEM. Added Jest and Cypress testing, improved WCAG accessibility and collaborated with designers and stakeholders."
+  },
+  {
+    "id": "momants-ai",
+    "title": "Momants.ai",
+    "summary": "Next.js product with applied AI integration.",
+    "evidence": "Built React, Next.js and TypeScript interfaces with Playwright testing, SEO improvements, WCAG accessibility and practical AI integration."
+  },
+  {
+    "id": "stockload",
+    "title": "Stockload",
+    "summary": "Product-focused commerce and agency work.",
+    "evidence": "Delivered WordPress and Shopify products using JavaScript and CSS, with responsive UX and reusable components."
+  },
+  {
+    "id": "ai-vacancy-matcher",
+    "title": "Portfolio AI Platform",
+    "summary": "Full-stack portfolio architecture with a private matcher.",
+    "evidence": "Built a Next.js and TypeScript frontend with AI integration and a private Python vacancy-matching service."
+  }
+]

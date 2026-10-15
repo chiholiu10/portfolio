@@ -63,6 +63,9 @@ jobs:
       - name: Test Python matcher
         run: yarn test:python
 
+      - name: Evaluate matcher quality
+        run: yarn eval:matcher:check
+
       - name: Test Docker startup and crash recovery
         run: yarn test:docker
 

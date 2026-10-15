@@ -1,0 +1,6 @@
+{
+  "requirementPrecision": 0.9,
+  "requirementRecall": 0.85,
+  "evidenceAccuracy": 1,
+  "unsupportedClaims": 0
+}

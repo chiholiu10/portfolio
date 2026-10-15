@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "evaluatedAt": "2026-10-15T01:07:34.602215+00:00",
+  "mode": "keywords",
+  "cases": 5,
+  "requirementPrecision": 1.0,
+  "requirementRecall": 1.0,
+  "evidenceAccuracy": 1.0,
+  "unsupportedClaims": 0,
+  "averageLatencyMs": 0.55,
+  "passed": true,
+  "caseResults": [
+    {
+      "id": "senior-react-accessibility",
+      "mode": "keywords",
+      "latencyMs": 1.39,
+      "requirements": ["React", "TypeScript", "Testing", "Accessibility"],
+      "missingExpectedRequirements": [],
+      "unexpectedRequirements": [],
+      "projectIds": ["vodafoneziggo", "momants-ai"],
+      "missingExpectedProjectIds": [],
+      "forbiddenProjectIds": [],
+      "unsupportedClaims": 0
+    },
+    {
+      "id": "vue-government-dashboard",
+      "mode": "keywords",
+      "latencyMs": 0.34,
+      "requirements": [
+        "Vue",
+        "UX",
+        "Testing",
+        "Collaboration",
+        "State management"
+      ],
+      "missingExpectedRequirements": [],
+      "unexpectedRequirements": [],
+      "projectIds": ["gemeente-amsterdam"],
+      "missingExpectedProjectIds": [],
+      "forbiddenProjectIds": [],
+      "unsupportedClaims": 0
+    },
+    {
+      "id": "commerce-frontend",
+      "mode": "keywords",
+      "latencyMs": 0.34,
+      "requirements": ["JavaScript", "CSS", "UX", "WordPress", "Shopify"],
+      "missingExpectedRequirements": [],
+      "unexpectedRequirements": [],
+      "projectIds": ["stockload"],
+      "missingExpectedProjectIds": [],
+      "forbiddenProjectIds": [],
+      "unsupportedClaims": 0
+    },
+    {
+      "id": "applied-ai-platform",
+      "mode": "keywords",
+      "latencyMs": 0.34,
+      "requirements": ["Next.js", "TypeScript", "Python", "AI"],
+      "missingExpectedRequirements": [],
+      "unexpectedRequirements": [],
+      "projectIds": ["ai-vacancy-matcher", "momants-ai"],
+      "missingExpectedProjectIds": [],
+      "forbiddenProjectIds": [],
+      "unsupportedClaims": 0
+    },
+    {
+      "id": "enterprise-aem",
+      "mode": "keywords",
+      "latencyMs": 0.33,
+      "requirements": [
+        "React",
+        "TypeScript",
+        "Testing",
+        "AEM",
+        "Accessibility"
+      ],
+      "missingExpectedRequirements": [],
+      "unexpectedRequirements": [],
+      "projectIds": ["vodafoneziggo", "momants-ai"],
+      "missingExpectedProjectIds": [],
+      "forbiddenProjectIds": [],
+      "unsupportedClaims": 0
+    }
+  ]
+}

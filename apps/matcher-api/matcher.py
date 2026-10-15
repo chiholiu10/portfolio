@@ -20,21 +20,50 @@ SKILLS = {
     "Storybook": [r"\bstorybook\b"],
     "Design system": [r"\bdesign.?system\b", r"\bdesignsysteem\b"],
     "Components": [r"\b(?:components?|componenten|herbruikbaar\w*|reusab\w*)\b"],
-    "Collaboration": [r"\b(?:collaborat\w*|samenwerk\w*|designers?|stakeholders?|team)\b"],
+    "Collaboration": [r"\b(?:collaborat\w*|samenwerk\w*|designers?|stakeholders?)\b"],
     "AEM": [r"\baem\b"],
     "Accessibility": [r"\b(?:wcag|accessib\w*|toegankelijk\w*)\b"],
     "SEO": [r"\bseo\b"],
     "Python": [r"\bpython\b"],
-    "AI": [r"\b(?:ai|artificial intelligence|kunstmatige intelligentie)\b"],
+    "AI": [
+        r"\b(?:ai|artificial intelligence|kunstmatige intelligentie)\b",
+        r"\b(?:gemini|openai|groq|claude|llms?|rag|pgvector|langchain|flowise)\b",
+        r"\b(?:embeddings?|semantic search|vector search)\b",
+    ],
     "WordPress": [r"\bwordpress\b"],
     "Shopify": [r"\bshopify\b"],
     "State management": [r"\b(?:redux|vuex|zustand|context api|state management)\b"],
 }
 
+AI_TOOL_PATTERNS = [
+    r"\b(?:gemini|openai|groq|claude|llms?|rag|pgvector|langchain|flowise)\b",
+    r"\b(?:embeddings?|semantic search|vector search)\b",
+]
+AI_APPLIED_PATTERNS = [
+    r"\b(?:applied ai|ai integration|ai-assisted|ai toolchain|ai api|ai model|ai workflow|ai guardrails?)\b",
+]
+AI_ENGINEERING_CONTEXT = re.compile(
+    r"\b(?:build|built|create|created|implement|implemented|integrate|integrated|"
+    r"use|used|using|configure|configured|extract|extracted|generate|generated|"
+    r"retrieve|retrieval|evaluate|evaluated|validate|validated|fallback|guardrails?|"
+    r"prompts?|structured output|api)\b",
+    re.I,
+)
+
 
 def detect_skills(text):
     return [name for name, patterns in SKILLS.items()
             if any(re.search(pattern, text, re.I) for pattern in patterns)]
+
+
+def detect_evidence_skills(text):
+    skills = [name for name, patterns in SKILLS.items()
+              if name != "AI" and any(re.search(pattern, text, re.I) for pattern in patterns)]
+    has_ai_tool = any(re.search(pattern, text, re.I) for pattern in AI_TOOL_PATTERNS)
+    has_applied_ai = any(re.search(pattern, text, re.I) for pattern in AI_APPLIED_PATTERNS)
+    if has_applied_ai or (has_ai_tool and AI_ENGINEERING_CONTEXT.search(text)):
+        skills.append("AI")
+    return skills
 
 
 def extract_requirements(vacancy):
@@ -85,17 +114,38 @@ def extract_requirements(vacancy):
 def match_vacancy(vacancy, projects):
     requirements, mode = extract_requirements(vacancy)
     ranked = []
-    supported = set()
-    for project in projects:
+    for index, project in enumerate(projects):
         evidence = project.get("evidence", "")
-        skills = detect_skills(evidence)
+        skills = detect_evidence_skills(evidence)
         matched = [skill for skill in requirements if skill in skills]
-        supported.update(skills)
         if matched:
-            ranked.append((len(matched), {"id": project["id"], "title": project["title"],
-                                         "evidence": project.get("summary") or evidence[:450],
-                                         "skills": matched}))
-    ranked.sort(key=lambda item: -item[0])
+            ranked.append({"score": len(matched), "index": index,
+                           "match": {"id": project["id"], "title": project["title"],
+                                     "evidence": project.get("summary") or evidence[:450],
+                                     "skills": matched}})
+
+    # Prefer the strongest case first, then add cases that prove requirements
+    # the current selection does not cover yet. A single broad case must not
+    # hide valid evidence for a less common requirement such as applied AI.
+    selected = []
+    uncovered = set(requirements)
+    remaining = ranked[:]
+    while remaining and uncovered and len(selected) < 3:
+        remaining.sort(
+            key=lambda item: (
+                -len(set(item["match"]["skills"]) & uncovered),
+                -item["score"],
+                item["index"],
+            )
+        )
+        candidate = remaining.pop(0)
+        newly_covered = set(candidate["match"]["skills"]) & uncovered
+        if not newly_covered:
+            break
+        selected.append(candidate["match"])
+        uncovered -= newly_covered
+
+    supported = {skill for match in selected for skill in match["skills"]}
     return {"mode": mode, "requirements": requirements,
             "missing": [skill for skill in requirements if skill not in supported],
-            "matches": [item[1] for item in ranked[:3]]}
+            "matches": selected}
