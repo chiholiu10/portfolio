@@ -1,12 +1,66 @@
 services:
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      secrets:
+        - production_env
+    restart: unless-stopped
+    env_file:
+      - ${PRODUCTION_ENV_FILE:-apps/web/.env}
+    environment:
+      MATCHER_API_URL: http://matcher-api:8000
+      MATCHER_ALLOW_PRIVATE_HTTP: "true"
+      NODE_ENV: production
+      PORT: 3100
+    ports:
+      - "127.0.0.1:3100:3100"
+    depends_on:
+      matcher-api:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3100/api/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))",
+        ]
+      interval: 10s
+      timeout: 3s
+      start_period: 10s
+      retries: 3
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /app/apps/web/.next/cache:uid=1001,gid=1001
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    mem_limit: 768m
+
   matcher-api:
     build:
       context: .
       dockerfile: apps/matcher-api/Dockerfile
     restart: unless-stopped
-    ports:
-      - "127.0.0.1:8000:8000"
+    env_file:
+      - ${PRODUCTION_ENV_FILE:-apps/web/.env}
     environment:
+      HOST: 0.0.0.0
       MATCHER_API_TOKEN: ${MATCHER_API_TOKEN:?Set MATCHER_API_TOKEN}
-      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
-      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-2.5-flash}
+    expose:
+      - "8000"
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    mem_limit: 512m
+
+secrets:
+  production_env:
+    file: ${PRODUCTION_ENV_FILE:-apps/web/.env}

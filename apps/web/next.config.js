@@ -1,6 +1,7 @@
 const path = require("node:path");
 
 const nextConfig = {
+  output: "standalone",
   turbopack: { root: path.resolve(__dirname, "../..") },
   outputFileTracingRoot: path.resolve(__dirname, "../.."),
   transpilePackages: ["@portfolio/matcher-contracts"],

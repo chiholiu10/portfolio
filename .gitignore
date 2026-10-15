@@ -41,6 +41,7 @@ knowledge/*.md
 
 # TypeScript build cache
 *.tsbuildinfo
+.matcher-evaluation-live.json
 
 __pycache__/
 *.pyc

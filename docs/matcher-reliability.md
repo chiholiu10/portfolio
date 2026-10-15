@@ -4,13 +4,13 @@ The browser calls the Next.js gateway. Next.js validates and rate-limits the vac
 
 ## Running locally
 
-With Docker Desktop running, `yarn dev` starts both services and waits for matcher readiness before starting the web container. `restart: unless-stopped` restarts a crashed matcher container. An intentional operator stop is respected.
+`yarn dev` uses Docker when available and otherwise starts both services locally. `yarn dev:local` and `yarn dev:docker` select a mode explicitly. The runner validates service health before reusing an occupied port.
 
-Without Docker, run `yarn setup:python` once, then `yarn dev:python` and `yarn dev:web` in separate terminals. The Python development supervisor restarts a crashed server and reloads changed Python files. It cannot restart itself after its terminal or supervisor is stopped.
+Without Docker, run `yarn setup:python` once, then `yarn dev:local`. The Python development supervisor restarts a crashed server and reloads changed Python files. It cannot restart itself after its terminal or supervisor is stopped.
 
 ## Production
 
-Use `docker compose --env-file apps/web/.env -f docker-compose.production.yml up --build -d` to run the production matcher on a host behind a TLS reverse proxy. This exposes the API on loopback only; the proxy must provide the HTTPS endpoint for the website. Provide a strong shared `MATCHER_API_TOKEN`; the production configuration has no development token default. The website is deployed separately. Production gateway configuration requires a remote HTTPS matcher URL; HTTP and localhost endpoints are accepted only in development. Configure `MATCHER_API_URL=http://127.0.0.1:8000` locally and `MATCHER_API_URL=https://api.chiholiu.com` in Vercel Production. Never select the backend from browser-supplied Host headers. Alternatively deploy Next.js and the private ASGI service independently on managed hosting and set `MATCHER_API_URL` to the actual backend URL, never localhost on Vercel.
+Use `yarn prod:build` followed by `yarn prod:up` for the complete local production simulation. Next.js runs its standalone production server while the matcher is reachable only through the private Compose network. `MATCHER_ALLOW_PRIVATE_HTTP=true` is scoped to this isolated stack; hosted production still requires a remote HTTPS matcher URL and must not set that override. Run `yarn prod:check` in another terminal for smoke tests.
 
 `/health` checks process liveness. `/ready` also checks the shared token is configured. Gemini availability is intentionally excluded: keyword matching is still available during a provider outage. Docker marks unhealthy containers but does not restart them merely for being unhealthy; use the hosting platform's health-based replacement for that case. Restart policies recover process exits.
 
