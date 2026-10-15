@@ -23,12 +23,15 @@ export const HeroCopy = styled(m.div).attrs({ className: "ui-div" })`
   }
   :where(.ui-h1) {
     color: var(--text-heading);
-    font-size: var(--font-hero);
+    font-size: min(var(--font-hero), 7vw);
     font-weight: 600;
     line-height: 1.12;
     letter-spacing: -0.035em;
     margin: 0 0 28px;
     max-inline-size: 730px;
+  }
+  .hero-title-segment {
+    white-space: nowrap;
   }
   .hero-description {
     color: var(--text-body);

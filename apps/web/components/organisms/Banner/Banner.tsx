@@ -3,6 +3,7 @@ import type { HomeSections } from "@/lib/content-model";
 import { BannerLogo } from "@/components/atoms/Avatar/Avatar";
 import { useReducedMotion } from "motion/react";
 import { premiumEase } from "@/components/atoms/Motion/motion.config";
+import { Fragment } from "react";
 import {
   Hero,
   HeroCopy,
@@ -21,6 +22,8 @@ export const Banner = ({ data }: BannerProps) => {
     (section.subtitle || "").match(/[^.!?]+[.!?]+(?:\s|$)|[^.!?]+$/g) || [];
   const introduction = sentences.slice(0, 2).join("");
   const approach = sentences.slice(2).join("");
+  const title = section.title.replaceAll("-", "‑").replaceAll("|", ",");
+  const titleSegments = title.split(",").map((segment) => segment.trim());
   return (
     <>
       <Hero id="banner" className="bannerComponent">
@@ -30,7 +33,17 @@ export const Banner = ({ data }: BannerProps) => {
           transition={{ duration: reduceMotion ? 0 : 0.65, ease: premiumEase }}
         >
           {section.eyebrow && <Eyebrow>{section.eyebrow}</Eyebrow>}
-          <h1 className="ui-h1">{section.title}</h1>
+          <h1 className="ui-h1">
+            {titleSegments.map((segment, index) => (
+              <Fragment key={`${segment}-${index}`}>
+                <span className="hero-title-segment">
+                  {segment}
+                  {index < titleSegments.length - 1 ? "," : ""}
+                </span>
+                {index < titleSegments.length - 1 ? " " : ""}
+              </Fragment>
+            ))}
+          </h1>
           <p className="ui-p hero-description">{introduction}</p>
           <HeroActions>
             <a className="ui-a" href="#portfolio">
