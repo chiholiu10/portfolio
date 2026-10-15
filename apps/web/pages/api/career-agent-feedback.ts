@@ -127,9 +127,9 @@ export default async function handler(
 
   const feedbackId = await logCareerAgentFeedback({
     sessionId: parsed.data.sessionId,
-    flowiseChatId: parsed.data.chatId,
-    flowiseMessageId: parsed.data.messageId,
-    flowiseFeedbackId: parsed.data.feedbackId,
+    chatId: parsed.data.chatId,
+    messageId: parsed.data.messageId,
+    feedbackId: parsed.data.feedbackId,
     rating: parsed.data.rating,
   });
 

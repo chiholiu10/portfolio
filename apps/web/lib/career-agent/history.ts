@@ -7,8 +7,8 @@ type LogMessageInput = {
   sessionId: string;
   role: ChatRole;
   content: string;
-  flowiseChatId?: string;
-  flowiseMessageId?: string;
+  chatId?: string;
+  messageId?: string;
   provider?: string;
   model?: string;
   contactOptions?: Array<"email" | "whatsapp">;
@@ -17,9 +17,9 @@ type LogMessageInput = {
 
 type LogFeedbackInput = {
   sessionId?: string;
-  flowiseChatId: string;
-  flowiseMessageId: string;
-  flowiseFeedbackId?: string;
+  chatId: string;
+  messageId: string;
+  feedbackId?: string;
   rating: FeedbackRating;
 };
 
@@ -83,9 +83,9 @@ export const logCareerAgentMessage = async (input: LogMessageInput) => {
       session_id: input.sessionId,
       role: input.role,
       content: maskSensitiveContent(input.content),
-      flowise_chat_id: input.flowiseChatId || null,
-      flowise_message_id: input.flowiseMessageId || null,
-      provider: input.provider || "flowise",
+      chat_id: input.chatId || null,
+      message_id: input.messageId || null,
+      provider: input.provider || "local",
       model: input.model || null,
       contact_options: input.contactOptions || null,
       client_address_hash: clientAddressHash,
@@ -107,9 +107,9 @@ export const logCareerAgentFeedback = async (input: LogFeedbackInput) => {
         headers: getSupabaseHeaders(),
         body: JSON.stringify({
           p_session_id: input.sessionId,
-          p_chat_id: input.flowiseChatId,
-          p_message_id: input.flowiseMessageId,
-          p_feedback_id: input.flowiseFeedbackId || null,
+          p_chat_id: input.chatId,
+          p_message_id: input.messageId,
+          p_feedback_id: input.feedbackId || null,
           p_rating: input.rating,
         }),
       },

@@ -27,7 +27,7 @@ const requirementPatterns: Record<string, RegExp> = {
   Accessibility: /\b(?:wcag|accessib\w*|toegankelijk\w*)\b/i,
   SEO: /\bseo\b/i,
   Python: /\bpython\b/i,
-  AI: /\b(?:ai|artificial intelligence|kunstmatige intelligentie|gemini|openai|groq|claude|llms?|rag|pgvector|langchain|flowise|embeddings?|semantic search|vector search)\b/i,
+  AI: /\b(?:ai|artificial intelligence|kunstmatige intelligentie|gemini|openai|groq|claude|llms?|rag|pgvector|langchain|embeddings?|semantic search|vector search)\b/i,
   WordPress: /\bwordpress\b/i,
   Shopify: /\bshopify\b/i,
   "State management":
@@ -57,7 +57,7 @@ const findEvidenceExcerpt = (project: TrustedProject, requirement: string) => {
         ? candidates.find(
             (candidate) =>
               candidate.length >= 40 &&
-              /\b(?:gemini|openai|groq|claude|llms?|rag|pgvector|langchain|flowise|embeddings?|semantic search|vector search|ai integration|ai-assisted|ai toolchain|ai api|ai model|ai workflow|ai guardrails?)\b/i.test(
+              /\b(?:gemini|openai|groq|claude|llms?|rag|pgvector|langchain|embeddings?|semantic search|vector search|ai integration|ai-assisted|ai toolchain|ai api|ai model|ai workflow|ai guardrails?)\b/i.test(
                 candidate,
               ),
           )

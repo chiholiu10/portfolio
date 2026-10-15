@@ -27,7 +27,7 @@ SKILLS = {
     "Python": [r"\bpython\b"],
     "AI": [
         r"\b(?:ai|artificial intelligence|kunstmatige intelligentie)\b",
-        r"\b(?:gemini|openai|groq|claude|llms?|rag|pgvector|langchain|flowise)\b",
+        r"\b(?:gemini|openai|groq|claude|llms?|rag|pgvector|langchain)\b",
         r"\b(?:embeddings?|semantic search|vector search)\b",
     ],
     "WordPress": [r"\bwordpress\b"],
@@ -36,7 +36,7 @@ SKILLS = {
 }
 
 AI_TOOL_PATTERNS = [
-    r"\b(?:gemini|openai|groq|claude|llms?|rag|pgvector|langchain|flowise)\b",
+    r"\b(?:gemini|openai|groq|claude|llms?|rag|pgvector|langchain)\b",
     r"\b(?:embeddings?|semantic search|vector search)\b",
 ]
 AI_APPLIED_PATTERNS = [

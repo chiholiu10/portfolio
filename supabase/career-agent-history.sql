@@ -5,9 +5,9 @@ create table if not exists public.career_agent_messages (
   session_id text not null,
   role text not null check (role in ('user', 'assistant')),
   content text not null,
-  flowise_chat_id text,
-  flowise_message_id text,
-  flowise_feedback_id text,
+  chat_id text,
+  message_id text,
+  feedback_id text,
   feedback text check (feedback in ('THUMBS_UP', 'THUMBS_DOWN')),
   provider text,
   model text,
@@ -19,9 +19,9 @@ create table if not exists public.career_agent_messages (
 create table if not exists public.career_agent_feedback (
   id uuid primary key default gen_random_uuid(),
   session_id text,
-  flowise_chat_id text not null,
-  flowise_message_id text not null,
-  flowise_feedback_id text,
+  chat_id text not null,
+  message_id text not null,
+  feedback_id text,
   rating text not null check (rating in ('THUMBS_UP', 'THUMBS_DOWN')),
   created_at timestamptz not null default now()
 );
@@ -32,14 +32,14 @@ create index if not exists career_agent_messages_session_id_idx
 create index if not exists career_agent_messages_created_at_idx
   on public.career_agent_messages (created_at);
 
-create index if not exists career_agent_messages_flowise_message_id_idx
-  on public.career_agent_messages (flowise_message_id);
+create index if not exists career_agent_messages_message_id_idx
+  on public.career_agent_messages (message_id);
 
 create index if not exists career_agent_feedback_message_id_idx
-  on public.career_agent_feedback (flowise_message_id);
+  on public.career_agent_feedback (message_id);
 
 create unique index if not exists career_agent_feedback_session_message_uidx
-  on public.career_agent_feedback (session_id, flowise_message_id);
+  on public.career_agent_feedback (session_id, message_id);
 
 create table if not exists public.career_agent_rate_limits (
   rate_key text primary key,
@@ -155,7 +155,7 @@ begin
     select 1
     from public.career_agent_messages
     where session_id = p_session_id
-      and flowise_message_id = p_message_id
+      and message_id = p_message_id
       and role = 'assistant'
   ) then
     return null;
@@ -163,9 +163,9 @@ begin
 
   insert into public.career_agent_feedback (
     session_id,
-    flowise_chat_id,
-    flowise_message_id,
-    flowise_feedback_id,
+    chat_id,
+    message_id,
+    feedback_id,
     rating
   )
   values (
@@ -175,18 +175,18 @@ begin
     p_feedback_id,
     p_rating
   )
-  on conflict (session_id, flowise_message_id) do update
+  on conflict (session_id, message_id) do update
   set
     rating = excluded.rating,
-    flowise_feedback_id = excluded.flowise_feedback_id
+    feedback_id = excluded.feedback_id
   returning id into saved_id;
 
   update public.career_agent_messages
   set
     feedback = p_rating,
-    flowise_feedback_id = p_feedback_id
+    feedback_id = p_feedback_id
   where session_id = p_session_id
-    and flowise_message_id = p_message_id
+    and message_id = p_message_id
     and role = 'assistant';
 
   return saved_id;
