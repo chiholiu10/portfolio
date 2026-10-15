@@ -45,6 +45,35 @@ export const ProjectHero = styled.header.attrs({ className: "ui-header" })`
     font-size: var(--font-body);
     line-height: 1.8;
   }
+  .project-live-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    margin-top: 28px;
+    padding: 0 24px;
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    background: var(--accent);
+    color: #fff;
+    font-size: var(--font-small);
+    font-weight: 650;
+    text-decoration: none;
+    transition:
+      transform 220ms ease,
+      background 220ms ease;
+    &:hover {
+      transform: translateY(-2px);
+      background: var(--text-heading);
+    }
+    &:focus-visible {
+      outline: 2px solid var(--text-heading);
+      outline-offset: 4px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+  }
 `;
 
 export const ProjectMeta = styled.div.attrs({ className: "ui-div" })`

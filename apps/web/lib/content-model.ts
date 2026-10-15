@@ -10,6 +10,11 @@ const imageUrl = z.url().refine((value) => {
 }, "Use an HTTPS image URL from an approved image host.");
 
 export const projectCaseStudySchema = z.object({
+  liveUrl: z
+    .string()
+    .regex(/^\/[a-z0-9/-]*$/)
+    .optional(),
+  liveLabel: z.string().min(1).optional(),
   workScope: z.string().optional(),
   plannedWork: z.string().optional(),
   additionalProjects: z

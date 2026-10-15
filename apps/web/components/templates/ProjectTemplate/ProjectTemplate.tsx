@@ -98,6 +98,11 @@ export function ProjectTemplate({ project }: ProjectTemplateProps) {
                 <span className="ui-span">{caseStudy.workScope}</span>
               )}
             </ProjectMeta>
+            {caseStudy.liveUrl && caseStudy.liveLabel && (
+              <Link className="ui-a project-live-link" href={caseStudy.liveUrl}>
+                {caseStudy.liveLabel}
+              </Link>
+            )}
           </ProjectHero>
 
           <ProjectVisual>
