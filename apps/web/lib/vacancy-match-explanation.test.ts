@@ -49,18 +49,21 @@ describe("vacancy match explanations", () => {
                 statement: "Built an interface with React.",
                 context: "React case",
                 ownership: "individual",
+                source: "contribution",
               },
               {
                 skill: "Accessibility",
                 statement: "Improved WCAG accessibility for users.",
                 context: "React case",
                 ownership: "individual",
+                source: "impact",
               },
               {
                 skill: "Testing",
                 statement: "Added Jest tests to protect critical behaviour.",
                 context: "React case",
                 ownership: "individual",
+                source: "contribution",
               },
             ],
           },
@@ -159,6 +162,7 @@ describe("vacancy match explanations", () => {
       },
       new Map(),
       {
+        seniority: "Senior",
         experienceYears: 8,
         languages: [
           { name: "Dutch", level: "Native" },
@@ -181,5 +185,97 @@ describe("vacancy match explanations", () => {
       "Dutch: Native.",
       "Available for hybrid and remote work.",
     ]);
+  });
+
+  it("verifies seniority against the confirmed candidate profile", () => {
+    const [analysis] = buildRequirementAnalysis(
+      {
+        mode: "keywords",
+        requirements: ["Seniority: Senior"],
+        requirementDetails: [
+          {
+            name: "Seniority: Senior",
+            category: "seniority",
+            priority: "must-have",
+            detail: "Senior",
+          },
+        ],
+        missing: [],
+        matches: [],
+      },
+      new Map(),
+      {
+        seniority: "Senior",
+        experienceYears: 8,
+        languages: [],
+        workArrangements: ["hybrid", "remote"],
+      },
+    );
+
+    expect(analysis).toMatchObject({
+      requirement: "Seniority: Senior",
+      status: "profile-match",
+      profileEvidence:
+        "Senior frontend profile with 8+ years of professional experience.",
+    });
+  });
+
+  it("labels related technology evidence as transferable rather than direct", () => {
+    const [analysis] = buildRequirementAnalysis(
+      {
+        mode: "keywords",
+        requirements: ["Sanity"],
+        requirementDetails: [
+          {
+            name: "Sanity",
+            category: "platform",
+            priority: "nice-to-have",
+          },
+        ],
+        missing: [],
+        matches: [
+          {
+            id: "portfolio",
+            title: "Portfolio",
+            evidence: "Headless CMS integration.",
+            skills: ["Sanity"],
+            transferableSkills: [
+              { requirement: "Sanity", evidenceSkill: "Headless CMS" },
+            ],
+          },
+        ],
+      },
+      new Map([
+        [
+          "portfolio",
+          {
+            title: "Portfolio",
+            summary: "Headless CMS integration.",
+            claims: [
+              {
+                skill: "Headless CMS",
+                statement:
+                  "Integrated Contentful as a headless CMS through GraphQL.",
+                context: "Portfolio platform",
+                ownership: "individual",
+                source: "contribution",
+              },
+            ],
+          },
+        ],
+      ]),
+    );
+
+    expect(analysis).toMatchObject({
+      requirement: "Sanity",
+      status: "transferable",
+      confidence: 65,
+      evidence: [
+        {
+          level: "transferable",
+          excerpt: "Integrated Contentful as a headless CMS through GraphQL.",
+        },
+      ],
+    });
   });
 });

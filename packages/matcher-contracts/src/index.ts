@@ -16,7 +16,7 @@ export const requirementDetailSchema = z.object({
     "language",
     "work-arrangement",
   ]),
-  priority: z.enum(["must-have", "nice-to-have"]),
+  priority: z.enum(["must-have", "nice-to-have", "context"]),
   detail: z.string().max(200).optional(),
 });
 export const matcherServiceResponseSchema = z.object({
@@ -31,6 +31,14 @@ export const matcherServiceResponseSchema = z.object({
         title: z.string(),
         evidence: z.string(),
         skills: z.array(z.string()),
+        transferableSkills: z
+          .array(
+            z.object({
+              requirement: z.string(),
+              evidenceSkill: z.string(),
+            }),
+          )
+          .optional(),
       }),
     )
     .max(3),
@@ -41,11 +49,18 @@ export const requirementEvidenceSchema = z.object({
   projectTitle: z.string(),
   excerpt: z.string(),
   relevance: z.string(),
+  level: z.enum(["verified", "transferable"]),
 });
 
 export const requirementAnalysisSchema = z.object({
   requirement: z.string(),
-  status: z.enum(["verified", "missing", "not-assessed", "profile-match"]),
+  status: z.enum([
+    "verified",
+    "transferable",
+    "missing",
+    "not-assessed",
+    "profile-match",
+  ]),
   confidence: z.number().int().min(0).max(100),
   evidence: z.array(requirementEvidenceSchema).max(3),
   profileEvidence: z.string().max(500).optional(),

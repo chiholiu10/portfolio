@@ -75,6 +75,7 @@ export const projectCaseStudySchema = z.object({
 export const portfolioContentSchema = z.object({
   candidateProfile: z
     .object({
+      seniority: z.enum(["Junior", "Medior", "Senior", "Lead"]),
       experienceYears: z.number().int().nonnegative(),
       languages: z.array(
         z.object({
@@ -191,6 +192,8 @@ export const homeSectionSchemas = {
       aiNote: z.string().min(1),
       keywordNote: z.string().min(1),
       comparisonNote: z.string().min(1),
+      verificationNote: z.string().min(1),
+      verificationLink: z.string().min(1),
       readContribution: z.string().min(1),
       caseButton: z.string().min(1),
       missingLabel: z.string().min(1),

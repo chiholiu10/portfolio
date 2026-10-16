@@ -136,19 +136,22 @@ export default async function handler(
         skills: match.skills.filter((skill) =>
           result.requirements.includes(skill),
         ),
+        transferableSkills: (match.transferableSkills || []).filter((item) =>
+          result.requirements.includes(item.requirement),
+        ),
       }));
-    result.missing = result.requirements.filter(
-      (requirement) =>
-        !result.matches.some((match) => match.skills.includes(requirement)),
+    const requirementAnalysis = buildRequirementAnalysis(
+      result,
+      allowed,
+      section.arrays.candidateProfile,
     );
+    result.missing = requirementAnalysis
+      .filter((item) => item.status === "missing")
+      .map((item) => item.requirement);
     return res.status(200).json(
       matchResponseSchema.parse({
         ...result,
-        requirementAnalysis: buildRequirementAnalysis(
-          result,
-          allowed,
-          section.arrays.candidateProfile,
-        ),
+        requirementAnalysis,
       }),
     );
   } catch (error) {
