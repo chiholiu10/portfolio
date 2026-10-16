@@ -43,6 +43,14 @@
         "context": "Druktebeeld",
         "ownership": "shared",
         "source": "contribution"
+      },
+      {
+        "id": "amsterdam-leadership",
+        "skill": "Technical leadership",
+        "statement": "Mentored a junior developer and supported knowledge sharing in the team.",
+        "context": "Druktebeeld",
+        "ownership": "individual",
+        "source": "contribution"
       }
     ]
   },
@@ -145,6 +153,14 @@
         "context": "AI agent",
         "ownership": "shared",
         "source": "contribution"
+      },
+      {
+        "id": "momants-customer-focus",
+        "skill": "Customer focus",
+        "statement": "Shaped the interface around accessible customer needs and usable product flows.",
+        "context": "AI agent",
+        "ownership": "shared",
+        "source": "impact"
       }
     ]
   },
@@ -153,6 +169,14 @@
     "title": "Stockload",
     "summary": "Product-focused commerce and agency work.",
     "claims": [
+      {
+        "id": "matcher-react",
+        "skill": "React",
+        "statement": "Built the responsive vacancy matcher interface with React.",
+        "context": "AI Vacancy Matcher",
+        "ownership": "individual",
+        "source": "contribution"
+      },
       {
         "id": "stockload-wordpress",
         "skill": "WordPress",
@@ -236,6 +260,62 @@
         "id": "matcher-ai",
         "skill": "AI",
         "statement": "Integrated Gemini requirement extraction with validated output and deterministic fallback.",
+        "context": "AI Vacancy Matcher",
+        "ownership": "individual",
+        "source": "contribution"
+      },
+      {
+        "id": "matcher-full-stack",
+        "skill": "Full-stack",
+        "statement": "Connected the Next.js gateway to a private Python matching service.",
+        "context": "AI Vacancy Matcher",
+        "ownership": "individual",
+        "source": "contribution"
+      },
+      {
+        "id": "matcher-apis",
+        "skill": "APIs",
+        "statement": "Designed authenticated API communication between the web gateway and matcher service.",
+        "context": "AI Vacancy Matcher",
+        "ownership": "individual",
+        "source": "contribution"
+      },
+      {
+        "id": "matcher-headless-cms",
+        "skill": "Headless CMS",
+        "statement": "Integrated Contentful as a headless CMS through its GraphQL delivery API.",
+        "context": "Portfolio platform",
+        "ownership": "individual",
+        "source": "contribution"
+      },
+      {
+        "id": "matcher-security",
+        "skill": "Security",
+        "statement": "Implemented strict validation, origin checks, rate limiting and authenticated service calls.",
+        "context": "AI Vacancy Matcher",
+        "ownership": "individual",
+        "source": "contribution"
+      },
+      {
+        "id": "matcher-service-architecture",
+        "skill": "Service-oriented architecture",
+        "statement": "Separated matching into a private FastAPI service behind the Next.js gateway.",
+        "context": "AI Vacancy Matcher",
+        "ownership": "individual",
+        "source": "contribution"
+      },
+      {
+        "id": "matcher-solution-architecture",
+        "skill": "Solution Architecture",
+        "statement": "Designed the solution architecture across the web, CMS and private matcher service.",
+        "context": "AI Vacancy Matcher",
+        "ownership": "individual",
+        "source": "contribution"
+      },
+      {
+        "id": "matcher-quality-engineering",
+        "skill": "Quality engineering",
+        "statement": "Created regression evaluations and CI quality gates for the complete matching flow.",
         "context": "AI Vacancy Matcher",
         "ownership": "individual",
         "source": "contribution"

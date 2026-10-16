@@ -40,7 +40,30 @@ async function assertMatch(url) {
     body: JSON.stringify({
       vacancy: "Looking for a React and TypeScript frontend developer.",
       projects: [
-        { id: "example", title: "Example", evidence: "React TypeScript" },
+        {
+          id: "example",
+          title: "Example",
+          claims: [
+            {
+              id: "example-react",
+              skill: "React",
+              statement:
+                "Built and delivered the verified React frontend experience.",
+              context: "Example",
+              ownership: "individual",
+              source: "contribution",
+            },
+            {
+              id: "example-typescript",
+              skill: "TypeScript",
+              statement:
+                "Used TypeScript throughout the verified frontend implementation.",
+              context: "Example",
+              ownership: "individual",
+              source: "technology",
+            },
+          ],
+        },
       ],
     }),
     signal: AbortSignal.timeout(3000),

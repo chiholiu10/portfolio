@@ -56,5 +56,41 @@
     ],
     "expectedProjectIds": ["vodafoneziggo", "momants-ai"],
     "forbiddenProjectIds": ["gemeente-amsterdam", "stockload"]
+  },
+  {
+    "id": "hema-composable-platform",
+    "description": "HEMA senior full-stack role combining composable frontend delivery, platform architecture and leadership.",
+    "vacancy": "The challenge. As a Senior Full Stack Engineer you work in a composable frontend team using React, Next,js and Typescript. The landscape includes a MACH architecture, Apache Kafka and KONG as an API management platform. You'll bring experience in multidisciplinary teams and collaborative decision-making. You have experience with AWS services and AWS CDK or similar infrastructure-as-code tools. You work quality-oriented with the customer at the center. You understand security threats such as OWASP Top10. You have familiarity with a headless CMS platform; Sanity is a plus. You take the lead and have a good sense of Solution Architecture, service-oriented architecture and an API-first approach.",
+    "expectedRequirements": [
+      "React",
+      "Next.js",
+      "TypeScript",
+      "Full-stack",
+      "APIs",
+      "Collaboration",
+      "AWS",
+      "AWS CDK",
+      "Infrastructure as Code",
+      "Kafka",
+      "Kong",
+      "MACH architecture",
+      "Sanity",
+      "Headless CMS",
+      "Security",
+      "OWASP Top 10",
+      "Service-oriented architecture",
+      "API-first architecture",
+      "Solution Architecture",
+      "Technical leadership",
+      "Customer focus",
+      "Quality engineering",
+      "Seniority: Senior"
+    ],
+    "expectedProjectIds": [
+      "ai-vacancy-matcher",
+      "gemeente-amsterdam",
+      "momants-ai"
+    ],
+    "forbiddenProjectIds": ["stockload", "vodafoneziggo"]
   }
 ]

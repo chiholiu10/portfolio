@@ -115,8 +115,14 @@ def evaluate(live: bool) -> dict:
             supported_skills = {
                 claim["skill"] for claim in project.get("claims", [])
             }
+            transferable = {
+                item["requirement"]: item["evidenceSkill"]
+                for item in match.get("transferableSkills", [])
+            }
             case_unsupported += sum(
-                skill not in supported_skills for skill in match["skills"]
+                skill not in supported_skills
+                and transferable.get(skill) not in supported_skills
+                for skill in match["skills"]
             )
         unsupported_claims += case_unsupported
 
