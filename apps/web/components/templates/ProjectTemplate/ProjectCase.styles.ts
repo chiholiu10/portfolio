@@ -120,6 +120,7 @@ export const ProjectSection = styled.section.attrs({ className: "ui-section" })`
   max-inline-size: 920px;
   padding: 28px 0;
   border-bottom: 1px solid rgba(var(--accent-rgb), 0.12);
+  scroll-margin-top: 112px;
   :where(.ui-h2),
   :where(.ui-h3) {
     margin: 0;

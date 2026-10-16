@@ -157,8 +157,18 @@ export function ProjectTemplate({ project }: ProjectTemplateProps) {
             </ProjectSection>
           )}
           {!!caseStudy.impact?.length && (
-            <ProjectSection>
-              <h2 className="ui-h2">Impact</h2>
+            <ProjectSection
+              id={
+                project.id === "ai-vacancy-matcher"
+                  ? "evaluation-and-scope"
+                  : undefined
+              }
+            >
+              <h2 className="ui-h2">
+                {project.id === "ai-vacancy-matcher"
+                  ? "Evidence, evaluation and scope"
+                  : "Impact"}
+              </h2>
               <ImpactList>
                 {caseStudy.impact.map((item) => (
                   <li className="ui-li" key={item.title}>

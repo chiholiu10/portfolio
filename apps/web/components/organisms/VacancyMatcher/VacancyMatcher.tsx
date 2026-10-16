@@ -24,9 +24,15 @@ const evidenceStatusLabel = (
   confidence: number,
 ) => {
   if (status === "verified") return `${confidence}% evidence confidence`;
-  if (status === "profile-match") return "Profile match";
+  if (status === "transferable") return "Transferable evidence";
+  if (status === "profile-match") return "Confirmed profile match";
   if (status === "not-assessed") return "Profile check required";
   return "No verified evidence";
+};
+
+const requirementTitle = (requirement: string) => {
+  const seniority = requirement.match(/^Seniority:\s*(.+)$/i);
+  return seniority ? `${seniority[1]}-level experience` : requirement;
 };
 
 export function VacancyMatcher({ data }: VacancyMatcherProps) {
@@ -202,6 +208,17 @@ export function VacancyMatcher({ data }: VacancyMatcherProps) {
               {result.mode === "ai" ? copy.aiNote : copy.keywordNote}{" "}
               {copy.comparisonNote}
             </p>
+            {result.matches.length > 0 && (
+              <p className="matcher-verification-note">
+                {copy.verificationNote}{" "}
+                <Link
+                  className="matcher-verification-link"
+                  href="/project/ai-vacancy-matcher#evaluation-and-scope"
+                >
+                  {copy.verificationLink}
+                </Link>
+              </p>
+            )}
             {result.requirementAnalysis.length > 0 && (
               <div className="matcher-explanation">
                 <div className="matcher-explanation-summary">
@@ -209,7 +226,9 @@ export function VacancyMatcher({ data }: VacancyMatcherProps) {
                     <strong className="matcher-coverage-value">
                       {
                         result.requirementAnalysis.filter(
-                          (item) => item.status === "verified",
+                          (item) =>
+                            item.status === "verified" ||
+                            item.status === "transferable",
                         ).length
                       }
                       /
@@ -217,6 +236,7 @@ export function VacancyMatcher({ data }: VacancyMatcherProps) {
                         result.requirementAnalysis.filter(
                           (item) =>
                             item.status === "verified" ||
+                            item.status === "transferable" ||
                             item.status === "missing",
                         ).length
                       }
@@ -225,8 +245,9 @@ export function VacancyMatcher({ data }: VacancyMatcherProps) {
                     evidence
                   </p>
                   <p className="matcher-confidence-note">
-                    Confidence measures verified evidence support, not the
-                    probability that a recruiter will consider it a match.
+                    Verified evidence demonstrates the requested skill directly.
+                    Transferable evidence is related experience and is never
+                    presented as direct tool experience.
                   </p>
                 </div>
                 <ol className="matcher-requirement-list">
@@ -242,6 +263,12 @@ export function VacancyMatcher({ data }: VacancyMatcherProps) {
                             <span className="matcher-requirement-tag">
                               {detail.priority}
                             </span>
+                            <span
+                              className="matcher-requirement-separator"
+                              aria-hidden="true"
+                            >
+                              ·
+                            </span>
                             <span className="matcher-requirement-tag">
                               {detail.category}
                             </span>
@@ -250,7 +277,7 @@ export function VacancyMatcher({ data }: VacancyMatcherProps) {
                       })()}
                       <div className="matcher-requirement-heading">
                         <h4 className="matcher-case-title">
-                          {item.requirement}
+                          {requirementTitle(item.requirement)}
                         </h4>
                         <span
                           className={`matcher-confidence matcher-confidence--${item.status}`}
@@ -268,7 +295,7 @@ export function VacancyMatcher({ data }: VacancyMatcherProps) {
                               <div className="matcher-evidence-heading">
                                 <strong className="matcher-evidence-title">
                                   {evidence.projectTitle}
-                                </strong>
+                                </strong>{" "}
                                 <Link
                                   className="matcher-evidence-link"
                                   href={`/project/${evidence.projectId}`}

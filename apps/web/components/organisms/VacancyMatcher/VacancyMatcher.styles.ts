@@ -150,7 +150,8 @@ export const MatcherSurface = styled.section.attrs({ className: "ui-section" })`
   }
   .matcher-submit:focus-visible,
   .matcher-example:focus-visible,
-  .matcher-evidence-link:focus-visible {
+  .matcher-evidence-link:focus-visible,
+  .matcher-verification-link:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 4px;
   }
@@ -172,6 +173,17 @@ export const MatcherSurface = styled.section.attrs({ className: "ui-section" })`
   }
   .matcher-results-note {
     margin: 8px 0 22px;
+  }
+  .matcher-verification-note {
+    margin: -10px 0 22px;
+    color: var(--text-body);
+    font-size: 13px;
+    line-height: 1.65;
+  }
+  .matcher-verification-link {
+    color: var(--accent);
+    font-weight: 650;
+    text-underline-offset: 4px;
   }
   .matcher-explanation {
     display: grid;
@@ -260,6 +272,11 @@ export const MatcherSurface = styled.section.attrs({ className: "ui-section" })`
     border: 1px solid #dce7eb;
     border-radius: 999px;
   }
+  .matcher-requirement-separator {
+    align-self: center;
+    color: var(--text-muted);
+    font-size: 12px;
+  }
   .matcher-confidence {
     display: inline-flex;
     align-items: center;
@@ -273,6 +290,10 @@ export const MatcherSurface = styled.section.attrs({ className: "ui-section" })`
   .matcher-confidence--verified {
     color: #12523d;
     background: #dff7ec;
+  }
+  .matcher-confidence--transferable {
+    color: #654d13;
+    background: #fff4cf;
   }
   .matcher-confidence--missing {
     color: #8c3b32;
@@ -366,7 +387,8 @@ export const MatcherSurface = styled.section.attrs({ className: "ui-section" })`
   @media (prefers-reduced-motion: reduce) {
     .matcher-input,
     .matcher-submit,
-    .matcher-evidence-link {
+    .matcher-evidence-link,
+    .matcher-verification-link {
       transition: none;
     }
   }
