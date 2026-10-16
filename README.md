@@ -17,7 +17,7 @@ This document is the main onboarding and operational reference for the repositor
 - Supabase-backed contact form with optional Resend notifications.
 - Optional privacy-controlled chat history and feedback storage.
 - Sitemap, metadata, redirects and security headers.
-- Local Phoenix, Flowise and n8n tooling kept separate from the application stack.
+- Optional local Phoenix container for future observability experiments.
 - GitHub Actions CI and a gated Vercel production deployment.
 
 The career assistant can be shown or hidden independently for localhost and production through the Contentful contact-section flags `showCareerAgentInLocalhost` and `showCareerAgentInProduction`.
@@ -112,7 +112,6 @@ scripts/
   evaluate-matcher.py          deterministic quality evaluation
 evaluation/                    reviewed matcher cases, thresholds and report
 supabase/                      idempotent database migrations
-automation/                    optional Flowise and n8n configuration assets
 docs/                          focused operational and architecture notes
 .github/workflows/             CI and production deployment
 ```
@@ -140,7 +139,7 @@ ESLint enforces dependency direction and prevents CMS queries from leaking into 
 | Validation         | Zod contracts at external boundaries                              |
 | Testing            | Jest, Node test runner, Python unittest, Docker integration tests |
 | Delivery           | GitHub Actions, Vercel, Docker Compose                            |
-| Optional tooling   | Phoenix, Flowise, n8n                                             |
+| Optional tooling   | Phoenix (not currently integrated)                                |
 
 Supported production browsers are defined in [`apps/web/package.json`](apps/web/package.json): Chrome/Edge 111+, Firefox 115+ and Safari 16.4+.
 
@@ -375,7 +374,7 @@ Apply only the migrations required by enabled features through the Supabase SQL 
 
 The service-role key bypasses RLS and is intentionally server-only. Public, anonymous and authenticated roles receive no direct access to private tables.
 
-The active retrieval code also expects seven pgvector document tables and matching RPC functions, including `technical_skills_documents` and `match_technical_skills_documents`. [`supabase/flowise-vector-store.sql`](supabase/flowise-vector-store.sql) is currently an empty placeholder and does not recreate that schema. Preserve the existing Supabase vector schema and export a reviewed, idempotent migration before provisioning a new environment.
+The active retrieval code also expects seven pgvector document tables and matching RPC functions, including `technical_skills_documents` and `match_technical_skills_documents`. Preserve the existing Supabase vector schema and export a reviewed, idempotent migration before provisioning a new environment.
 
 ## Privacy and security model
 
@@ -408,20 +407,17 @@ See [`docs/matcher-reliability.md`](docs/matcher-reliability.md) for exact failu
 
 ## Optional local tooling
 
-The application does not require Flowise, n8n or Phoenix to start. They are isolated in `docker-compose.tools.yml`:
+The application does not require Phoenix to start. Its local container is isolated in `docker-compose.tools.yml`:
 
 ```bash
-docker compose --env-file apps/web/.env -f docker-compose.tools.yml up -d flowise n8n
 docker compose -f docker-compose.tools.yml up -d phoenix
 ```
 
-| Tool    | Local URL               | Purpose                                    |
-| ------- | ----------------------- | ------------------------------------------ |
-| Flowise | `http://localhost:3002` | Legacy/experimental visual agent workflows |
-| n8n     | `http://localhost:5678` | Optional workflow experiments              |
-| Phoenix | `http://localhost:6006` | Local AI observability and traces          |
+| Tool    | Local URL               | Purpose                                                |
+| ------- | ----------------------- | ------------------------------------------------------ |
+| Phoenix | `http://localhost:6006` | Future local AI observability; not currently connected |
 
-Phoenix requires `.env.phoenix.local`. Tool data lives in Docker volumes and should be treated as development data. The active career assistant is implemented directly in the Next.js server and does not depend on Flowise or n8n.
+Phoenix requires `.env.phoenix.local`. Tool data lives in a Docker volume and should be treated as development data. The active application currently sends no traces to Phoenix.
 
 ## Testing and CI
 
@@ -528,7 +524,7 @@ When changing architecture or operations:
 
 ## Further documentation
 
-- [`docs/career-agent-setup.md`](docs/career-agent-setup.md): historical Flowise setup plus current hardening notes.
+- [`docs/career-agent-setup.md`](docs/career-agent-setup.md): current provider, retrieval and hardening setup.
 - [`docs/career-agent-history.md`](docs/career-agent-history.md): optional history, privacy and retention.
 - [`docs/matcher-reliability.md`](docs/matcher-reliability.md): matcher capacity, retries, fallbacks and recovery.
 - [`docs/matcher-evaluation.md`](docs/matcher-evaluation.md): reviewed cases, metrics, thresholds and evaluation commands.
