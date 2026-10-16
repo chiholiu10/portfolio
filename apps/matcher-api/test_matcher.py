@@ -2,6 +2,7 @@ import os
 import unittest
 from unittest.mock import patch
 from matcher import match_vacancy, detect_evidence_skills, detect_skills
+from taxonomy import SKILL_CATEGORIES, SKILL_DEFINITIONS, SKILLS, TRANSFERABLE_EVIDENCE
 
 
 def project(project_id, title, skills):
@@ -21,6 +22,22 @@ def project(project_id, title, skills):
             for index, skill in enumerate(skills)
         ],
     }
+
+
+class TaxonomyTests(unittest.TestCase):
+    def test_definitions_have_unique_names_and_complete_categories(self):
+        names = [definition.name for definition in SKILL_DEFINITIONS]
+        self.assertEqual(len(names), len(set(names)))
+        self.assertEqual(set(SKILLS), set(SKILL_CATEGORIES))
+
+    def test_transferable_evidence_references_known_skills(self):
+        referenced = {
+            skill
+            for alternatives in TRANSFERABLE_EVIDENCE.values()
+            for skill in alternatives
+        }
+        self.assertTrue(set(TRANSFERABLE_EVIDENCE).issubset(SKILLS))
+        self.assertTrue(referenced.issubset(SKILLS))
 
 
 class MatcherTests(unittest.TestCase):
@@ -77,6 +94,7 @@ class MatcherTests(unittest.TestCase):
         self.assertEqual(details["React"]["category"], "technology")
         self.assertEqual(details["TypeScript"]["priority"], "nice-to-have")
         self.assertIn("Seniority: Senior", details)
+        self.assertEqual(details["Seniority: Senior"]["priority"], "must-have")
         self.assertIn("Work arrangement: hybrid", details)
         self.assertIn("Language: Dutch", details)
 
@@ -107,6 +125,78 @@ class MatcherTests(unittest.TestCase):
         self.assertNotIn("AI", detect_skills("maintainability"))
         self.assertIn("Testing", detect_skills("Playwright"))
 
+    def test_avoids_components_and_client_facing_false_positives(self):
+        skills = detect_skills(
+            "AWS serverless components help our business serve customers."
+        )
+        self.assertNotIn("Components", skills)
+        self.assertNotIn("Client-facing", skills)
+        self.assertIn("AWS", skills)
+
+    @patch.dict(os.environ, {"GEMINI_API_KEY": ""})
+    def test_understands_hema_architecture_requirements_and_priority(self):
+        result = match_vacancy(
+            """The challenge
+            We use Apache Kafka and KONG as an API management platform in a MACH architecture.
+            You'll bring
+            Typescript, React, Next,js and AWS services with AWS CDK or similar infrastructure-as-code tools.
+            A good understanding of security threats such as OWASP Top10.
+            Familiarity with a headless CMS platform (Sanity is a plus).
+            A strong focus on quality and the ability to take the lead in Solution Architecture.
+            """,
+            [],
+        )
+        details = {item["name"]: item for item in result["requirementDetails"]}
+
+        for requirement in (
+            "React", "Next.js", "TypeScript", "AWS", "AWS CDK",
+            "Infrastructure as Code", "Kafka", "Kong", "MACH architecture",
+            "Security", "OWASP Top 10", "Headless CMS", "Sanity",
+            "Quality engineering", "Technical leadership", "Solution Architecture",
+        ):
+            self.assertIn(requirement, details)
+        self.assertEqual(details["Kafka"]["priority"], "context")
+        self.assertEqual(details["Sanity"]["priority"], "nice-to-have")
+        self.assertEqual(details["Headless CMS"]["priority"], "must-have")
+        self.assertEqual(details["AWS CDK"]["priority"], "must-have")
+
+    @patch.dict(os.environ, {"GEMINI_API_KEY": ""})
+    def test_marks_related_evidence_as_transferable_without_claiming_exact_use(self):
+        result = match_vacancy(
+            "Engineer with direct Sanity and OWASP Top 10 experience required.",
+            [project("portfolio", "Portfolio", ["Headless CMS", "Security"])],
+        )
+
+        match = result["matches"][0]
+        self.assertEqual(set(match["skills"]), {"Sanity", "OWASP Top 10"})
+        self.assertEqual(
+            match["transferableSkills"],
+            [
+                {"requirement": "Sanity", "evidenceSkill": "Headless CMS"},
+                {"requirement": "OWASP Top 10", "evidenceSkill": "Security"},
+            ],
+        )
+        self.assertEqual(result["missing"], [])
+
+    @patch.dict(os.environ, {"GEMINI_API_KEY": ""})
+    def test_matches_delivery_and_backend_integration_skills(self):
+        result = match_vacancy(
+            "Node.js and GraphQL experience. Docker and CI/CD are required.",
+            [
+                project(
+                    "portfolio",
+                    "Portfolio platform",
+                    ["Node.js", "GraphQL", "Docker", "CI/CD"],
+                )
+            ],
+        )
+
+        self.assertEqual(
+            result["matches"][0]["skills"],
+            ["Node.js", "GraphQL", "Docker", "CI/CD"],
+        )
+        self.assertEqual(result["missing"], [])
+
     def test_ai_evidence_requires_an_applied_practice_or_concrete_tool(self):
         self.assertNotIn("AI", detect_evidence_skills("Momants.ai Agent"))
         self.assertNotIn(
@@ -130,7 +220,7 @@ class ProviderRecoveryTests(unittest.TestCase):
     def test_provider_failure_falls_back_without_fabricating_ai(self):
         from unittest.mock import patch
         import os
-        with patch.dict(os.environ, {"GEMINI_API_KEY": "test-key"}), patch("matcher.urllib.request.urlopen", side_effect=OSError("offline")) as provider, patch("matcher.time.sleep"):
+        with patch.dict(os.environ, {"GEMINI_API_KEY": "test-key"}), patch("requirement_extractor.urllib.request.urlopen", side_effect=OSError("offline")) as provider, patch("requirement_extractor.time.sleep"):
             result = match_vacancy("React TypeScript developer", [project("example", "Example", ["React", "TypeScript"])])
         self.assertEqual(provider.call_count, 2)
         self.assertEqual(result["mode"], "keywords")
