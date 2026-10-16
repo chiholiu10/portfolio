@@ -104,9 +104,7 @@ export default async function handler(
           ]
             .filter(Boolean)
             .join(" "),
-          // A project name can contain a technology without proving that it was
-          // actually used. Only the reviewed case-study fields count as evidence.
-          evidence: JSON.stringify({ caseStudy: study }),
+          claims: study.verifiedClaims || [],
         };
       });
     phase = "matcher";
@@ -146,7 +144,11 @@ export default async function handler(
     return res.status(200).json(
       matchResponseSchema.parse({
         ...result,
-        requirementAnalysis: buildRequirementAnalysis(result, allowed),
+        requirementAnalysis: buildRequirementAnalysis(
+          result,
+          allowed,
+          section.arrays.candidateProfile,
+        ),
       }),
     );
   } catch (error) {

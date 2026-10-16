@@ -19,6 +19,7 @@ describe("vacancy matcher boundaries", () => {
       matchResponseSchema.safeParse({
         mode: "ai",
         requirements: [],
+        requirementDetails: [],
         missing: [],
         requirementAnalysis: [],
         matches: [
@@ -38,6 +39,9 @@ describe("vacancy matcher boundaries", () => {
       matchResponseSchema.safeParse({
         mode: "ai",
         requirements: ["React"],
+        requirementDetails: [
+          { name: "React", category: "technology", priority: "must-have" },
+        ],
         missing: [],
         matches: [],
         requirementAnalysis: [

@@ -6,74 +6,30 @@ import type {
 type TrustedProject = {
   title: string;
   summary: string;
-  evidence: string;
+  claims: Array<{
+    skill: string;
+    statement: string;
+    context: string;
+    ownership: "individual" | "shared" | "team";
+  }>;
 };
 
-const requirementPatterns: Record<string, RegExp> = {
-  React: /\breact(?:\.js)?\b/i,
-  "Next.js": /\bnext(?:\.js|js)\b/i,
-  TypeScript: /\btypescript\b/i,
-  JavaScript: /\bjavascript\b/i,
-  Vue: /\bvue(?:\.js|js|x)?\b/i,
-  CSS: /\b(?:css|sass|styled.components|tailwind(?:css)?)\b/i,
-  UX: /\b(?:ux|user experience|gebruikerservaring|gebruiksgemak)\b/i,
-  Testing: /\b(?:jest|cypress|playwright|tests?|testing|testen)\b/i,
-  Storybook: /\bstorybook\b/i,
-  "Design system": /\b(?:design.?system|designsysteem)\b/i,
-  Components: /\b(?:components?|componenten|herbruikbaar\w*|reusab\w*)\b/i,
-  Collaboration:
-    /\b(?:collaborat\w*|samenwerk\w*|designers?|stakeholders?|team)\b/i,
-  AEM: /\baem\b/i,
-  Accessibility: /\b(?:wcag|accessib\w*|toegankelijk\w*)\b/i,
-  SEO: /\bseo\b/i,
-  Python: /\bpython\b/i,
-  AI: /\b(?:ai|artificial intelligence|kunstmatige intelligentie|gemini|openai|groq|claude|llms?|rag|pgvector|langchain|embeddings?|semantic search|vector search)\b/i,
-  WordPress: /\bwordpress\b/i,
-  Shopify: /\bshopify\b/i,
-  "State management":
-    /\b(?:redux|vuex|zustand|context api|state management)\b/i,
+type CandidateProfile = {
+  experienceYears: number;
+  languages: Array<{
+    name: string;
+    level: "Native" | "Fluent" | "Professional" | "Basic";
+  }>;
+  workArrangements: Array<"hybrid" | "remote" | "on-site">;
 };
 
-const collectStrings = (value: unknown): string[] => {
-  if (typeof value === "string") return [value];
-  if (Array.isArray(value)) return value.flatMap(collectStrings);
-  if (value && typeof value === "object")
-    return Object.values(value).flatMap(collectStrings);
-  return [];
-};
+const findEvidenceClaim = (project: TrustedProject, requirement: string) =>
+  project.claims.find((claim) => claim.skill === requirement);
 
-const findEvidenceExcerpt = (project: TrustedProject, requirement: string) => {
-  const pattern = requirementPatterns[requirement];
-  if (!pattern) return project.summary;
-
-  try {
-    const candidates = collectStrings(JSON.parse(project.evidence))
-      .map((candidate) => candidate.trim())
-      .filter((candidate) => candidate.length >= 2 && pattern.test(candidate))
-      .sort((first, second) => first.length - second.length);
-    if (!candidates[0]) return project.summary;
-    const concreteAiEvidence =
-      requirement === "AI"
-        ? candidates.find(
-            (candidate) =>
-              candidate.length >= 40 &&
-              /\b(?:gemini|openai|groq|claude|llms?|rag|pgvector|langchain|embeddings?|semantic search|vector search|ai integration|ai-assisted|ai toolchain|ai api|ai model|ai workflow|ai guardrails?)\b/i.test(
-                candidate,
-              ),
-          )
-        : undefined;
-    if (concreteAiEvidence) return concreteAiEvidence;
-    const substantiveEvidence = candidates.find(
-      (candidate) => candidate.length >= 40,
-    );
-    if (substantiveEvidence) return substantiveEvidence;
-    if (pattern.test(project.summary)) return project.summary;
-    return candidates[0].length < 20
-      ? `Verified case-study evidence: ${candidates[0]}.`
-      : candidates[0];
-  } catch {
-    return project.summary;
-  }
+const contributionLabel = (ownership: "individual" | "shared" | "team") => {
+  if (ownership === "individual") return "Individual contribution";
+  if (ownership === "shared") return "Shared contribution";
+  return "Team result";
 };
 
 /**
@@ -85,29 +41,102 @@ const evidenceConfidence = (sourceCount: number) => {
   return sourceCount === 1 ? 85 : 95;
 };
 
+const evidenceStatus = (
+  isProfileConstraint: boolean,
+  sourceCount: number,
+  hasProfileMatch = false,
+) => {
+  if (hasProfileMatch) return "profile-match" as const;
+  if (isProfileConstraint) return "not-assessed" as const;
+  if (sourceCount > 0) return "verified" as const;
+  return "missing" as const;
+};
+
+const normalizedLanguage = (language: string) => {
+  const aliases: Record<string, string> = {
+    nederlands: "dutch",
+    engels: "english",
+  };
+  const normalized = language.toLowerCase();
+  return aliases[normalized] || normalized;
+};
+
+const profileMatch = (
+  category: MatcherServiceResponse["requirementDetails"][number]["category"],
+  detail: string | undefined,
+  profile: CandidateProfile | undefined,
+) => {
+  if (!profile || !detail) return undefined;
+  if (category === "experience") {
+    const requiredYears = Number.parseInt(detail, 10);
+    if (Number.isNaN(requiredYears) || profile.experienceYears < requiredYears)
+      return undefined;
+    return `${profile.experienceYears}+ years of professional experience.`;
+  }
+  if (category === "language") {
+    const language = profile.languages.find(
+      (item) => normalizedLanguage(item.name) === normalizedLanguage(detail),
+    );
+    return language ? `${language.name}: ${language.level}.` : undefined;
+  }
+  if (category === "work-arrangement") {
+    const requested = detail
+      .split("/")
+      .map((item) => item.trim().replace("on site", "on-site"));
+    const matched = requested.filter((item) =>
+      profile.workArrangements.includes(
+        item as CandidateProfile["workArrangements"][number],
+      ),
+    );
+    if (!matched.length) return undefined;
+    return `Available for ${matched.join(" and ")} work.`;
+  }
+  return undefined;
+};
+
 export const buildRequirementAnalysis = (
   result: MatcherServiceResponse,
   trustedProjects = new Map<string, TrustedProject>(),
+  candidateProfile?: CandidateProfile,
 ): VacancyMatch["requirementAnalysis"] =>
   result.requirements.map((requirement) => {
+    const detail = result.requirementDetails.find(
+      (item) => item.name === requirement,
+    );
+    const isProfileConstraint =
+      detail &&
+      ["seniority", "experience", "language", "work-arrangement"].includes(
+        detail.category,
+      );
+    const profileEvidence = detail
+      ? profileMatch(detail.category, detail.detail, candidateProfile)
+      : undefined;
     const evidence = result.matches
       .filter((match) => match.skills.includes(requirement))
       .map((match) => {
         const project = trustedProjects.get(match.id);
+        const claim = project
+          ? findEvidenceClaim(project, requirement)
+          : undefined;
         return {
           projectId: match.id,
           projectTitle: project?.title || match.title,
-          excerpt: project
-            ? findEvidenceExcerpt(project, requirement)
-            : match.evidence,
-          relevance: `This verified case study explicitly supports the ${requirement} requirement.`,
+          excerpt: claim?.statement || project?.summary || match.evidence,
+          relevance: claim
+            ? `${contributionLabel(claim.ownership)} in ${claim.context}.`
+            : `This verified case study explicitly supports the ${requirement} requirement.`,
         };
       });
 
     return {
       requirement,
-      status: evidence.length ? "verified" : "missing",
+      status: evidenceStatus(
+        Boolean(isProfileConstraint),
+        evidence.length,
+        Boolean(profileEvidence),
+      ),
       confidence: evidenceConfidence(evidence.length),
       evidence,
+      ...(profileEvidence ? { profileEvidence } : {}),
     };
   });

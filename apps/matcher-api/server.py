@@ -20,12 +20,22 @@ capacity = AnalysisCapacity()
 app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 
 
+class EvidenceClaim(BaseModel):
+    model_config = ConfigDict(strict=True)
+    id: str = Field(pattern=r"^[a-z0-9]+(?:-[a-z0-9]+)*$", max_length=200)
+    skill: str = Field(max_length=100)
+    statement: str = Field(min_length=20, max_length=2000)
+    context: str = Field(min_length=1, max_length=500)
+    ownership: str = Field(pattern=r"^(individual|shared|team)$")
+    source: str = Field(pattern=r"^(contribution|technology|impact|result)$")
+
+
 class Project(BaseModel):
     model_config = ConfigDict(strict=True)
     id: str = Field(pattern=r"^[a-z0-9]+(?:-[a-z0-9]+)*$", max_length=200)
     title: str = Field(max_length=1000)
-    evidence: str = Field(max_length=100000)
     summary: str = Field(default="", max_length=100000)
+    claims: list[EvidenceClaim] = Field(default_factory=list, max_length=100)
 
 
 class MatchRequest(BaseModel):

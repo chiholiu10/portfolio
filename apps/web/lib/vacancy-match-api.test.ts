@@ -64,7 +64,17 @@ describe("vacancy matcher service failures", () => {
             caseStudy: {
               summary:
                 "An explainable AI vacancy matcher backed by verified portfolio evidence.",
-              technologies: ["Gemini", "Python", "FastAPI"],
+              verifiedClaims: [
+                {
+                  id: "matcher-ai",
+                  skill: "AI",
+                  statement:
+                    "Integrated Gemini extraction with validated output and deterministic fallback.",
+                  context: "AI Vacancy Matcher",
+                  ownership: "individual",
+                  source: "contribution",
+                },
+              ],
             },
           },
         ],
@@ -76,6 +86,9 @@ describe("vacancy matcher service failures", () => {
         Response.json({
           mode: "ai",
           requirements: ["AI"],
+          requirementDetails: [
+            { name: "AI", category: "technology", priority: "must-have" },
+          ],
           missing: [],
           matches: [
             {
@@ -104,7 +117,7 @@ describe("vacancy matcher service failures", () => {
                 projectId: "ai-vacancy-matcher",
                 projectTitle: "AI Vacancy Matcher",
                 excerpt:
-                  "An explainable AI vacancy matcher backed by verified portfolio evidence.",
+                  "Integrated Gemini extraction with validated output and deterministic fallback.",
               }),
             ],
           }),
@@ -123,6 +136,17 @@ describe("vacancy matcher service failures", () => {
             archived: false,
             caseStudy: {
               summary: "Built a production React interface.",
+              verifiedClaims: [
+                {
+                  id: "verified-react",
+                  skill: "React",
+                  statement:
+                    "Built a production React interface for customers.",
+                  context: "Verified case",
+                  ownership: "individual",
+                  source: "contribution",
+                },
+              ],
             },
           },
         ],
@@ -134,6 +158,18 @@ describe("vacancy matcher service failures", () => {
         Response.json({
           mode: "keywords",
           requirements: ["React", "Python"],
+          requirementDetails: [
+            {
+              name: "React",
+              category: "technology",
+              priority: "must-have",
+            },
+            {
+              name: "Python",
+              category: "technology",
+              priority: "must-have",
+            },
+          ],
           missing: [],
           matches: [
             {
@@ -167,7 +203,7 @@ describe("vacancy matcher service failures", () => {
             evidence: [
               expect.objectContaining({
                 projectTitle: "Verified case",
-                excerpt: "Built a production React interface.",
+                excerpt: "Built a production React interface for customers.",
               }),
             ],
           }),
@@ -201,6 +237,7 @@ describe("vacancy matcher service failures", () => {
       Response.json({
         mode: "keywords",
         requirements: [],
+        requirementDetails: [],
         missing: [],
         matches: [],
       }),
@@ -211,6 +248,7 @@ describe("vacancy matcher service failures", () => {
     expect(recovered.json).toHaveBeenCalledWith({
       mode: "keywords",
       requirements: [],
+      requirementDetails: [],
       missing: [],
       matches: [],
       requirementAnalysis: [],

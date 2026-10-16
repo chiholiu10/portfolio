@@ -244,6 +244,22 @@ export const MatcherSurface = styled.section.attrs({ className: "ui-section" })`
     letter-spacing: -0.02em;
     line-height: 1.4;
   }
+  .matcher-requirement-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0 0 -8px;
+    color: var(--text-muted);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .matcher-requirement-tag {
+    padding: 3px 7px;
+    border: 1px solid #dce7eb;
+    border-radius: 999px;
+  }
   .matcher-confidence {
     display: inline-flex;
     align-items: center;
@@ -261,6 +277,21 @@ export const MatcherSurface = styled.section.attrs({ className: "ui-section" })`
   .matcher-confidence--missing {
     color: #8c3b32;
     background: #fff0ed;
+  }
+  .matcher-confidence--not-assessed {
+    color: #3f4f69;
+    background: #eaf0f8;
+  }
+  .matcher-confidence--profile-match {
+    color: #12523d;
+    background: #dff7ec;
+  }
+  .matcher-profile-copy {
+    margin: 0;
+    color: var(--text);
+    font-size: 15px;
+    font-weight: 650;
+    line-height: 1.55;
   }
   .matcher-evidence-list {
     display: grid;

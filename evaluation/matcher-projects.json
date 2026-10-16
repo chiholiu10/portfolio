@@ -3,30 +3,243 @@
     "id": "gemeente-amsterdam",
     "title": "Gemeente Amsterdam",
     "summary": "Vue dashboard with tested, responsive parking insights.",
-    "evidence": "Built responsive Vue and Vuex components with Chart.js. Added Jest unit tests, Cypress end-to-end tests and improved UX in collaboration with a UX designer, data analyst and product owner."
+    "claims": [
+      {
+        "id": "amsterdam-vue",
+        "skill": "Vue",
+        "statement": "Built responsive Vue components for parking insights.",
+        "context": "Druktebeeld",
+        "ownership": "individual",
+        "source": "contribution"
+      },
+      {
+        "id": "amsterdam-state",
+        "skill": "State management",
+        "statement": "Implemented Vuex to keep shared application state predictable.",
+        "context": "Druktebeeld",
+        "ownership": "individual",
+        "source": "contribution"
+      },
+      {
+        "id": "amsterdam-testing",
+        "skill": "Testing",
+        "statement": "Added Jest unit tests and Cypress end-to-end tests.",
+        "context": "Druktebeeld",
+        "ownership": "individual",
+        "source": "contribution"
+      },
+      {
+        "id": "amsterdam-ux",
+        "skill": "UX",
+        "statement": "Improved responsive navigation and parking data visualisation.",
+        "context": "Druktebeeld",
+        "ownership": "shared",
+        "source": "impact"
+      },
+      {
+        "id": "amsterdam-collaboration",
+        "skill": "Collaboration",
+        "statement": "Worked with a UX designer, data analyst and product owner.",
+        "context": "Druktebeeld",
+        "ownership": "shared",
+        "source": "contribution"
+      }
+    ]
   },
   {
     "id": "vodafoneziggo",
     "title": "VodafoneZiggo",
     "summary": "Accessible React and AEM commerce components.",
-    "evidence": "Developed React and TypeScript components in AEM. Added Jest and Cypress testing, improved WCAG accessibility and collaborated with designers and stakeholders."
+    "claims": [
+      {
+        "id": "vodafone-react",
+        "skill": "React",
+        "statement": "Developed reusable React commerce components.",
+        "context": "Product cards",
+        "ownership": "individual",
+        "source": "contribution"
+      },
+      {
+        "id": "vodafone-typescript",
+        "skill": "TypeScript",
+        "statement": "Applied TypeScript while building frontend components.",
+        "context": "Product cards",
+        "ownership": "individual",
+        "source": "technology"
+      },
+      {
+        "id": "vodafone-aem",
+        "skill": "AEM",
+        "statement": "Built configurable product cards in Adobe Experience Manager.",
+        "context": "Product cards",
+        "ownership": "individual",
+        "source": "contribution"
+      },
+      {
+        "id": "vodafone-testing",
+        "skill": "Testing",
+        "statement": "Used automated tests to protect checkout behaviour.",
+        "context": "Checkout",
+        "ownership": "individual",
+        "source": "contribution"
+      },
+      {
+        "id": "vodafone-accessibility",
+        "skill": "Accessibility",
+        "statement": "Delivered WCAG accessibility and cross-browser refinements.",
+        "context": "Checkout",
+        "ownership": "individual",
+        "source": "impact"
+      }
+    ]
   },
   {
     "id": "momants-ai",
     "title": "Momants.ai",
     "summary": "Next.js product with applied AI integration.",
-    "evidence": "Built React, Next.js and TypeScript interfaces with Playwright testing, SEO improvements, WCAG accessibility and practical AI integration."
+    "claims": [
+      {
+        "id": "momants-react",
+        "skill": "React",
+        "statement": "Built production React interfaces for Momants.ai.",
+        "context": "Momants.ai",
+        "ownership": "individual",
+        "source": "contribution"
+      },
+      {
+        "id": "momants-next",
+        "skill": "Next.js",
+        "statement": "Built a maintainable dashboard foundation with Next.js.",
+        "context": "Dashboard",
+        "ownership": "individual",
+        "source": "contribution"
+      },
+      {
+        "id": "momants-typescript",
+        "skill": "TypeScript",
+        "statement": "Applied TypeScript in the product frontend.",
+        "context": "Momants.ai",
+        "ownership": "individual",
+        "source": "technology"
+      },
+      {
+        "id": "momants-testing",
+        "skill": "Testing",
+        "statement": "Used Playwright to test important user flows.",
+        "context": "AI agent",
+        "ownership": "individual",
+        "source": "contribution"
+      },
+      {
+        "id": "momants-accessibility",
+        "skill": "Accessibility",
+        "statement": "Designed accessible interactions for the AI agent widget.",
+        "context": "AI agent",
+        "ownership": "shared",
+        "source": "contribution"
+      },
+      {
+        "id": "momants-ai",
+        "skill": "AI",
+        "statement": "Integrated an AI agent into a customer-facing product experience.",
+        "context": "AI agent",
+        "ownership": "shared",
+        "source": "contribution"
+      }
+    ]
   },
   {
     "id": "stockload",
     "title": "Stockload",
     "summary": "Product-focused commerce and agency work.",
-    "evidence": "Delivered WordPress and Shopify products using JavaScript and CSS, with responsive UX and reusable components."
+    "claims": [
+      {
+        "id": "stockload-wordpress",
+        "skill": "WordPress",
+        "statement": "Delivered WordPress products for business clients.",
+        "context": "Stockload",
+        "ownership": "individual",
+        "source": "contribution"
+      },
+      {
+        "id": "stockload-shopify",
+        "skill": "Shopify",
+        "statement": "Built and improved Shopify commerce experiences.",
+        "context": "Stockload",
+        "ownership": "individual",
+        "source": "contribution"
+      },
+      {
+        "id": "stockload-javascript",
+        "skill": "JavaScript",
+        "statement": "Implemented interactive frontend behaviour with JavaScript.",
+        "context": "Stockload",
+        "ownership": "individual",
+        "source": "technology"
+      },
+      {
+        "id": "stockload-css",
+        "skill": "CSS",
+        "statement": "Created responsive interfaces using CSS and Sass.",
+        "context": "Stockload",
+        "ownership": "individual",
+        "source": "technology"
+      },
+      {
+        "id": "stockload-ux",
+        "skill": "UX",
+        "statement": "Improved responsive product and shopping experiences.",
+        "context": "Stockload",
+        "ownership": "individual",
+        "source": "impact"
+      },
+      {
+        "id": "stockload-components",
+        "skill": "Components",
+        "statement": "Built reusable frontend components across client products.",
+        "context": "Stockload",
+        "ownership": "individual",
+        "source": "contribution"
+      }
+    ]
   },
   {
     "id": "ai-vacancy-matcher",
     "title": "Portfolio AI Platform",
     "summary": "Full-stack portfolio architecture with a private matcher.",
-    "evidence": "Built a Next.js and TypeScript frontend with AI integration and a private Python vacancy-matching service."
+    "claims": [
+      {
+        "id": "matcher-next",
+        "skill": "Next.js",
+        "statement": "Built the responsive vacancy matcher interface and gateway in Next.js.",
+        "context": "AI Vacancy Matcher",
+        "ownership": "individual",
+        "source": "contribution"
+      },
+      {
+        "id": "matcher-typescript",
+        "skill": "TypeScript",
+        "statement": "Implemented validated frontend and API contracts in TypeScript.",
+        "context": "AI Vacancy Matcher",
+        "ownership": "individual",
+        "source": "contribution"
+      },
+      {
+        "id": "matcher-python",
+        "skill": "Python",
+        "statement": "Built a private Python service for evidence-based vacancy matching.",
+        "context": "AI Vacancy Matcher",
+        "ownership": "individual",
+        "source": "contribution"
+      },
+      {
+        "id": "matcher-ai",
+        "skill": "AI",
+        "statement": "Integrated Gemini requirement extraction with validated output and deterministic fallback.",
+        "context": "AI Vacancy Matcher",
+        "ownership": "individual",
+        "source": "contribution"
+      }
+    ]
   }
 ]

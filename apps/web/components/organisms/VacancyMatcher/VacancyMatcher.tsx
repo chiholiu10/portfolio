@@ -19,6 +19,16 @@ import type { HomeSections } from "@/lib/content-model";
 
 type VacancyMatcherProps = { data: HomeSections["vacancyMatcher"] };
 
+const evidenceStatusLabel = (
+  status: VacancyMatch["requirementAnalysis"][number]["status"],
+  confidence: number,
+) => {
+  if (status === "verified") return `${confidence}% evidence confidence`;
+  if (status === "profile-match") return "Profile match";
+  if (status === "not-assessed") return "Profile check required";
+  return "No verified evidence";
+};
+
 export function VacancyMatcher({ data }: VacancyMatcherProps) {
   const [vacancy, setVacancy] = useState("");
   const [result, setResult] = useState<VacancyMatch | null>(null);
@@ -202,9 +212,17 @@ export function VacancyMatcher({ data }: VacancyMatcherProps) {
                           (item) => item.status === "verified",
                         ).length
                       }
-                      /{result.requirementAnalysis.length}
+                      /
+                      {
+                        result.requirementAnalysis.filter(
+                          (item) =>
+                            item.status === "verified" ||
+                            item.status === "missing",
+                        ).length
+                      }
                     </strong>{" "}
-                    detected requirements supported by portfolio evidence
+                    evidence-assessable requirements supported by portfolio
+                    evidence
                   </p>
                   <p className="matcher-confidence-note">
                     Confidence measures verified evidence support, not the
@@ -214,6 +232,22 @@ export function VacancyMatcher({ data }: VacancyMatcherProps) {
                 <ol className="matcher-requirement-list">
                   {result.requirementAnalysis.map((item) => (
                     <ScrollCase key={item.requirement}>
+                      {(() => {
+                        const detail = result.requirementDetails.find(
+                          (requirement) =>
+                            requirement.name === item.requirement,
+                        );
+                        return detail ? (
+                          <p className="matcher-requirement-meta">
+                            <span className="matcher-requirement-tag">
+                              {detail.priority}
+                            </span>
+                            <span className="matcher-requirement-tag">
+                              {detail.category}
+                            </span>
+                          </p>
+                        ) : null;
+                      })()}
                       <div className="matcher-requirement-heading">
                         <h4 className="matcher-case-title">
                           {item.requirement}
@@ -221,12 +255,10 @@ export function VacancyMatcher({ data }: VacancyMatcherProps) {
                         <span
                           className={`matcher-confidence matcher-confidence--${item.status}`}
                         >
-                          {item.status === "verified"
-                            ? `${item.confidence}% evidence confidence`
-                            : "No verified evidence"}
+                          {evidenceStatusLabel(item.status, item.confidence)}
                         </span>
                       </div>
-                      {item.evidence.length > 0 ? (
+                      {item.evidence.length > 0 && (
                         <ul className="matcher-evidence-list">
                           {item.evidence.map((evidence) => (
                             <li
@@ -269,13 +301,29 @@ export function VacancyMatcher({ data }: VacancyMatcherProps) {
                             </li>
                           ))}
                         </ul>
-                      ) : (
-                        <p className="matcher-missing-copy">
-                          The portfolio contains no verified evidence for this
-                          requirement. This is intentionally reported instead of
-                          inferred.
-                        </p>
                       )}
+                      {item.evidence.length === 0 &&
+                        item.status === "profile-match" && (
+                          <p className="matcher-profile-copy">
+                            {item.profileEvidence}
+                          </p>
+                        )}
+                      {item.evidence.length === 0 &&
+                        item.status === "not-assessed" && (
+                          <p className="matcher-missing-copy">
+                            This vacancy condition is shown separately. It
+                            cannot be proven responsibly from a project case
+                            study.
+                          </p>
+                        )}
+                      {item.evidence.length === 0 &&
+                        item.status === "missing" && (
+                          <p className="matcher-missing-copy">
+                            The portfolio contains no verified evidence for this
+                            requirement. This is intentionally reported instead
+                            of inferred.
+                          </p>
+                        )}
                     </ScrollCase>
                   ))}
                 </ol>

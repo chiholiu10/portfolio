@@ -37,7 +37,16 @@ class DevelopmentRecoveryTests(unittest.TestCase):
             request = urllib.request.Request(base + "/match", method="POST",
                 headers={"Authorization": "Bearer test-token", "Content-Type": "application/json"},
                 data=json.dumps({"vacancy": "React TypeScript frontend developer with testing experience.",
-                                 "projects": [{"id": "example", "title": "Example", "evidence": "React TypeScript"}]}).encode())
+                                 "projects": [{"id": "example", "title": "Example",
+                                               "summary": "Verified React case",
+                                               "claims": [{"id": "example-react", "skill": "React",
+                                                           "statement": "Built a verified React interface for production.",
+                                                           "context": "Example", "ownership": "individual",
+                                                           "source": "contribution"},
+                                                          {"id": "example-typescript", "skill": "TypeScript",
+                                                           "statement": "Applied TypeScript to frontend contracts.",
+                                                           "context": "Example", "ownership": "individual",
+                                                           "source": "contribution"}]}]}).encode())
             with urllib.request.urlopen(request, timeout=3) as result:
                 self.assertEqual(json.load(result)["matches"][0]["id"], "example")
 

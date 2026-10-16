@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parent.parent
 MATCHER_ROOT = ROOT / "apps" / "matcher-api"
 sys.path.insert(0, str(MATCHER_ROOT))
 
-from matcher import SKILLS, detect_evidence_skills, match_vacancy  # noqa: E402
+from matcher import SKILLS, match_vacancy  # noqa: E402
 
 
 def load_json(path: Path):
@@ -45,7 +45,13 @@ def validate_dataset(cases: list[dict], projects: list[dict]) -> None:
         expected = set(case["expectedProjectIds"])
         forbidden = set(case["forbiddenProjectIds"])
         unknown_projects = (expected | forbidden) - known_projects
-        unknown_requirements = set(case["expectedRequirements"]) - known_requirements
+        unknown_requirements = {
+            requirement for requirement in case["expectedRequirements"]
+            if requirement not in known_requirements
+            and not requirement.startswith((
+                "Seniority: ", "Experience: ", "Language: ", "Work arrangement: "
+            ))
+        }
         if expected & forbidden:
             raise ValueError(
                 f"Case {case['id']} cannot expect and forbid the same project."
@@ -106,7 +112,9 @@ def evaluate(live: bool) -> dict:
         case_unsupported = 0
         for match in result["matches"]:
             project = projects_by_id[match["id"]]
-            supported_skills = set(detect_evidence_skills(project["evidence"]))
+            supported_skills = {
+                claim["skill"] for claim in project.get("claims", [])
+            }
             case_unsupported += sum(
                 skill not in supported_skills for skill in match["skills"]
             )

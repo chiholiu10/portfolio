@@ -33,7 +33,40 @@ SKILLS = {
     "WordPress": [r"\bwordpress\b"],
     "Shopify": [r"\bshopify\b"],
     "State management": [r"\b(?:redux|vuex|zustand|context api|state management)\b"],
+    "Full-stack": [r"\b(?:full[ -]?stack|across the stack)\b"],
+    "APIs": [r"\b(?:apis?|fastapi|api integrations?)\b"],
+    "Integrations": [r"\b(?:integrations?|integrat(?:e|ed|ing))\b"],
+    "Client-facing": [r"\b(?:client[ -]?facing|customers?|clients?)\b"],
+    "Business impact": [r"\b(?:business (?:value|impact|terms|outcomes?)|measurable outcomes?|conversion|growth)\b"],
+    "Product ownership": [r"\b(?:product ownership|end[ -]to[ -]end product|designed and built|own the outcome)\b"],
 }
+
+SKILL_CATEGORIES = {
+    "React": "technology", "Next.js": "technology", "TypeScript": "technology",
+    "JavaScript": "technology", "Vue": "technology", "CSS": "technology",
+    "Python": "technology", "WordPress": "platform", "Shopify": "platform",
+    "AEM": "platform", "AI": "technology", "State management": "technology",
+    "Testing": "quality", "Accessibility": "quality", "SEO": "product",
+    "UX": "product", "Storybook": "quality", "Design system": "quality",
+    "Components": "quality", "Collaboration": "collaboration",
+    "Full-stack": "technology", "APIs": "technology",
+    "Integrations": "technology", "Client-facing": "collaboration",
+    "Business impact": "product", "Product ownership": "product",
+}
+
+NICE_TO_HAVE = re.compile(
+    r"\b(?:nice[ -]to[ -]have|pré|preference|preferred|plus|bonus|advantage|"
+    r"wens|gewenst|bij voorkeur|zou mooi zijn)\b", re.I
+)
+CONSTRAINT_PATTERNS = [
+    ("Seniority", "seniority", re.compile(r"\b(senior|lead|medior|junior)(?=\s+(?:[a-z-]+\s+){0,2}(?:engineer|developer|specialist|architect))", re.I)),
+    ("Experience", "experience", re.compile(r"\b(\d+\+?\s*(?:years?|jaar))\b", re.I)),
+    ("Language", "language", re.compile(
+        r"\b(?:fluent|professional|proficient)\s+(Dutch|English|Nederlands|Engels)\b|"
+        r"\b(Dutch|English|Nederlands|Engels)\b(?=\s+(?:required|needed|vereist))",
+        re.I,
+    )),
+]
 
 AI_TOOL_PATTERNS = [
     r"\b(?:gemini|openai|groq|claude|llms?|rag|pgvector|langchain)\b",
@@ -54,6 +87,71 @@ AI_ENGINEERING_CONTEXT = re.compile(
 def detect_skills(text):
     return [name for name, patterns in SKILLS.items()
             if any(re.search(pattern, text, re.I) for pattern in patterns)]
+
+
+def _context(text, start, end):
+    left = max(text.rfind(separator, 0, start) for separator in (".", "!", "?", "\n"))
+    boundaries = [position for separator in (".", "!", "?", "\n")
+                  if (position := text.find(separator, end)) >= 0]
+    right = min(boundaries) + 1 if boundaries else len(text)
+    return text[left + 1:right]
+
+
+def classify_requirements(vacancy, requirements):
+    details = []
+    for name in requirements:
+        patterns = SKILLS.get(name, [])
+        match = next((re.search(pattern, vacancy, re.I) for pattern in patterns
+                      if re.search(pattern, vacancy, re.I)), None)
+        nearby = _context(vacancy, match.start(), match.end()) if match else ""
+        details.append({
+            "name": name,
+            "category": SKILL_CATEGORIES[name],
+            "priority": "nice-to-have" if NICE_TO_HAVE.search(nearby) else "must-have",
+        })
+
+    for label, category, pattern in CONSTRAINT_PATTERNS:
+        for match in pattern.finditer(vacancy):
+            nearby = _context(vacancy, match.start(), match.end())
+            detail = next(group for group in match.groups() if group)
+            if label == "Language":
+                detail = {"nederlands": "Dutch", "engels": "English"}.get(
+                    detail.lower(), detail
+                )
+            if label == "Experience":
+                detail = re.sub(r"\bjaar\b", "years", detail, flags=re.I)
+            name = f"{label}: {detail}"
+            if not any(item["name"].lower() == name.lower() for item in details):
+                details.append({
+                    "name": name,
+                    "category": category,
+                    "priority": "nice-to-have" if NICE_TO_HAVE.search(nearby) else "must-have",
+                    "detail": detail,
+                })
+    arrangement_aliases = {
+        "hybride": "hybrid",
+        "op locatie": "on-site",
+        "on site": "on-site",
+    }
+    arrangements = []
+    for match in re.finditer(
+        r"\b(?:remote|hybrid|hybride|on[ -]site|op locatie|thuiswerk\w*)\b",
+        vacancy,
+        re.I,
+    ):
+        value = match.group(0).lower()
+        normalized = "remote" if value.startswith("thuiswerk") else arrangement_aliases.get(value, value)
+        if normalized not in arrangements:
+            arrangements.append(normalized)
+    if arrangements:
+        detail = " / ".join(arrangements)
+        details.append({
+            "name": f"Work arrangement: {detail}",
+            "category": "work-arrangement",
+            "priority": "must-have",
+            "detail": detail,
+        })
+    return details[:30]
 
 
 def detect_evidence_skills(text):
@@ -113,15 +211,20 @@ def extract_requirements(vacancy):
 
 def match_vacancy(vacancy, projects):
     requirements, mode = extract_requirements(vacancy)
+    requirement_details = classify_requirements(vacancy, requirements)
+    requirements = [item["name"] for item in requirement_details]
     ranked = []
     for index, project in enumerate(projects):
-        evidence = project.get("evidence", "")
-        skills = detect_evidence_skills(evidence)
+        claims = project.get("claims", [])
+        skills = list(dict.fromkeys(
+            claim.get("skill") for claim in claims
+            if claim.get("skill") in SKILLS
+        ))
         matched = [skill for skill in requirements if skill in skills]
         if matched:
             ranked.append({"score": len(matched), "index": index,
                            "match": {"id": project["id"], "title": project["title"],
-                                     "evidence": project.get("summary") or evidence[:450],
+                                     "evidence": project.get("summary", "")[:450],
                                      "skills": matched}})
 
     # Prefer the strongest case first, then add cases that prove requirements
@@ -147,5 +250,6 @@ def match_vacancy(vacancy, projects):
 
     supported = {skill for match in selected for skill in match["skills"]}
     return {"mode": mode, "requirements": requirements,
+            "requirementDetails": requirement_details,
             "missing": [skill for skill in requirements if skill not in supported],
             "matches": selected}

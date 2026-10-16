@@ -39,7 +39,8 @@
     "test:docker": "node scripts/test-matcher-docker.mjs",
     "eval:matcher": "apps/matcher-api/.venv/bin/python scripts/evaluate-matcher.py",
     "eval:matcher:check": "apps/matcher-api/.venv/bin/python scripts/evaluate-matcher.py --check",
-    "eval:matcher:live": "node scripts/evaluate-matcher-live.mjs"
+    "eval:matcher:live": "node scripts/evaluate-matcher-live.mjs",
+    "migrate:matcher-evidence": "node scripts/migrate-matcher-evidence.mjs"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.4.0",

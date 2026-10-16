@@ -3,7 +3,13 @@
     "id": "senior-react-accessibility",
     "description": "Senior React role requiring typed, tested and accessible delivery.",
     "vacancy": "We need a senior React developer with TypeScript, Playwright testing and strong accessibility experience.",
-    "expectedRequirements": ["React", "TypeScript", "Testing", "Accessibility"],
+    "expectedRequirements": [
+      "React",
+      "TypeScript",
+      "Testing",
+      "Accessibility",
+      "Seniority: senior"
+    ],
     "expectedProjectIds": ["momants-ai", "vodafoneziggo"],
     "forbiddenProjectIds": ["gemeente-amsterdam", "stockload"]
   },

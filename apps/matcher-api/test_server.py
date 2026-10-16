@@ -7,7 +7,15 @@ import server
 from capacity import AnalysisCapacity
 
 PAYLOAD = {"vacancy": "Looking for a React and TypeScript frontend developer.",
-           "projects": [{"id": "example", "title": "Example", "evidence": "React TypeScript"}]}
+           "projects": [{"id": "example", "title": "Example", "summary": "Example",
+                         "claims": [{"id": "example-react", "skill": "React",
+                                     "statement": "Built a verified React interface for production.",
+                                     "context": "Example", "ownership": "individual",
+                                     "source": "contribution"},
+                                    {"id": "example-typescript", "skill": "TypeScript",
+                                     "statement": "Applied TypeScript to validated frontend contracts.",
+                                     "context": "Example", "ownership": "individual",
+                                     "source": "contribution"}]}]}
 
 
 class ServerTests(unittest.TestCase):

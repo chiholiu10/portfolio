@@ -10,6 +10,18 @@ const imageUrl = z.url().refine((value) => {
 }, "Use an HTTPS image URL from an approved image host.");
 
 export const projectCaseStudySchema = z.object({
+  verifiedClaims: z
+    .array(
+      z.object({
+        id: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+        skill: z.string().min(1),
+        statement: z.string().min(20),
+        context: z.string().min(1),
+        ownership: z.enum(["individual", "shared", "team"]),
+        source: z.enum(["contribution", "technology", "impact", "result"]),
+      }),
+    )
+    .optional(),
   liveUrl: z
     .string()
     .regex(/^\/[a-z0-9/-]*$/)
@@ -61,6 +73,18 @@ export const projectCaseStudySchema = z.object({
 });
 
 export const portfolioContentSchema = z.object({
+  candidateProfile: z
+    .object({
+      experienceYears: z.number().int().nonnegative(),
+      languages: z.array(
+        z.object({
+          name: z.string().min(1),
+          level: z.enum(["Native", "Fluent", "Professional", "Basic"]),
+        }),
+      ),
+      workArrangements: z.array(z.enum(["hybrid", "remote", "on-site"])),
+    })
+    .optional(),
   projects: z
     .array(
       z.object({
