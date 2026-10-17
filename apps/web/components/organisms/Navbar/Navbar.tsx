@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import type { HomeSections } from "@/lib/content-model";
 import {
   BrandOrbit,
@@ -9,39 +8,7 @@ import {
 
 type NavbarProps = { data: HomeSections["navbar"] };
 
-const sectionHashes = new Set([
-  "#banner",
-  "#portfolio",
-  "#how-i-work",
-  "#contact",
-]);
-
-const useCleanSectionHash = () => {
-  useEffect(() => {
-    let frame = 0;
-
-    const clearHash = () => {
-      if (!sectionHashes.has(window.location.hash)) return;
-
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const cleanUrl = `${window.location.pathname}${window.location.search}`;
-        window.history.replaceState(window.history.state, "", cleanUrl);
-      });
-    };
-
-    clearHash();
-    window.addEventListener("hashchange", clearHash);
-
-    return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener("hashchange", clearHash);
-    };
-  }, []);
-};
-
 export const Navbar = ({ data }: NavbarProps) => {
-  useCleanSectionHash();
   const { section } = data;
 
   if (!section) {
