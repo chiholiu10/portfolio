@@ -43,6 +43,26 @@ export const MatcherSurface = styled.section.attrs({ className: "ui-section" })`
       padding: 32px;
     `}
   }
+  .matcher-teaser {
+    display: flex;
+    align-items: center;
+    min-height: 112px;
+    padding: 22px;
+    border: 1px solid rgba(var(--accent-rgb), 0.2);
+    border-radius: 20px;
+    background:
+      radial-gradient(
+        circle at 90% 10%,
+        rgba(var(--accent-rgb), 0.13),
+        transparent 38%
+      ),
+      rgba(255, 255, 255, 0.9);
+    box-shadow: 0 12px 40px rgba(20, 33, 61, 0.04);
+    ${breakpoint.lg`
+      min-height: 128px;
+      padding: 32px;
+    `}
+  }
   .matcher-field-heading {
     display: flex;
     justify-content: space-between;
@@ -118,6 +138,9 @@ export const MatcherSurface = styled.section.attrs({ className: "ui-section" })`
   }
   .matcher-submit {
     width: 100%;
+  }
+  .matcher-teaser-action {
+    width: auto;
   }
   ${breakpoint.sm`
     .matcher-submit {

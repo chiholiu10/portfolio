@@ -17,7 +17,10 @@ import { MatcherSurface } from "@/components/organisms/VacancyMatcher/VacancyMat
 
 import type { HomeSections } from "@/lib/content-model";
 
-type VacancyMatcherProps = { data: HomeSections["vacancyMatcher"] };
+type VacancyMatcherProps = {
+  data: HomeSections["vacancyMatcher"];
+  compact?: boolean;
+};
 
 const evidenceStatusLabel = (
   status: VacancyMatch["requirementAnalysis"][number]["status"],
@@ -35,16 +38,18 @@ const requirementTitle = (requirement: string) => {
   return seniority ? `${seniority[1]}-level experience` : requirement;
 };
 
-export function VacancyMatcher({ data }: VacancyMatcherProps) {
+export function VacancyMatcher({ data, compact = false }: VacancyMatcherProps) {
   const [vacancy, setVacancy] = useState("");
   const [result, setResult] = useState<VacancyMatch | null>(null);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
   const requestInFlight = useRef(false);
   const resultsRef = useRef<HTMLDivElement>(null);
+  const vacancyInputRef = useRef<HTMLTextAreaElement>(null);
   const reduceMotion = useReducedMotion();
   const { ref: formRef, style: formStyle } = useScrollReveal<HTMLFormElement>();
   const [formFocused, setFormFocused] = useState(false);
+  const [formVisible, setFormVisible] = useState(!compact);
 
   useEffect(() => {
     if (!result) return;
@@ -57,6 +62,12 @@ export function VacancyMatcher({ data }: VacancyMatcherProps) {
     });
     return () => cancelAnimationFrame(frame);
   }, [result, reduceMotion]);
+
+  useEffect(() => {
+    if (!compact || !formVisible) return;
+    const frame = requestAnimationFrame(() => vacancyInputRef.current?.focus());
+    return () => cancelAnimationFrame(frame);
+  }, [compact, formVisible]);
 
   if (!data.section) return null;
   const { eyebrow, title, subtitle, arrays: copy } = data.section;
@@ -106,88 +117,122 @@ export function VacancyMatcher({ data }: VacancyMatcherProps) {
         </h2>
         <p className="matcher-intro">{subtitle}</p>
       </FadeUp>
-      <m.form
-        className="matcher-form"
-        ref={formRef}
-        style={formFocused ? { opacity: 1, y: 0 } : formStyle}
-        onFocusCapture={() => setFormFocused(true)}
-        onSubmit={submit}
-        aria-busy={pending}
-      >
-        <div className="matcher-field-heading">
-          <label className="matcher-label" htmlFor="matcher-vacancy">
-            {copy.label}
-          </label>
+      {!formVisible && (
+        <FadeUp id="matcher-teaser-reveal" className="matcher-teaser">
           <button
-            className="matcher-example"
+            className="matcher-submit matcher-teaser-action"
             type="button"
-            disabled={pending}
+            aria-expanded="false"
+            aria-controls="matcher-form"
             onClick={() => {
-              setVacancy(copy.example);
+              setFormFocused(true);
+              setFormVisible(true);
+            }}
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5L12 3Z"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinejoin="round"
+              />
+            </svg>
+            {copy.submitButton}
+          </button>
+        </FadeUp>
+      )}
+      {formVisible && (
+        <m.form
+          className="matcher-form"
+          id="matcher-form"
+          ref={formRef}
+          style={formFocused ? { opacity: 1, y: 0 } : formStyle}
+          onFocusCapture={() => setFormFocused(true)}
+          onSubmit={submit}
+          aria-busy={pending}
+        >
+          <div className="matcher-field-heading">
+            <label className="matcher-label" htmlFor="matcher-vacancy">
+              {copy.label}
+            </label>
+            <button
+              className="matcher-example"
+              type="button"
+              disabled={pending}
+              onClick={() => {
+                setVacancy(copy.example);
+                setResult(null);
+                setError("");
+              }}
+            >
+              {copy.exampleButton}
+            </button>
+          </div>
+          <textarea
+            className="matcher-input"
+            id="matcher-vacancy"
+            ref={vacancyInputRef}
+            required
+            minLength={40}
+            maxLength={8000}
+            value={vacancy}
+            disabled={pending}
+            onChange={(event) => {
+              setVacancy(event.target.value);
               setResult(null);
               setError("");
             }}
-          >
-            {copy.exampleButton}
-          </button>
-        </div>
-        <textarea
-          className="matcher-input"
-          id="matcher-vacancy"
-          required
-          minLength={40}
-          maxLength={8000}
-          value={vacancy}
-          disabled={pending}
-          onChange={(event) => {
-            setVacancy(event.target.value);
-            setResult(null);
-            setError("");
-          }}
-          placeholder={copy.placeholder}
-          aria-describedby="matcher-privacy"
-        />
+            placeholder={copy.placeholder}
+            aria-describedby="matcher-privacy"
+          />
 
-        <div className="matcher-actions">
-          <button className="matcher-submit" type="submit" disabled={pending}>
-            <m.span
-              aria-hidden="true"
-              animate={
-                pending && !reduceMotion ? { rotate: 360 } : { rotate: 0 }
-              }
-              transition={{
-                duration: 2,
-                repeat: pending && !reduceMotion ? Infinity : 0,
-                ease: "linear",
-              }}
-            >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
+          <div className="matcher-actions">
+            <button className="matcher-submit" type="submit" disabled={pending}>
+              <m.span
                 aria-hidden="true"
+                animate={
+                  pending && !reduceMotion ? { rotate: 360 } : { rotate: 0 }
+                }
+                transition={{
+                  duration: 2,
+                  repeat: pending && !reduceMotion ? Infinity : 0,
+                  ease: "linear",
+                }}
               >
-                <path
-                  d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5L12 3Z"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </m.span>
-            {pending ? copy.pendingButton : copy.submitButton}
-          </button>
-        </div>
-        <p className="matcher-note" id="matcher-privacy">
-          {copy.lengthHint}
-        </p>
-        {error && (
-          <p className="matcher-error" role="alert">
-            {error}
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5L12 3Z"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </m.span>
+              {pending ? copy.pendingButton : copy.submitButton}
+            </button>
+          </div>
+          <p className="matcher-note" id="matcher-privacy">
+            {copy.lengthHint}
           </p>
-        )}
-      </m.form>
+          {error && (
+            <p className="matcher-error" role="alert">
+              {error}
+            </p>
+          )}
+        </m.form>
+      )}
       <div aria-live="polite" aria-atomic="true">
         {pending && (
           <p className="matcher-note" role="status">

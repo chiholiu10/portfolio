@@ -34,10 +34,10 @@ export function HomeTemplate({ sections, isProduction }: HomeTemplateProps) {
       <Navbar data={sections.navbar} />
       <Banner data={sections.banner} />
       <Introduction data={sections.introduction} />
+      <VacancyMatcher data={sections.vacancyMatcher} compact />
       <HowIWork data={sections.howIWork} />
       <Inspiration data={sections.inspiration} />
       <Portfolio data={sections.portfolio} />
-      <VacancyMatcher data={sections.vacancyMatcher} />
       <Tools data={sections.tools} />
       <Contact data={sections.contact} />
       <Footer data={sections.footer} />
