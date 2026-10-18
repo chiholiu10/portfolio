@@ -17,8 +17,7 @@ interface WordRevealProps {
 }
 
 export const WordReveal = ({ text = "", id }: WordRevealProps) => {
-  const { ref, progress, reduceMotion, style } =
-    useScrollReveal<HTMLSpanElement>();
+  const { ref, progress, reduceMotion } = useScrollReveal<HTMLSpanElement>();
   const wide = useSyncExternalStore(
     subscribeToWidth,
     getWideSnapshot,
@@ -27,14 +26,9 @@ export const WordReveal = ({ text = "", id }: WordRevealProps) => {
   if (!text) return null;
   if (!wide || reduceMotion) {
     return (
-      <m.span
-        className="ui-span"
-        id={id}
-        ref={ref}
-        style={{ display: "inline-block", ...style }}
-      >
+      <span className="ui-span" id={id}>
         {text}
-      </m.span>
+      </span>
     );
   }
   const words = text.trim().split(/\s+/);
