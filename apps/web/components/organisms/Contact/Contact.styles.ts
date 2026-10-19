@@ -1,54 +1,14 @@
 import { m } from "motion/react";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { breakpoint } from "@/styles/Breakpoint";
 import theme from "@/styles/Theme";
 import { ContactSVG } from "@/components/atoms/ContactSvg/Contact.styles";
 import { AIGlassMorph } from "@/styles/General.styles";
 
-const float = keyframes`
-  0% {
-    transform: translateY(0);
-    filter: brightness(1);
-  }
-  50% {
-    transform: translateY(-14px);
-    filter: brightness(1.02);
-  }
-  100% {
-    transform: translateY(0);
-    filter: brightness(1.08);
-  }
-`;
-
-const hoverStyles = `
-  @media (hover: hover) and (pointer: fine) {
-    cursor: pointer;
-  }
-`;
-
-const durations = [6.3, 7.8, 6.9, 8.6];
-const delays = [-2.1, -5.7, -1.3, -4.4];
-
-export const ContactBlock = styled.div.attrs({ className: "ui-div" })<{
-  $index: number;
-}>`
-  animation-name: ${float};
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
-  animation: none;
-  will-change: transform;
+export const ContactBlock = styled.div.attrs({ className: "ui-div" })`
   display: flex;
   align-items: center;
   justify-content: center;
-  :where(.ui-a) {
-    &:hover {
-      ${hoverStyles}
-    }
-  }
-  ${breakpoint.lg`
-    animation: ${float} ${({ $index }) => durations[$index % durations.length]}s
-      ease-in-out ${({ $index }) => delays[$index % delays.length]}s infinite;
-  `}
 `;
 
 export const ContactBlockAnchor = styled.a.attrs({ className: "ui-a" })`
@@ -94,17 +54,40 @@ export const ContactBlockAnchor = styled.a.attrs({ className: "ui-a" })`
       height: 42px;
     `}
   }
-  &:hover {
+  ${breakpoint.xxl`
     @media (hover: hover) and (pointer: fine) {
-      color: #1947b5;
-      box-shadow: 0 10px 28px rgba(20, 33, 61, 0.14);
-      ${ContactSVG} {
+      transition:
+        color 240ms ease,
+        border-color 240ms ease,
+        box-shadow 300ms ease,
+        transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+      &:hover {
+        color: #1947b5;
+        border-color: rgba(var(--accent-rgb), 0.22);
+        box-shadow:
+          0 12px 30px rgba(20, 33, 61, 0.14),
+          0 0 24px rgba(var(--accent-rgb), 0.12);
+        transform: translateY(-3px);
       }
+      &:active {
+        transform: scale(0.97);
+      }
+    }
+  `}
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+    &:hover,
+    &:active {
+      transform: none;
     }
   }
 `;
 
-export const ContactContainer = styled.div.attrs({ className: "ui-div" })`
+export const ContactContainer = styled(m.div).attrs({ className: "ui-div" })`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

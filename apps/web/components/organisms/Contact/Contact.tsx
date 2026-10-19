@@ -1,11 +1,12 @@
 import { m, useReducedMotion } from "motion/react";
 import { premiumEase } from "@/components/atoms/Motion/motion.config";
-import type { ReactNode } from "react";
+import { type ReactNode, useSyncExternalStore } from "react";
 import { Eyebrow } from "@/components/atoms/Eyebrow/Eyebrow";
 import { contactRequestSchema } from "@/lib/contact/validation";
 import type { HomeSections } from "@/lib/content-model";
 import { FormEvent, useEffect, useState } from "react";
 import { ComponentSection } from "@/styles/General.styles";
+import { mediaQuery } from "@/styles/Breakpoint";
 import { ContactSvg, IconPath } from "@/components/atoms/ContactSvg/ContactSvg";
 import {
   ContactBlock,
@@ -28,8 +29,26 @@ import {
 
 type ContactProps = { data: HomeSections["contact"] };
 
+const desktopPointerQuery = `${mediaQuery.xxl} and (hover: hover) and (pointer: fine)`;
+
+function subscribeToDesktopPointer(callback: () => void) {
+  const query = window.matchMedia(desktopPointerQuery);
+  query.addEventListener("change", callback);
+  return () => query.removeEventListener("change", callback);
+}
+
+const getDesktopPointerSnapshot = () =>
+  window.matchMedia(desktopPointerQuery).matches;
+const getDesktopPointerServerSnapshot = () => false;
+
 export const Contact = ({ data }: ContactProps) => {
   const reduceMotion = useReducedMotion();
+  const hasDesktopPointer = useSyncExternalStore(
+    subscribeToDesktopPointer,
+    getDesktopPointerSnapshot,
+    getDesktopPointerServerSnapshot,
+  );
+  const animateSocials = hasDesktopPointer && !reduceMotion;
   const [status, setStatus] = useState<
     "idle" | "sending" | "success" | "error"
   >("idle");
@@ -341,10 +360,22 @@ export const Contact = ({ data }: ContactProps) => {
       </ContactGrid>
 
       <SocialLabel>Or find me here</SocialLabel>
-      <ContactContainer>
+      <ContactContainer
+        initial={animateSocials ? "hidden" : false}
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.65 }}
+        variants={{
+          hidden: {},
+          visible: {
+            transition: {
+              staggerChildren: animateSocials ? 0.07 : 0,
+            },
+          },
+        }}
+      >
         {arrays.map((item, index) => (
-          <SocialReveal key={item.anchor} index={index}>
-            <ContactBlock $index={index}>
+          <SocialReveal key={item.anchor} animate={animateSocials}>
+            <ContactBlock>
               <ContactBlockAnchor
                 href={item.anchor}
                 target="_blank"
@@ -363,26 +394,25 @@ export const Contact = ({ data }: ContactProps) => {
 
 function SocialReveal({
   children,
-  index,
+  animate,
 }: {
   children: ReactNode;
-  index: number;
+  animate: boolean;
 }) {
-  const reduceMotion = useReducedMotion();
-  const [focused, setFocused] = useState(false);
   return (
     <m.div
       className="ui-div"
-      initial={reduceMotion ? false : { opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      animate={focused ? { opacity: 1, y: 0 } : undefined}
-      viewport={{ once: true, amount: 0.8, margin: "0px 0px -64px 0px" }}
-      transition={{
-        duration: reduceMotion || focused ? 0 : 0.6,
-        delay: reduceMotion || focused ? 0 : index * 0.12,
-        ease: premiumEase,
+      variants={{
+        hidden: animate ? { opacity: 0, y: 8 } : {},
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: {
+            duration: animate ? 0.42 : 0,
+            ease: premiumEase,
+          },
+        },
       }}
-      onFocusCapture={() => setFocused(true)}
     >
       {children}
     </m.div>
