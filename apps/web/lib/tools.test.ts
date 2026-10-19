@@ -14,4 +14,10 @@ describe("tool grouping", () => {
     expect(groupTools(items, categories)[0].tools).toEqual(items);
     expect(categories[0].tools).toEqual(["React"]);
   });
+  it("matches CMS tool names without depending on casing or whitespace", () => {
+    const categories = [{ title: "Core", description: "", tools: [" react "] }];
+    expect(groupTools(items.slice(0, 1), categories)[0].tools).toEqual([
+      items[0],
+    ]);
+  });
 });

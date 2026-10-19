@@ -1,4 +1,4 @@
-import { additionalTools, normalizeToolName, groupTools } from "@/lib/tools";
+import { groupTools } from "@/lib/tools";
 import type { HomeSections } from "@/lib/content-model";
 import { SectionHeading } from "@/components/molecules/SectionHeading/SectionHeading";
 import Image from "next/image";
@@ -29,17 +29,10 @@ export const Tools = ({ data }: ToolsProps) => {
     subtitle,
     arrayBlockCollection,
   } = section;
-  const contentfulItems = arrayBlockCollection?.items || [];
-  const existingToolNames = new Set(
-    contentfulItems.map((item) => normalizeToolName(item.title)),
+  const categories = groupTools(
+    arrayBlockCollection?.items || [],
+    toolCategories || [],
   );
-  const items = [
-    ...contentfulItems,
-    ...additionalTools.filter(
-      (item) => !existingToolNames.has(normalizeToolName(item.title)),
-    ),
-  ];
-  const categories = groupTools(items, toolCategories || []);
 
   return (
     <ComponentSection>
