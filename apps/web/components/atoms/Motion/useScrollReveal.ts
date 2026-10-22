@@ -12,7 +12,7 @@ import { observeScrollReveal } from "@/components/atoms/Motion/scroll-reveal-sch
 export function useScrollReveal<Element extends HTMLElement>(
   staggerIndex = 0,
   {
-    once = false,
+    once = true,
     start = 0.7,
     end = 0.5,
   }: { once?: boolean; start?: number; end?: number } = {},

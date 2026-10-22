@@ -32,10 +32,6 @@ export const ComponentSection = styled.section.attrs({
   overflow-x: hidden;
   padding-bottom: 150px;
   position: relative;
-  &:not(.bannerComponent) {
-    content-visibility: auto;
-    contain-intrinsic-size: auto 850px;
-  }
   &.bannerComponent {
     :where(.ui-svg) {
       width: min(100%, 850px);
