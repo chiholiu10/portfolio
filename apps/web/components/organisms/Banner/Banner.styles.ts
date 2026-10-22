@@ -155,6 +155,13 @@ export const HeroVisual = styled(m.div).attrs({ className: "ui-div" })`
       max-inline-size: 600px;
     }
   `}
+  ${breakpoint.xxl`
+    width: 100%;
+    min-height: 440px;
+    .profile-avatar {
+      max-inline-size: 680px;
+    }
+  `}
 `;
 export const Approach = styled.section.attrs({ className: "ui-section" })`
   display: grid;
