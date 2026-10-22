@@ -421,16 +421,22 @@ Phoenix requires `.env.phoenix.local`. Tool data lives in a Docker volume and sh
 
 ## Testing and CI
 
-GitHub Actions runs on pull requests and pushes to `main`:
+GitHub Actions uses a change-aware quality gate on pull requests and pushes to
+`main`. A developer only pushes the change; the workflow determines which
+systems are affected and runs the relevant jobs in parallel:
 
-1. Install exact Yarn dependencies.
-2. Check custom formatting rules and Prettier output.
-3. Run ESLint and TypeScript.
-4. Run Jest tests.
-5. Install Python 3.13 dependencies and run Python tests.
-6. Enforce the reviewed vacancy-matcher quality thresholds without an AI call.
-7. Build and exercise the matcher container, including PID 1 crash recovery.
-8. Build the Next.js production bundle with Contentful credentials.
+- **Web quality:** formatting, ESLint, TypeScript, Jest and the production build.
+- **Matcher correctness:** Python tests and deterministic matcher evaluation.
+- **Runtime reliability:** matcher container startup, request and crash recovery.
+- **Security:** CodeQL analysis for TypeScript/JavaScript and Python.
+- **Repository integrity:** whitespace and patch integrity checks.
+
+Documentation-only changes skip application and security jobs. Changes to
+shared scripts or workflow configuration deliberately select every gate. The
+final `Quality Gate` job always publishes one decision table and is the only
+status that branch protection needs to require. A skipped specialist job means
+that the change detector found no affected files; failures and cancellations
+block the gate.
 
 The main local quality suite is:
 
@@ -438,8 +444,9 @@ The main local quality suite is:
 yarn verify
 ```
 
-CI additionally runs `yarn eval:matcher:check` and `yarn test:docker`. Run the
-deterministic evaluation whenever ranking, extraction or evidence changes. The
+CI runs `yarn eval:matcher:check` when matcher behavior changes and
+`yarn test:docker` when runtime or container files change. Run the deterministic
+evaluation locally whenever ranking, extraction or evidence changes. The
 optional live evaluation consumes Gemini quota and is never part of CI.
 
 Some Python crash-recovery tests open an isolated loopback port. Run them outside an unusually restrictive sandbox if the operating system denies local socket creation.
@@ -467,7 +474,7 @@ Deploy [`apps/matcher-api/Dockerfile`](apps/matcher-api/Dockerfile) to a private
 ### Recommended branch protection
 
 - Require pull requests for `main`.
-- Require the `Lint, typecheck, test and build` status check.
+- Require the `Quality Gate` status check.
 - Require the branch to be current before merging.
 - Block force pushes and branch deletion.
 - Optionally require manual approval for the GitHub `production` environment.
