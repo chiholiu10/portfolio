@@ -1,4 +1,9 @@
 import process from "node:process";
+import { readFileSync } from "node:fs";
+
+const taxonomy = JSON.parse(
+  readFileSync(new URL("../apps/matcher-api/taxonomy.json", import.meta.url)),
+);
 
 process.loadEnvFile("apps/web/.env");
 try {
@@ -19,54 +24,29 @@ for (const variable of required) {
   if (!process.env[variable]) throw new Error(`Missing ${variable}`);
 }
 
-const skills = {
-  React: /\breact(?:\.js)?\b/i,
-  "Next.js": /\bnext(?:\.js|js)\b/i,
-  TypeScript: /\btypescript\b/i,
-  JavaScript: /\bjavascript\b/i,
-  Vue: /\bvue(?:\.js|js)?\b/i,
-  CSS: /\b(?:css|sass|styled-components|tailwind(?: css)?)\b/i,
-  UX: /\b(?:ux|user experience|usability|shopping experience)\b/i,
-  Testing: /\b(?:jest|cypress|playwright|test(?:ing|s)?)\b/i,
-  Storybook: /\bstorybook\b/i,
-  "Design system": /\bdesign[ -]?system\b/i,
-  Components: /\b(?:components?|reusable)\b/i,
-  Collaboration: /\b(?:collaborat\w*|designers?|stakeholders?|team)\b/i,
-  AEM: /\b(?:aem|adobe experience manager)\b/i,
-  Accessibility: /\b(?:wcag|accessib\w*)\b/i,
-  SEO: /\bseo\b/i,
-  Python: /\bpython\b/i,
-  "Node.js": /\bnode(?:\.js|js)\b/i,
-  GraphQL: /\bgraphql\b/i,
-  Docker: /\bdocker(?: compose)?\b/i,
-  "CI/CD":
-    /\b(?:ci\s*\/?\s*cd|github actions|continuous integration|continuous delivery|continuous deployment)\b/i,
-  "Headless CMS": /\b(?:headless cms|contentful|composable cms)\b/i,
-  Security:
-    /\b(?:security|secure|authenticated|origin checks?|rate limiting|request masking|server-only credentials)\b/i,
-  "Service-oriented architecture":
-    /\b(?:service[ -]oriented|private python (?:matching )?service)\b/i,
-  "Solution Architecture":
-    /\b(?:solution architecture|designed the architecture)\b/i,
-  "Technical leadership":
-    /\b(?:technical leadership|take the lead|mentored|mentoring|guidance|knowledge sharing)\b/i,
-  "Customer focus":
-    /\b(?:customer focus|customer needs|customer experience|customer at the cent(?:er|re)|recruiter experience)\b/i,
-  "Quality engineering":
-    /\b(?:quality gates?|quality engineering|test strategy|evaluation suite|regressions?)\b/i,
-  AI: /\b(?:gemini|llm|ai integration|ai model|applied ai)\b/i,
-  WordPress: /\bwordpress\b/i,
-  Shopify: /\bshopify\b/i,
-  "State management": /\b(?:redux|vuex|zustand|context api|shared state)\b/i,
-  "Full-stack": /\bprivate python (?:matching )?service\b/i,
-  APIs: /(?<!context )\b(?:apis?|fastapi|server-side gateway)\b/i,
-  Integrations: /\b(?:integrations?|integrat(?:e|ed|ing)|fresha|ga4)\b/i,
-  "Client-facing": /\b(?:client[ -]?facing|customer[ -]?facing)\b/i,
-  "Business impact":
-    /\b(?:business (?:value|impact|positioning)|conversion|growth|organic search|measurable)\b/i,
-  "Product ownership":
-    /\b(?:designed and built|end[ -]to[ -]end product flow|independent portfolio product)\b/i,
-};
+const skills = new Map(
+  taxonomy.skills.map(({ name, evidencePatterns }) => [
+    name,
+    evidencePatterns.map((pattern) => new RegExp(pattern, "i")),
+  ]),
+);
+const aiToolPatterns = taxonomy.aiEvidence.toolPatterns.map(
+  (pattern) => new RegExp(pattern, "i"),
+);
+const aiAppliedPatterns = taxonomy.aiEvidence.appliedPatterns.map(
+  (pattern) => new RegExp(pattern, "i"),
+);
+const aiEngineeringContext = new RegExp(
+  taxonomy.aiEvidence.contextPattern,
+  "i",
+);
+
+const matchesAny = (patterns, value) =>
+  patterns.some((pattern) => pattern.test(value));
+
+const hasAppliedAiEvidence = (value) =>
+  matchesAny(aiAppliedPatterns, value) ||
+  (matchesAny(aiToolPatterns, value) && aiEngineeringContext.test(value));
 
 const slug = (value) =>
   value
@@ -112,10 +92,16 @@ function ownership(statement, source) {
 
 function claimsForScope(projectId, context, scope) {
   const sources = claimSources(scope);
-  return Object.entries(skills).flatMap(([skill, pattern]) => {
-    const evidence = sources.find(({ statement }) => pattern.test(statement));
-    const technology = (scope.technologies || []).find((item) =>
-      pattern.test(item),
+  return [...skills.entries()].flatMap(([skill, patterns]) => {
+    const evidence = sources.find(
+      ({ statement }) =>
+        matchesAny(patterns, statement) &&
+        (skill !== "AI" || hasAppliedAiEvidence(statement)),
+    );
+    const technology = (scope.technologies || []).find(
+      (item) =>
+        matchesAny(patterns, item) &&
+        (skill !== "AI" || hasAppliedAiEvidence(item)),
     );
     if (!evidence && !technology) return [];
     const source = evidence?.source || "technology";
@@ -242,6 +228,43 @@ if (screenshotUrl) {
           title: "Quality and delivery",
           description:
             "Jest, Python tests, Docker health checks and GitHub Actions CI/CD quality gates protect the application before Vercel deployment.",
+        },
+      ],
+      securityControls: [
+        {
+          title: "Origin validation",
+          description:
+            "Confirms that public API requests come from an allowed website, making cross-site abuse harder.",
+        },
+        {
+          title: "Schema validation",
+          description:
+            "Checks input structure, type and length before processing, rejecting malformed or unexpected data.",
+        },
+        {
+          title: "Rate limiting",
+          description:
+            "Limits requests per visitor and time window to reduce spam, AI cost abuse and service overload.",
+        },
+        {
+          title: "Sensitive-data masking",
+          description:
+            "Redacts email addresses and phone numbers before conversation content is stored, while secret-like input is rejected.",
+        },
+        {
+          title: "Server-side credentials",
+          description:
+            "Keeps model and Supabase service credentials out of browser code so visitors cannot read or reuse them.",
+        },
+        {
+          title: "Security headers",
+          description:
+            "CSP, HSTS, frame protection and MIME-type protection reduce common browser attack paths.",
+        },
+        {
+          title: "Hardened containers",
+          description:
+            "Runs the matching service as a non-root user in a minimal container, limiting the potential impact of a compromise.",
         },
       ],
       result:
