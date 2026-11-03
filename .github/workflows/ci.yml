@@ -151,6 +151,9 @@ jobs:
       - name: Run unit tests
         run: yarn test --runInBand --ci
 
+      - name: Test security checks, including failure detection
+        run: yarn test:security
+
       - name: Build production bundle
         env:
           CONTENTFUL_SPACE_ID: ${{ vars.CONTENTFUL_SPACE_ID || 'z1tccslo5ojo' }}
@@ -253,10 +256,30 @@ jobs:
         with:
           category: /language:${{ matrix.language }}
 
+  dependency-review:
+    name: Dependency review
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+
+      - name: Reject newly introduced high-risk dependencies
+        uses: actions/dependency-review-action@3c4e3dcb1aa7874d2c16be7d79418e9b7efd6261 # v4.8.2
+        with:
+          fail-on-severity: high
+
   quality-gate:
     name: Quality Gate
     if: always()
-    needs: [changes, repository, web, matcher, runtime, security]
+    needs:
+      [changes, repository, web, matcher, runtime, security, dependency-review]
     runs-on: ubuntu-latest
     timeout-minutes: 3
 
@@ -269,6 +292,7 @@ jobs:
           MATCHER: ${{ needs.matcher.result }}
           RUNTIME: ${{ needs.runtime.result }}
           SECURITY: ${{ needs.security.result }}
+          DEPENDENCIES: ${{ needs.dependency-review.result }}
         run: |
           failed=false
           {
@@ -282,10 +306,11 @@ jobs:
             echo "| Matcher correctness | $MATCHER |"
             echo "| Container recovery | $RUNTIME |"
             echo "| CodeQL security | $SECURITY |"
+            echo "| Dependency review | $DEPENDENCIES |"
             echo
           } >> "$GITHUB_STEP_SUMMARY"
 
-          for result in "$CHANGES" "$REPOSITORY" "$WEB" "$MATCHER" "$RUNTIME" "$SECURITY"; do
+          for result in "$CHANGES" "$REPOSITORY" "$WEB" "$MATCHER" "$RUNTIME" "$SECURITY" "$DEPENDENCIES"; do
             if [ "$result" = "failure" ] || [ "$result" = "cancelled" ]; then
               failed=true
             fi

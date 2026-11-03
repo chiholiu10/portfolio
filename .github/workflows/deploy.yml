@@ -22,7 +22,7 @@ jobs:
       (github.event.workflow_run.conclusion == 'success' &&
        github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     environment:
       name: production
       url: ${{ steps.deploy.outputs.url }}
@@ -63,9 +63,31 @@ jobs:
       - name: Build deployment artifact
         run: vercel build --prod --token="$VERCEL_TOKEN"
 
-      - name: Deploy verified artifact
+      - name: Stage production artifact without assigning the domain
         id: deploy
         run: |
-          url="$(vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN")"
+          url="$(vercel deploy --prebuilt --prod --skip-domain --token="$VERCEL_TOKEN")"
           echo "url=$url" >> "$GITHUB_OUTPUT"
-          echo "Deployed to $url"
+          echo "Staged at $url"
+
+      - name: Install security smoke-test dependencies
+        run: yarn install --frozen-lockfile --non-interactive
+
+      - name: Verify deployed HTTPS, headers and API origin policy
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.url }}
+        run: yarn security:deployment
+
+      - name: Install Chromium for runtime validation
+        run: yarn playwright install --with-deps chromium
+
+      - name: Verify deployed browser security behavior
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.url }}
+        run: yarn security:browser
+
+      - name: Promote the tested deployment to production
+        run: >-
+          vercel promote "${{ steps.deploy.outputs.url }}"
+          --yes
+          --token="$VERCEL_TOKEN"
