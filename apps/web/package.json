@@ -11,13 +11,13 @@
     "predev": "node ../../scripts/free-web-port.mjs"
   },
   "dependencies": {
-    "motion": "^12.40.0",
-    "next": "^16.2.9",
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7",
-    "react-intersection-observer": "^9.5.2",
-    "styled-components": "^6.1.15",
-    "zod": "^4.3.6",
+    "motion": "^14.9.0",
+    "next": "^16.4.3",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-intersection-observer": "^11.0.1",
+    "styled-components": "^6.6.0",
+    "zod": "^4.6.7",
     "@portfolio/matcher-contracts": "1.0.0"
   },
   "browser": {
