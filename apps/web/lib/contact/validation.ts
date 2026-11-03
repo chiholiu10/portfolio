@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+z.config({ jitless: true });
+
 const unsafeMarkup = /<\/?[a-z][^>]*>|javascript:|data:text\/html/i;
 
 const safeText = (label: string, maxLength: number) =>

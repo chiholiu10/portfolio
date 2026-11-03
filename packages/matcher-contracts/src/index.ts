@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+z.config({ jitless: true });
+
 export const vacancyRequestSchema = z.object({
   vacancy: z.string().trim().min(40).max(8000),
 });
