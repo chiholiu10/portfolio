@@ -3,6 +3,7 @@ WORKDIR /app
 COPY apps/matcher-api/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 COPY apps/matcher-api/*.py ./
+COPY apps/matcher-api/taxonomy.json ./
 ENV HOST=0.0.0.0 PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
 RUN useradd --create-home matcher
 USER matcher

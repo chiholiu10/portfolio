@@ -3,6 +3,19 @@
 The vacancy matcher is evaluated against synthetic, human-reviewed vacancies.
 The deterministic evaluation never calls an AI provider and is required in CI.
 
+## Shared taxonomy
+
+[`apps/matcher-api/taxonomy.json`](../apps/matcher-api/taxonomy.json) is the
+single language-neutral contract for supported skills, categories, vacancy
+patterns, evidence patterns and transferable evidence. Python uses vacancy
+patterns to extract explicit requirements. The Contentful evidence migration
+uses the stricter evidence patterns to create candidate claims.
+
+Do not add a separate skill map to a migration or application service. Update
+the shared contract and its regression fixtures together. A technology name by
+itself is not sufficient AI evidence: AI claims additionally require applied
+engineering context from the shared `aiEvidence` rules.
+
 ## Commands
 
 ```bash

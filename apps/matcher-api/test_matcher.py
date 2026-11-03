@@ -2,7 +2,7 @@ import os
 import unittest
 from unittest.mock import patch
 from matcher import match_vacancy, detect_evidence_skills, detect_skills
-from taxonomy import SKILL_CATEGORIES, SKILL_DEFINITIONS, SKILLS, TRANSFERABLE_EVIDENCE
+from taxonomy import EVIDENCE_SKILLS, SKILL_CATEGORIES, SKILL_DEFINITIONS, SKILLS, TRANSFERABLE_EVIDENCE
 
 
 def project(project_id, title, skills):
@@ -28,7 +28,11 @@ class TaxonomyTests(unittest.TestCase):
     def test_definitions_have_unique_names_and_complete_categories(self):
         names = [definition.name for definition in SKILL_DEFINITIONS]
         self.assertEqual(len(names), len(set(names)))
-        self.assertEqual(set(SKILLS), set(SKILL_CATEGORIES))
+        self.assertEqual(set(names), set(SKILLS))
+        self.assertEqual(set(names), set(EVIDENCE_SKILLS))
+        self.assertEqual(set(names), set(SKILL_CATEGORIES))
+        self.assertTrue(all(SKILLS[name] for name in names))
+        self.assertTrue(all(EVIDENCE_SKILLS[name] for name in names))
 
     def test_transferable_evidence_references_known_skills(self):
         referenced = {
