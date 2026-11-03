@@ -428,7 +428,10 @@ systems are affected and runs the relevant jobs in parallel:
 - **Web quality:** formatting, ESLint, TypeScript, Jest and the production build.
 - **Matcher correctness:** Python tests and deterministic matcher evaluation.
 - **Runtime reliability:** matcher container startup, request and crash recovery.
-- **Security:** CodeQL analysis for TypeScript/JavaScript and Python.
+- **Security:** CodeQL analysis for TypeScript/JavaScript and Python, plus
+  deterministic tests for the deployment security checks.
+- **Dependency review:** pull requests introducing a dependency with a known
+  `high` or `critical` vulnerability fail before merge.
 - **Repository integrity:** whitespace and patch integrity checks.
 
 Documentation-only changes skip application and security jobs. Changes to
@@ -444,6 +447,31 @@ The main local quality suite is:
 yarn verify
 ```
 
+`yarn verify` includes the security regression suite. The suite tests both
+directions: a secure deployment fixture must pass, while deliberately broken
+fixtures must be detected as failures. Covered regressions include missing CSP
+headers, insufficient HSTS duration, an exposed `.env` file, wildcard CORS,
+untrusted origins and non-HTTPS deployment targets. Separate API tests verify
+that the contact form, career assistant and vacancy matcher reject unsupported
+methods, invalid input and cross-origin requests before external services are
+called.
+
+The deployed-runtime checks are also available independently:
+
+```bash
+yarn test:security
+yarn security:deployment https://www.chiholiu.com
+yarn security:browser
+```
+
+The browser test opens the built application in Chromium and fails on CSP
+violations. Browser-side Zod schemas run with JIT compilation disabled so that
+strict production CSP can remain enabled without allowing `eval`.
+
+Dependabot checks Yarn, Python and GitHub Actions dependencies each week. It
+creates grouped update pull requests, while GitHub dependency review prevents
+new known high-risk dependencies from entering the protected branch.
+
 CI runs `yarn eval:matcher:check` when matcher behavior changes and
 `yarn test:docker` when runtime or container files change. Run the deterministic
 evaluation locally whenever ranking, extraction or evidence changes. The
@@ -455,7 +483,21 @@ Some Python crash-recovery tests open an isolated loopback port. Run them outsid
 
 ### Web application
 
-Production deploys to Vercel only after the CI workflow for `main` succeeds. The deploy workflow checks out the exact verified revision, builds a prebuilt Vercel artifact and deploys it to the protected `production` environment.
+Production deploys to Vercel only after the CI workflow for `main` succeeds.
+The deployment pipeline then:
+
+1. Checks out the exact revision accepted by the quality gate.
+2. Pulls the Vercel production configuration and builds one prebuilt artifact.
+3. Stages that production artifact without assigning the public domain.
+4. Verifies HTTPS redirects, security headers, hidden secret files and API
+   origin enforcement against the staged URL.
+5. Opens the staged deployment in Chromium and rejects CSP/runtime violations.
+6. Publishes the same prebuilt artifact to the production domain only after all
+   checks pass.
+
+A failed build or security check therefore leaves the existing production
+deployment in place. The publishing step does not rebuild the application, so
+the artifact made public is the artifact that passed the checks.
 
 Required GitHub secrets:
 
@@ -465,7 +507,17 @@ Required GitHub secrets:
 | `VERCEL_ORG_ID`     | `.vercel/project.json` after `vercel link` |
 | `VERCEL_PROJECT_ID` | `.vercel/project.json` after `vercel link` |
 
-Application runtime secrets belong in Vercel project settings, not in workflow YAML. Disable duplicate automatic production deployments if Vercel's native Git integration is also connected.
+Application runtime secrets belong in Vercel project settings, not in workflow
+YAML. In this repository, `vercel.json` disables Vercel's automatic Git
+deployments because GitHub Actions owns the complete production pipeline. This
+also prevents duplicate Dependabot/preview builds from failing when they do not
+receive production-only Contentful credentials.
+
+This delivery work does not change the portfolio's visible functionality:
+Contentful remains the content source and the contact form, matcher, assistant
+and project pages keep their existing behavior. The improvement is operational:
+dependency risks, regressions and deployment misconfiguration are detected
+before a new artifact is assigned to the production domain.
 
 ### Matcher service
 
