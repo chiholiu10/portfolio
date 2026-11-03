@@ -68,7 +68,7 @@ jobs:
                 runtime=true
                 code=true
                 ;;
-              apps/web/*|packages/*|package.json|yarn.lock|eslint.config.mjs|.prettierrc.json|scripts/prettier-styles-plugin.*)
+              apps/web/*|packages/*|package.json|yarn.lock|vercel.json|eslint.config.mjs|.prettierrc.json|scripts/prettier-styles-plugin.*)
                 web=true
                 code=true
                 ;;
