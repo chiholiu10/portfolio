@@ -2,6 +2,7 @@ import Head from "next/head";
 
 const professionalTitle =
   "Senior Frontend Developer | Product-minded, AI-enabled";
+const jobTitle = "Senior Frontend Developer";
 const pageTitle = `${professionalTitle} | Chiho Liu`;
 const profileDescription =
   "Product-minded senior frontend developer in the Netherlands, combining React, TypeScript, UX and practical AI integration to build valuable digital products.";
@@ -15,6 +16,7 @@ const profileSchema = {
       url: "https://www.chiholiu.com/",
       name: pageTitle,
       mainEntity: { "@id": "https://www.chiholiu.com/#person" },
+      isPartOf: { "@id": "https://www.chiholiu.com/#website" },
     },
     {
       "@type": "Person",
@@ -23,13 +25,16 @@ const profileSchema = {
       url: "https://www.chiholiu.com/",
       image:
         "https://res.cloudinary.com/dh7tnzzxm/image/upload/v1681677951/Frame_1_1_mh4oma.png",
-      jobTitle: professionalTitle,
+      jobTitle,
       description: profileDescription,
+      mainEntityOfPage: { "@id": "https://www.chiholiu.com/#profile" },
       homeLocation: {
         "@type": "Place",
-        name: "Hoorn, Netherlands",
+        name: "Netherlands",
       },
       knowsAbout: [
+        "Frontend development",
+        "JavaScript",
         "React",
         "Next.js",
         "TypeScript",
@@ -41,7 +46,10 @@ const profileSchema = {
         "AI integration",
         "Product engineering",
       ],
-      sameAs: ["https://github.com/chiholiu10"],
+      sameAs: [
+        "https://www.linkedin.com/in/chiholiu/",
+        "https://github.com/chiholiu10",
+      ],
     },
     {
       "@type": "WebSite",
@@ -49,6 +57,7 @@ const profileSchema = {
       url: "https://www.chiholiu.com/",
       name: pageTitle,
       inLanguage: "en-NL",
+      about: { "@id": "https://www.chiholiu.com/#person" },
     },
   ],
 };

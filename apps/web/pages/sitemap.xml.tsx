@@ -1,4 +1,8 @@
 import type { GetServerSideProps } from "next";
+import {
+  createPortfolioProjects,
+  isIndexablePortfolioProject,
+} from "@/lib/portfolio-projects";
 import { createSitemap } from "@/lib/sitemap";
 
 export default function Sitemap() {
@@ -6,8 +10,19 @@ export default function Sitemap() {
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ res }) => {
-  // Add project pages once their content is ready for search engines.
-  const sitemap = createSitemap([{ path: "/" }]);
+  const { loadPortfolioSection } = await import("@/lib/contentful/portfolio");
+  const section = await loadPortfolioSection();
+  const availableProjectIds = new Set(
+    createPortfolioProjects(section.array, section.arrays).map(({ id }) => id),
+  );
+  const projectEntries = section.arrays.projects
+    .filter(
+      (project) =>
+        availableProjectIds.has(project.id) &&
+        isIndexablePortfolioProject(project),
+    )
+    .map(({ id }) => ({ path: `/project/${id}` }));
+  const sitemap = createSitemap([{ path: "/" }, ...projectEntries]);
 
   res.setHeader("Content-Type", "application/xml; charset=utf-8");
   res.setHeader(

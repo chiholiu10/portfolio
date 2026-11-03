@@ -35,9 +35,9 @@ export const ProjectCard = ({
           loading="lazy"
         />
       </PortfolioBlock>
+      <PortfolioCardFooter>
+        <h3 className="ui-h3">{project.title}</h3>
+      </PortfolioCardFooter>
     </Link>
-    <PortfolioCardFooter>
-      <h3 className="ui-h3">{project.title}</h3>
-    </PortfolioCardFooter>
   </Card>
 );

@@ -39,6 +39,7 @@ export type ProjectTemplateProps = {
     title: string;
     imageUrl: string;
     caseStudy: ProjectCaseStudy;
+    indexable: boolean;
   };
 };
 
@@ -46,11 +47,36 @@ export function ProjectTemplate({ project }: ProjectTemplateProps) {
   const { caseStudy } = project;
   const pageUrl = `https://www.chiholiu.com/project/${project.id}`;
   const title = `${project.title} Frontend Project | Chiho Liu`;
+  const caseStudySchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "@id": `${pageUrl}#case-study`,
+    headline: title,
+    description: caseStudy.summary,
+    image: project.imageUrl,
+    url: pageUrl,
+    mainEntityOfPage: pageUrl,
+    author: {
+      "@type": "Person",
+      "@id": "https://www.chiholiu.com/#person",
+      name: "Chiho Liu",
+      url: "https://www.chiholiu.com/",
+    },
+    about: caseStudy.technologies,
+  };
 
   return (
     <>
       <Head>
         <title>{title}</title>
+        <meta
+          name="robots"
+          content={
+            project.indexable
+              ? "index, follow, max-image-preview:large"
+              : "noindex, follow"
+          }
+        />
         {caseStudy.summary && (
           <meta name="description" content={caseStudy.summary} />
         )}
@@ -62,6 +88,14 @@ export function ProjectTemplate({ project }: ProjectTemplateProps) {
         <meta property="og:url" content={pageUrl} />
         <meta property="og:image" content={project.imageUrl} />
         <meta property="og:type" content="article" />
+        {project.indexable && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(caseStudySchema).replace(/</g, "\\u003c"),
+            }}
+          />
+        )}
       </Head>
       <NavbarComponent aria-label="Project navigation">
         <ProjectNavigation>
@@ -120,10 +154,52 @@ export function ProjectTemplate({ project }: ProjectTemplateProps) {
             />
           </ProjectVisual>
 
+          {!!caseStudy.impact?.length && (
+            <ProjectSection
+              id={
+                project.id === "ai-vacancy-matcher"
+                  ? "evaluation-and-scope"
+                  : undefined
+              }
+            >
+              <h2 className="ui-h2">
+                {project.id === "ai-vacancy-matcher"
+                  ? "Evidence, evaluation and scope"
+                  : "Business value"}
+              </h2>
+              <ImpactList>
+                {caseStudy.impact.map((item) => (
+                  <li className="ui-li" key={item.title}>
+                    <h3 className="ui-h3">{item.title}</h3>
+                    <p className="ui-p">{item.description}</p>
+                  </li>
+                ))}
+              </ImpactList>
+            </ProjectSection>
+          )}
+          {!caseStudy.impact?.length && caseStudy.result && (
+            <ProjectSection>
+              <h2 className="ui-h2">Business value</h2>
+              <CaseText text={caseStudy.result} />
+            </ProjectSection>
+          )}
           {caseStudy.overview && (
             <ProjectSection>
               <h2 className="ui-h2">Overview</h2>
               <CaseText text={caseStudy.overview} />
+            </ProjectSection>
+          )}
+          {!!caseStudy.securityControls?.length && (
+            <ProjectSection>
+              <h2 className="ui-h2">Security approach</h2>
+              <ImpactList>
+                {caseStudy.securityControls.map((control) => (
+                  <li className="ui-li" key={control.title}>
+                    <h3 className="ui-h3">{control.title}</h3>
+                    <p className="ui-p">{control.description}</p>
+                  </li>
+                ))}
+              </ImpactList>
             </ProjectSection>
           )}
           {caseStudy.problem && (
@@ -156,39 +232,21 @@ export function ProjectTemplate({ project }: ProjectTemplateProps) {
               </TechnologyList>
             </ProjectSection>
           )}
-          {!!caseStudy.impact?.length && (
-            <ProjectSection
-              id={
-                project.id === "ai-vacancy-matcher"
-                  ? "evaluation-and-scope"
-                  : undefined
-              }
-            >
-              <h2 className="ui-h2">
-                {project.id === "ai-vacancy-matcher"
-                  ? "Evidence, evaluation and scope"
-                  : "Impact"}
-              </h2>
-              <ImpactList>
-                {caseStudy.impact.map((item) => (
-                  <li className="ui-li" key={item.title}>
-                    <h3 className="ui-h3">{item.title}</h3>
-                    <p className="ui-p">{item.description}</p>
-                  </li>
-                ))}
-              </ImpactList>
-            </ProjectSection>
-          )}
-          {!caseStudy.impact?.length && caseStudy.result && (
-            <ProjectSection>
-              <h2 className="ui-h2">Result</h2>
-              <CaseText text={caseStudy.result} />
-            </ProjectSection>
-          )}
           {caseStudy.additionalProjects?.map((item) => (
             <AdditionalProject key={item.title} aria-label={item.title}>
               <h2 className="ui-h2">{item.title}</h2>
               <p className="ui-p">{item.overview}</p>
+              <ProjectSection>
+                <h3 className="ui-h3">Business value</h3>
+                <ImpactList>
+                  {item.impact.map((impact) => (
+                    <li className="ui-li" key={impact.title}>
+                      <h4 className="ui-h4">{impact.title}</h4>
+                      <p className="ui-p">{impact.description}</p>
+                    </li>
+                  ))}
+                </ImpactList>
+              </ProjectSection>
               <ProjectSection>
                 <h3 className="ui-h3">My contribution</h3>
                 <CaseText text={item.contribution} />
@@ -202,17 +260,6 @@ export function ProjectTemplate({ project }: ProjectTemplateProps) {
                     </li>
                   ))}
                 </TechnologyList>
-              </ProjectSection>
-              <ProjectSection>
-                <h3 className="ui-h3">Impact</h3>
-                <ImpactList>
-                  {item.impact.map((impact) => (
-                    <li className="ui-li" key={impact.title}>
-                      <h4 className="ui-h4">{impact.title}</h4>
-                      <p className="ui-p">{impact.description}</p>
-                    </li>
-                  ))}
-                </ImpactList>
               </ProjectSection>
             </AdditionalProject>
           ))}

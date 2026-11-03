@@ -9,6 +9,18 @@ export type PortfolioProject = {
   suggestedQuestions?: string[];
 };
 
+type PortfolioProjectDefinition = PortfolioContent["projects"][number];
+
+export const isIndexablePortfolioProject = (
+  project: PortfolioProjectDefinition,
+) =>
+  !project.archived &&
+  Boolean(
+    project.caseStudy?.summary?.trim() &&
+    project.caseStudy.overview?.trim() &&
+    project.caseStudy.contribution?.trim(),
+  );
+
 export const createPortfolioProjects = (
   items: Array<{ secure_url: string }>,
   content: PortfolioContent,

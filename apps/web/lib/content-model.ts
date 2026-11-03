@@ -50,6 +50,11 @@ export const projectCaseStudySchema = z.object({
       z.object({ title: z.string().min(1), description: z.string().min(1) }),
     )
     .optional(),
+  securityControls: z
+    .array(
+      z.object({ title: z.string().min(1), description: z.string().min(1) }),
+    )
+    .optional(),
   evidence: z
     .array(
       z.object({

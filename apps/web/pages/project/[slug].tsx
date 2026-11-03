@@ -3,7 +3,10 @@ import {
   ProjectTemplate,
   ProjectTemplateProps,
 } from "@/components/templates/ProjectTemplate/ProjectTemplate";
-import { createPortfolioProjects } from "@/lib/portfolio-projects";
+import {
+  createPortfolioProjects,
+  isIndexablePortfolioProject,
+} from "@/lib/portfolio-projects";
 
 export default ProjectTemplate;
 
@@ -27,15 +30,17 @@ export const getStaticProps: GetStaticProps<ProjectTemplateProps> = async ({
     ({ id }) => id === params?.slug,
   );
   if (!project) return { notFound: true, revalidate: 3600 };
+  const definition = section.arrays.projects.find(
+    ({ id }) => id === project.id,
+  );
   return {
     props: {
       project: {
         id: project.id,
         title: project.title,
         imageUrl: project.imageUrl,
-        caseStudy:
-          section.arrays.projects.find(({ id }) => id === project.id)
-            ?.caseStudy || {},
+        caseStudy: definition?.caseStudy || {},
+        indexable: definition ? isIndexablePortfolioProject(definition) : false,
       },
     },
     revalidate: 3600,

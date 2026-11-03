@@ -1,6 +1,7 @@
 import { describe, it, expect } from "@jest/globals";
 import {
   createPortfolioProjects,
+  isIndexablePortfolioProject,
   recommendPortfolioProjectIds,
 } from "@/lib/portfolio-projects";
 
@@ -66,5 +67,25 @@ describe("portfolio identity", () => {
     expect(recommendPortfolioProjectIds("favorite project", content)).toEqual([
       "first",
     ]);
+  });
+
+  it("only marks active projects with substantive case-study content as indexable", () => {
+    const caseStudy = {
+      summary: "A clear summary of the frontend project and its outcome.",
+      overview: "The product context and the problem that needed attention.",
+      contribution: "The frontend work and decisions made by Chiho.",
+    };
+
+    expect(isIndexablePortfolioProject({ ...first, caseStudy })).toBe(true);
+    expect(
+      isIndexablePortfolioProject({ ...first, archived: true, caseStudy }),
+    ).toBe(false);
+    expect(
+      isIndexablePortfolioProject({
+        ...first,
+        caseStudy: { ...caseStudy, contribution: "" },
+      }),
+    ).toBe(false);
+    expect(isIndexablePortfolioProject(first)).toBe(false);
   });
 });
