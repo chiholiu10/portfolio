@@ -29,7 +29,7 @@
     "test:format": "node --test scripts/prettier-styles-plugin.test.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "verify": "yarn format:check && yarn test:format && yarn lint && yarn typecheck && yarn test --runInBand && yarn test:python && yarn eval:matcher:check && yarn build",
+    "verify": "yarn format:check && yarn test:format && yarn test:security && yarn lint && yarn typecheck && yarn test --runInBand && yarn test:python && yarn eval:matcher:check && yarn build",
     "prepare": "husky",
     "commitlint": "commitlint --edit",
     "ci": "yarn install --frozen-lockfile --non-interactive",
@@ -40,12 +40,16 @@
     "eval:matcher": "apps/matcher-api/.venv/bin/python scripts/evaluate-matcher.py",
     "eval:matcher:check": "apps/matcher-api/.venv/bin/python scripts/evaluate-matcher.py --check",
     "eval:matcher:live": "node scripts/evaluate-matcher-live.mjs",
-    "migrate:matcher-evidence": "node scripts/migrate-matcher-evidence.mjs"
+    "migrate:matcher-evidence": "node scripts/migrate-matcher-evidence.mjs",
+    "security:deployment": "node scripts/check-deployment-security.mjs",
+    "security:browser": "playwright test",
+    "test:security": "node --test scripts/*security*.test.mjs"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.4.0",
     "@commitlint/config-conventional": "^19.2.2",
     "@eslint/js": "^9.20.0",
+    "@playwright/test": "^1.64.1",
     "@types/jest": "^29.5.0",
     "@types/node": "^18.7.18",
     "@types/react": "^19.2.0",
