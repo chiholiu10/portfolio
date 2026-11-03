@@ -86,8 +86,5 @@ jobs:
           DEPLOYMENT_URL: ${{ steps.deploy.outputs.url }}
         run: yarn security:browser
 
-      - name: Promote the tested deployment to production
-        run: >-
-          vercel promote "${{ steps.deploy.outputs.url }}"
-          --yes
-          --token="$VERCEL_TOKEN"
+      - name: Publish the tested artifact to the production domain
+        run: vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"
