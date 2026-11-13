@@ -14,6 +14,7 @@ import { loadPortfolioSection } from "@/lib/contentful/portfolio";
 import { hashValue, maskSensitiveContent } from "@/lib/career-agent/privacy";
 import { consumeDistributedRateLimit } from "@/lib/career-agent/rate-limit";
 import { buildRequirementAnalysis } from "@/lib/vacancy-match-explanation";
+import { HTTP_STATUS } from "@/lib/http/status";
 
 export const config = { api: { bodyParser: { sizeLimit: "16kb" } } };
 const localRequests = new Map<string, number>();
@@ -27,28 +28,34 @@ export default async function handler(
   res.setHeader("Cache-Control", "no-store");
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
-    return res.status(405).json({ error: "Use POST." });
+    return res
+      .status(HTTP_STATUS.METHOD_NOT_ALLOWED)
+      .json({ error: "Use POST." });
   }
   try {
     if (
       req.headers.origin &&
       new URL(req.headers.origin).host !== req.headers.host
     ) {
-      return res.status(403).json({ error: "This request is not allowed." });
+      return res
+        .status(HTTP_STATUS.FORBIDDEN)
+        .json({ error: "This request is not allowed." });
     }
   } catch {
-    return res.status(403).json({ error: "This request is not allowed." });
+    return res
+      .status(HTTP_STATUS.FORBIDDEN)
+      .json({ error: "This request is not allowed." });
   }
   const parsed = vacancyRequestSchema.safeParse(req.body);
   if (!parsed.success)
     return res
-      .status(400)
+      .status(HTTP_STATUS.BAD_REQUEST)
       .json({ error: "Paste a vacancy containing 40 to 8,000 characters." });
   const serviceUrl = process.env.MATCHER_API_URL;
   const token = process.env.MATCHER_API_TOKEN;
   if (!serviceUrl || !token)
     return res
-      .status(503)
+      .status(HTTP_STATUS.SERVICE_UNAVAILABLE)
       .json({ error: "The vacancy matcher has not been configured yet." });
   let phase = "configuration";
   try {
@@ -72,7 +79,7 @@ export default async function handler(
       );
       if (!limit.allowed) {
         res.setHeader("Retry-After", limit.retryAfterSeconds);
-        return res.status(429).json({
+        return res.status(HTTP_STATUS.TOO_MANY_REQUESTS).json({
           error: "Please wait and try again in one minute.",
         });
       }
@@ -83,7 +90,7 @@ export default async function handler(
       const key = req.socket.remoteAddress || "local";
       if (now - (localRequests.get(key) || 0) < 2000)
         return res
-          .status(429)
+          .status(HTTP_STATUS.TOO_MANY_REQUESTS)
           .json({ error: "Please wait before running another analysis." });
       localRequests.set(key, now);
     }
@@ -121,7 +128,9 @@ export default async function handler(
       const failure = await response.json().catch(() => null);
       if (failure?.code === "MATCHER_BUSY") {
         res.setHeader("Retry-After", "5");
-        return res.status(503).json({ code: "MATCHER_BUSY" });
+        return res
+          .status(HTTP_STATUS.SERVICE_UNAVAILABLE)
+          .json({ code: "MATCHER_BUSY" });
       }
     }
     if (!response.ok) throw new Error("Matcher unavailable");
@@ -148,7 +157,7 @@ export default async function handler(
     result.missing = requirementAnalysis
       .filter((item) => item.status === "missing")
       .map((item) => item.requirement);
-    return res.status(200).json(
+    return res.status(HTTP_STATUS.OK).json(
       matchResponseSchema.parse({
         ...result,
         requirementAnalysis,
@@ -163,7 +172,7 @@ export default async function handler(
         phase,
       }),
     );
-    return res.status(503).json({
+    return res.status(HTTP_STATUS.SERVICE_UNAVAILABLE).json({
       error: "The vacancy could not be analysed. Please try again later.",
     });
   }

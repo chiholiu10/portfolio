@@ -6,6 +6,7 @@ import {
 import { sendContactEmails } from "@/lib/contact/email";
 import { hashValue } from "@/lib/career-agent/privacy";
 import { consumeDistributedRateLimit } from "@/lib/career-agent/rate-limit";
+import { HTTP_STATUS } from "@/lib/http/status";
 
 type ApiResponse =
   | { ok: true; requestId: string }
@@ -52,19 +53,19 @@ export default async function handler(
   if (request.method !== "POST") {
     response.setHeader("Allow", "POST");
     return response
-      .status(405)
+      .status(HTTP_STATUS.METHOD_NOT_ALLOWED)
       .json({ error: "Method not allowed.", code: "METHOD_NOT_ALLOWED" });
   }
 
   if (!request.headers["content-type"]?.includes("application/json")) {
-    return response.status(415).json({
+    return response.status(HTTP_STATUS.UNSUPPORTED_MEDIA_TYPE).json({
       error: "Content-Type must be application/json.",
       code: "UNSUPPORTED_MEDIA_TYPE",
     });
   }
 
   if (!isAllowedOrigin(request)) {
-    return response.status(403).json({
+    return response.status(HTTP_STATUS.FORBIDDEN).json({
       error: "Request origin is not allowed.",
       code: "ORIGIN_NOT_ALLOWED",
     });
@@ -72,7 +73,7 @@ export default async function handler(
 
   const parsed = contactRequestSchema.safeParse(request.body);
   if (!parsed.success) {
-    return response.status(400).json({
+    return response.status(HTTP_STATUS.BAD_REQUEST).json({
       error: "Please check the form and try again.",
       code: "INVALID_REQUEST",
     });
@@ -81,7 +82,7 @@ export default async function handler(
   const supabaseUrl = process.env.SUPABASE_URL?.replace(/\/$/, "");
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!supabaseUrl || !serviceRoleKey) {
-    return response.status(503).json({
+    return response.status(HTTP_STATUS.SERVICE_UNAVAILABLE).json({
       error: "Contact is temporarily unavailable.",
       code: "NOT_CONFIGURED",
       requestId,
@@ -110,14 +111,14 @@ export default async function handler(
         1,
       );
       response.setHeader("Retry-After", String(retryAfter));
-      return response.status(429).json({
+      return response.status(HTTP_STATUS.TOO_MANY_REQUESTS).json({
         error: "Too many requests. Please try again later.",
         code: "RATE_LIMITED",
         requestId,
       });
     }
   } catch {
-    return response.status(503).json({
+    return response.status(HTTP_STATUS.SERVICE_UNAVAILABLE).json({
       error: "Contact is temporarily unavailable.",
       code: "RATE_LIMIT_UNAVAILABLE",
       requestId,
@@ -150,7 +151,7 @@ export default async function handler(
   );
 
   if (!saveResponse.ok) {
-    return response.status(502).json({
+    return response.status(HTTP_STATUS.BAD_GATEWAY).json({
       error: "Your message could not be saved.",
       code: "SUBMISSION_NOT_SAVED",
       requestId,
@@ -160,7 +161,7 @@ export default async function handler(
   try {
     await sendContactEmails(submission, requestId);
   } catch {
-    return response.status(502).json({
+    return response.status(HTTP_STATUS.BAD_GATEWAY).json({
       error:
         "Your message was saved, but the email notification could not be sent. Please email me directly.",
       code: "EMAIL_NOT_SENT",
@@ -168,7 +169,7 @@ export default async function handler(
     });
   }
 
-  return response.status(201).json({ ok: true, requestId });
+  return response.status(HTTP_STATUS.CREATED).json({ ok: true, requestId });
 }
 
 export const config = {

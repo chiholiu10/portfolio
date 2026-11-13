@@ -10,6 +10,7 @@ import { getInputSafetyIssue } from "@/lib/career-agent/input-safety";
 import { hashValue, maskSensitiveContent } from "@/lib/career-agent/privacy";
 import { consumeDistributedRateLimit } from "@/lib/career-agent/rate-limit";
 import { loadPortfolioSection } from "@/lib/contentful/portfolio";
+import { HTTP_STATUS } from "@/lib/http/status";
 import { recommendPortfolioProjectIds } from "@/lib/portfolio-projects";
 
 const stripUnsafeControlCharacters = (message: string) =>
@@ -117,19 +118,19 @@ export default async function handler(
   if (request.method !== "POST") {
     response.setHeader("Allow", "POST");
     return response
-      .status(405)
+      .status(HTTP_STATUS.METHOD_NOT_ALLOWED)
       .json({ error: "Method not allowed.", code: "METHOD_NOT_ALLOWED" });
   }
 
   if (!request.headers["content-type"]?.includes("application/json")) {
-    return response.status(415).json({
+    return response.status(HTTP_STATUS.UNSUPPORTED_MEDIA_TYPE).json({
       error: "Content-Type must be application/json.",
       code: "UNSUPPORTED_MEDIA_TYPE",
     });
   }
 
   if (!isAllowedOrigin(request)) {
-    return response.status(403).json({
+    return response.status(HTTP_STATUS.FORBIDDEN).json({
       error: "Request origin is not allowed.",
       code: "ORIGIN_NOT_ALLOWED",
     });
@@ -138,7 +139,7 @@ export default async function handler(
   const parsed = requestSchema.safeParse(request.body);
 
   if (!parsed.success) {
-    return response.status(400).json({
+    return response.status(HTTP_STATUS.BAD_REQUEST).json({
       error: "Please enter a message of no more than 1,000 characters.",
       code: "INVALID_REQUEST",
     });
@@ -147,7 +148,7 @@ export default async function handler(
   const inputSafetyIssue = getInputSafetyIssue(parsed.data.message);
 
   if (inputSafetyIssue) {
-    return response.status(400).json({
+    return response.status(HTTP_STATUS.BAD_REQUEST).json({
       error: inputSafetyIssue.message,
       code: inputSafetyIssue.code,
     });
@@ -176,20 +177,20 @@ export default async function handler(
         "Retry-After",
         String(Math.max(1, rateLimit.retryAfterSeconds)),
       );
-      return response.status(429).json({
+      return response.status(HTTP_STATUS.TOO_MANY_REQUESTS).json({
         error: "Too many messages. Please wait a moment and try again.",
         code: "RATE_LIMITED",
       });
     }
   } catch {
-    return response.status(503).json({
+    return response.status(HTTP_STATUS.SERVICE_UNAVAILABLE).json({
       error: "The career assistant is temporarily unavailable.",
       code: "RATE_LIMIT_UNAVAILABLE",
     });
   }
 
   if (!clientAddressHash) {
-    return response.status(503).json({
+    return response.status(HTTP_STATUS.SERVICE_UNAVAILABLE).json({
       error: "The career assistant is temporarily unavailable.",
       code: "RATE_LIMIT_UNAVAILABLE",
     });
@@ -200,7 +201,7 @@ export default async function handler(
     !process.env.SUPABASE_URL ||
     !process.env.SUPABASE_SERVICE_ROLE_KEY
   ) {
-    return response.status(503).json({
+    return response.status(HTTP_STATUS.SERVICE_UNAVAILABLE).json({
       error: "The career assistant has not been configured yet.",
       code: "NOT_CONFIGURED",
     });
@@ -256,7 +257,7 @@ export default async function handler(
       contactOptions,
     });
 
-    return response.status(200).json({
+    return response.status(HTTP_STATUS.OK).json({
       answer: cleanAnswer,
       sessionId: parsed.data.sessionId,
       ...(chatId ? { chatId } : {}),
@@ -278,10 +279,16 @@ export default async function handler(
       errorCode = "TIMEOUT";
     }
 
-    return response.status(quotaExhausted ? 503 : 502).json({
-      error: errorMessage,
-      code: errorCode,
-    });
+    return response
+      .status(
+        quotaExhausted
+          ? HTTP_STATUS.SERVICE_UNAVAILABLE
+          : HTTP_STATUS.BAD_GATEWAY,
+      )
+      .json({
+        error: errorMessage,
+        code: errorCode,
+      });
   } finally {
     clearTimeout(timeout);
   }

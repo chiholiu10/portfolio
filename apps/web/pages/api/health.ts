@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { HTTP_STATUS } from "@/lib/http/status";
 
 type HealthResponse = {
   ok: true;
@@ -10,5 +11,5 @@ export default function handler(
   response: NextApiResponse<HealthResponse>,
 ) {
   response.setHeader("Cache-Control", "no-store");
-  response.status(200).json({ ok: true, service: "portfolio-web" });
+  response.status(HTTP_STATUS.OK).json({ ok: true, service: "portfolio-web" });
 }

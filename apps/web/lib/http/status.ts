@@ -1,0 +1,13 @@
+export const HTTP_STATUS = {
+  OK: 200,
+  CREATED: 201,
+  BAD_REQUEST: 400,
+  FORBIDDEN: 403,
+  METHOD_NOT_ALLOWED: 405,
+  UNSUPPORTED_MEDIA_TYPE: 415,
+  TOO_MANY_REQUESTS: 429,
+  BAD_GATEWAY: 502,
+  SERVICE_UNAVAILABLE: 503,
+} as const;
+
+export type HttpStatusCode = (typeof HTTP_STATUS)[keyof typeof HTTP_STATUS];
