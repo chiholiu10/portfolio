@@ -35,8 +35,17 @@ jobs:
       - name: Check out verified revision
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
-          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
           persist-credentials: false
+
+      - name: Verify checked-out revision was approved by CI
+        env:
+          EXPECTED_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+        run: |
+          actual_sha="$(git rev-parse HEAD)"
+          if [ "$actual_sha" != "$EXPECTED_SHA" ]; then
+            echo "::error title=Unverified deployment revision::Expected $EXPECTED_SHA but checked out $actual_sha"
+            exit 1
+          fi
 
       - name: Set up Node.js
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
@@ -55,7 +64,7 @@ jobs:
           exit "$missing"
 
       - name: Install Vercel CLI
-        run: npm install --global vercel@65.10.0
+        run: npm install --global --ignore-scripts vercel@65.10.0
 
       - name: Pull production configuration
         run: vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
@@ -71,7 +80,7 @@ jobs:
           echo "Staged at $url"
 
       - name: Install security smoke-test dependencies
-        run: yarn install --frozen-lockfile --non-interactive
+        run: yarn install --frozen-lockfile --non-interactive --ignore-scripts
 
       - name: Verify deployed HTTPS, headers and API origin policy
         env:
