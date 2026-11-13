@@ -297,6 +297,27 @@ if (screenshotUrl) {
   }
 }
 
+const portfolioCaseStudy = content.projects.find(
+  (project) => project.id === "chiho-portfolio",
+)?.caseStudy;
+if (!portfolioCaseStudy) {
+  throw new Error("Chiho Portfolio case study is missing");
+}
+const deliveryImpact = {
+  title: "Quality and delivery",
+  description:
+    "GitHub Actions runs builds, tests, SonarQube Cloud, CodeQL and Trivy before Vercel stages the exact approved revision. API and browser smoke tests then gate production, reducing release risk and shortening feedback cycles.",
+};
+portfolioCaseStudy.technologies = [
+  ...new Set([...(portfolioCaseStudy.technologies || []), "SonarQube Cloud"]),
+];
+portfolioCaseStudy.impact = [
+  ...(portfolioCaseStudy.impact || []).filter(
+    (item) => item.title !== deliveryImpact.title,
+  ),
+  deliveryImpact,
+];
+
 const vacancyMatcher = content.projects.find(
   (project) => project.id === "ai-vacancy-matcher",
 );
