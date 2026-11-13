@@ -1,7 +1,11 @@
 FROM python:3.13-slim
 WORKDIR /app
 COPY apps/matcher-api/requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+RUN apt-get update \
+    && apt-get upgrade --yes \
+    && rm -rf /var/lib/apt/lists/* \
+    && python -m pip install --no-cache-dir -r requirements.txt \
+    && python -m pip uninstall --yes msgpack setuptools urllib3
 COPY apps/matcher-api/*.py ./
 COPY apps/matcher-api/taxonomy.json ./
 ENV HOST=0.0.0.0 PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
