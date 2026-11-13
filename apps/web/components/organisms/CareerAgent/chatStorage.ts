@@ -4,11 +4,14 @@ import { maskSensitiveContent } from "@/lib/career-agent/privacy";
 export const MAX_RENDERED_MESSAGES = 42;
 export const CHAT_STORAGE_KEY = "career-agent-chat";
 export const createSessionId = () => {
-  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
-    return crypto.randomUUID().replace(/-/g, "_");
+  if (
+    typeof crypto === "undefined" ||
+    typeof crypto.randomUUID !== "function"
+  ) {
+    throw new Error("Secure random number generation is unavailable");
   }
 
-  return `session_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+  return crypto.randomUUID().replace(/-/g, "_");
 };
 
 const isStoredMessage = (value: unknown): value is ChatMessage => {
