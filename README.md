@@ -428,8 +428,12 @@ systems are affected and runs the relevant jobs in parallel:
 - **Web quality:** formatting, ESLint, TypeScript, Jest and the production build.
 - **Matcher correctness:** Python tests and deterministic matcher evaluation.
 - **Runtime reliability:** matcher container startup, request and crash recovery.
-- **Security:** CodeQL analysis for TypeScript/JavaScript and Python, plus
-  deterministic tests for the deployment security checks.
+- **Security:** CodeQL analysis for TypeScript/JavaScript and Python, Trivy
+  scans for vulnerable dependencies, leaked secrets, configuration mistakes
+  and the built matcher image, plus deterministic deployment-security tests.
+- **Maintainability:** SonarCloud evaluates reliability, security,
+  maintainability, duplication and JavaScript/TypeScript test coverage. Its
+  Quality Gate blocks the central gate when the configured standard fails.
 - **Dependency review:** pull requests introducing a dependency with a known
   `high` or `critical` vulnerability fail before merge.
 - **Repository integrity:** whitespace and patch integrity checks.
@@ -471,6 +475,13 @@ strict production CSP can remain enabled without allowing `eval`.
 Dependabot checks Yarn, Python and GitHub Actions dependencies each week. It
 creates grouped update pull requests, while GitHub dependency review prevents
 new known high-risk dependencies from entering the protected branch.
+
+SonarCloud requires a project imported from this public GitHub repository. Add
+the generated analysis token as the GitHub Actions secret `SONAR_TOKEN`, then
+add `SONAR_PROJECT_KEY` and `SONAR_ORGANIZATION` as repository variables. The
+workflow validates all three values before analysis and waits for the remote
+Quality Gate result. Pull requests from forks skip this privileged job because
+GitHub correctly withholds repository secrets from untrusted fork workflows.
 
 CI runs `yarn eval:matcher:check` when matcher behavior changes and
 `yarn test:docker` when runtime or container files change. Run the deterministic

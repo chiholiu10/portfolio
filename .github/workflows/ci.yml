@@ -68,7 +68,7 @@ jobs:
                 runtime=true
                 code=true
                 ;;
-              apps/web/*|packages/*|package.json|yarn.lock|vercel.json|eslint.config.mjs|.prettierrc.json|scripts/prettier-styles-plugin.*)
+              apps/web/*|packages/*|package.json|yarn.lock|vercel.json|eslint.config.mjs|.prettierrc.json|sonar-project.properties|scripts/prettier-styles-plugin.*)
                 web=true
                 code=true
                 ;;
@@ -256,6 +256,123 @@ jobs:
         with:
           category: /language:${{ matrix.language }}
 
+  repository-security:
+    name: Repository security baseline
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+
+      - name: Scan dependencies, secrets and configuration
+        uses: aquasecurity/trivy-action@a9c7b0f06e461e9d4b4d1711f154ee024b8d7ab8 # v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln,secret,misconfig
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: 1
+          format: table
+          skip-dirs: node_modules,apps/web/.next,apps/matcher-api/.venv
+
+  container-security:
+    name: Container security
+    needs: changes
+    if: >-
+      needs.changes.outputs.matcher == 'true' ||
+      needs.changes.outputs.runtime == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+
+      - name: Build matcher image from reviewed source
+        run: >-
+          docker build
+          --file apps/matcher-api/Dockerfile
+          --tag portfolio-matcher:${{ github.sha }}
+          .
+
+      - name: Scan built image for known vulnerabilities
+        uses: aquasecurity/trivy-action@a9c7b0f06e461e9d4b4d1711f154ee024b8d7ab8 # v0.36.0
+        with:
+          scan-type: image
+          image-ref: portfolio-matcher:${{ github.sha }}
+          scanners: vuln
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: 1
+          format: table
+
+  sonarcloud:
+    name: SonarCloud quality gate
+    needs: changes
+    if: >-
+      needs.changes.outputs.code == 'true' &&
+      (github.event_name != 'pull_request' ||
+       github.event.pull_request.head.repo.full_name == github.repository)
+    permissions:
+      contents: read
+      pull-requests: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out full history
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 22
+          cache: yarn
+          cache-dependency-path: yarn.lock
+
+      - name: Validate SonarCloud configuration
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_PROJECT_KEY: ${{ vars.SONAR_PROJECT_KEY }}
+          SONAR_ORGANIZATION: ${{ vars.SONAR_ORGANIZATION }}
+        run: |
+          missing=0
+          for variable in SONAR_TOKEN SONAR_PROJECT_KEY SONAR_ORGANIZATION; do
+            if [ -z "${!variable}" ]; then
+              echo "::error title=Missing SonarCloud configuration::$variable must be configured in the repository settings"
+              missing=1
+            fi
+          done
+          exit "$missing"
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile --non-interactive
+
+      - name: Generate JavaScript and TypeScript coverage
+        run: yarn test --runInBand --ci --coverage
+
+      - name: Analyze maintainability, reliability and security
+        uses: SonarSource/sonarqube-scan-action@d209202bc7d53ff1cc128f7f907dac145c9d6ae9 # v8.3.0
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >-
+            -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
+            -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
+            -Dsonar.qualitygate.wait=true
+            -Dsonar.qualitygate.timeout=300
+
   dependency-review:
     name: Dependency review
     if: github.event_name == 'pull_request'
@@ -279,7 +396,18 @@ jobs:
     name: Quality Gate
     if: always()
     needs:
-      [changes, repository, web, matcher, runtime, security, dependency-review]
+      [
+        changes,
+        repository,
+        web,
+        matcher,
+        runtime,
+        security,
+        repository-security,
+        container-security,
+        sonarcloud,
+        dependency-review,
+      ]
     runs-on: ubuntu-latest
     timeout-minutes: 3
 
@@ -292,6 +420,9 @@ jobs:
           MATCHER: ${{ needs.matcher.result }}
           RUNTIME: ${{ needs.runtime.result }}
           SECURITY: ${{ needs.security.result }}
+          REPOSITORY_SECURITY: ${{ needs.repository-security.result }}
+          CONTAINER_SECURITY: ${{ needs.container-security.result }}
+          SONARCLOUD: ${{ needs.sonarcloud.result }}
           DEPENDENCIES: ${{ needs.dependency-review.result }}
         run: |
           failed=false
@@ -306,11 +437,14 @@ jobs:
             echo "| Matcher correctness | $MATCHER |"
             echo "| Container recovery | $RUNTIME |"
             echo "| CodeQL security | $SECURITY |"
+            echo "| Repository security | $REPOSITORY_SECURITY |"
+            echo "| Container security | $CONTAINER_SECURITY |"
+            echo "| SonarCloud quality gate | $SONARCLOUD |"
             echo "| Dependency review | $DEPENDENCIES |"
             echo
           } >> "$GITHUB_STEP_SUMMARY"
 
-          for result in "$CHANGES" "$REPOSITORY" "$WEB" "$MATCHER" "$RUNTIME" "$SECURITY" "$DEPENDENCIES"; do
+          for result in "$CHANGES" "$REPOSITORY" "$WEB" "$MATCHER" "$RUNTIME" "$SECURITY" "$REPOSITORY_SECURITY" "$CONTAINER_SECURITY" "$SONARCLOUD" "$DEPENDENCIES"; do
             if [ "$result" = "failure" ] || [ "$result" = "cancelled" ]; then
               failed=true
             fi
