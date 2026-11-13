@@ -7,7 +7,7 @@ import re
 import time
 import uuid
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, status
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 from starlette.concurrency import run_in_threadpool
@@ -44,11 +44,11 @@ class MatchRequest(BaseModel):
     projects: list[Project] = Field(max_length=100)
 
 
-def response(status, payload, retry_after=None):
+def response(status_code, payload, retry_after=None):
     headers = {"Cache-Control": "no-store"}
     if retry_after is not None:
         headers["Retry-After"] = str(retry_after)
-    return JSONResponse(payload, status_code=status, headers=headers)
+    return JSONResponse(payload, status_code=status_code, headers=headers)
 
 
 @app.middleware("http")
@@ -62,7 +62,10 @@ async def request_logging(request: Request, call_next):
     except Exception as error:
         logger.error(json.dumps({"event": "matcher_failure", "requestId": request_id,
                                  "category": type(error).__name__}))
-        result = response(503, {"code": "MATCHER_UNAVAILABLE"})
+        result = response(
+            status.HTTP_503_SERVICE_UNAVAILABLE,
+            {"code": "MATCHER_UNAVAILABLE"},
+        )
     current_request_id.reset(context_token)
     result.headers["X-Request-ID"] = request_id
     if request.url.path == "/match":
@@ -74,13 +77,18 @@ async def request_logging(request: Request, call_next):
 
 @app.get("/health")
 async def health():
-    return response(200, {"ok": True})
+    return response(status.HTTP_200_OK, {"ok": True})
 
 
 @app.get("/ready")
 async def ready():
     configured = bool(os.environ.get("MATCHER_API_TOKEN"))
-    return response(200 if configured else 503, {"ok": configured})
+    status_code = (
+        status.HTTP_200_OK
+        if configured
+        else status.HTTP_503_SERVICE_UNAVAILABLE
+    )
+    return response(status_code, {"ok": configured})
 
 
 @app.post("/match")
@@ -88,16 +96,19 @@ async def match(request: Request):
     secret = os.environ.get("MATCHER_API_TOKEN", "")
     if not secret or not hmac.compare_digest(request.headers.get("Authorization", "").encode(),
                                               ("Bearer " + secret).encode()):
-        return response(401, {"error": "Unauthorized"})
+        return response(status.HTTP_401_UNAUTHORIZED, {"error": "Unauthorized"})
     body = bytearray()
     async for chunk in request.stream():
         body.extend(chunk)
         if len(body) > 300000:
-            return response(413, {"error": "Request too large"})
+            return response(
+                status.HTTP_413_CONTENT_TOO_LARGE,
+                {"error": "Request too large"},
+            )
     try:
         payload = MatchRequest.model_validate_json(body)
     except (ValidationError, ValueError):
-        return response(400, {"error": "Invalid request"})
+        return response(status.HTTP_400_BAD_REQUEST, {"error": "Invalid request"})
 
     def analyse():
         with capacity.slot():
@@ -105,9 +116,13 @@ async def match(request: Request):
 
     try:
         result = await run_in_threadpool(analyse)
-        return response(200, result)
+        return response(status.HTTP_200_OK, result)
     except CapacityBusy:
-        return response(503, {"code": "MATCHER_BUSY"}, retry_after=5)
+        return response(
+            status.HTTP_503_SERVICE_UNAVAILABLE,
+            {"code": "MATCHER_BUSY"},
+            retry_after=5,
+        )
 
 
 if __name__ == "__main__":
