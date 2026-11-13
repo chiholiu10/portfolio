@@ -478,8 +478,8 @@ new known high-risk dependencies from entering the protected branch.
 
 SonarCloud requires a project imported from this public GitHub repository. Add
 the generated analysis token as the GitHub Actions secret `SONAR_TOKEN`, then
-add `SONAR_PROJECT_KEY` and `SONAR_ORGANIZATION` as repository variables. The
-workflow validates all three values before analysis and waits for the remote
+add `SONAR_PROJECT_KEY` and `SONAR_ORGANIZATION` as repository secrets as well.
+The workflow validates all three values before analysis and waits for the remote
 Quality Gate result. Pull requests from forks skip this privileged job because
 GitHub correctly withholds repository secrets from untrusted fork workflows.
 
