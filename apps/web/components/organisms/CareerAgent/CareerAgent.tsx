@@ -497,6 +497,7 @@ export const CareerAgent = ({ portfolioProjects = [] }: CareerAgentProps) => {
     <AgentShell ref={shellRef}>
       {isOpen && (
         <AgentPanel
+          id="career-agent-panel"
           role="dialog"
           aria-modal="false"
           aria-labelledby="career-agent-title"
