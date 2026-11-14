@@ -20,7 +20,7 @@ env:
 
 jobs:
   changes:
-    name: Detect affected systems
+    name: 1 · Detect affected systems
     runs-on: ubuntu-latest
     timeout-minutes: 3
     outputs:
@@ -98,7 +98,7 @@ jobs:
           printf '### Change scope\n\n`%s`\n' "$summary" >> "$GITHUB_STEP_SUMMARY"
 
   repository:
-    name: Repository integrity
+    name: 2 · Repository integrity
     needs: changes
     runs-on: ubuntu-latest
     timeout-minutes: 3
@@ -117,7 +117,7 @@ jobs:
         run: echo '${{ needs.changes.outputs.summary }}' >> "$GITHUB_STEP_SUMMARY"
 
   web:
-    name: Web quality
+    name: 3A · Web quality
     needs: changes
     if: needs.changes.outputs.web == 'true'
     runs-on: ubuntu-latest
@@ -162,7 +162,7 @@ jobs:
         run: yarn build
 
   matcher:
-    name: Matcher correctness and evaluation
+    name: 3B · Matcher correctness
     needs: changes
     if: needs.changes.outputs.matcher == 'true'
     runs-on: ubuntu-latest
@@ -201,7 +201,7 @@ jobs:
         run: yarn eval:matcher:check
 
   runtime:
-    name: Container smoke and recovery
+    name: 3C · Container resilience
     needs: changes
     if: needs.changes.outputs.runtime == 'true'
     runs-on: ubuntu-latest
@@ -227,7 +227,7 @@ jobs:
         run: yarn test:docker
 
   security:
-    name: Security (${{ matrix.language }})
+    name: 3D · CodeQL (${{ matrix.language }})
     needs: changes
     if: needs.changes.outputs.code == 'true'
     permissions:
@@ -257,7 +257,7 @@ jobs:
           category: /language:${{ matrix.language }}
 
   repository-security:
-    name: Repository security baseline
+    name: 3E · Dependency and secret scan
     needs: changes
     if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-latest
@@ -283,7 +283,7 @@ jobs:
           skip-dirs: node_modules,apps/web/.next,apps/matcher-api/.venv
 
   container-security:
-    name: Container security
+    name: 3F · Container security
     needs: changes
     if: >-
       needs.changes.outputs.matcher == 'true' ||
@@ -317,7 +317,7 @@ jobs:
           format: table
 
   sonarcloud:
-    name: SonarCloud quality gate
+    name: 3G · SonarCloud quality gate
     needs: changes
     if: >-
       needs.changes.outputs.code == 'true' &&
@@ -376,7 +376,7 @@ jobs:
             -Dsonar.qualitygate.timeout=300
 
   dependency-review:
-    name: Dependency review
+    name: 3H · Dependency review
     if: github.event_name == 'pull_request'
     permissions:
       contents: read
@@ -395,7 +395,7 @@ jobs:
           fail-on-severity: high
 
   quality-gate:
-    name: Quality Gate
+    name: 4 · CI quality gate
     if: always()
     needs:
       [
@@ -416,6 +416,7 @@ jobs:
     steps:
       - name: Publish final decision
         env:
+          SCOPE: ${{ needs.changes.outputs.summary }}
           CHANGES: ${{ needs.changes.result }}
           REPOSITORY: ${{ needs.repository.result }}
           WEB: ${{ needs.web.result }}
@@ -429,7 +430,29 @@ jobs:
         run: |
           failed=false
           {
-            echo '## Quality Gate'
+            echo '# CI pipeline overview'
+            echo
+            echo "**Selected scope:** \`${SCOPE:-not available}\`"
+            echo
+            echo '```mermaid'
+            echo 'flowchart LR'
+            echo '  A[Change scope] --> B[Repository integrity]'
+            echo '  A --> C[Web quality]'
+            echo '  A --> D[Matcher correctness]'
+            echo '  A --> E[Container resilience]'
+            echo '  A --> F[CodeQL and Trivy]'
+            echo '  A --> G[Container security]'
+            echo '  A --> H[SonarCloud]'
+            echo '  A --> I[Dependency review]'
+            echo '  B --> J[Quality gate]'
+            echo '  C --> J'
+            echo '  D --> J'
+            echo '  E --> J'
+            echo '  F --> J'
+            echo '  G --> J'
+            echo '  H --> J'
+            echo '  I --> J'
+            echo '```'
             echo
             echo '| Check | Result |'
             echo '| --- | --- |'
@@ -443,6 +466,8 @@ jobs:
             echo "| Container security | $CONTAINER_SECURITY |"
             echo "| SonarCloud quality gate | $SONARCLOUD |"
             echo "| Dependency review | $DEPENDENCIES |"
+            echo
+            echo 'A `skipped` result means that check was not required for this revision or event.'
             echo
           } >> "$GITHUB_STEP_SUMMARY"
 

@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   deploy:
-    name: Deploy to Vercel
+    name: Verified production release
     if: >-
       github.event_name == 'workflow_dispatch' ||
       (github.event.workflow_run.conclusion == 'success' &&
@@ -32,12 +32,12 @@ jobs:
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
     steps:
-      - name: Check out verified revision
+      - name: 1 · Check out verified revision
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           persist-credentials: false
 
-      - name: Verify checked-out revision was approved by CI
+      - name: 1 · Verify revision was approved by CI
         env:
           EXPECTED_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
         run: |
@@ -47,12 +47,12 @@ jobs:
             exit 1
           fi
 
-      - name: Set up Node.js
+      - name: 2 · Set up Node.js
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           node-version: 22
 
-      - name: Validate deployment credentials
+      - name: 2 · Validate deployment credentials
         run: |
           missing=0
           for variable in VERCEL_TOKEN VERCEL_ORG_ID VERCEL_PROJECT_ID; do
@@ -63,37 +63,64 @@ jobs:
           done
           exit "$missing"
 
-      - name: Install Vercel CLI
+      - name: 2 · Install Vercel CLI
         run: npm install --global --ignore-scripts vercel@65.10.0
 
-      - name: Pull production configuration
+      - name: 3 · Pull production configuration
         run: vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
 
-      - name: Build deployment artifact
+      - name: 3 · Build immutable deployment artifact
         run: vercel build --prod --token="$VERCEL_TOKEN"
 
-      - name: Stage production artifact without assigning the domain
+      - name: 4 · Stage artifact without assigning the domain
         id: deploy
         run: |
           url="$(vercel deploy --prebuilt --prod --skip-domain --token="$VERCEL_TOKEN")"
           echo "url=$url" >> "$GITHUB_OUTPUT"
           echo "Staged at $url"
 
-      - name: Install security smoke-test dependencies
+      - name: 5 · Install runtime-validation dependencies
         run: yarn install --frozen-lockfile --non-interactive --ignore-scripts
 
-      - name: Verify deployed HTTPS, headers and API origin policy
+      - name: 5 · Verify HTTPS, headers and API origin policy
         env:
           DEPLOYMENT_URL: ${{ steps.deploy.outputs.url }}
         run: yarn security:deployment
 
-      - name: Install Chromium for runtime validation
+      - name: 5 · Install Chromium for runtime validation
         run: yarn playwright install --with-deps chromium
 
-      - name: Verify deployed browser security behavior
+      - name: 5 · Verify browser security and accessibility
         env:
           DEPLOYMENT_URL: ${{ steps.deploy.outputs.url }}
         run: yarn security:browser
 
-      - name: Publish the tested artifact to the production domain
+      - name: 6 · Publish tested artifact to production
         run: vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"
+
+      - name: Publish release overview
+        env:
+          STAGED_URL: ${{ steps.deploy.outputs.url }}
+          VERIFIED_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<EOF
+          # Verified production release
+
+          ```mermaid
+          flowchart LR
+            A[CI-approved commit] --> B[Immutable Vercel build]
+            B --> C[Isolated staging URL]
+            C --> D[Security checks]
+            C --> E[Browser and accessibility tests]
+            D --> F[Production release]
+            E --> F
+          ```
+
+          | Release evidence | Value |
+          | --- | --- |
+          | Verified commit | `$VERIFIED_SHA` |
+          | Tested staging deployment | $STAGED_URL |
+          | HTTPS, headers and origin policy | Passed |
+          | Browser security and accessibility | Passed |
+          | Production promotion | Completed |
+          EOF
